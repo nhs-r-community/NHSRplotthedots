@@ -18,4 +18,6 @@ LazyData: true
 RoxygenNote: 7.1.1
 Imports: 
     ggplot2,
-    scales
+    scales,
+    dplyr,
+    rlang
