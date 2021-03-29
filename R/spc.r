@@ -50,114 +50,106 @@ spc <- function(
   trajectoryField <- options$trajectory[[1]]
   targetField <- options$target[[1]]
 
-  # Check validity of inputs
-  if(!(is.null(options)) && !(is.list(options))){ # If spcOptions supplied, check that options objecti s a list
-    stop("Options argument should be a list.")
+  # Setting internal variables and default values
+
+  #set y axis breaks
+  if(!(is.null(options$yAxisBreaks))){
+    yaxis <- c(df$y,df$upl,df$lpl)
+    start <- floor(min(yaxis,na.rm = TRUE)/options$yAxisBreaks) * options$yAxisBreaks
+    end <- max(yaxis,na.rm = TRUE)
+    yaxislabels <- seq(from = start, to = end, by = options$yAxisBreaks)
   }
-  if(!(is.data.frame(data.frame))){ # Check that data.frame argument is a data frame
-    stop("Data.frame argument is not a data.frame.")
-  }
-  if(!(is.null(options$yAxisBreaks))){ # Y axis breaks should be integer or decimal
-    if(is.numeric(options$yAxisBreaks)){
-      yaxis <- c(df$y,df$upl,df$lpl)
-      start <- floor(min(yaxis,na.rm = TRUE)/options$yAxisBreaks) * options$yAxisBreaks
-      end <- max(yaxis,na.rm = TRUE)
-      yaxislabels <- seq(from = start, to = end, by = options$yAxisBreaks)
-    } else {
-      stop("Y Axis Break option must be numeric.")
-    }
-  }
-  if(!(is.null(options$improvementDirection))){ # Check improvement direction supplied is either increase/decrease or 1/-1
+
+  #set improvement direction
+  if(!(is.null(options$improvementDirection))){ 
     if(options$improvementDirection == "increase" || options$improvementDirection == 1){
       improvementDirection <- 1
     } else if(options$improvementDirection == "decrease" || options$improvementDirection == -1){
       improvementDirection <- -1
-    } else {
-      stop("Improvement direction option should be 'increase' or 'decrease'")
     }
   } else {
     improvementDirection <- 1
   }
+
+  #set output chart
   if(!(is.null(options$outputChart))){ # Check if chart required as output
     if(options$outputChart == TRUE){
       outputChart <- 1
     } else if(options$outputChart == FALSE){
       outputChart <- 0
-    } else {
-      stop("outputChart option must be true or false")
     }
   } else {
     outputChart <- 1
   }
-  if(!(is.null(options$xAxisBreaks))){ # X axis breaks should be character string showing date seq intervals
-    if(is.character(options$xAxisBreaks)){
-      xaxis <- df[[x_name]]
-      start <- min(xaxis,na.rm = TRUE)
-      end <- max(xaxis,na.rm = TRUE)
-      xaxislabels <- seq.Date(from = as.Date(start), to = as.Date(end), by = options$xAxisBreaks)
-    } else {
-      stop("X Axis Break option must be character vector of length 1. E.g. '3 months'.")
-    }
+
+  #set x axis breaks
+  if(!(is.null(options$xAxisBreaks))){
+    xaxis <- df[[x_name]]
+    start <- min(xaxis,na.rm = TRUE)
+    end <- max(xaxis,na.rm = TRUE)
+    xaxislabels <- seq.Date(from = as.Date(start), to = as.Date(end), by = options$xAxisBreaks)
   } else {
     xaxislabels <- df[[x_name]]
   }
-  if(!(is.null(options$pointSize))){ # Check if custom plot point size provided - must be an integer
-    if(is.numeric(options$pointSize)){
+
+  #set point size
+  if(!(is.null(options$pointSize))){
       pointSize <- options$pointSize
-    } else {
-      stop("pointSize option must be an integer")
-    }
   } else {
     pointSize = 2
   }
-  if(!(is.null(options$xAxisDateFormat))){ # Check if x axis data format supplied, if so must be character format
-    if(is.character(options$xAxisDateFormat)){
+
+  #set x axis date format
+  if(!(is.null(options$xAxisDateFormat))){ 
       xAxisDateFormat <- options$xAxisDateFormat
-    } else {
-      stop("xAxisDateFormat option must be a character")
-    }
   } else {
     xAxisDateFormat <- "%d/%m/%Y"
   }
-  if(!(is.null(trajectoryField))){ # Check if trajectory field specified - if so, bind as trajectory field else bind as NAs
-    if(!(as.character(trajectoryField) %in% colnames(df))){
-      df$trajectory <- rep(as.numeric(NA),nrow(df))
-    } else {
-      df$trajectory <- df[[trajectoryField]]
-    }
+
+  #set trajectory field
+  if(!(is.null(trajectoryField))){
+    df$trajectory <- df[[trajectoryField]]
   } else {
     df$trajectory <- rep(as.numeric(NA),nrow(df))
   }
-  if(!(is.null(targetField))){ # Check if target field specified - if so, bind as trajectory field else bind as NAs
-    if(!(as.character(targetField) %in% colnames(df))){
-      df$target <- rep(as.numeric(NA),nrow(df))
-    } else {
-      df$target <- df[[targetField]]
-    }
+
+  #set target field
+  if(!(is.null(targetField))){ 
+    df$target <- df[[targetField]]
   } else {
     df$target <- rep(as.numeric(NA),nrow(df))
   }
-  if(!(is.null(options$mainTitle))){ # Check if custom plot title supplied
+
+  #set main plot title
+  if(!(is.null(options$mainTitle))){ 
     plottitle <- options$mainTitle
   } else {
     plottitle <- "SPC Chart"
   }
-  if(!(is.null(options$xAxisLabel))){ # Check if custom x axis title supplied
+
+#set x axis label
+  if(!(is.null(options$xAxisLabel))){ 
     xlabel <- options$xAxisLabel
   } else {
     xlabel <- "Date"
   }
-  if(!(is.null(options$yAxisLabel))){ # Check if custom y axis title supplied
+  
+#set y axis label
+  if(!(is.null(options$yAxisLabel))){ 
     ylabel <- options$yAxisLabel
   } else {
     ylabel <- "Value"
   }
-  if(!(is.null(options$fixedXAxisMultiple))){ # For multiple facet chart, check whether options list specified fixed x axis
+
+#set x axis fixed scaling for facet plots
+  if(!(is.null(options$fixedXAxisMultiple))){ 
     scaleXFixed <- options$fixedXAxis
   } else {
     scaleXFixed <- TRUE
   }
-  if(!(is.null(options$fixedYAxisMultiple))){ # For multiple facet chart, check whether options list specified fixed y axis
+
+#set y axis fixed scaling for facet plots
+  if(!(is.null(options$fixedYAxisMultiple))){ 
     scaleYFixed <- options$fixedYAxis
   } else {
     scaleYFixed <- TRUE
@@ -177,23 +169,20 @@ spc <- function(
     message("No facet detected - binding pseudo-facet column")
   }
 
-  # Check validity of rebase field supplied - should be 1s and 0s only
-  if(!(is.null(rebaseField))){ # If rebase field is not null
-    if(!(as.character(rebaseField) %in% colnames(df))){ # Check if rebase field exists in supplied fields
-      df$rebase <- rep(as.numeric(NA),nrow(df)) # If no, create an empty rebase field (all NAs)
-    } else {
-      df$rebase <- df[[rebaseField]] # If yes, create a rebase field using that field
-    }
+  #TODO Check validity of rebase field supplied - should be 1s and 0s only
+  #set rebase field
+  if(!(is.null(rebaseField))){ 
+    df$rebase <- df[[rebaseField]]
   } else {
     df$rebase <- rep(as.numeric(NA),nrow(df)) # If no rebase field supplied, create an empty rebase field (all NAs)
   }
+
+  #set percentage y axis
   if(!(is.null(options$percentageYAxis))){ # Check if Y values are percentages
     if(is.numeric(options$percentageYAxis)){
       convertToPercentages <- options$percentageYAxis
     } else if (is.logical(options$percentageYAxis)){
       convertToPercentages <- 0.1 * as.numeric(options$percentageYAxis)
-    } else {
-      stop("percentageYAxis option should be TRUE or a decimal value < 1 to indicate axis break frequency.")
     }
   } else {
     convertToPercentages <- 0
