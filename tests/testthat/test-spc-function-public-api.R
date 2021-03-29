@@ -7,7 +7,7 @@ test_that("spc function can create a ggplot", {
   df <- tibble(data, date)
 
   #act
-  result <- spc(df, "data", "date")
+  result <- suppressMessages(spc(df, "data", "date"))
 
   #assert
   expect_s3_class(result,"ggplot")
@@ -25,7 +25,7 @@ test_that("spc function can create a faceted ggplot", {
   df <- tibble(data, date, category)
 
   #act
-  result <- spc(df, "data", "date", "category")
+  result <- suppressMessages(spc(df, "data", "date", "category"))
 
   #assert
   expect_s3_class(result,"ggplot")
@@ -49,7 +49,7 @@ test_that("spc function returns a dataframe when options$outputChart is FALSE", 
   options = list(outputChart = FALSE)
 
   #act
-  result <- spc(df, "data", "date", options = options)
+  result <- suppressMessages(spc(df, "data", "date", options = options))
 
   #assert
   expect_s3_class(result,"tbl")
@@ -67,7 +67,7 @@ test_that("ggplot title and axis labels can be modified with options", {
   )
 
   #act
-  result <- spc(df, "data", "date", options = options)
+  result <- suppressMessages(spc(df, "data", "date", options = options))
 
   #assert
   expect_s3_class(result,"ggplot")
@@ -87,7 +87,7 @@ test_that("limits can be rebased at an intervention point", {
   )
 
   #act
-  result <- spc(df, "data", "date", options = options)
+  result <- suppressMessages(spc(df, "data", "date", options = options))
 
   #assert
   expect_s3_class(result,"ggplot")
@@ -105,7 +105,7 @@ test_that("limits can be rebased at multiple intervention points", {
   )
 
   #act
-  result <- spc(df, "data", "date", options = options)
+  result <- suppressMessages(spc(df, "data", "date", options = options))
 
   #assert
   expect_s3_class(result,"ggplot")
@@ -122,7 +122,7 @@ test_that("plotting point size can be adjusted", {
   )
 
   #act
-  result <- spc(df, "data", "date", options = options)
+  result <- suppressMessages(spc(df, "data", "date", options = options))
 
   #assert
   expect_s3_class(result,"ggplot")
@@ -139,7 +139,7 @@ test_that("improvement direction can be set as 'decrease'", {
   )
 
   #act
-  result <- spc(df, "data", "date", options = options)
+  result <- suppressMessages(spc(df, "data", "date", options = options))
 
   #assert
   expect_s3_class(result,"ggplot")
@@ -156,7 +156,7 @@ test_that("y axis values can be set as percentages using 'percentageYAxis = TRUE
   )
 
   #act
-  result <- spc(df, "data", "date", options = options)
+  result <- suppressMessages(spc(df, "data", "date", options = options))
 
   #assert
   expect_s3_class(result,"ggplot")
@@ -175,7 +175,7 @@ test_that("y axis values can be set as percentages using 'percentageYAxis = {dec
   )
 
   #act
-  result <- spc(df, "data", "date", options = options)
+  result <- suppressMessages(spc(df, "data", "date", options = options))
 
   #assert
   expect_s3_class(result,"ggplot")
@@ -195,7 +195,7 @@ test_that("a target line can be added to the plot", {
   )
 
   #act
-  result <- spc(df, "data", "date", options = options)
+  result <- suppressMessages(spc(df, "data", "date", options = options))
 
   #assert
   expect_s3_class(result,"ggplot")
@@ -215,7 +215,7 @@ test_that("a trajectory line can be added to the plot", {
   )
 
   #act
-  result <- spc(df, "data", "date", options = options)
+  result <- suppressMessages(spc(df, "data", "date", options = options))
 
   #assert
   expect_s3_class(result,"ggplot")
@@ -235,7 +235,7 @@ test_that("facet plots can be plotted with different x axis ranges", {
   )
 
   #act
-  result <- spc(df, "data", "date", "category", options = options)
+  result <- suppressMessages(spc(df, "data", "date", "category", options = options))
 
   #assert
   expect_s3_class(result,"ggplot")
@@ -256,7 +256,7 @@ test_that("facet plots can be plotted with different y axis ranges", {
   )
 
   #act
-  result <- spc(df, "data", "date", "category", options = options)
+  result <- suppressMessages(spc(df, "data", "date", "category", options = options))
 
   #assert
   expect_s3_class(result,"ggplot")
@@ -277,7 +277,7 @@ test_that("x axis date format can be specified", {
   )
 
   #act
-  result <- spc(df, "data", "date", options = options)
+  result <- suppressMessages(spc(df, "data", "date", options = options))
 
   #assert
   expect_s3_class(result,"ggplot")
@@ -296,7 +296,7 @@ test_that("x axis breaks can be specified", {
   )
 
   #act
-  result <- spc(df, "data", "date", options = options)
+  result <- suppressMessages(spc(df, "data", "date", options = options))
 
   #assert
   expect_s3_class(result,"ggplot")
@@ -319,7 +319,7 @@ test_that("x axis breaks can be specified", {
 #   )
 #
 #   #act
-#   result <- spc(df, "data", "date", options = options)
+#   result <- suppressMessages(spc(df, "data", "date", options = options)suppressMessages(
 #
 #   #assert
 #   expect_s3_class(result,"ggplot")
