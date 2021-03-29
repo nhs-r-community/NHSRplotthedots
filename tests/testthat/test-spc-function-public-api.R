@@ -1,5 +1,4 @@
 library(NHSRplotthedots)
-library(stringr)
 
 test_that("spc function can create a ggplot", {
   #arrange
@@ -163,7 +162,7 @@ test_that("y axis values can be set as percentages using 'percentageYAxis = TRUE
   expect_s3_class(result,"ggplot")
 
   firstYLabel <- ggplot_build(result)$layout$panel_scales_y[[1]]$break_info()$labels[[1]]
-  expect_identical(str_detect(firstYLabel, "%"), TRUE) #check there is a % sign in the first y axis label
+  expect_identical(grepl("%", firstYLabel, fixed = TRUE), TRUE) #check there is a % sign in the first y axis label
 })
 
 test_that("y axis values can be set as percentages using 'percentageYAxis = {decimal axis break value}'", {
@@ -182,7 +181,7 @@ test_that("y axis values can be set as percentages using 'percentageYAxis = {dec
   expect_s3_class(result,"ggplot")
 
   firstYLabel <- ggplot_build(result)$layout$panel_scales_y[[1]]$break_info()$labels[[1]]
-  expect_identical(str_detect(firstYLabel, "%"), TRUE) #check there is a % sign in the first y axis label
+  expect_identical(grepl("%", firstYLabel, fixed = TRUE), TRUE) #check there is a % sign in the first y axis label
 })
 
 test_that("a target line can be added to the plot", {
