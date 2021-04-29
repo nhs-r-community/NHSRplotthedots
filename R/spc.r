@@ -50,18 +50,14 @@ spc <- function(
   trajectoryField <- options$trajectory[[1]]
   targetField <- options$target[[1]]
 
-  # Setting internal variables and default values
-
-  #set y axis breaks
-  if(!(is.null(options$yAxisBreaks))){
-    yaxis <- c(df$y,df$upl,df$lpl)
-    start <- floor(min(yaxis,na.rm = TRUE)/options$yAxisBreaks) * options$yAxisBreaks
-    end <- max(yaxis,na.rm = TRUE)
-    yaxislabels <- seq(from = start, to = end, by = options$yAxisBreaks)
+  # Check validity of inputs
+  if(!(is.null(options)) && !(is.list(options))){ # If spcOptions supplied, check that options objecti s a list
+    stop("Options argument should be a list.")
   }
-
-  #set improvement direction
-  if(!(is.null(options$improvementDirection))){ 
+  if(!(is.data.frame(data.frame))){ # Check that data.frame argument is a data frame
+    stop("Data.frame argument is not a data.frame.")
+  }
+  if(!(is.null(options$improvementDirection))){ # Check improvement direction supplied is either increase/decrease or 1/-1
     if(options$improvementDirection == "increase" || options$improvementDirection == 1){
       improvementDirection <- 1
     } else if(options$improvementDirection == "decrease" || options$improvementDirection == -1){
@@ -164,7 +160,8 @@ spc <- function(
     "free"
   }
   if(is.null(facet_name)){ # If no facet field specified, bind a pseudo-facet field for grouping/joining purposes
-    f <- data.frame(facet_name = rep("no facet",nrow(df)))
+    facet_name <- "pseudo_facet_col_name"
+    f <- data.frame("pseudo_facet_col_name" = rep("no facet",nrow(df)))
     df <- cbind(df,f)
     message("No facet detected - binding pseudo-facet column")
   }
@@ -200,9 +197,9 @@ spc <- function(
   # Restructure starting data frame
   df <- df %>%
     select(
-      y = y_name
-      ,x = x_name
-      ,f = facet_name
+      y = all_of(y_name)
+      ,x = all_of(x_name)
+      ,f = all_of(facet_name)
       ,rebase = .data$rebase
       ,trajectory = .data$trajectory
       ,target = .data$target) %>%
@@ -422,6 +419,17 @@ spc <- function(
   .purple = "#361475"
   .red = "#de1b1b"
 
+  if(!(is.null(options$yAxisBreaks))){ # Y axis breaks should be integer or decimal
+    if(is.numeric(options$yAxisBreaks)){
+      yaxis <- c(df$y,df$upl,df$lpl)
+      start <- floor(min(yaxis,na.rm = TRUE)/options$yAxisBreaks) * options$yAxisBreaks
+      end <- max(yaxis,na.rm = TRUE)
+      yaxislabels <- seq(from = start, to = end, by = options$yAxisBreaks)
+    } else {
+      stop("Y Axis Break option must be numeric.")
+    }
+  }
+
   # Create chart if required
   if(outputChart == 1){
     plot <- ggplot(df,aes(x=.data$x,y=.data$y)) +
@@ -434,7 +442,7 @@ spc <- function(
       geom_line(color=.darkgrey,size=pointSize/2.666666) +
       geom_point(color=.darkgrey,size=pointSize)
 
-    if(!(is.null(facet_name))){ # Applt facet wrap if a facet field is present
+    if(facet_name != "pseudo_facet_col_name"){ # Apply facet wrap if a facet field is present
       plot <- plot +
         facet_wrap(vars(f), scales = facetScales)
     }
@@ -449,7 +457,7 @@ spc <- function(
       scale_x_date(breaks=xaxislabels, labels = format(xaxislabels, format = xAxisDateFormat)) +
       theme(axis.text.x = element_text(angle = 90, hjust = 1))
 
-    if(is.null(facet_name)){
+    if(facet_name == "pseudo_facet_col_name"){
       if(convertToPercentages == FALSE){
         if(!(is.null(options$yAxisBreaks))){
           plot <- plot +
@@ -463,9 +471,7 @@ spc <- function(
         plot <- plot +
           scale_y_continuous(labels = scales::percent,breaks = seq(from = 0, to = percentLimit, by = interval))
       }
-    }
-
-    if(!(is.null(facet_name))){
+    } else {
       if(convertToPercentages != 0) {
         percentLimit <- max(df$upl,na.rm = TRUE)
 
