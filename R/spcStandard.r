@@ -15,7 +15,7 @@
 #' @param facetField Optional: Specify field name which contains a grouping/faceting variable. SPC logic will be applied to each group separately, with outputs combined. Currently accepts 1 variable only.
 #' @param options Optional: A list object containing additional control and formatting properties. Preferably created using the spcOptions function.
 #'
-#' @export spcStandard
+#' @noRd
 
 
 #' @import dplyr
