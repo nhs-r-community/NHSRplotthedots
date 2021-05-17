@@ -3,7 +3,6 @@
 export(my_function)
 export(spc)
 export(spcOptions)
-export(spcStandard)
 import(dplyr)
 import(ggplot2)
 import(scales)
