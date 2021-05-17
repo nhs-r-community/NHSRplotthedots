@@ -31,33 +31,21 @@ spc <- function(
   ,valueField
   ,dateField
   ,facetField = NULL
-  ,options = NULL ## options: target, trjaectory, rebase, data as percentages, title, x title, y title, x axis break frequency, pointSize, returnChart, display legend
+  ,options = NULL ## options: target, trajectory, rebase, data as percentages, title, x title, y title, x axis break frequency, pointSize, returnChart, display legend
 ) {
 
   #validate all inputs.  Validation problems will generate an error and stop code execution.
   validateParameters(data.frame, valueField, dateField, facetField, options)
 
-  ## Data/field preparation ----
-
-  # Quote Expr
-  df <- data.frame
-  y_name <- enexpr(valueField)
-  x_name <- enexpr(dateField)
-  facet_name <- enexpr(facetField)
-
-  # Identify a rebase, trajectory and target fields, if provided in SPC options object
-  rebaseField <- options$rebase[[1]]
-  trajectoryField <- options$trajectory[[1]]
-  targetField <- options$target[[1]]
-
-  # Check validity of inputs
-  if(!(is.null(options)) && !(is.list(options))){ # If spcOptions supplied, check that options objecti s a list
-    stop("Options argument should be a list.")
+  if(is.null(facetField)){ # If no facet field specified, bind a pseudo-facet field for grouping/joining purposes
+    facetField <- "pseudo_facet_col_name"
   }
-  if(!(is.data.frame(data.frame))){ # Check that data.frame argument is a data frame
-    stop("Data.frame argument is not a data.frame.")
-  }
-  if(!(is.null(options$improvementDirection))){ # Check improvement direction supplied is either increase/decrease or 1/-1
+
+  df <- spcStandard(data.frame, valueField, dateField, facetField, options)
+
+
+  # Declare improvement direction as integer
+  if(!(is.null(options$improvementDirection))){
     if(options$improvementDirection == "increase" || options$improvementDirection == 1){
       improvementDirection <- 1
     } else if(options$improvementDirection == "decrease" || options$improvementDirection == -1){
@@ -80,72 +68,58 @@ spc <- function(
 
   #set x axis breaks
   if(!(is.null(options$xAxisBreaks))){
-    xaxis <- df[[x_name]]
+    xaxis <- df$x
     start <- min(xaxis,na.rm = TRUE)
     end <- max(xaxis,na.rm = TRUE)
     xaxislabels <- seq.Date(from = as.Date(start), to = as.Date(end), by = options$xAxisBreaks)
   } else {
-    xaxislabels <- df[[x_name]]
+    xaxislabels <- df$x
   }
 
   #set point size
   if(!(is.null(options$pointSize))){
-      pointSize <- options$pointSize
+    pointSize <- options$pointSize
   } else {
     pointSize = 2
   }
 
   #set x axis date format
-  if(!(is.null(options$xAxisDateFormat))){ 
-      xAxisDateFormat <- options$xAxisDateFormat
+  if(!(is.null(options$xAxisDateFormat))){
+    xAxisDateFormat <- options$xAxisDateFormat
   } else {
     xAxisDateFormat <- "%d/%m/%Y"
   }
 
-  #set trajectory field
-  if(!(is.null(trajectoryField))){
-    df$trajectory <- df[[trajectoryField]]
-  } else {
-    df$trajectory <- rep(as.numeric(NA),nrow(df))
-  }
-
-  #set target field
-  if(!(is.null(targetField))){ 
-    df$target <- df[[targetField]]
-  } else {
-    df$target <- rep(as.numeric(NA),nrow(df))
-  }
-
   #set main plot title
-  if(!(is.null(options$mainTitle))){ 
+  if(!(is.null(options$mainTitle))){
     plottitle <- options$mainTitle
   } else {
     plottitle <- "SPC Chart"
   }
 
-#set x axis label
-  if(!(is.null(options$xAxisLabel))){ 
+  #set x axis label
+  if(!(is.null(options$xAxisLabel))){
     xlabel <- options$xAxisLabel
   } else {
     xlabel <- "Date"
   }
-  
-#set y axis label
-  if(!(is.null(options$yAxisLabel))){ 
+
+  #set y axis label
+  if(!(is.null(options$yAxisLabel))){
     ylabel <- options$yAxisLabel
   } else {
     ylabel <- "Value"
   }
 
-#set x axis fixed scaling for facet plots
-  if(!(is.null(options$fixedXAxisMultiple))){ 
+  #set x axis fixed scaling for facet plots
+  if(!(is.null(options$fixedXAxisMultiple))){
     scaleXFixed <- options$fixedXAxis
   } else {
     scaleXFixed <- TRUE
   }
 
-#set y axis fixed scaling for facet plots
-  if(!(is.null(options$fixedYAxisMultiple))){ 
+  #set y axis fixed scaling for facet plots
+  if(!(is.null(options$fixedYAxisMultiple))){
     scaleYFixed <- options$fixedYAxis
   } else {
     scaleYFixed <- TRUE
@@ -159,20 +133,8 @@ spc <- function(
   } else if (scaleYFixed == FALSE && scaleXFixed == FALSE){
     "free"
   }
-  if(is.null(facet_name)){ # If no facet field specified, bind a pseudo-facet field for grouping/joining purposes
-    facet_name <- "pseudo_facet_col_name"
-    f <- data.frame("pseudo_facet_col_name" = rep("no facet",nrow(df)))
-    df <- cbind(df,f)
-    message("No facet detected - binding pseudo-facet column")
-  }
 
-  #TODO Check validity of rebase field supplied - should be 1s and 0s only
-  #set rebase field
-  if(!(is.null(rebaseField))){ 
-    df$rebase <- df[[rebaseField]]
-  } else {
-    df$rebase <- rep(as.numeric(NA),nrow(df)) # If no rebase field supplied, create an empty rebase field (all NAs)
-  }
+
 
   #set percentage y axis
   if(!(is.null(options$percentageYAxis))){ # Check if Y values are percentages
@@ -185,147 +147,20 @@ spc <- function(
     convertToPercentages <- 0
   }
 
-  ## Standard SPC Logic ----
-
-  # Key Values
-  l <- nrow(data.frame)
-
-  # Constants
-  limit <- 2.66
-  limitclose <- 2*(limit/3)
-
-  # Restructure starting data frame
-  df <- df %>%
-    select(
-      y = all_of(y_name)
-      ,x = all_of(x_name)
-      ,f = all_of(facet_name)
-      ,rebase = .data$rebase
-      ,trajectory = .data$trajectory
-      ,target = .data$target) %>%
-    group_by(f) %>% # Group data frame by facet
-    arrange(f,.data$x) %>% # Order data frame by facet, and x axis variable
-    mutate(n = row_number()) %>% # Add an index to each facet group
-    ungroup() %>% # Ungroup for tidiness
-    mutate(
-      movingrange = case_when( # Add moving range, as used for basis of sigma in 'plot the dots' logic
-        n > 1 ~ abs(.data$y - lag(.data$y,1))
-      )
-    )
-
-  # # Find average of moving range for each facet
-  # mra <- df %>%
-  #   group_by(.data$f) %>%
-  #   summarise(movingrangeaverage = mean(.data$movingrange, na.rm = TRUE))
-  #
-  # # Join moving range average back to primary data frame
-  # df <- df %>%
-  #   left_join(mra, by = c(f = "f"))
-
-  # Identify facets/indices which have been flagged for rebasing
-  rebaseTable <- df %>%
-    filter(.data$rebase == 1) %>%
-    select(.data$f, .data$x)
-
-  # Identify the earliest x axis point for each facet - start of rebase group 1
-  rebaseTable2 <- df %>%
-    group_by(.data$f) %>%
-    summarise(x = min(.data$x))
-
-  # Identify the latest x axis point for each facet - end of rebase group n
-  rebaseTable3 <- df %>%
-    group_by(.data$f) %>%
-    summarise(x = max(.data$x))
-
-  # Create a data frame of rebase intervals, with first and last x axis points and all intervening x axis points which will trigger a new rebase period
-  rebaseTable4 <- rbind(rebaseTable, rebaseTable2, rebaseTable3) %>%
-    arrange(.data$f,.data$x) %>% # order by facet and x axis
-    group_by(.data$f) %>% # group by facet
-    mutate(rn = row_number() # add a row number which will create an index for each rebase interval within the group
-           ,start = lag(.data$x,1) # identify the starting x axis coordinate for each index, using lag function
-           ) %>%
-    ungroup() %>% # ungroup for tidiness
-    filter(.data$rn != 1) %>% # remove the first rebase row from each facet, as this will have an end date but no start date
-    select(.data$f, .data$start, end = .data$x) %>% # limit data frame to each facet, and it's rebase start/end points
-    group_by(.data$f) %>% # regroup by facet
-    mutate(rn = row_number()) %>% # recreate the row number index for each rebase interval within the group, now that the 1st row has been excluded
-    arrange(.data$f,desc(.data$start)) %>% # reorder the data frame by facet and descending date order - to allow identification of last period in each facet
-    mutate(rn2 = row_number()) %>% # add second row number to identify last rebase group in each facet
-    ungroup()
-
-  # Join data frame to rebase groupings, and filter to x axis between grouping start (inclusive) and end (exclusive)
-  # - note that this will omit the last row in each facet because it belongs to the previous rebase group
-  df2 <- df %>%
-    left_join(rebaseTable4, by = c("f" = "f")) %>%
-    filter(.data$x >= .data$start, .data$x < .data$end) %>%
-    mutate(movingrange = case_when(.data$x != .data$start ~ movingrange,TRUE ~ as.numeric(NA))) # set the first moving range value in each rebase group to NA, as this is not included in the new mean calculations
-
-  # Identify the last row in each facet, to add to the previous rebase group
-  df3 <- df %>%
-    left_join(rebaseTable4, by = c("f" = "f")) %>%
-    filter(.data$rn2 == 1, .data$x == .data$end)
-
-  # Bind together last two data frames, so that all data points are present with a link to the appropriate rebase group
-  df <- rbind(df2, df3) %>%
-    arrange(f,.data$x) %>%
-    select(
-      .data$y
-      ,.data$x
-      ,f
-      ,.data$rebase
-      ,n
-      ,.data$target
-      ,.data$trajectory
-      ,.data$movingrange
-      ,rebaseGroup = .data$rn)
-
-  # Identify the mean and moving range average within each facet and rebase group
-  df_avg <- df %>%
-    group_by(f,.data$rebaseGroup) %>%
-    summarise(mean = mean(.data$y,na.rm = TRUE),movingrangeaverage = mean(.data$movingrange,na.rm = TRUE))
-
-  # Join data frame to moving range average and mean data, then perform standard logical tests
-  df <- df %>%
-    left_join(df_avg, by = c("f" = "f","rebaseGroup" = "rebaseGroup")) %>%
-    mutate(
-      lpl = mean - (limit * .data$movingrangeaverage) # identify lower process limits
-      ,upl = mean + (limit * .data$movingrangeaverage) # identify upper process limits
-      ,nlpl = mean - (limitclose * .data$movingrangeaverage) # identify near lower process limits
-      ,nupl = mean + (limitclose * .data$movingrangeaverage) # identify near upper process limits
-    ) %>%
-    mutate(
-      outsideLimits = case_when( # Identify any points which are outside the upper or lower process limits
-        .data$y > upl | .data$y < lpl ~ 1
-        ,TRUE ~ 0
-      )
-      ,relativeToMean = case_when( # Identify whether a point is above or below the mean
-        .data$y < mean ~ -1
-        ,.data$y > mean ~ 1
-        ,TRUE ~ 0
-      )
-    ) %>%
-    mutate(
-      closeToLimits = case_when( # Identify if a point is between the near process limits and process limits
-        .data$y > nupl & .data$y <= upl ~ 1
-        ,.data$y < nlpl & .data$y >= lpl ~ 1
-        ,TRUE ~ 0
-      )
-    )
-
 
   ## Plot the dots SPC logic ----
   # Begin plot the dots logical tests
   df <- df %>%
     mutate(sevenPointTrend = case_when( # Identify if a point is the 7th in a run above or below the mean
-          (relativeToMean == lag(relativeToMean,1) & f == lag(f,1))
-        & (relativeToMean == lag(relativeToMean,2) & f == lag(f,2))
-        & (relativeToMean == lag(relativeToMean,3) & f == lag(f,3))
-        & (relativeToMean == lag(relativeToMean,4) & f == lag(f,4))
-        & (relativeToMean == lag(relativeToMean,5) & f == lag(f,5))
-        & (relativeToMean == lag(relativeToMean,6) & f == lag(f,6))
-        ~ 1
-        ,TRUE ~ 0
-      )
+      (relativeToMean == lag(relativeToMean,1) & f == lag(f,1))
+      & (relativeToMean == lag(relativeToMean,2) & f == lag(f,2))
+      & (relativeToMean == lag(relativeToMean,3) & f == lag(f,3))
+      & (relativeToMean == lag(relativeToMean,4) & f == lag(f,4))
+      & (relativeToMean == lag(relativeToMean,5) & f == lag(f,5))
+      & (relativeToMean == lag(relativeToMean,6) & f == lag(f,6))
+      ~ 1
+      ,TRUE ~ 0
+    )
     ) %>%
     mutate(
       partOfSevenPointTrend = case_when( # Identify if any of the six points following the current point are the 7th in a run above or below the mean (i.e. part of that run)
@@ -442,7 +277,7 @@ spc <- function(
       geom_line(color=.darkgrey,size=pointSize/2.666666) +
       geom_point(color=.darkgrey,size=pointSize)
 
-    if(facet_name != "pseudo_facet_col_name"){ # Apply facet wrap if a facet field is present
+    if(facetField != "pseudo_facet_col_name"){ # Apply facet wrap if a facet field is present
       plot <- plot +
         facet_wrap(vars(f), scales = facetScales)
     }
@@ -457,7 +292,7 @@ spc <- function(
       scale_x_date(breaks=xaxislabels, labels = format(xaxislabels, format = xAxisDateFormat)) +
       theme(axis.text.x = element_text(angle = 90, hjust = 1))
 
-    if(facet_name == "pseudo_facet_col_name"){
+    if(facetField == "pseudo_facet_col_name"){
       if(convertToPercentages == FALSE){
         if(!(is.null(options$yAxisBreaks))){
           plot <- plot +
