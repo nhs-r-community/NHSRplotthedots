@@ -110,6 +110,13 @@ spc <- function(
   } else {
     ylabel <- "Value"
   }
+  
+  #set y axis breaks
+  if(!(is.null(options$yAxisBreaks))){
+    yAxisBreaks <- options$yAxisBreaks
+  } else {
+    yAxisBreaks <- NULL
+  }
 
   #set x axis fixed scaling for facet plots
   if(!(is.null(options$fixedXAxisMultiple))){
@@ -247,77 +254,31 @@ spc <- function(
     )
 
   ## Create ggplot using plot the dots colours OR output data frame ----
-  # Colour Palette for ggplot
-  .darkgrey = "#7B7D7D"
-  .orange = "#fab428"
-  .skyblue = "#289de0"
-  .purple = "#361475"
-  .red = "#de1b1b"
-
-  if(!(is.null(options$yAxisBreaks))){ # Y axis breaks should be integer or decimal
-    if(is.numeric(options$yAxisBreaks)){
-      yaxis <- c(df$y,df$upl,df$lpl)
-      start <- floor(min(yaxis,na.rm = TRUE)/options$yAxisBreaks) * options$yAxisBreaks
-      end <- max(yaxis,na.rm = TRUE)
-      yaxislabels <- seq(from = start, to = end, by = options$yAxisBreaks)
-    } else {
-      stop("Y Axis Break option must be numeric.")
-    }
-  }
-
   # Create chart if required
   if(outputChart == 1){
-    plot <- ggplot(df,aes(x=.data$x,y=.data$y)) +
-      theme_minimal() +
-      geom_line(aes(y=.data$upl),linetype = "dashed",size=pointSize/2.666666,color=.darkgrey) +
-      geom_line(aes(y=.data$lpl),linetype = "dashed",size=pointSize/2.666666,color=.darkgrey) +
-      geom_line(aes(y=.data$target),linetype = "dashed",size=pointSize/2.666666,color=.purple) +
-      geom_line(aes(y=.data$trajectory),linetype = "dashed",size=pointSize/2.666666,color=.red) +
-      geom_line(aes(y=mean)) +
-      geom_line(color=.darkgrey,size=pointSize/2.666666) +
-      geom_point(color=.darkgrey,size=pointSize)
 
-    if(facetField != "pseudo_facet_col_name"){ # Apply facet wrap if a facet field is present
-      plot <- plot +
-        facet_wrap(vars(f), scales = facetScales)
-    }
+    #build a list of plotOptions to pass into the createGgplot() function
+    plotOptions <- list(
+      pointSize = pointSize,
+      plottitle = plottitle,
+      xlabel = xlabel,
+      ylabel = ylabel,
+      xaxislabels = xaxislabels,
+      xAxisDateFormat = xAxisDateFormat,
+      convertToPercentages = convertToPercentages,
+      facetScales = facetScales,
+      yAxisBreaks = yAxisBreaks
+    )
 
-    plot <- plot +
-      geom_point(aes(x=.data$x,y=.data$specialCauseImprovement),color=.skyblue,size=pointSize) +
-      geom_point(aes(x=.data$x,y=.data$specialCauseConcern),color=.orange,size=pointSize) +
-      ggtitle(label = plottitle) +
-      xlab(label = xlabel) +
-      ylab(label = ylabel) +
-      theme(plot.title = element_text(hjust = 0.5)) +
-      scale_x_date(breaks=xaxislabels, labels = format(xaxislabels, format = xAxisDateFormat)) +
-      theme(axis.text.x = element_text(angle = 90, hjust = 1))
+    #make and return the plot
+    plot <- createGgplot(df, facetField, plotOptions)
+    return(plot)
 
-    if(facetField == "pseudo_facet_col_name"){
-      if(convertToPercentages == FALSE){
-        if(!(is.null(options$yAxisBreaks))){
-          plot <- plot +
-            scale_y_continuous(breaks = yaxislabels, labels = yaxislabels)
-        }
-      } else if(convertToPercentages != 0) {
-        percentLimit <- max(df$upl,na.rm = TRUE)
-
-        interval <- if(!(is.null(options$yAxisBreaks))){options$yAxisBreaks} else {convertToPercentages}
-
-        plot <- plot +
-          scale_y_continuous(labels = scales::percent,breaks = seq(from = 0, to = percentLimit, by = interval))
-      }
-    } else {
-      if(convertToPercentages != 0) {
-        percentLimit <- max(df$upl,na.rm = TRUE)
-
-        plot <- plot +
-          scale_y_continuous(labels = scales::percent)
-      }
-    }
-
-    plot
   } else if(outputChart == 0){
-    df
+
+    #or return the calculated dataframe
+    return(df)
+
   }
 }
 
