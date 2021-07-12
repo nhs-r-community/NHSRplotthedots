@@ -7,7 +7,7 @@ Authors@R: c(
           person("Simon", "Wellesley-Miller", ,"simon.wellesley-miller@nhs.net", "aut"),
           person("Zoë", "Turner", , "zoe.turner@nhs.net", "aut" ),
           person("Tom", "Jemmett", ,"thomas.jemmett@nhs.net", "aut", comment = c(ORCID="0000-0002-6943-2990")),
-          person("Chris", "Mainey", ,"chris.mainey@uhb.nhs.uk", "aut", comment = c(ORCID ="0000-0002-3018-6171")),
+          person("Tom", "Smith", ,"thomas.smith5@nuh.nhs.uk", "aut"),
           person("NHS-R community", role = "cph")
           )
 Maintainer: Christopher Reading <christopher.reading1@nhs.net>
