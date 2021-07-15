@@ -54,10 +54,6 @@ spcOptions <- function(
   ,xAxisBreaks = NULL
   ,yAxisBreaks = NULL
 ){
-  rebase <- enexprs(rebase)
-  target <- enexprs(target)
-  trajectory <- enexprs(trajectory)
-
   if(!(is.null(improvementDirection))){
     if(length(improvementDirection) > 1){
       stop("Improvement direction should be numeric (1 or -1) or character (increase or decrease). Multiple values are not valid.")

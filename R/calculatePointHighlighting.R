@@ -37,7 +37,7 @@ calculatePointHighlighting <- function(df, improvementDirection){
         ~ 1
         ,TRUE ~ 0
       )
-      ,sixPointGrowth = case_when( # Identify if a point is is the 6th in an increasing or decreaseing trend
+      ,sixPointGrowth = case_when( # Identify if a point is the 6th in an increasing or decreasing trend
         (.data$y > lag(.data$y,1) & f == lag(f,1))
         & (lag(.data$y,1) > lag(.data$y,2) & lag(f,1) == lag(f,2))
         & (lag(.data$y,2) > lag(.data$y,3) & lag(f,2) == lag(f,3))
@@ -57,13 +57,22 @@ calculatePointHighlighting <- function(df, improvementDirection){
     ) %>%
     mutate(
       partOfSixPointGrowth = case_when( # Identify if a point belongs to a 6 point increasing or decreasing trend
-        abs(sixPointGrowth) == 1
-        | (abs(lead(sixPointGrowth,1)) == 1 & f == lead(f,1))
-        | (abs(lead(sixPointGrowth,2)) == 1 & f == lead(f,2))
-        | (abs(lead(sixPointGrowth,3)) == 1 & f == lead(f,3))
-        | (abs(lead(sixPointGrowth,4)) == 1 & f == lead(f,4))
-        | (abs(lead(sixPointGrowth,5)) == 1 & f == lead(f,5))
-        ~ 1
+        sixPointGrowth == 1
+        | lead(sixPointGrowth,1) == 1 & f == lead(f,1)
+        | lead(sixPointGrowth,2) == 1 & f == lead(f,2)
+        | lead(sixPointGrowth,3) == 1 & f == lead(f,3)
+        | lead(sixPointGrowth,4) == 1 & f == lead(f,4)
+        | lead(sixPointGrowth,5) == 1 & f == lead(f,5)
+        | lead(sixPointGrowth,6) == 1 & f == lead(f,6)
+        ~ 1 # Part of a six point ascending trend
+        ,sixPointGrowth == -1
+        | lead(sixPointGrowth,1) == -1 & f == lead(f,1)
+        | lead(sixPointGrowth,2) == -1 & f == lead(f,2)
+        | lead(sixPointGrowth,3) == -1 & f == lead(f,3)
+        | lead(sixPointGrowth,4) == -1 & f == lead(f,4)
+        | lead(sixPointGrowth,5) == -1 & f == lead(f,5)
+        | lead(sixPointGrowth,6) == -1 & f == lead(f,6)
+        ~ -1 # Part of a six point descending trend
         ,TRUE ~ 0
       )
       ,twoInThree = case_when( # Identify if two out of three points in a set are between the process limits and near process limits
@@ -98,14 +107,18 @@ calculatePointHighlighting <- function(df, improvementDirection){
     ) %>%
     mutate(
       specialCauseConcern = case_when( # Identify a special cause variation against the improvement direction
-        specialCauseFlag == 1
-        & relativeToMean == (improvementDirection * -1)
-        ~ .data$y
+        outsideLimits == 1 & relativeToMean == (improvementDirection * -1) ~ .data$y
+        ,partOfSevenPointTrend == 1 & relativeToMean == (improvementDirection * -1) ~ .data$y
+        ,partOfTwoInThree == 1 & relativeToMean == (improvementDirection * -1) ~ .data$y
+        ,partOfSixPointGrowth == 1 & improvementDirection == -1 ~ .data$y
+        ,partOfSixPointGrowth == -1 & improvementDirection == 1 ~ .data$y
       )
       ,specialCauseImprovement = case_when( # Identify a special cause variation towards the improvement direction
-        specialCauseFlag == 1
-        & relativeToMean == improvementDirection
-        ~ .data$y
+        outsideLimits == 1 & relativeToMean == improvementDirection ~ .data$y
+        ,partOfSevenPointTrend == 1 & relativeToMean == improvementDirection ~ .data$y
+        ,partOfTwoInThree == 1 & relativeToMean == improvementDirection ~ .data$y
+        ,partOfSixPointGrowth == 1 & improvementDirection == 1 ~ .data$y
+        ,partOfSixPointGrowth == -1 & improvementDirection == -1 ~ .data$y
       )
     )
 
