@@ -41,3 +41,27 @@ my_function <- function(input_a, input_b, colour="blue") {
 
   return(myplot)
 }
+
+# Show the contour only
+# ggplot(dat, aes(x=x, y=y) ) +
+#  geom_density_2d()
+ 
+# Show the area only
+# ggplot(dat, aes(x=x, y=y) ) +
+#  stat_density_2d(aes(fill = ..level..), geom = "polygon")
+ 
+# Area + contour
+# ggplot(dat, aes(x=x, y=y) ) +
+#  stat_density_2d(aes(fill = ..level..), geom = "polygon", colour="white")
+ 
+# Using raster
+# ggplot(dat, aes(x=x, y=y) ) +
+#  stat_density_2d(aes(fill = ..density..), geom = "raster", contour = FALSE) +
+#  scale_x_continuous(expand = c(0, 0)) +
+#  scale_y_continuous(expand = c(0, 0)) +
+#  theme(
+#    legend.position='none'
+  )
+
+
+
