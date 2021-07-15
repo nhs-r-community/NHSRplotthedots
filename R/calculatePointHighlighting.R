@@ -14,7 +14,7 @@ calculatePointHighlighting <- function(df, improvementDirection){
 
   # Begin plot the dots logical tests
   df <- df %>%
-    mutate(sevenPointTrend = case_when( # Identify if a point is the 7th in a run above or below the mean
+    mutate(sevenPointOneSideOfMean = case_when( # Identify if a point is the 7th in a run above or below the mean
       (relativeToMean == lag(relativeToMean,1) & f == lag(f,1))
       & (relativeToMean == lag(relativeToMean,2) & f == lag(f,2))
       & (relativeToMean == lag(relativeToMean,3) & f == lag(f,3))
@@ -26,18 +26,18 @@ calculatePointHighlighting <- function(df, improvementDirection){
     )
     ) %>%
     mutate(
-      partOfSevenPointTrend = case_when( # Identify if any of the six points following the current point are the 7th in a run above or below the mean (i.e. part of that run)
-        sevenPointTrend == 1
-        | (lead(sevenPointTrend,1) == 1 & lead(f,1) == f)
-        | (lead(sevenPointTrend,2) == 1 & lead(f,2) == f)
-        | (lead(sevenPointTrend,3) == 1 & lead(f,3) == f)
-        | (lead(sevenPointTrend,4) == 1 & lead(f,4) == f)
-        | (lead(sevenPointTrend,5) == 1 & lead(f,5) == f)
-        | (lead(sevenPointTrend,6) == 1 & lead(f,6) == f)
+      partOfSevenPointOneSideOfMean = case_when( # Identify if any of the six points following the current point are the 7th in a run above or below the mean (i.e. part of that run)
+        sevenPointOneSideOfMean == 1
+        | (lead(sevenPointOneSideOfMean,1) == 1 & lead(f,1) == f)
+        | (lead(sevenPointOneSideOfMean,2) == 1 & lead(f,2) == f)
+        | (lead(sevenPointOneSideOfMean,3) == 1 & lead(f,3) == f)
+        | (lead(sevenPointOneSideOfMean,4) == 1 & lead(f,4) == f)
+        | (lead(sevenPointOneSideOfMean,5) == 1 & lead(f,5) == f)
+        | (lead(sevenPointOneSideOfMean,6) == 1 & lead(f,6) == f)
         ~ 1
         ,TRUE ~ 0
       )
-      ,sixPointGrowth = case_when( # Identify if a point is is the 6th in an increasing or decreaseing trend
+      ,sevenPointTrend = case_when( # Identify if a point is the 6th in an increasing or decreasing trend
         (.data$y > lag(.data$y,1) & f == lag(f,1))
         & (lag(.data$y,1) > lag(.data$y,2) & lag(f,1) == lag(f,2))
         & (lag(.data$y,2) > lag(.data$y,3) & lag(f,2) == lag(f,3))
@@ -56,14 +56,23 @@ calculatePointHighlighting <- function(df, improvementDirection){
       )
     ) %>%
     mutate(
-      partOfSixPointGrowth = case_when( # Identify if a point belongs to a 6 point increasing or decreasing trend
-        abs(sixPointGrowth) == 1
-        | (abs(lead(sixPointGrowth,1)) == 1 & f == lead(f,1))
-        | (abs(lead(sixPointGrowth,2)) == 1 & f == lead(f,2))
-        | (abs(lead(sixPointGrowth,3)) == 1 & f == lead(f,3))
-        | (abs(lead(sixPointGrowth,4)) == 1 & f == lead(f,4))
-        | (abs(lead(sixPointGrowth,5)) == 1 & f == lead(f,5))
-        ~ 1
+      partOfSevenPointTrend = case_when( # Identify if a point belongs to a 7 point increasing or decreasing trend
+        sevenPointTrend == 1
+        | lead(sevenPointTrend,1) == 1 & f == lead(f,1)
+        | lead(sevenPointTrend,2) == 1 & f == lead(f,2)
+        | lead(sevenPointTrend,3) == 1 & f == lead(f,3)
+        | lead(sevenPointTrend,4) == 1 & f == lead(f,4)
+        | lead(sevenPointTrend,5) == 1 & f == lead(f,5)
+        | lead(sevenPointTrend,6) == 1 & f == lead(f,6)
+        ~ 1 # Part of a 7 point ascending trend
+        ,sevenPointTrend == -1
+        | lead(sevenPointTrend,1) == -1 & f == lead(f,1)
+        | lead(sevenPointTrend,2) == -1 & f == lead(f,2)
+        | lead(sevenPointTrend,3) == -1 & f == lead(f,3)
+        | lead(sevenPointTrend,4) == -1 & f == lead(f,4)
+        | lead(sevenPointTrend,5) == -1 & f == lead(f,5)
+        | lead(sevenPointTrend,6) == -1 & f == lead(f,6)
+        ~ -1 # Part of a 7 point descending trend
         ,TRUE ~ 0
       )
       ,twoInThree = case_when( # Identify if two out of three points in a set are between the process limits and near process limits
@@ -89,8 +98,8 @@ calculatePointHighlighting <- function(df, improvementDirection){
     mutate(
       specialCauseFlag = case_when( # Identify a special cause variation for any of the four rules
         abs(outsideLimits) == 1
+        | abs(partOfSevenPointOneSideOfMean) == 1
         | abs(partOfSevenPointTrend) == 1
-        | abs(partOfSixPointGrowth) == 1
         | partOfTwoInThree == 1
         ~ 1
         ,TRUE ~ 0
@@ -98,14 +107,18 @@ calculatePointHighlighting <- function(df, improvementDirection){
     ) %>%
     mutate(
       specialCauseConcern = case_when( # Identify a special cause variation against the improvement direction
-        specialCauseFlag == 1
-        & relativeToMean == (improvementDirection * -1)
-        ~ .data$y
+        outsideLimits == 1 & relativeToMean == (improvementDirection * -1) ~ .data$y
+        ,partOfSevenPointOneSideOfMean == 1 & relativeToMean == (improvementDirection * -1) ~ .data$y
+        ,partOfTwoInThree == 1 & relativeToMean == (improvementDirection * -1) ~ .data$y
+        ,partOfSevenPointTrend == 1 & improvementDirection == -1 ~ .data$y
+        ,partOfSevenPointTrend == -1 & improvementDirection == 1 ~ .data$y
       )
       ,specialCauseImprovement = case_when( # Identify a special cause variation towards the improvement direction
-        specialCauseFlag == 1
-        & relativeToMean == improvementDirection
-        ~ .data$y
+        outsideLimits == 1 & relativeToMean == improvementDirection ~ .data$y
+        ,partOfSevenPointOneSideOfMean == 1 & relativeToMean == improvementDirection ~ .data$y
+        ,partOfTwoInThree == 1 & relativeToMean == improvementDirection ~ .data$y
+        ,partOfSevenPointTrend == 1 & improvementDirection == 1 ~ .data$y
+        ,partOfSevenPointTrend == -1 & improvementDirection == -1 ~ .data$y
       )
     )
 
