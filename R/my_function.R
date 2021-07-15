@@ -65,3 +65,13 @@ my_function <- function(input_a, input_b, colour="blue") {
 
 
 
+ggplot(data, aes())+  
+  geom_density(position = "stack", size = 0.8, show.legend = T, col = "gray25")+
+  scale_x_continuous(limits = c(0,110), breaks = seq(0,110,15))+
+  scale_fill_brewer(palette = "Set1")+
+  labs(title = "", subtitle = "", y = "Density",
+       x = "", fill = "", caption = "")+
+  theme_fivethirtyeight()+
+  theme(legend.position="bottom", legend.direction="horizontal", axis.text = element_text(size = 14), axis.title = element_text(size = 15), 
+        legend.text = element_text(size = 14), axis.line = element_line(size = 0.4, colour = "grey10"), plot.caption = element_text(color = "gray20", face = "italic"),
+        plot.background = element_rect(fill = "#d3dae6"), legend.background = element_rect(fill = "#d3dae6"))
