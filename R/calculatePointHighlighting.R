@@ -37,11 +37,7 @@ calculatePointHighlighting <- function(df, improvementDirection){
         ~ 1
         ,TRUE ~ 0
       )
-<<<<<<< HEAD
       ,sevenPointTrend = case_when( # Identify if a point is the 6th in an increasing or decreasing trend
-=======
-      ,sixPointGrowth = case_when( # Identify if a point is the 6th in an increasing or decreasing trend
->>>>>>> 35079fdf7624f998c66cce4f3208ea04887de0ce
         (.data$y > lag(.data$y,1) & f == lag(f,1))
         & (lag(.data$y,1) > lag(.data$y,2) & lag(f,1) == lag(f,2))
         & (lag(.data$y,2) > lag(.data$y,3) & lag(f,2) == lag(f,3))
@@ -60,7 +56,6 @@ calculatePointHighlighting <- function(df, improvementDirection){
       )
     ) %>%
     mutate(
-<<<<<<< HEAD
       partOfSevenPointTrend = case_when( # Identify if a point belongs to a 7 point increasing or decreasing trend
         sevenPointTrend == 1
         | lead(sevenPointTrend,1) == 1 & f == lead(f,1)
@@ -78,25 +73,6 @@ calculatePointHighlighting <- function(df, improvementDirection){
         | lead(sevenPointTrend,5) == -1 & f == lead(f,5)
         | lead(sevenPointTrend,6) == -1 & f == lead(f,6)
         ~ -1 # Part of a 7 point descending trend
-=======
-      partOfSixPointGrowth = case_when( # Identify if a point belongs to a 6 point increasing or decreasing trend
-        sixPointGrowth == 1
-        | lead(sixPointGrowth,1) == 1 & f == lead(f,1)
-        | lead(sixPointGrowth,2) == 1 & f == lead(f,2)
-        | lead(sixPointGrowth,3) == 1 & f == lead(f,3)
-        | lead(sixPointGrowth,4) == 1 & f == lead(f,4)
-        | lead(sixPointGrowth,5) == 1 & f == lead(f,5)
-        | lead(sixPointGrowth,6) == 1 & f == lead(f,6)
-        ~ 1 # Part of a six point ascending trend
-        ,sixPointGrowth == -1
-        | lead(sixPointGrowth,1) == -1 & f == lead(f,1)
-        | lead(sixPointGrowth,2) == -1 & f == lead(f,2)
-        | lead(sixPointGrowth,3) == -1 & f == lead(f,3)
-        | lead(sixPointGrowth,4) == -1 & f == lead(f,4)
-        | lead(sixPointGrowth,5) == -1 & f == lead(f,5)
-        | lead(sixPointGrowth,6) == -1 & f == lead(f,6)
-        ~ -1 # Part of a six point descending trend
->>>>>>> 35079fdf7624f998c66cce4f3208ea04887de0ce
         ,TRUE ~ 0
       )
       ,twoInThree = case_when( # Identify if two out of three points in a set are between the process limits and near process limits
@@ -132,7 +108,6 @@ calculatePointHighlighting <- function(df, improvementDirection){
     mutate(
       specialCauseConcern = case_when( # Identify a special cause variation against the improvement direction
         outsideLimits == 1 & relativeToMean == (improvementDirection * -1) ~ .data$y
-<<<<<<< HEAD
         ,partOfSevenPointOneSideOfMean == 1 & relativeToMean == (improvementDirection * -1) ~ .data$y
         ,partOfTwoInThree == 1 & relativeToMean == (improvementDirection * -1) ~ .data$y
         ,partOfSevenPointTrend == 1 & improvementDirection == -1 ~ .data$y
@@ -144,19 +119,6 @@ calculatePointHighlighting <- function(df, improvementDirection){
         ,partOfTwoInThree == 1 & relativeToMean == improvementDirection ~ .data$y
         ,partOfSevenPointTrend == 1 & improvementDirection == 1 ~ .data$y
         ,partOfSevenPointTrend == -1 & improvementDirection == -1 ~ .data$y
-=======
-        ,partOfSevenPointTrend == 1 & relativeToMean == (improvementDirection * -1) ~ .data$y
-        ,partOfTwoInThree == 1 & relativeToMean == (improvementDirection * -1) ~ .data$y
-        ,partOfSixPointGrowth == 1 & improvementDirection == -1 ~ .data$y
-        ,partOfSixPointGrowth == -1 & improvementDirection == 1 ~ .data$y
-      )
-      ,specialCauseImprovement = case_when( # Identify a special cause variation towards the improvement direction
-        outsideLimits == 1 & relativeToMean == improvementDirection ~ .data$y
-        ,partOfSevenPointTrend == 1 & relativeToMean == improvementDirection ~ .data$y
-        ,partOfTwoInThree == 1 & relativeToMean == improvementDirection ~ .data$y
-        ,partOfSixPointGrowth == 1 & improvementDirection == 1 ~ .data$y
-        ,partOfSixPointGrowth == -1 & improvementDirection == -1 ~ .data$y
->>>>>>> 35079fdf7624f998c66cce4f3208ea04887de0ce
       )
     )
 
