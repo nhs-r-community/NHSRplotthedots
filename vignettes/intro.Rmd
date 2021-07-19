@@ -9,6 +9,7 @@ vignette: >
 
 ```{r, include = FALSE}
 knitr::opts_chunk$set(
+  fig.width=7, fig.height=5,
   collapse = TRUE,
   comment = "#>"
 )
@@ -22,16 +23,78 @@ ___This vignette is a work in progress, feel free to contribute on NHS-R GitHub_
 
 Welcome to the NHS-R community's collaborative package for building specific types of statistical process control charts.  We are aiming to support the NHS Improvement 'Making Data Count' programme, https://www.england.nhs.uk/a-focus-on-staff-health-and-wellbeing/publications-and-resources/making-data-count/, which aims to encourage boards, managers and analyst teams to present data in ways that present changes over time.
 
-This tutorial is a concise take on applying the function to some Accident and Emergency breach data for a hospital.
+This tutorial is a concise take on applying the function to some Accident and Emergency breach data for a hospital.  We'll take this from the `NHSRdatasets` package, another of out pckages providing example data for training in an NHS/healthcare context.
 
 
 ```{r dataset}
+library(NHSRplotthedots)
 library(NHSRdatasets)
+library(tidyverse)
+library(scales)
 
 data("ae_attendances")
 
 
-ae_attedances %>% 
-  filter(trust_code)
+ae_attendances %>% 
+  filter(org_code == 'RRK' & type ==1) %>% 
+  ggplot(aes(x=period, y= breaches))+
+  geom_point()+
+  geom_line()+
+  scale_y_continuous("4-hour target breaches", labels=comma)+
+  scale_x_date("Date")+
+  labs(title="Example plot of A&E breaches for organsiations 'RRK'")+
+  theme_minimal()
 
 ```
+
+This minimal plot shows the changes over time, and we will look at it in two ways.  The first, we'll look at 2016/17 & 2017/18, which is apparently stable and, during 2018, the trust merged with another large 3-hospital provider trust, so the number shoot up dramatically.  We can use a change point in our plots to consider this.
+
+
+## Stable period
+```{r stableperiod}
+stable_set <- 
+  ae_attendances %>% 
+  filter(org_code == 'RRK' & type ==1 & period < as.Date('2018-04-01'))
+
+spc(stable_set, valueField = breaches, dateField = period)
+
+```
+From the chart about, we can see the centre line (mean) and the control limits calculated according the the XmR chart rules.  Our points that are between the control limits are within control and showing 'common-cause' or 'natural' variation.  We can see 8 sequential points coloured in yellow.  This is triggered by a rule that looks for (7?) or more points on one side of the mean.  This could be viewed as a period where fewer breaches than average were detected, which may hold some learning value for the organisation.
+
+
+## Change point
+
+From the plot above, we can see that the change is noticed at 01/07/2019.  To rebase (change the modelling period for control limits), we need to set a binary flag here in our data (achieved with the 'mutate' statement below).  We've now got and extra column of 0 with a 1 at 1/07/2019.  This is then passed to the `options`.  You can pass a list with the named elements to `options`, but it's probably best to use the helper function `spcOptions`.  You can view the help file, and see what the options are using:  `?spsOptions`.
+
+```{r changepoint}
+change_set <- 
+  ae_attendances %>% 
+  filter(org_code == 'RRK' & type ==1) %>% 
+  mutate(rebased = ifelse(period == as.Date("2018-07-01"), 1 , 0))
+
+
+spc(change_set, valueField = breaches, dateField = period, options=spcOptions(rebase = "rebased"))
+```
+
+## Faceting
+
+In `R` ggplot system, `facet` refers to splitting, or plotting by variables, splitting them out into separate plots of regions.  Imagine you want to do and SPC for all trusts in a dataset, or all specialties at a trust.  Facet will help you do this.
+
+Here we will pick 6 trusts at random and plot their breaches, faceting across them.
+We'll also combine this with a couple more `options`: letting the x axis scale for each plot (otherwise some would look crushed against a larger trusts, and changing the x-axis breaks to 3-months, as 1 month looked too busy.)
+
+```{r facetvignette}
+facet_set <- 
+  ae_attendances %>% 
+  filter(org_code %in% c('RRK', 'RJC', 'RJ7', 'R1K', 'R1H', 'RQM') & type ==1& period < as.Date('2018-04-01'))
+
+
+spc(facet_set, valueField = breaches, dateField = period, facetField = org_code
+    , options=spcOptions(fixedYAxisMultiple = FALSE, xAxisBreaks = "3 months"))
+
+```
+
+
+## Come and join us!
+
+This is a collaborative project that is still early in it's life.  All contributors are volunteers, and more volunteers would be very welcome (there's even stuff that doesn't require R coding to help with!).  Find out more at: https://github.com/nhs-r-community/NHSRplotthedots
