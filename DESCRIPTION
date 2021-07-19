@@ -21,3 +21,7 @@ Imports:
     scales,
     dplyr,
     rlang
+Suggests: 
+    rmarkdown,
+    knitr
+VignetteBuilder: knitr

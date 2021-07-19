@@ -31,7 +31,7 @@ spc <- function(
   ,valueField
   ,dateField
   ,facetField = NULL
-  ,options = NULL ## options: target, trjaectory, rebase, data as percentages, title, x title, y title, x axis break frequency, pointSize, returnChart, display legend
+  ,options = NULL ## options: target, trajectory, rebase, data as percentages, title, x title, y title, x axis break frequency, pointSize, returnChart, display legend
 ) {
 
   ## Data/field preparation ----
@@ -48,7 +48,7 @@ spc <- function(
   targetField <- options$target[[1]]
 
   # Check validity of inputs
-  if(!(is.null(options)) && !(is.list(options))){ # If spcOptions supplied, check that options objecti s a list
+  if(!(is.null(options)) && !(is.list(options))){ # If spcOptions supplied, check that options object is a list
     stop("Options argument should be a list.")
   }
   if(!(is.data.frame(data.frame))){ # Check that data.frame argument is a data frame

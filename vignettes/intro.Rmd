@@ -1,0 +1,37 @@
+---
+title: "Introduction to the `NHSRplotthedots` package"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Introduction to the `NHSRplotthedots` package}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+```{r setup}
+library(NHSRplotthedots)
+```
+
+___This vignette is a work in progress, feel free to contribute on NHS-R GitHub___
+
+Welcome to the NHS-R community's collaborative package for building specific types of statistical process control charts.  We are aiming to support the NHS Improvement 'Making Data Count' programme, https://www.england.nhs.uk/a-focus-on-staff-health-and-wellbeing/publications-and-resources/making-data-count/, which aims to encourage boards, managers and analyst teams to present data in ways that present changes over time.
+
+This tutorial is a concise take on applying the function to some Accident and Emergency breach data for a hospital.
+
+
+```{r dataset}
+library(NHSRdatasets)
+
+data("ae_attendances")
+
+
+ae_attedances %>% 
+  filter(trust_code)
+
+```
