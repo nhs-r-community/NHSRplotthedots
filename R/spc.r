@@ -101,14 +101,14 @@ spc <- function(
   if(!(is.null(options$xAxisLabel))){
     xlabel <- options$xAxisLabel
   } else {
-    xlabel <- "Date"
+    xlabel <- capitalise(dateField)
   }
 
   #set y axis label
   if(!(is.null(options$yAxisLabel))){
     ylabel <- options$yAxisLabel
   } else {
-    ylabel <- "Value"
+    ylabel <- capitalise(valueField)
   }
 
   #set x axis fixed scaling for facet plots
