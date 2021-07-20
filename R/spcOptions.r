@@ -10,6 +10,7 @@
 #' This field should contain integer values 0 and 1, and any date value where the rebase field is 1 will
 #' trigger a recalculation of the control limits.
 #' Field name can be specified using non-standard evaluation (i.e. no quotation marks).
+#' @param fixAfterNPoints Specify a number points after which to fix SPC calculations.
 #' @param improvementDirection Specify whether an increase or decrease in measured variable signifies
 #' process improvement. Accepted values are 1 or 'increase' for increase as improvement or -1 or 'decrease' for decrease as improvement.
 #' @param outputChart Specify whether the function should output a ggplot object or a data table of SPC values.
@@ -39,6 +40,7 @@
 
 spcOptions <- function(
   rebase = NULL
+  ,fixAfterNPoints = NULL
   ,improvementDirection = NULL
   ,outputChart = NULL
   ,pointSize = NULL
@@ -77,6 +79,14 @@ spcOptions <- function(
       stop("outputChart should be a logical vector of length 1.")
     } else if(!(is.logical(outputChart))){
       stop("outputChart should be a logical vector of length 1.")
+    }
+  }
+
+  if(!(is.null(fixAfterNPoints))){
+    if(length(fixAfterNPoints) > 1){
+      stop("fixAfterNPoints should be a numeric vector of length 1.")
+    } else if(!(is.numeric(fixAfterNPoints))){
+      stop("fixAfterNPoints should be a numeric vector of length 1.")
     }
   }
 

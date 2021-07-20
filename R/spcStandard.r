@@ -153,7 +153,9 @@ spcStandard <- function(data.frame, valueField, dateField, facetField = NULL, op
       ,rebaseGroup = .data$rn)
 
   # Identify the mean and moving range average within each facet and rebase group
+  if(is.null(fixAfterNPoints)){fixAfternpoints <- max(data.frame$n,na.rm=TRUE)} ## If no point fix has been specified, find the largest number of points per facet/rebase
   df_avg <- data.frame %>%
+    filter(n <= fixAfterNPoints) %>% ## Added to allow any rebase period to be fixed after N points
     group_by(f,.data$rebaseGroup) %>%
     summarise(mean = mean(.data$y,na.rm = TRUE),movingrangeaverage = mean(.data$movingrange,na.rm = TRUE))
 
