@@ -34,6 +34,9 @@ spc <- function(
   ,options = NULL ## options: target, trajectory, rebase, data as percentages, title, x title, y title, x axis break frequency, pointSize, returnChart, display legend
 ) {
 
+  # initialise variables
+  f <- NULL
+
   #validate all inputs.  Validation problems will generate an error and stop code execution.
   validateParameters(data.frame, valueField, dateField, facetField, options)
 
