@@ -307,24 +307,23 @@ test_that("x axis breaks can be specified", {
   expect_identical(secondXLabel, "29/03/2021") #second label is one week later
 })
 
-#TODO test written, but currently failing.  Investigate code and consider opening issue.
-# test_that("y axis breaks can be specified", {
-#   #arrange
-#   data <- c(1,2,3,4,5,6,7,8,9,10,11,12)
-#   date <- seq(as.Date("2021-03-22"), by = 1, length.out = 12)
-#   df <- tibble(data, date)
-#
-#   options <- list(
-#     yAxisBreaks = 2
-#   )
-#
-#   #act
-#   result <- suppressMessages(spc(df, "data", "date", options = options)suppressMessages(
-#
-#   #assert
-#   expect_s3_class(result,"ggplot")
-#
-#   firstYLabel <- ggplot_build(result)$layout$panel_scales_y[[1]]$break_info()$labels[[1]] %>% as.numeric()
-#   secondYLabel <- ggplot_build(result)$layout$panel_scales_y[[1]]$break_info()$labels[[2]] %>% as.numeric()
-#   expect_equal(secondYLabel - firstYLabel, 2) #the difference between labels should be 2
-# })
+test_that("y axis breaks can be specified", {
+  #arrange
+  data <- c(1,2,3,4,5,6,7,8,9,10,11,12)
+  date <- seq(as.Date("2021-03-22"), by = 1, length.out = 12)
+  df <- tibble(data, date)
+
+  options <- list(
+    yAxisBreaks = 2
+  )
+
+  #act
+  result <- suppressMessages(spc(df, "data", "date", options = options))
+
+  #assert
+  expect_s3_class(result,"ggplot")
+
+  firstYLabel <- ggplot_build(result)$layout$panel_scales_y[[1]]$break_info()$labels[[1]] %>% as.numeric()
+  secondYLabel <- ggplot_build(result)$layout$panel_scales_y[[1]]$break_info()$labels[[2]] %>% as.numeric()
+  expect_equal(secondYLabel - firstYLabel, 2) #the difference between labels should be 2
+})
