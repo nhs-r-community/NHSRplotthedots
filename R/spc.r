@@ -46,6 +46,7 @@ spc <- function(
 
   # Declare improvement direction as integer
   if(!(is.null(options$improvementDirection))){
+
     if(options$improvementDirection == "increase" || options$improvementDirection == 1){
       improvementDirection <- 1
     } else if(options$improvementDirection == "decrease" || options$improvementDirection == -1){
