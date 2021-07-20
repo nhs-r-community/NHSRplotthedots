@@ -156,6 +156,7 @@ spcOptions <- function(
 
   list(
     rebase = rebase
+    ,fixAfterNPoints = fixAfterNPoints
     ,improvementDirection = improvementDirection
     ,outputChart = outputChart
     ,pointSize = pointSize
