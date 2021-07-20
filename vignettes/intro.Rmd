@@ -7,7 +7,7 @@ vignette: >
   %\VignetteEncoding{UTF-8}
 ---
 
-```{r, include = FALSE}
+```{r message=FALSE, warning=FALSE, include=FALSE}
 knitr::opts_chunk$set(
   fig.width=7, fig.height=5,
   collapse = TRUE,
@@ -15,18 +15,16 @@ knitr::opts_chunk$set(
 )
 ```
 
-```{r setup}
-library(NHSRplotthedots)
-```
 
 ___This vignette is a work in progress, feel free to contribute on NHS-R GitHub___
 
-Welcome to the NHS-R community's collaborative package for building specific types of statistical process control charts.  We are aiming to support the NHS Improvement 'Making Data Count' programme, https://www.england.nhs.uk/a-focus-on-staff-health-and-wellbeing/publications-and-resources/making-data-count/, which aims to encourage boards, managers and analyst teams to present data in ways that present changes over time.
 
-This tutorial is a concise take on applying the function to some Accident and Emergency breach data for a hospital.  We'll take this from the `NHSRdatasets` package, another of out pckages providing example data for training in an NHS/healthcare context.
+Welcome to the NHS-R community's collaborative package for building specific types of statistical process control charts.  We are aiming to support the NHS Improvement 'Making Data Count' programme, https://www.england.nhs.uk/a-focus-on-staff-health-and-wellbeing/publications-and-resources/making-data-count/, which encourages boards, managers, and analyst teams to present data in ways that show changes over time and drive better understanding than 'RAG' (red, amber, green) rating alone.
+
+This tutorial is a concise take on applying the function to some Accident and Emergency breach data for a hospital.  We'll take this from the `NHSRdatasets` package, another of our packages providing example data for training in an NHS/healthcare context.
 
 
-```{r dataset}
+```{r dataset, message=FALSE, warning=FALSE}
 library(NHSRplotthedots)
 library(NHSRdatasets)
 library(tidyverse)
@@ -56,10 +54,10 @@ stable_set <-
   ae_attendances %>% 
   filter(org_code == 'RRK' & type ==1 & period < as.Date('2018-04-01'))
 
-spc(stable_set, valueField = breaches, dateField = period)
+spc(stable_set, valueField = "breaches", dateField = "period")
 
 ```
-From the chart about, we can see the centre line (mean) and the control limits calculated according the the XmR chart rules.  Our points that are between the control limits are within control and showing 'common-cause' or 'natural' variation.  We can see 8 sequential points coloured in yellow.  This is triggered by a rule that looks for (7?) or more points on one side of the mean.  This could be viewed as a period where fewer breaches than average were detected, which may hold some learning value for the organisation.
+From the chart about, we can see the centre line (mean) and the control limits calculated according the the XmR chart rules.  Our points that are between the control limits are within control and showing 'common-cause' or 'natural' variation.  We can see 8 sequential points coloured in yellow.  This is triggered by a rule that looks for >=7 points on one side of the mean.  This could be viewed as a period where fewer breaches than average were detected, which may hold some learning value for the organisation.
 
 
 ## Change point
@@ -73,7 +71,7 @@ change_set <-
   mutate(rebased = ifelse(period == as.Date("2018-07-01"), 1 , 0))
 
 
-spc(change_set, valueField = breaches, dateField = period, options=spcOptions(rebase = "rebased"))
+spc(change_set, valueField = "breaches", dateField = "period", options=spcOptions(rebase = "rebased"))
 ```
 
 ## Faceting
@@ -89,7 +87,7 @@ facet_set <-
   filter(org_code %in% c('RRK', 'RJC', 'RJ7', 'R1K', 'R1H', 'RQM') & type ==1& period < as.Date('2018-04-01'))
 
 
-spc(facet_set, valueField = breaches, dateField = period, facetField = org_code
+spc(facet_set, valueField = "breaches", dateField = "period", facetField = "org_code"
     , options=spcOptions(fixedYAxisMultiple = FALSE, xAxisBreaks = "3 months"))
 
 ```
