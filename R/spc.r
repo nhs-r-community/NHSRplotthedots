@@ -43,19 +43,8 @@ spc <- function(
 
   df <- spcStandard(data.frame, valueField, dateField, facetField, options)
 
-
-  # Setting internal variables and default values
-
-  #set y axis breaks
-  if(!(is.null(options$yAxisBreaks))){
-    yaxis <- c(df$y,df$upl,df$lpl)
-    start <- floor(min(yaxis,na.rm = TRUE)/options$yAxisBreaks) * options$yAxisBreaks
-    end <- max(yaxis,na.rm = TRUE)
-    yaxislabels <- seq(from = start, to = end, by = options$yAxisBreaks)
-  }
-
-  #set improvement direction
-  if(!(is.null(options$improvementDirection))){ 
+  # Declare improvement direction as integer
+  if(!(is.null(options$improvementDirection))){
     if(options$improvementDirection == "increase" || options$improvementDirection == 1){
       improvementDirection <- 1
     } else if(options$improvementDirection == "decrease" || options$improvementDirection == -1){
@@ -193,7 +182,6 @@ spc <- function(
 
     #or return the calculated dataframe
     return(df)
-
   }
 }
 
