@@ -77,7 +77,7 @@ change_set <-
   mutate(rebased = ifelse(period == as.Date("2018-07-01"), 1 , 0))
 
 
-spc(change_set, valueField = "breaches", dateField = "period", options=spcOptions(rebase = "rebased"))
+spc(change_set, valueField = "breaches", dateField = "period", options = spcOptions(improvementDirection = "decrease", rebase = "rebased"))
 ```
 
 You can see that our limit calculation has now shifted at the rebase point.
