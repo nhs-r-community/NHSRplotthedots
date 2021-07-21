@@ -19,12 +19,41 @@
 #' @param options Optional: A list object containing additional control and formatting properties. Preferably created using the spcOptions function.
 #'
 #' @export spc
-
-
+#'
+#' @return A ggplot2 object of the spc charts.  This will automatically print the plot, but can also be saved as an object if you want to manipulate it further.
+#'
 #' @import dplyr
 #' @import ggplot2
 #' @import scales
 #' @importFrom rlang .data
+#' @examples
+#' library(NHSRdatasets)
+#' data("ae_attendances")
+#'
+#' # Pick a trust at random to look at their data for two years
+#' trust1 <- subset(ae_attendances, org_code == "RJZ" & type==1)
+#'
+#' # Basic chart with improvement direction decreasing
+#' spc(trust1, valueField = "breaches", dateField = "period"
+#'     , options = spcOptions(improvementDirection = "decrease"))
+#'
+#'
+#' # Pick a few trust, and plot individually using facet
+#' # Also set the x-axis scale to vary for each and date groups to 3 months
+#' orgs <- ae_attendances$org_code %in% c("RAS", "RJZ", "RR1", "RJC", "RQ1")
+#' trusts4 <- subset(ae_attendances, orgs  & type==1)
+#'
+#' spc(trusts4, valueField = "breaches", dateField = "period", facetField = "org_code"
+#'     , options = spcOptions(improvementDirection = "decrease"
+#'                            ,  fixedYAxisMultiple = FALSE
+#'                            , xAxisBreaks = "3 months"))
+#'
+#'
+#' # Save the first chart as an object this time then alter the ggplot theme
+#' my_spc <-spc(trust1, valueField = "breaches", dateField = "period"
+#'     , options = spcOptions(improvementDirection = "decrease"))
+#' my_spc + ggplot2::theme_classic()
+
 
 spc <- function(
   data.frame
