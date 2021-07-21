@@ -96,7 +96,7 @@ facet_set <-
 
 
 spc(facet_set, valueField = "breaches", dateField = "period", facetField = "org_code"
-    , options=spcOptions(fixedYAxisMultiple = FALSE, xAxisBreaks = "3 months"))
+    , options = spcOptions(improvementDirection = "decrease", fixedYAxisMultiple = FALSE, xAxisBreaks = "3 months"))
 
 ```
 
