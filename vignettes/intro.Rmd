@@ -63,7 +63,7 @@ spc(stable_set, valueField = "breaches", dateField = "period", options = spcOpti
 
 ```
 
-From the chart above, we can see the centre line (mean) and the control limits calculated according the the XmR chart rules.  Our points that are between the control limits are within control and showing 'common-cause' or 'natural' variation.  We can see 8 sequential points coloured in yellow.  This is triggered by a rule that looks for >=7 points on one side of the mean.  This could be viewed as a period where fewer breaches than average were detected, which may hold some learning value for the organisation.
+From the chart above, we can see the centre line (mean) and the control limits calculated according the the XmR chart rules.  Our points that are between the control limits are within control and showing 'common-cause' or 'natural' variation.  We can see 8 sequential points coloured in blue.  This is triggered by a rule that looks for >=7 points on one side of the mean.  This could be viewed as a period where fewer breaches than average were detected, which may hold some learning value for the organisation.
 
 
 ## Change point
