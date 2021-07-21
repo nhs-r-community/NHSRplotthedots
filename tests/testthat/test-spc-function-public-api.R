@@ -13,7 +13,7 @@ test_that("spc function can create a ggplot", {
   expect_s3_class(result,"ggplot")
   expect_identical(result$labels$title, "SPC Chart")
   expect_identical(result$labels$x, "Date")
-  expect_identical(result$labels$y, "Value")
+  expect_identical(result$labels$y, "Data")
   expect_identical(ggplot_build(result)$layout$panel_scales_x[[1]]$labels[[1]], "22/03/2021") #default date format
 })
 
