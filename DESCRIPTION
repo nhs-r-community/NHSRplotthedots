@@ -23,6 +23,8 @@ Imports:
     dplyr,
     rlang
 Suggests: 
+    covr,
+    lintr,
     testthat (>= 3.0.0),
     rmarkdown,
     knitr,
