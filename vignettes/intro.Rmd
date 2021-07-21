@@ -48,7 +48,7 @@ ae_attendances %>%
 
 ```
 
-This minimal plot shows the changes over time, and we will look at it in two ways.  The first, we'll look at 2016/17 & 2017/18, which is apparently stable and, during 2018, the trust merged with another large 3-hospital provider trust, so the number shoot up dramatically.  We can use a change point in our plots to consider this.
+This minimal plot shows the changes over time, and we will look at it in two ways.  The first, we'll look at 2016/17 & 2017/18, which is apparently stable and, during 2018, the trust merged with another large 3-hospital provider trust, so the number shot up dramatically.  We can use a change point in our plots to consider this.
 
 Let's now use the `spc` function to draw our plot.  We need to provide it with a `data.frame` that contains our data, and provide a `valueField` for the y-axis, and a `dateField` for the x-axis.  Remember to surround the names of the columns in the `data.frame` with quotes (making it a string, see below).
 
