@@ -7,7 +7,7 @@
 #' logic produced by NHSI. The function can return either a plot or data frame.
 #'
 #'
-#' @param data.frame A data frame containing a value field, a date field,
+#' @param dataset A data.frame() containing a value field, a date field,
 #' and a category field (if for faceting). There should be no gaps in the time series
 #' for each category.
 #' @param valueField Specify the field name which contains the value data, to be plotted on y axis.
@@ -21,7 +21,7 @@
 #' @import dplyr
 #' @importFrom rlang .data
 
-spcStandard <- function(data.frame, valueField, dateField, facetField = NULL, options = NULL){
+spcStandard <- function(dataset, valueField, dateField, facetField = NULL, options = NULL){
 
   # Identify a rebase, trajectory and target fields, if provided in SPC options object
   rebaseField <- options$rebase[[1]]
@@ -41,43 +41,43 @@ spcStandard <- function(data.frame, valueField, dateField, facetField = NULL, op
 
   #set trajectory field
   if(!(is.null(trajectoryField))){
-    data.frame$trajectory <- data.frame[[trajectoryField]]
+    dataset$trajectory <- dataset[[trajectoryField]]
   } else {
-    data.frame$trajectory <- rep(as.numeric(NA),nrow(data.frame))
+    dataset$trajectory <- rep(as.numeric(NA),nrow(dataset))
   }
 
   # Set target field or create pseudo
   if(!(is.null(targetField))){
-    data.frame$target <- data.frame[[targetField]]
+    dataset$target <- dataset[[targetField]]
   } else {
-    data.frame$target <- rep(as.numeric(NA),nrow(data.frame))
+    dataset$target <- rep(as.numeric(NA),nrow(dataset))
   }
 
   # Set facet/grouping or create pseudo
   if(facetField == "pseudo_facet_col_name"){ # If no facet field specified, bind a pseudo-facet field for grouping/joining purposes
-    f <- data.frame("pseudo_facet_col_name" = rep("no facet",nrow(data.frame)))
-    data.frame <- cbind(data.frame,f)
+    f <- dataset("pseudo_facet_col_name" = rep("no facet",nrow(dataset)))
+    dataset <- cbind(dataset,f)
   }
 
   # Set rebase field or create pseudo
   if(!(is.null(rebaseField))){
-    data.frame$rebase <- data.frame[[rebaseField]]
+    dataset$rebase <- dataset[[rebaseField]]
   } else {
-    data.frame$rebase <- rep(0,nrow(data.frame)) # If no rebase field supplied, create an empty rebase field (all NAs)
+    dataset$rebase <- rep(0,nrow(dataset)) # If no rebase field supplied, create an empty rebase field (all NAs)
   }
 
   # Check validity of rebase field supplied - should be 1s and 0s only -
   # QUESTION: should this go into the validateParameters function? Or not as it's validating data?
-  dferrors <- data.frame$rebase[data.frame$rebase != 1 & data.frame$rebase != 0]
+  dferrors <- dataset$rebase[dataset$rebase != 1 & dataset$rebase != 0]
   if(length(dferrors) > 0) stop("spc: options$rebase argument must define a field containing only 0 or 1 values.")
 
   ## Constants ----
-  l <- nrow(data.frame)
+  l <- nrow(dataset)
   limit <- 2.66
   limitclose <- 2*(limit/3)
 
   # Restructure starting data frame
-  data.frame <- data.frame %>%
+  dataset <- dataset1 %>%
     select(
       y = all_of(valueField)
       ,x = all_of(dateField)
@@ -96,17 +96,17 @@ spcStandard <- function(data.frame, valueField, dateField, facetField = NULL, op
     )
 
   # Identify facets/indices which have been flagged for rebasing
-  rebaseTable <- data.frame %>%
+  rebaseTable <- dataset1 %>%
     filter(.data$rebase == 1) %>%
     select(.data$f, .data$x)
 
   # Identify the earliest x axis point for each facet - start of rebase group 1
-  rebaseTable2 <- data.frame %>%
+  rebaseTable2 <- dataset %>%
     group_by(.data$f) %>%
     summarise(x = min(.data$x))
 
   # Identify the latest x axis point for each facet - end of rebase group n
-  rebaseTable3 <- data.frame %>%
+  rebaseTable3 <- dataset %>%
     group_by(.data$f) %>%
     summarise(x = max(.data$x))
 
@@ -128,18 +128,18 @@ spcStandard <- function(data.frame, valueField, dateField, facetField = NULL, op
 
   # Join data frame to rebase groupings, and filter to x axis between grouping start (inclusive) and end (exclusive)
   # - note that this will omit the last row in each facet because it belongs to the previous rebase group
-  df2 <- data.frame %>%
+  df2 <- dataset %>%
     left_join(rebaseTable4, by = c("f" = "f")) %>%
     filter(.data$x >= .data$start, .data$x < .data$end) %>%
     mutate(movingrange = case_when(.data$x != .data$start ~ as.numeric(movingrange),TRUE ~ as.numeric(NA))) # set the first moving range value in each rebase group to NA, as this is not included in the new mean calculations
 
   # Identify the last row in each facet, to add to the previous rebase group
-  df3 <- data.frame %>%
+  df3 <- dataset %>%
     left_join(rebaseTable4, by = c("f" = "f")) %>%
     filter(.data$rn2 == 1, .data$x == .data$end)
 
   # Bind together last two data frames, so that all data points are present with a link to the appropriate rebase group
-  data.frame <- rbind(df2, df3) %>%
+  dataset <- rbind(df2, df3) %>%
     arrange(f,.data$x) %>%
     select(
       .data$y
@@ -153,12 +153,12 @@ spcStandard <- function(data.frame, valueField, dateField, facetField = NULL, op
       ,rebaseGroup = .data$rn)
 
   # Identify the mean and moving range average within each facet and rebase group
-  df_avg <- data.frame %>%
+  df_avg <- dataset %>%
     group_by(f,.data$rebaseGroup) %>%
     summarise(mean = mean(.data$y,na.rm = TRUE),movingrangeaverage = mean(.data$movingrange,na.rm = TRUE))
 
   # Join data frame to moving range average and mean data, then perform standard logical tests
-  data.frame <- data.frame %>%
+  dataset <- dataset %>%
     left_join(df_avg, by = c("f" = "f","rebaseGroup" = "rebaseGroup")) %>%
     mutate(
       lpl = mean - (limit * .data$movingrangeaverage) # identify lower process limits
@@ -185,5 +185,5 @@ spcStandard <- function(data.frame, valueField, dateField, facetField = NULL, op
       )
     )
 
-  return(data.frame)
+  return(dataset)
 }

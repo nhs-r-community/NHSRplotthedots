@@ -7,7 +7,7 @@
 #' logic produced by NHSI. The function can return either a plot or data frame.
 #'
 #'
-#' @param data.frame A data frame containing a value field, a date field,
+#' @param dataset A data.frame containing a value field, a date field,
 #' and a category field (if for faceting). There should be no gaps in the time series
 #' for each category.
 #' @param valueField Specify the field name which contains the value data, to be plotted on y axis.
@@ -56,7 +56,7 @@
 
 
 spc <- function(
-  data.frame
+  dataset
   ,valueField
   ,dateField
   ,facetField = NULL
@@ -67,13 +67,13 @@ spc <- function(
   f <- NULL
 
   #validate all inputs.  Validation problems will generate an error and stop code execution.
-  validateParameters(data.frame, valueField, dateField, facetField, options)
+  validateParameters(dataset, valueField, dateField, facetField, options)
 
   if(is.null(facetField)){ # If no facet field specified, bind a pseudo-facet field for grouping/joining purposes
     facetField <- "pseudo_facet_col_name"
   }
 
-  df <- spcStandard(data.frame, valueField, dateField, facetField, options)
+  df <- spcStandard(dataset, valueField, dateField, facetField, options)
 
   # Declare improvement direction as integer
   if(!(is.null(options$improvementDirection))){
@@ -142,7 +142,7 @@ spc <- function(
   } else {
     ylabel <- "Value"
   }
-  
+
   #set y axis breaks
   if(!(is.null(options$yAxisBreaks))){
     yAxisBreaks <- options$yAxisBreaks
