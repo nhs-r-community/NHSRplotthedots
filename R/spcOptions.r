@@ -3,7 +3,7 @@
 #' `spcOptions` returns a list object containing properties which adjust the output of the 'spc' function.
 #'
 #' This function is designed to allow greater control over SPC charts
-#' created using this package.
+#' created using this package.  spcOptions is a list with named slots for known parameters within the spc function.  It should be supplied to the options argument within the spc function, with the options listed within spcOptions.  See examples below.
 #'
 #'
 #' @param rebase Specify a field name which contains a control limit rebasing flag.
@@ -36,6 +36,22 @@
 #' either an integer for integer scales or a decimal value for percentage scales. This option is ignored if faceting is in use.
 #'
 #' @export spcOptions
+#'
+#' @examples
+#' library(NHSRdatasets)
+#' data("ae_attendances")
+#'
+#' # Pick a few trust, and plot individually using facet
+#' # Also set the xaxis scale to vary for each and date groups to 3 months, using spcOptions
+#'
+#' orgs <- ae_attendances$org_code %in% c("RAS", "RJZ", "RR1", "RJC", "RQ1")
+#' trusts4 <- subset(ae_attendances, orgs  & type==1)
+#'
+#' # spcOptions should be supplied the the options argument within the spc function.
+#' spc(trusts4, valueField = "breaches", dateField = "period", facetField = "org_code"
+#'     , options = spcOptions(improvementDirection = "decrease"
+#'                            ,  fixedYAxisMultiple = FALSE
+#'                            , xAxisBreaks = "3 months"))
 
 spcOptions <- function(
   rebase = NULL

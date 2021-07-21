@@ -6,3 +6,4 @@
 ^.lintr$
 ^\.github$
 ^codecov\.yml$
+^\.github$
