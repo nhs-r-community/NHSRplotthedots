@@ -47,6 +47,13 @@ validateParameters <- function(df, valueField, dateField, facetField, options){
     if(!(options$rebase %in% colnames(df))) stop("spc: options$rebase argument must be a column name from the data frame.")
   }
 
+  #if provided, options$fixAfterNPoints must be of numeric type, length 1, with a value greater than or equal to 12
+  if(!is.null(options$fixAfterNPoints)){
+    if(!is.numeric(options$fixAfterNPoints)) stop("spc: options$fixAfterNPoints argument must be of type 'numeric'.")
+    if(length(options$fixAfterNPoints) > 1) stop("spc: options$fixAfterNPoints argument must be a vector of length 1.")
+    if(options$fixAfterNPoints < 12) stop("spc: options$fixAfterNPoints argument must be greater than or equal to 12.")
+  }
+
   #if provided, options$improvementDirection should equal "increase", 1, "decrease", or -1
   if(!(is.null(options$improvementDirection))){
     if(
