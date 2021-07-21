@@ -43,7 +43,6 @@ spc <- function(
 
   df <- spcStandard(data.frame, valueField, dateField, facetField, options)
 
-
   # Declare improvement direction as integer
   if(!(is.null(options$improvementDirection))){
     if(options$improvementDirection == "increase" || options$improvementDirection == 1){
@@ -183,7 +182,6 @@ spc <- function(
 
     #or return the calculated dataframe
     return(df)
-
   }
 }
 
