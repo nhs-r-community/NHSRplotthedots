@@ -2,4 +2,8 @@
 ^\.Rproj\.user$
 ^LICENSE\.md$
 ^README\.Rmd$
+
+^.lintr$
+^\.github$
+^codecov\.yml$
 ^\.github$
