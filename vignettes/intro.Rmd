@@ -68,7 +68,7 @@ From the chart above, we can see the centre line (mean) and the control limits c
 
 ## Change point
 
-From the first plot above, we can see that the change is noticed at 01/07/2019.  To rebase (change the modelling period for control limits), we need to set a binary flag here in our data (achieved with the `mutate` statement below).  We've now got an extra column, all set to 0, except 01/07/2019, which is set to 1 to trigger the rebase here.  This is then passed to the `options` argument.  You can pass a list with the named elements to `options`, but it's probably best to use the helper function `spcOptions`.  You can view the help file, and see what the options are using:  `?spsOptions`.
+From the first plot above, we can see that the change is noticed at 01/07/2019.  We understand the reason for the change (the merging of several trusts), and believe this will be the new normal range for the process, so it would be valid to rebase at this point. To rebase (change the modelling period for control limits), we need to set a binary flag here in our data (achieved with the `mutate` statement below).  We've now got an extra column, all set to 0, except 01/07/2019, which is set to 1 to trigger the rebase here.  This is then passed to the `options` argument.  You can pass a list with the named elements to `options`, but it's probably best to use the helper function `spcOptions`.  You can view the help file, and see what the options are using:  `?spcOptions`.
 
 ```{r changepoint}
 change_set <- 
