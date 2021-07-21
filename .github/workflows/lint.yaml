@@ -1,11 +1,5 @@
 on:
-  push:
-    branches:
-      - **
-  pull_request:
-    branches:
-      - main
-      - master
+  push: [push, pull_request]
 
 name: lint
 
