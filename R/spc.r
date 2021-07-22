@@ -48,32 +48,25 @@
 #'
 #' # Basic chart with improvement direction decreasing
 #' spc(trust1,
-#'   valueField = "breaches", dateField = "period",
-#'   options = spcOptions(improvementDirection = "decrease")
-#' )
-#'
+#'     valueField = "breaches", dateField = "period",
+#'     improvementDirection = "decrease")
 #'
 #' # Pick a few trust, and plot individually using facet
 #' # Also set the x-axis scale to vary for each and date groups to 3 months
 #' orgs <- ae_attendances$org_code %in% c("RAS", "RJZ", "RR1", "RJC", "RQ1")
 #' trusts4 <- subset(ae_attendances, orgs & type == 1)
 #'
-#' spc(trusts4,
-#'   valueField = "breaches", dateField = "period", facetField = "org_code",
-#'   options = spcOptions(
-#'     improvementDirection = "decrease",
-#'     fixedYAxisMultiple = FALSE,
-#'     xAxisBreaks = "3 months"
-#'   )
-#' )
-#'
+#' s <- spc(trusts4,
+#'          valueField = "breaches", dateField = "period", facetField = "org_code",
+#'          improvementDirection = "decrease")
+#' plot(s, fixedYAxisMultiple = FALSE, xAxisBreaks = "3 months")
 #'
 #' # Save the first chart as an object this time then alter the ggplot theme
 #' my_spc <- spc(trust1,
-#'   valueField = "breaches", dateField = "period",
-#'   options = spcOptions(improvementDirection = "decrease")
-#' )
-#' my_spc + ggplot2::theme_classic()
+#'               valueField = "breaches", dateField = "period",
+#'               improvementDirection = "decrease")
+#'
+#' plot(my_spc) + ggplot2::theme_classic()
 spc <- function(.data,
                 valueField,
                 dateField,
@@ -83,6 +76,10 @@ spc <- function(.data,
                 improvementDirection = "increase",
                 target = NULL,
                 trajectory = NULL) {
+  if (!inherits(.data, "data.frame")) {
+    stop("spc: .data must be a data.frame")
+  }
+
   # validate all inputs.  Validation problems will generate an error and stop code execution.
   options <- spcOptions(valueField, dateField, facetField, rebase, fixAfterNPoints, improvementDirection, target,
                         trajectory)
@@ -102,7 +99,8 @@ spc <- function(.data,
   df
 }
 
+#' @export
 print.ptd_spc_df <- function(x, ...) {
-  plot(x, ...)
+  p <- plot(x, ...)
+  print(p)
 }
-
