@@ -161,16 +161,16 @@ spcStandard <- function(.data, valueField, dateField, facetField = NULL, options
   .data <- rbind(df2, df3) %>%
     arrange(f, .data$x) %>%
     select(
-      .data$y
-      , .data$x
-      , f
-      , .data$rebase
-      , n
-      , .data$target
-      , .data$trajectory
-      , .data$movingrange
-      , rebaseGroup = .data$rn) %>%
-    group_by(f, rebaseGroup) %>%
+      .data$y,
+      .data$x,
+      .data$f,
+      .data$rebase,
+      .data$n,
+      .data$target,
+      .data$trajectory,
+      .data$movingrange,
+      rebaseGroup = .data$rn) %>%
+    group_by(.data$f, .data$rebaseGroup) %>%
     mutate(fixPointsRN = row_number())
 
   # Identify the mean and moving range average within each facet and rebase group
@@ -182,30 +182,32 @@ spcStandard <- function(.data, valueField, dateField, facetField = NULL, options
   }
 
   dfAvg <- .data %>%
-    filter(fixPointsRN <= fixAfterNPoints) %>% ## Added to allow any rebase period to be fixed after N points
+    ## Added to allow any rebase period to be fixed after N points
+    filter(.data$fixPointsRN <= fixAfterNPoints) %>%
     group_by(f, .data$rebaseGroup) %>%
-    summarise(mean = mean(.data$y, na.rm = TRUE), movingrangeaverage = mean(.data$movingrange, na.rm = TRUE))
+    summarise(mean = mean(.data$y, na.rm = TRUE),
+              movingrangeaverage = mean(.data$movingrange, na.rm = TRUE))
 
   # Join data frame to moving range average and mean data, then perform standard logical tests
   .data %>%
     left_join(dfAvg, by = c("f" = "f", "rebaseGroup" = "rebaseGroup")) %>%
     mutate(
       # identify lower/upper process limits
-      lpl = mean - (limit * .data$movingrangeaverage),
-      upl = mean + (limit * .data$movingrangeaverage),
+      lpl = .data$mean - (limit * .data$movingrangeaverage),
+      upl = .data$mean + (limit * .data$movingrangeaverage),
       # identify near lower/upper process limits
-      nlpl = mean - (limitclose * .data$movingrangeaverage),
-      nupl = mean + (limitclose * .data$movingrangeaverage),
+      nlpl = .data$mean - (limitclose * .data$movingrangeaverage),
+      nupl = .data$mean + (limitclose * .data$movingrangeaverage),
 
       # Identify any points which are outside the upper or lower process limits
-      outsideLimits = ifelse(.data$y > upl | .data$y < lpl, 1, 0),
+      outsideLimits = ifelse(.data$y > .data$upl | .data$y < .data$lpl, 1, 0),
       # Identify whether a point is above or below the mean
-      relativeToMean = sign(.data$y - mean),
+      relativeToMean = sign(.data$y - .data$mean),
 
       # Identify if a point is between the near process limits and process limits
       closeToLimits = case_when(
-        .data$y > nupl & .data$y <= upl ~ 1,
-        .data$y < nlpl & .data$y >= lpl ~ 1,
+        .data$y > .data$nupl & .data$y <= .data$upl ~ 1,
+        .data$y < .data$nlpl & .data$y >= .data$lpl ~ 1,
         TRUE ~ 0
       )
     )
