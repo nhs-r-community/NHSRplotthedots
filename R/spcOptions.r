@@ -90,31 +90,34 @@ validate.ptd_spc_options.data.frame <- function(options, .data) {
   invisible(TRUE)
 }
 
+#' @export
 print.ptd_spc_options <- function(x, ...) {
   f <- function(s, surround = "'") {
-    if (is.null(s)) {
+    a <- crayon::bold(s, ":", sep = "")
+    p <- paste(rep(" ", 21 - nchar(s)), collapse = "")
+
+    b <- if (is.null(x[[s]])) {
       crayon::blue("not set")
     } else {
-      crayon::red(paste0(surround, s, surround))
+      crayon::red(paste0(surround, x[[s]], surround))
     }
+    paste0(a, p, b)
   }
 
-  l <- min(
-    max(sapply(x, function(v) {
-      if (!is.character(v)) return(8)
-      length(strsplit(v, "")[[1]])
-    })) + 24,
-    120
-  )
+  l <- min(max(unlist(sapply(x, nchar))) + 24, 120)
+  f("valueField")
 
   lines <- c(
     crayon::bold("Plot the Dots SPC options:"),
     paste(rep("=", l), collapse = ""),
-    paste0(crayon::bold("rebase:"), "               ", f(x$rebase)),
-    paste0(crayon::bold("fixAfterNPoints:"), "      ", f(x$fixAfterNPoints, "")),
-    paste0(crayon::bold("improvementDirection:"), " ", f(x$improvementDirection)),
-    paste0(crayon::bold("target:"), "               ", f(x$target)),
-    paste0(crayon::bold("trajectory:"), "           ", f(x$trajectory)),
+    f("valueField"),
+    f("dateField"),
+    f("facetField"),
+    f("rebase"),
+    f("fixAfterNPoints", ""),
+    f("improvementDirection"),
+    f("target"),
+    f("trajectory"),
     paste(rep("-", l), collapse = "")
   )
 
