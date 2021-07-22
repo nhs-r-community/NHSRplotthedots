@@ -59,8 +59,7 @@ spcStandard <- function(.data, valueField, dateField, facetField = NULL, options
   # Set facet/grouping or create pseudo
   # If no facet field specified, bind a pseudo-facet field for grouping/joining purposes
   if (facetField == "pseudo_facet_col_name") {
-    f <- data.frame("pseudo_facet_col_name" = rep("no facet", nrow(.data)))
-    .data <- cbind(.data, f)
+    .data <- mutate(.data, pseudo_facet_col_name = "no facet")
   }
 
   # Set rebase field or create pseudo
@@ -90,9 +89,9 @@ spcStandard <- function(.data, valueField, dateField, facetField = NULL, options
       target = .data$target
     ) %>%
     # Group data frame by facet
-    group_by(f) %>%
+    group_by(.data$f) %>%
     # Order data frame by facet, and x axis variable
-    arrange(f, .data$x) %>%
+    arrange(.data$f, .data$x) %>%
     # Add an index to each facet group
     mutate(n = row_number()) %>%
     # Ungroup for tidiness
@@ -100,7 +99,7 @@ spcStandard <- function(.data, valueField, dateField, facetField = NULL, options
     mutate(
       movingrange = case_when(
         # Add moving range, as used for basis of sigma in 'plot the dots' logic
-        n > 1 ~ abs(.data$y - lag(.data$y, 1))
+        .data$n > 1 ~ abs(.data$y - lag(.data$y, 1))
       )
     )
 
@@ -151,16 +150,19 @@ spcStandard <- function(.data, valueField, dateField, facetField = NULL, options
     left_join(rebaseTable4, by = c("f" = "f")) %>%
     filter(.data$x >= .data$start, .data$x < .data$end) %>%
     # set the first moving range value in each rebase group to NA, as this is not included in the new mean calculations
-    mutate(movingrange = case_when(.data$x != .data$start ~ as.numeric(movingrange), TRUE ~ as.numeric(NA)))
+    mutate(movingrange = case_when(
+      .data$x != .data$start ~ as.numeric(.data$movingrange),
+      TRUE ~ as.numeric(NA)
+    ))
 
   # Identify the last row in each facet, to add to the previous rebase group
   df3 <- .data %>%
-    left_join(rebaseTable4, by = c("f" = "f")) %>%
+    left_join(rebaseTable4, by = "f") %>%
     filter(.data$rn2 == 1, .data$x == .data$end)
 
   # Bind together last two data frames, so that all data points are present with a link to the appropriate rebase group
-  .data <- rbind(df2, df3) %>%
-    arrange(f, .data$x) %>%
+  .data <- bind_rows(df2, df3) %>%
+    arrange(.data$f, .data$x) %>%
     select(
       .data$y,
       .data$x,
@@ -186,7 +188,7 @@ spcStandard <- function(.data, valueField, dateField, facetField = NULL, options
   dfAvg <- .data %>%
     ## Added to allow any rebase period to be fixed after N points
     filter(.data$fixPointsRN <= fixAfterNPoints) %>%
-    group_by(f, .data$rebaseGroup) %>%
+    group_by(.data$f, .data$rebaseGroup) %>%
     summarise(
       mean = mean(.data$y, na.rm = TRUE),
       movingrangeaverage = mean(.data$movingrange, na.rm = TRUE)
@@ -194,7 +196,7 @@ spcStandard <- function(.data, valueField, dateField, facetField = NULL, options
 
   # Join data frame to moving range average and mean data, then perform standard logical tests
   .data %>%
-    left_join(dfAvg, by = c("f" = "f", "rebaseGroup" = "rebaseGroup")) %>%
+    left_join(dfAvg, by = c("f", "rebaseGroup")) %>%
     mutate(
       # identify lower/upper process limits
       lpl = .data$mean - (limit * .data$movingrangeaverage),
