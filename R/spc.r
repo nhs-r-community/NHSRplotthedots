@@ -16,9 +16,19 @@
 #' Field name can be specified using non-standard evaluation (i.e. no quotation marks).
 #' @param facetField Optional: Specify field name which contains a grouping/faceting variable. SPC logic will be applied
 #'     to each group separately, with outputs combined. Currently accepts 1 variable only.
-#' Field name can be specified using non-standard evaluation (i.e. no quotation marks).
-#' @param options Optional: A list object containing additional control and formatting properties. Preferably created
-#'     using the spcOptions function.
+#'     Field name can be specified using non-standard evaluation (i.e. no quotation marks).
+#' @param rebase Specify a field name which contains a control limit rebasing flag.
+#'     This field should contain integer values 0 and 1, and any date value where the rebase field is 1 will
+#'     trigger a recalculation of the control limits.
+#'     Field name can be specified using non-standard evaluation (i.e. no quotation marks).
+#' @param fixAfterNPoints Specify a number points after which to fix SPC calculations.
+#' @param improvementDirection Specify whether an increase or decrease in measured variable signifies
+#'     process improvement. Accepted values are 1 or 'increase' for increase as improvement or -1 or 'decrease' for
+#'     decrease as improvement.
+#' @param target Specify a field name which contains a target value.
+#'     Field name can be specified using non-standard evaluation (i.e. no quotation marks).
+#' @param trajectory Specify a field name which contains a trajectory value.
+#'     Field name can be specified using non-standard evaluation (i.e. no quotation marks).
 #'
 #' @export spc
 #'
@@ -68,110 +78,31 @@ spc <- function(.data,
                 valueField,
                 dateField,
                 facetField = NULL,
-                options = NULL) {
+                rebase = NULL,
+                fixAfterNPoints = NULL,
+                improvementDirection = "increase",
+                target = NULL,
+                trajectory = NULL) {
   # validate all inputs.  Validation problems will generate an error and stop code execution.
-  validateParameters(.data, valueField, dateField, facetField, options)
+  options <- spcOptions(valueField, dateField, facetField, rebase, fixAfterNPoints, improvementDirection, target,
+                        trajectory)
 
-  if (is.null(facetField)) { # If no facet field specified, bind a pseudo-facet field for grouping/joining purposes
-    facetField <- "pseudo_facet_col_name"
-  }
-
-  df <- spcStandard(.data, valueField, dateField, facetField, options)
+  validate(options, .data)
 
   # Declare improvement direction as integer
-  improvementDirection <- if (is.null(options$improvementDirection)) {
-    1
-  } else if (options$improvementDirection == "increase") {
-    1
-  } else if (options$improvementDirection == "decrease") {
-    -1
-  } else {
-    options$improvementDirection
-  }
+  improvementDirection <- ifelse(options$improvementDirection == "increase", 1, -1)
 
-  ## Plot the dots SPC logic ----
-  df <- calculatePointHighlighting(df, improvementDirection)
+  df <- .data %>%
+    spcStandard(options) %>%
+    calculatePointHighlighting(improvementDirection)
 
-  # set output chart
-  outputChart <- is.null(options$outputChart) || options$outputChart
+  class(df) <- c("ptd_spc_df", class(df))
+  attr(df, "options") <- options
 
-  if (!outputChart) {
-    return(df)
-  }
-
-  # set x axis breaks
-  if (is.null(options$xAxisBreaks)) {
-    xaxislabels <- df$x
-  } else {
-    xaxis <- df$x
-    start <- min(xaxis, na.rm = TRUE)
-    end <- max(xaxis, na.rm = TRUE)
-    xaxislabels <- seq.Date(from = as.Date(start), to = as.Date(end), by = options$xAxisBreaks)
-  }
-
-  # set point size
-  pointSize <- ifelse(is.null(options$pointSize), 4, options$pointSize)
-
-  # set x axis date format
-  xAxisDateFormat <- ifelse(is.null(options$xAxisDateFormat), "%d/%m/%y", options$xAxisDateFormat)
-
-  # set main plot title
-  plottitle <- ifelse(
-    is.null(options$mainTitle),
-    paste0(
-      "SPC Chart of ", capitalise(valueField), ", starting ", format(min(df$x, na.rm = TRUE), format = "%d/%m/%Y")
-    ),
-    options$mainTitle
-  )
-
-  # set x axis label
-  xlabel <- ifelse(is.null(options$xAxisLabel), capitalise(dateField), options$xAxisLabel)
-
-  # set y axis label
-  ylabel <- ifelse(is.null(options$yAxisLabel), capitalise(valueField), options$yAxisLabel)
-
-  # set y axis breaks
-  yAxisBreaks <- options$yAxisBreaks
-
-  # set x axis fixed scaling for facet plots
-  scaleXFixed <- ifelse(is.null(options$fixedXAxisMultiple), TRUE, options$fixedXAxis)
-
-  # set y axis fixed scaling for facet plots
-  scaleYFixed <- ifelse(is.null(options$fixedYAxisMultiple), TRUE, options$fixedYAxis)
-
-  # For multiple facet chart, derived fixed/free scales value from x and y axis properties
-  facetScales <- if (scaleYFixed == TRUE && scaleXFixed == TRUE) {
-    "fixed"
-  } else if (scaleYFixed == TRUE && scaleXFixed == FALSE) {
-    "free_x"
-  } else if (scaleYFixed == FALSE && scaleXFixed == TRUE) {
-    "free_y"
-  } else if (scaleYFixed == FALSE && scaleXFixed == FALSE) {
-    "free"
-  }
-
-  # set percentage y axis
-  convertToPercentages <- if (is.null(options$percentageYAxis)) {
-    0
-  } else if (is.numeric(options$percentageYAxis)) {
-    options$percentageYAxis
-  } else if (is.logical(options$percentageYAxis)) {
-    0.1 * as.numeric(options$percentageYAxis)
-  }
-
-  # build a list of plotOptions to pass into the createGgplot() function
-  plotOptions <- list(
-    pointSize = pointSize,
-    plottitle = plottitle,
-    xlabel = xlabel,
-    ylabel = ylabel,
-    xaxislabels = xaxislabels,
-    xAxisDateFormat = xAxisDateFormat,
-    convertToPercentages = convertToPercentages,
-    facetScales = facetScales,
-    yAxisBreaks = yAxisBreaks
-  )
-
-  # make and return the plot
-  createGgplot(df, facetField, plotOptions)
+  df
 }
+
+print.ptd_spc_df <- function(x, ...) {
+  plot(x, ...)
+}
+

@@ -10,37 +10,21 @@
 #' @param .data A data frame containing a value field, a date field,
 #' and a category field (if for faceting). There should be no gaps in the time series
 #' for each category.
-#' @param valueField Specify the field name which contains the value data, to be plotted on y axis.
-#' @param dateField Specify the field name which contains the date data, to be plotted on x axis.
-#' @param facetField Optional: Specify field name which contains a grouping/faceting variable. SPC logic will be applied
-#'     to each group separately, with outputs combined. Currently accepts 1 variable only.
-#' @param options Optional: A list object containing additional control and formatting properties. Preferably created
-#'     using the spcOptions function.
+#' @param options created by spcOptions function
 #'
 #' @noRd
 
-
 #' @import dplyr
-#' @importFrom rlang .data
 
-spcStandard <- function(.data, valueField, dateField, facetField = NULL, options = NULL) {
-
-  # Identify a rebase, trajectory and target fields, if provided in SPC options object
-  rebaseField <- options$rebase[[1]]
-  trajectoryField <- options$trajectory[[1]]
-  targetField <- options$target[[1]]
-
-  # Declare improvement direction as integer
-  # TODO: This is not used! Is it meant to be?
-  if (!(is.null(options$improvementDirection))) {
-    if (options$improvementDirection == "increase" || options$improvementDirection == 1) {
-      improvementDirection <- 1
-    } else if (options$improvementDirection == "decrease" || options$improvementDirection == -1) {
-      improvementDirection <- -1
-    }
-  } else {
-    improvementDirection <- 1
-  }
+spcStandard <- function(.data, options = NULL) {
+  # get values from options
+  valueField <- options$valueField
+  dateField <- options$dateField
+  facetField <- options$facetField
+  rebaseField <- options$rebase
+  fixAfterNPoints <- options$fixAfterNPoints
+  targetField <- options$target
+  trajectoryField <- options$trajectory
 
   # set trajectory field
   if (!(is.null(trajectoryField))) {
@@ -58,7 +42,8 @@ spcStandard <- function(.data, valueField, dateField, facetField = NULL, options
 
   # Set facet/grouping or create pseudo
   # If no facet field specified, bind a pseudo-facet field for grouping/joining purposes
-  if (facetField == "pseudo_facet_col_name") {
+  if (is.null(facetField)) {
+    facetField <- "pseudo_facet_col_name"
     .data <- mutate(.data, pseudo_facet_col_name = "no facet")
   }
 
@@ -72,7 +57,7 @@ spcStandard <- function(.data, valueField, dateField, facetField = NULL, options
   # Check validity of rebase field supplied - should be 1s and 0s only -
   # QUESTION: should this go into the validateParameters function? Or not as it's validating data?
   dferrors <- .data$rebase[.data$rebase != 1 & .data$rebase != 0]
-  if (length(dferrors) > 0) stop("spc: options$rebase argument must define a field containing only 0 or 1 values.")
+  if (length(dferrors) > 0) stop("spc: rebase column must define a field containing only 0 or 1 values.")
 
   ## Constants ----
   limit <- 2.66
@@ -178,11 +163,11 @@ spcStandard <- function(.data, valueField, dateField, facetField = NULL, options
     mutate(fixPointsRN = row_number())
 
   # Identify the mean and moving range average within each facet and rebase group
-  if (is.null(options$fixAfterNPoints)) {
+  if (is.null(fixAfterNPoints)) {
     ## If no point fix has been specified, find the largest number of points per facet/rebase
     fixAfterNPoints <- max(.data$n, na.rm = TRUE)
   } else {
-    fixAfterNPoints <- options$fixAfterNPoints
+    fixAfterNPoints <- fixAfterNPoints
   }
 
   dfAvg <- .data %>%

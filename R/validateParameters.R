@@ -16,65 +16,6 @@ validateParameters <- function(df, valueField, dateField, facetField, options) {
   # Check that data.frame argument is a data frame
   if (!(is.data.frame(df))) stop("spc: Data.frame argument must be of type 'data.frame'.")
 
-  # valueField must be of character type, length 1, and a column name from within the data frame
-  if (!is.character(valueField)) stop("spc: valueField argument must be of type 'character'.")
-  if (length(valueField) > 1) stop("spc: valueField argument must be a vector of length 1.")
-  if (!(valueField %in% colnames(df))) stop("spc: valueField argument must be a column name from the data frame.")
-
-  # dateField must be of character type, length 1, and a column name from within the data frame
-  if (!is.character(dateField)) stop("spc: dateField argument must be of type 'character'.")
-  if (length(dateField) > 1) stop("spc: dateField argument must be a vector of length 1.")
-  if (!(dateField %in% colnames(df))) stop("spc: dateField argument must be a column name from the data frame.")
-
-  # if provided, facetField must be of character type, length 1, and a column name from within the data frame
-  if (!is.null(facetField)) {
-    if (!is.character(facetField)) stop("spc: facetField argument must be of type 'character'.")
-    if (length(facetField) > 1) stop("spc: facetField argument must be a vector of length 1.")
-    if (!(facetField %in% colnames(df))) stop("spc: facetField argument must be a column name from the data frame.")
-  }
-
-
-  # OPTIONS
-  # if provided, options argument must be a list
-  if (!(is.null(options))) {
-    if (!(is.list(options))) stop("spc: options argument must be of type 'list'.")
-  }
-
-  # if provided, options$rebase must be of character type, length 1, and a column name from within the data frame
-  if (!is.null(options$rebase)) {
-    if (!is.character(options$rebase)) {
-      stop("spc: options$rebase argument must be of type 'character'.")
-    }
-    if (length(options$rebase) > 1) {
-      stop("spc: options$rebase argument must be a vector of length 1.")
-    }
-    if (!(options$rebase %in% colnames(df))) {
-      stop("spc: options$rebase argument must be a column name from the data frame.")
-    }
-  }
-
-  # if provided, options$fixAfterNPoints must be of numeric type, length 1, with a value greater than or equal to 12
-  if (!is.null(options$fixAfterNPoints)) {
-    if (!is.numeric(options$fixAfterNPoints)) stop("spc: options$fixAfterNPoints argument must be of type 'numeric'.")
-    if (length(options$fixAfterNPoints) > 1) stop("spc: options$fixAfterNPoints argument must be a vector of length 1.")
-    if (options$fixAfterNPoints < 12) stop("spc: options$fixAfterNPoints argument must be greater than or equal to 12.")
-  }
-
-  # if provided, options$improvementDirection should equal "increase", 1, "decrease", or -1
-  if (!is.null(options$improvementDirection) &&
-    options$improvementDirection != "increase" &&
-    options$improvementDirection != 1 &&
-    options$improvementDirection != "decrease" &&
-    options$improvementDirection != -1
-  ) {
-    stop("spc: options$improvementDirection argument must equal 'increase', 'decrease', 1, or -1.")
-  }
-
-  # if provided, options$outputChart must be TRUE or FALSE
-  if (!is.null(options$outputChart) && !is.logical(options$outputChart)) {
-    stop("spc: options$outputChart argument must be TRUE or FALSE.")
-  }
-
   # if provided, options$pointSize must be a number between 0 and 10
   if (!is.null(options$pointSize)) {
     if (!is.numeric(options$pointSize)) {
@@ -91,32 +32,6 @@ validateParameters <- function(df, valueField, dateField, facetField, options) {
     options$percentageYAxis <= 0 || options$percentageYAxis >= 1)
   ) {
     stop("spc: options$percentageYAxis argument must be TRUE, FALSE, or a decimal value between 0 and 1.")
-  }
-
-  # if provided, options$target must be of character type, length 1, and a column name from within the data frame
-  if (!is.null(options$target)) {
-    if (!is.character(options$target)) {
-      stop("spc: options$target argument must be of type 'character'.")
-    }
-    if (length(options$target) > 1) {
-      stop("spc: options$target argument must be a vector of length 1.")
-    }
-    if (!(options$target %in% colnames(df))) {
-      stop("spc: options$target argument must be a column name from the data frame.")
-    }
-  }
-
-  # if provided, options$trajectory must be of character type, length 1, and a column name from within the data frame
-  if (!is.null(options$trajectory)) {
-    if (!is.character(options$trajectory)) {
-      stop("spc: options$trajectory argument must be of type 'character'.")
-    }
-    if (length(options$trajectory) > 1) {
-      stop("spc: options$trajectory argument must be a vector of length 1.")
-    }
-    if (!(options$trajectory %in% colnames(df))) {
-      stop("spc: options$trajectory argument must be a column name from the data frame.")
-    }
   }
 
   # if provided, options$mainTitle must be of character type, and length 1
