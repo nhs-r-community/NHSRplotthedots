@@ -1,4 +1,4 @@
-#' Create ggplot2 (internal function)
+#' Create ggplot2
 #'
 #' Creates a ggplot2 object using the parameters passed in.
 #'
@@ -21,8 +21,6 @@
 #'     either an integer for integer scales or a decimal value for percentage scales. This option is ignored if faceting
 #'     is in use.
 #' @return The ggplot2 object
-#'
-#' @noRd
 
 create_spc_plot <- function(.data,
                             pointSize = 2.5,
@@ -174,6 +172,15 @@ create_spc_plot <- function(.data,
   plot
 }
 
+#' Plot ptd_spc_df object
+#'
+#' Plot function for a ptd_spc_df object. It calls [create_spc_plot()].
+#'
+#' @seealso create_spc_plot
+#'
+#' @export
+#' @param x data passed to .data argument of [create_spc_plot()]
+#' @param ... other arguments passed to [create_spc_plot()]
 plot.ptd_spc_df <- function(x, ...) {
   create_spc_plot(x, ...)
 }
