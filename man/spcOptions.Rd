@@ -90,8 +90,12 @@ orgs <- ae_attendances$org_code \%in\% c("RAS", "RJZ", "RR1", "RJC", "RQ1")
 trusts4 <- subset(ae_attendances, orgs & type == 1)
 
 # spcOptions should be supplied the the options argument within the spc function.
-spc(trusts4, valueField = "breaches", dateField = "period", facetField = "org_code",
-    options = spcOptions(improvementDirection = "decrease",
-                         fixedYAxisMultiple = FALSE,
-                         xAxisBreaks = "3 months"))
+spc(trusts4,
+  valueField = "breaches", dateField = "period", facetField = "org_code",
+  options = spcOptions(
+    improvementDirection = "decrease",
+    fixedYAxisMultiple = FALSE,
+    xAxisBreaks = "3 months"
+  )
+)
 }

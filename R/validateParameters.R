@@ -16,12 +16,12 @@ validateParameters <- function(df, valueField, dateField, facetField, options) {
   # Check that data.frame argument is a data frame
   if (!(is.data.frame(df))) stop("spc: Data.frame argument must be of type 'data.frame'.")
 
-  #valueField must be of character type, length 1, and a column name from within the data frame
+  # valueField must be of character type, length 1, and a column name from within the data frame
   if (!is.character(valueField)) stop("spc: valueField argument must be of type 'character'.")
   if (length(valueField) > 1) stop("spc: valueField argument must be a vector of length 1.")
   if (!(valueField %in% colnames(df))) stop("spc: valueField argument must be a column name from the data frame.")
 
-  #dateField must be of character type, length 1, and a column name from within the data frame
+  # dateField must be of character type, length 1, and a column name from within the data frame
   if (!is.character(dateField)) stop("spc: dateField argument must be of type 'character'.")
   if (length(dateField) > 1) stop("spc: dateField argument must be a vector of length 1.")
   if (!(dateField %in% colnames(df))) stop("spc: dateField argument must be a column name from the data frame.")
@@ -62,10 +62,10 @@ validateParameters <- function(df, valueField, dateField, facetField, options) {
 
   # if provided, options$improvementDirection should equal "increase", 1, "decrease", or -1
   if (!is.null(options$improvementDirection) &&
-      options$improvementDirection != "increase" &&
-      options$improvementDirection != 1 &&
-      options$improvementDirection != "decrease" &&
-      options$improvementDirection != -1
+    options$improvementDirection != "increase" &&
+    options$improvementDirection != 1 &&
+    options$improvementDirection != "decrease" &&
+    options$improvementDirection != -1
   ) {
     stop("spc: options$improvementDirection argument must equal 'increase', 'decrease', 1, or -1.")
   }
@@ -155,10 +155,12 @@ validateParameters <- function(df, valueField, dateField, facetField, options) {
   # if provided, options$xAxisBreaks must be of character type, and be a vaoid string for seq.Date() 'by' argument
   if (!is.null(options$xAxisBreaks) && (
     !is.character(options$xAxisBreaks) ||
-    !grepl("^\\d+ (day|week|month|quarter|year)s?$", options$xAxisBreaks)
+      !grepl("^\\d+ (day|week|month|quarter|year)s?$", options$xAxisBreaks)
   )) {
-    stop("spc: options$xAxisBreaks argument must be of type 'character', and be a valid string for seq.Date 'by'. ",
-         "See seq.Date for more information.")
+    stop(
+      "spc: options$xAxisBreaks argument must be of type 'character', and be a valid string for seq.Date 'by'. ",
+      "See seq.Date for more information."
+    )
   }
 
   # if provided, options$yAxisBreaks must be of character type, length 1, and a column name from within the data frame
@@ -166,5 +168,4 @@ validateParameters <- function(df, valueField, dateField, facetField, options) {
     if (!is.numeric(options$yAxisBreaks)) stop("spc: options$yAxisBreaks argument must be of type 'numeric'.")
     if (length(options$yAxisBreaks) > 1) stop("spc: options$yAxisBreaks argument must be a vector of length 1.")
   }
-
 }

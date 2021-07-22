@@ -1,156 +1,156 @@
 library(NHSRplotthedots)
 
-#data.frame parameter
+# data.frame parameter
 test_that("error when df is not a data.frame", {
-  #arrange
+  # arrange
   df <- "not a data.frame"
 
-  #act
+  # act
   p <- function() spc(df, "data", "date")
-  #assert
+  # assert
   expect_error(p(), "spc:")
 })
 
-#valueField parameter
+# valueField parameter
 test_that("error when valueField is not of type 'character'", {
-  #arrange
+  # arrange
   data <- c(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12)
   date <- seq(as.Date("2021-03-22"), by = 1, length.out = 12)
   df <- tibble(data, date)
 
-  #act
+  # act
   p <- function() spc(df, 999, "date")
 
-  #assert
+  # assert
   expect_error(p(), "spc:")
 })
 
 test_that("error when valueField is not a vector of length 1", {
-  #arrange
+  # arrange
   data <- c(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12)
   date <- seq(as.Date("2021-03-22"), by = 1, length.out = 12)
   df <- tibble(data, date)
 
-  #act
+  # act
   p <- function() spc(df, c("data", "invalid 2nd item in vector"), "date")
 
-  #assert
+  # assert
   expect_error(p(), "spc:")
 })
 
 test_that("error when valueField is not a column in the data frame", {
-  #arrange
+  # arrange
   data <- c(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12)
   date <- seq(as.Date("2021-03-22"), by = 1, length.out = 12)
   df <- tibble(data, date)
 
-  #act
+  # act
   p <- function() spc(df, "this data column isnt in the data frame", "date")
 
-  #assert
+  # assert
   expect_error(p(), "spc:")
 })
 
-#dateField parameter
+# dateField parameter
 test_that("error when dateField is not of type 'character'", {
-  #arrange
+  # arrange
   data <- c(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12)
   date <- seq(as.Date("2021-03-22"), by = 1, length.out = 12)
   df <- tibble(data, date)
 
-  #act
+  # act
   p <- function() spc(df, "data", 999)
 
-  #assert
+  # assert
   expect_error(p(), "spc:")
 })
 
 test_that("error when dateField is not a vector of length 1", {
-  #arrange
+  # arrange
   data <- c(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12)
   date <- seq(as.Date("2021-03-22"), by = 1, length.out = 12)
   df <- tibble(data, date)
 
-  #act
+  # act
   p <- function() spc(df, "data", c("date", "invalid 2nd item in vector"))
 
-  #assert
+  # assert
   expect_error(p(), "spc:")
 })
 
 test_that("error when dateField is not a column in the data frame", {
-  #arrange
+  # arrange
   data <- c(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12)
   date <- seq(as.Date("2021-03-22"), by = 1, length.out = 12)
   df <- tibble(data, date)
 
-  #act
+  # act
   p <- function() spc(df, "data", "this date column isnt in the data frame")
 
-  #assert
+  # assert
   expect_error(p(), "spc:")
 })
 
-#facetField parameter
+# facetField parameter
 test_that("error when facetField is not of type 'character'", {
-  #arrange
+  # arrange
   data <- c(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24)
   date <- seq(as.Date("2021-03-22"), by = 1, length.out = 24)
   category <- c(rep("Category A", times = 12), rep("Category B", times = 12))
   df <- tibble(data, date, category)
 
-  #act
+  # act
   p <- function() spc(df, "data", "date", 999)
 
-  #assert
+  # assert
   expect_error(p(), "spc:")
 })
 
 test_that("error when facetField is not a vector of length 1", {
-  #arrange
+  # arrange
   data <- c(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24)
   date <- seq(as.Date("2021-03-22"), by = 1, length.out = 24)
   category <- c(rep("Category A", times = 12), rep("Category B", times = 12))
   df <- tibble(data, date, category)
 
-  #act
+  # act
   p <- function() spc(df, "data", "date", c("category", "invalid 2nd item in vector"))
 
-  #assert
+  # assert
   expect_error(p(), "spc:")
 })
 
 test_that("error when facetField is not a column in the data frame", {
-  #arrange
+  # arrange
   data <- c(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24)
   date <- seq(as.Date("2021-03-22"), by = 1, length.out = 24)
   category <- c(rep("Category A", times = 12), rep("Category B", times = 12))
   df <- tibble(data, date)
 
-  #act
+  # act
   p <- function() spc(df, "data", "date", "this date column isnt in the data frame")
 
-  #assert
+  # assert
   expect_error(p(), "spc:")
 })
 
-#options
+# options
 test_that("error when options is not of type 'list'", {
-  #arrange
+  # arrange
   data <- c(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12)
   date <- seq(as.Date("2021-03-22"), by = 1, length.out = 12)
   df <- tibble(data, date)
 
-  #act
+  # act
   p <- function() spc(df, "data", "date", options <- "this is not a list")
 
-  #assert
+  # assert
   expect_error(p(), "spc:")
 })
 
-#options$rebase parameter
+# options$rebase parameter
 test_that("error when options$rebase is not of type 'character'", {
-  #arrange
+  # arrange
   data <- c(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12)
   date <- seq(as.Date("2021-03-22"), by = 1, length.out = 12)
   rebaseField <- c(0, 0, 0, 1, 0, 0, 0, 0, 0, 1, 0, 0)
@@ -159,15 +159,15 @@ test_that("error when options$rebase is not of type 'character'", {
     rebase = 999
   )
 
-  #act
+  # act
   p <- function() spc(df, "data", "date", options = options)
 
-  #assert
+  # assert
   expect_error(p(), "spc:")
 })
 
 test_that("error when options$rebase is not a vector of length 1", {
-  #arrange
+  # arrange
   data <- c(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12)
   date <- seq(as.Date("2021-03-22"), by = 1, length.out = 12)
   rebaseField <- c(0, 0, 0, 1, 0, 0, 0, 0, 0, 1, 0, 0)
@@ -176,15 +176,15 @@ test_that("error when options$rebase is not a vector of length 1", {
     rebase = c("rebaseField", "invalid 2nd item in vector")
   )
 
-  #act
+  # act
   p <- function() spc(df, "data", "date", options = options)
 
-  #assert
+  # assert
   expect_error(p(), "spc:")
 })
 
 test_that("error when options$rebase is not a column in the data frame", {
-  #arrange
+  # arrange
   data <- c(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12)
   date <- seq(as.Date("2021-03-22"), by = 1, length.out = 12)
   rebaseField <- c(0, 0, 0, 1, 0, 0, 0, 0, 0, 1, 0, 0)
@@ -193,16 +193,16 @@ test_that("error when options$rebase is not a column in the data frame", {
     rebase = "this rebase column isnt in the data frame"
   )
 
-  #act
+  # act
   p <- function() spc(df, "data", "date", options = options)
 
-  #assert
+  # assert
   expect_error(p(), "spc:")
 })
 
-#options$improvementDirection parameter
+# options$improvementDirection parameter
 test_that("error when options$improvementDirection is an invalid character vector", {
-  #arrange
+  # arrange
   data <- c(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12)
   date <- seq(as.Date("2021-03-22"), by = 1, length.out = 12)
   df <- tibble(data, date)
@@ -210,15 +210,15 @@ test_that("error when options$improvementDirection is an invalid character vecto
     improvementDirection = "invalid entry"
   )
 
-  #act
+  # act
   p <- function() spc(df, "data", "date", options = options)
 
-  #assert
+  # assert
   expect_error(p(), "spc:")
 })
 
 test_that("error when options$improvementDirection is an invalid number", {
-  #arrange
+  # arrange
   data <- c(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12)
   date <- seq(as.Date("2021-03-22"), by = 1, length.out = 12)
   df <- tibble(data, date)
@@ -226,16 +226,16 @@ test_that("error when options$improvementDirection is an invalid number", {
     improvementDirection = 2
   )
 
-  #act
+  # act
   p <- function() spc(df, "data", "date", options = options)
 
-  #assert
+  # assert
   expect_error(p(), "spc:")
 })
 
-#options$outputChart parameter
+# options$outputChart parameter
 test_that("error when options$ouputChart is not TRUE or FALSE", {
-  #arrange
+  # arrange
   data <- c(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12)
   date <- seq(as.Date("2021-03-22"), by = 1, length.out = 12)
   df <- tibble(data, date)
@@ -243,16 +243,16 @@ test_that("error when options$ouputChart is not TRUE or FALSE", {
     outputChart = 1
   )
 
-  #act
+  # act
   p <- function() spc(df, "data", "date", options = options)
 
-  #assert
+  # assert
   expect_error(p(), "spc:")
 })
 
-#options$pointSize parameter
+# options$pointSize parameter
 test_that("error when options$pointSize is not a number", {
-  #arrange
+  # arrange
   data <- c(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12)
   date <- seq(as.Date("2021-03-22"), by = 1, length.out = 12)
   df <- tibble(data, date)
@@ -260,15 +260,15 @@ test_that("error when options$pointSize is not a number", {
     pointSize = "not a number"
   )
 
-  #act
+  # act
   p <- function() spc(df, "data", "date", options = options)
 
-  #assert
+  # assert
   expect_error(p(), "spc:")
 })
 
 test_that("error when options$pointSize is less than or equal to zero", {
-  #arrange
+  # arrange
   data <- c(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12)
   date <- seq(as.Date("2021-03-22"), by = 1, length.out = 12)
   df <- tibble(data, date)
@@ -276,15 +276,15 @@ test_that("error when options$pointSize is less than or equal to zero", {
     pointSize = 0
   )
 
-  #act
+  # act
   p <- function() spc(df, "data", "date", options = options)
 
-  #assert
+  # assert
   expect_error(p(), "spc:")
 })
 
 test_that("error when options$pointSize is greater than 10", {
-  #arrange
+  # arrange
   data <- c(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12)
   date <- seq(as.Date("2021-03-22"), by = 1, length.out = 12)
   df <- tibble(data, date)
@@ -292,16 +292,16 @@ test_that("error when options$pointSize is greater than 10", {
     pointSize = 10.1
   )
 
-  #act
+  # act
   p <- function() spc(df, "data", "date", options = options)
 
-  #assert
+  # assert
   expect_error(p(), "spc:")
 })
 
-#options$percentageYAxis parameter
+# options$percentageYAxis parameter
 test_that("error when options$percentageYAxis is an invalid non-logical value", {
-  #arrange
+  # arrange
   data <- c(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12)
   date <- seq(as.Date("2021-03-22"), by = 1, length.out = 12)
   df <- tibble(data, date)
@@ -309,15 +309,15 @@ test_that("error when options$percentageYAxis is an invalid non-logical value", 
     percentageYAxis = "yes"
   )
 
-  #act
+  # act
   p <- function() spc(df, "data", "date", options = options)
 
-  #assert
+  # assert
   expect_error(p(), "spc:")
 })
 
 test_that("error when options$percentageYAxis is 1 or greater", {
-  #arrange
+  # arrange
   data <- c(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12)
   date <- seq(as.Date("2021-03-22"), by = 1, length.out = 12)
   df <- tibble(data, date)
@@ -325,15 +325,15 @@ test_that("error when options$percentageYAxis is 1 or greater", {
     percentageYAxis = 1
   )
 
-  #act
+  # act
   p <- function() spc(df, "data", "date", options = options)
 
-  #assert
+  # assert
   expect_error(p(), "spc:")
 })
 
 test_that("error when options$percentageYAxis is 0 or less", {
-  #arrange
+  # arrange
   data <- c(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12)
   date <- seq(as.Date("2021-03-22"), by = 1, length.out = 12)
   df <- tibble(data, date)
@@ -341,16 +341,16 @@ test_that("error when options$percentageYAxis is 0 or less", {
     percentageYAxis = 0
   )
 
-  #act
+  # act
   p <- function() spc(df, "data", "date", options = options)
 
-  #assert
+  # assert
   expect_error(p(), "spc:")
 })
 
-#options$target parameter
+# options$target parameter
 test_that("error when options$target is not of type 'character'", {
-  #arrange
+  # arrange
   data <- c(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12)
   date <- seq(as.Date("2021-03-22"), by = 1, length.out = 12)
   target <- rep(20, times = 12)
@@ -359,15 +359,15 @@ test_that("error when options$target is not of type 'character'", {
     target = 999
   )
 
-  #act
+  # act
   p <- function() spc(df, "data", "date", options = options)
 
-  #assert
+  # assert
   expect_error(p(), "spc:")
 })
 
 test_that("error when options$target is not a vector of length 1", {
-  #arrange
+  # arrange
   data <- c(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12)
   date <- seq(as.Date("2021-03-22"), by = 1, length.out = 12)
   target <- rep(20, times = 12)
@@ -376,15 +376,15 @@ test_that("error when options$target is not a vector of length 1", {
     target = c("target", "invalid 2nd item in vector")
   )
 
-  #act
+  # act
   p <- function() spc(df, "data", "date", options = options)
 
-  #assert
+  # assert
   expect_error(p(), "spc:")
 })
 
 test_that("error when options$target is not a column in the data frame", {
-  #arrange
+  # arrange
   data <- c(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12)
   date <- seq(as.Date("2021-03-22"), by = 1, length.out = 12)
   target <- rep(20, times = 12)
@@ -393,16 +393,16 @@ test_that("error when options$target is not a column in the data frame", {
     target = "this target column isnt in the data frame"
   )
 
-  #act
+  # act
   p <- function() spc(df, "data", "date", options = options)
 
-  #assert
+  # assert
   expect_error(p(), "spc:")
 })
 
-#options$trajectory parameter
+# options$trajectory parameter
 test_that("error when options$trajectory is not of type 'character'", {
-  #arrange
+  # arrange
   data <- c(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12)
   date <- seq(as.Date("2021-03-22"), by = 1, length.out = 12)
   trajectory <- rep(20, times = 12)
@@ -411,15 +411,15 @@ test_that("error when options$trajectory is not of type 'character'", {
     trajectory = 999
   )
 
-  #act
+  # act
   p <- function() spc(df, "data", "date", options = options)
 
-  #assert
+  # assert
   expect_error(p(), "spc:")
 })
 
 test_that("error when options$trajectory is not a vector of length 1", {
-  #arrange
+  # arrange
   data <- c(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12)
   date <- seq(as.Date("2021-03-22"), by = 1, length.out = 12)
   trajectory <- rep(20, times = 12)
@@ -428,15 +428,15 @@ test_that("error when options$trajectory is not a vector of length 1", {
     trajectory = c("trajectory", "invalid 2nd item in vector")
   )
 
-  #act
+  # act
   p <- function() spc(df, "data", "date", options = options)
 
-  #assert
+  # assert
   expect_error(p(), "spc:")
 })
 
 test_that("error when options$trajectory is not a column in the data frame", {
-  #arrange
+  # arrange
   data <- c(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12)
   date <- seq(as.Date("2021-03-22"), by = 1, length.out = 12)
   trajectory <- rep(20, times = 12)
@@ -445,16 +445,16 @@ test_that("error when options$trajectory is not a column in the data frame", {
     trajectory = "this trajectory column isnt in the data frame"
   )
 
-  #act
+  # act
   p <- function() spc(df, "data", "date", options = options)
 
-  #assert
+  # assert
   expect_error(p(), "spc:")
 })
 
-#options$mainTitle parameter
+# options$mainTitle parameter
 test_that("error when options$mainTitle is not of type 'character'", {
-  #arrange
+  # arrange
   data <- c(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12)
   date <- seq(as.Date("2021-03-22"), by = 1, length.out = 12)
   df <- tibble(data, date)
@@ -462,15 +462,15 @@ test_that("error when options$mainTitle is not of type 'character'", {
     mainTitle = 999
   )
 
-  #act
+  # act
   p <- function() spc(df, "data", "date", options = options)
 
-  #assert
+  # assert
   expect_error(p(), "spc:")
 })
 
 test_that("error when options$mainTitle is not a vector of length 1", {
-  #arrange
+  # arrange
   data <- c(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12)
   date <- seq(as.Date("2021-03-22"), by = 1, length.out = 12)
   df <- tibble(data, date)
@@ -478,16 +478,16 @@ test_that("error when options$mainTitle is not a vector of length 1", {
     mainTitle = c("New Title", "invalid 2nd item in vector")
   )
 
-  #act
+  # act
   p <- function() spc(df, "data", "date", options = options)
 
-  #assert
+  # assert
   expect_error(p(), "spc:")
 })
 
-#options$xAxisLabel parameter
+# options$xAxisLabel parameter
 test_that("error when options$xAxisLabel is not of type 'character'", {
-  #arrange
+  # arrange
   data <- c(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12)
   date <- seq(as.Date("2021-03-22"), by = 1, length.out = 12)
   df <- tibble(data, date)
@@ -495,15 +495,15 @@ test_that("error when options$xAxisLabel is not of type 'character'", {
     xAxisLabel = 999
   )
 
-  #act
+  # act
   p <- function() spc(df, "data", "date", options = options)
 
-  #assert
+  # assert
   expect_error(p(), "spc:")
 })
 
 test_that("error when options$xAxisLabel is not a vector of length 1", {
-  #arrange
+  # arrange
   data <- c(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12)
   date <- seq(as.Date("2021-03-22"), by = 1, length.out = 12)
   df <- tibble(data, date)
@@ -511,16 +511,16 @@ test_that("error when options$xAxisLabel is not a vector of length 1", {
     xAxisLabel = c("New X Axis Label", "invalid 2nd item in vector")
   )
 
-  #act
+  # act
   p <- function() spc(df, "data", "date", options = options)
 
-  #assert
+  # assert
   expect_error(p(), "spc:")
 })
 
-#options$yAxisLabel parameter
+# options$yAxisLabel parameter
 test_that("error when options$yAxisLabel is not of type 'character'", {
-  #arrange
+  # arrange
   data <- c(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12)
   date <- seq(as.Date("2021-03-22"), by = 1, length.out = 12)
   df <- tibble(data, date)
@@ -528,15 +528,15 @@ test_that("error when options$yAxisLabel is not of type 'character'", {
     yAxisLabel = 999
   )
 
-  #act
+  # act
   p <- function() spc(df, "data", "date", options = options)
 
-  #assert
+  # assert
   expect_error(p(), "spc:")
 })
 
 test_that("error when options$yAxisLabel is not a vector of length 1", {
-  #arrange
+  # arrange
   data <- c(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12)
   date <- seq(as.Date("2021-03-22"), by = 1, length.out = 12)
   df <- tibble(data, date)
@@ -544,16 +544,16 @@ test_that("error when options$yAxisLabel is not a vector of length 1", {
     yAxisLabel = c("New Y Axis Label", "invalid 2nd item in vector")
   )
 
-  #act
+  # act
   p <- function() spc(df, "data", "date", options = options)
 
-  #assert
+  # assert
   expect_error(p(), "spc:")
 })
 
-#options$fixedXAxisMultiple parameter
+# options$fixedXAxisMultiple parameter
 test_that("error when options$fixedXAxisMultiple is not TRUE or FALSE", {
-  #arrange
+  # arrange
   data <- c(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12)
   date <- seq(as.Date("2021-03-22"), by = 1, length.out = 12)
   df <- tibble(data, date)
@@ -561,16 +561,16 @@ test_that("error when options$fixedXAxisMultiple is not TRUE or FALSE", {
     fixedXAxisMultiple = 1
   )
 
-  #act
+  # act
   p <- function() spc(df, "data", "date", options = options)
 
-  #assert
+  # assert
   expect_error(p(), "spc:")
 })
 
-#options$fixedYAxisMultiple parameter
+# options$fixedYAxisMultiple parameter
 test_that("error when options$fixedYAxisMultiple is not TRUE or FALSE", {
-  #arrange
+  # arrange
   data <- c(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12)
   date <- seq(as.Date("2021-03-22"), by = 1, length.out = 12)
   df <- tibble(data, date)
@@ -578,16 +578,16 @@ test_that("error when options$fixedYAxisMultiple is not TRUE or FALSE", {
     fixedYAxisMultiple = 0
   )
 
-  #act
+  # act
   p <- function() spc(df, "data", "date", options = options)
 
-  #assert
+  # assert
   expect_error(p(), "spc:")
 })
 
-#options$xAxisDateFormat parameter
+# options$xAxisDateFormat parameter
 test_that("error when options$xAxisDateFormat is not of type 'character", {
-  #arrange
+  # arrange
   data <- c(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12)
   date <- seq(as.Date("2021-03-22"), by = 1, length.out = 12)
   df <- tibble(data, date)
@@ -595,16 +595,16 @@ test_that("error when options$xAxisDateFormat is not of type 'character", {
     xAxisDateFormat = 999
   )
 
-  #act
+  # act
   p <- function() spc(df, "data", "date", options = options)
 
-  #assert
+  # assert
   expect_error(p(), "spc:")
 })
 
-#options$xAxisBreaks parameter
+# options$xAxisBreaks parameter
 test_that("error when options$xAxisBreaks is not of type 'character", {
-  #arrange
+  # arrange
   data <- c(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12)
   date <- seq(as.Date("2021-03-22"), by = 1, length.out = 12)
   df <- tibble(data, date)
@@ -612,15 +612,15 @@ test_that("error when options$xAxisBreaks is not of type 'character", {
     xAxisBreaks = "test"
   )
 
-  #act
+  # act
   p <- function() spc(df, "data", "date", options = options)
 
-  #assert
+  # assert
   expect_error(p(), "spc:")
 })
 
 test_that("error when options$xAxisBreaks is not a valid string for seq.Date 'by'.", {
-  #arrange
+  # arrange
   data <- c(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12)
   date <- seq(as.Date("2021-03-22"), by = 1, length.out = 12)
   df <- tibble(data, date)
@@ -628,16 +628,16 @@ test_that("error when options$xAxisBreaks is not a valid string for seq.Date 'by
     xAxisBreaks = "1 blue moon"
   )
 
-  #act
+  # act
   p <- function() spc(df, "data", "date", options = options)
 
-  #assert
+  # assert
   expect_error(p(), "spc:")
 })
 
-#options$yAxisBreaks parameter
+# options$yAxisBreaks parameter
 test_that("error when options$yAxisBreaks is not of type 'numeric'", {
-  #arrange
+  # arrange
   data <- c(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12)
   date <- seq(as.Date("2021-03-22"), by = 1, length.out = 12)
   df <- tibble(data, date)
@@ -645,15 +645,15 @@ test_that("error when options$yAxisBreaks is not of type 'numeric'", {
     yAxisBreaks = "not numeric"
   )
 
-  #act
+  # act
   p <- function() spc(df, "data", "date", options = options)
 
-  #assert
+  # assert
   expect_error(p(), "spc:")
 })
 
 test_that("error when options$yAxisBreaks is not a vector of length 1", {
-  #arrange
+  # arrange
   data <- c(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12)
   date <- seq(as.Date("2021-03-22"), by = 1, length.out = 12)
   df <- tibble(data, date)
@@ -661,9 +661,9 @@ test_that("error when options$yAxisBreaks is not a vector of length 1", {
     yAxisBreaks = c(10, 20)
   )
 
-  #act
+  # act
   p <- function() spc(df, "data", "date", options = options)
 
-  #assert
+  # assert
   expect_error(p(), "spc:")
 })

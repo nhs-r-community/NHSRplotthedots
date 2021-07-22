@@ -42,7 +42,7 @@ spcStandard <- function(.data, valueField, dateField, facetField = NULL, options
     improvementDirection <- 1
   }
 
-  #set trajectory field
+  # set trajectory field
   if (!(is.null(trajectoryField))) {
     .data$trajectory <- .data[[trajectoryField]]
   } else {
@@ -87,7 +87,8 @@ spcStandard <- function(.data, valueField, dateField, facetField = NULL, options
       f = all_of(facetField),
       rebase = .data$rebase,
       trajectory = .data$trajectory,
-      target = .data$target) %>%
+      target = .data$target
+    ) %>%
     # Group data frame by facet
     group_by(f) %>%
     # Order data frame by facet, and x axis variable
@@ -169,7 +170,8 @@ spcStandard <- function(.data, valueField, dateField, facetField = NULL, options
       .data$target,
       .data$trajectory,
       .data$movingrange,
-      rebaseGroup = .data$rn) %>%
+      rebaseGroup = .data$rn
+    ) %>%
     group_by(.data$f, .data$rebaseGroup) %>%
     mutate(fixPointsRN = row_number())
 
@@ -185,8 +187,10 @@ spcStandard <- function(.data, valueField, dateField, facetField = NULL, options
     ## Added to allow any rebase period to be fixed after N points
     filter(.data$fixPointsRN <= fixAfterNPoints) %>%
     group_by(f, .data$rebaseGroup) %>%
-    summarise(mean = mean(.data$y, na.rm = TRUE),
-              movingrangeaverage = mean(.data$movingrange, na.rm = TRUE))
+    summarise(
+      mean = mean(.data$y, na.rm = TRUE),
+      movingrangeaverage = mean(.data$movingrange, na.rm = TRUE)
+    )
 
   # Join data frame to moving range average and mean data, then perform standard logical tests
   .data %>%

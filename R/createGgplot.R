@@ -13,10 +13,10 @@ createGgplot <- function(df, facetField, plotOptions) {
 
   # Colour Palette for ggplot
   .darkgrey <- "#7B7D7D"
-  .orange   <- "#fab428"
-  .skyblue  <- "#289de0"
-  .purple   <- "#361475"
-  .red      <- "#de1b1b"
+  .orange <- "#fab428"
+  .skyblue <- "#289de0"
+  .purple <- "#361475"
+  .red <- "#de1b1b"
 
   if (!(is.null(plotOptions$yAxisBreaks))) {
     yaxis <- c(df$y, df$upl, df$lpl)
@@ -48,11 +48,13 @@ createGgplot <- function(df, facetField, plotOptions) {
     xlab(label = plotOptions$xlabel) +
     ylab(label = plotOptions$ylabel) +
     theme(plot.title = element_text(hjust = 0.5)) +
-    scale_x_date(breaks = plotOptions$xaxislabels,
-                 labels = format(plotOptions$xaxislabels, format = plotOptions$xAxisDateFormat)) +
+    scale_x_date(
+      breaks = plotOptions$xaxislabels,
+      labels = format(plotOptions$xaxislabels, format = plotOptions$xAxisDateFormat)
+    ) +
     theme(axis.text.x = element_text(angle = 90, hjust = 1))
 
-  #if the plot is not faceted (ie it's the default facet column name)
+  # if the plot is not faceted (ie it's the default facet column name)
   if (facetField == "pseudo_facet_col_name") {
     if (plotOptions$convertToPercentages == FALSE) {
       if (!(is.null(plotOptions$yAxisBreaks))) {
@@ -71,7 +73,7 @@ createGgplot <- function(df, facetField, plotOptions) {
       plot <- plot +
         scale_y_continuous(labels = scales::percent, breaks = seq(from = 0, to = percentLimit, by = interval))
     }
-  # else if the plot is faceted
+    # else if the plot is faceted
   } else if (plotOptions$convertToPercentages != 0) {
     percentLimit <- max(df$upl, na.rm = TRUE)
 

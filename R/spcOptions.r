@@ -52,33 +52,36 @@
 #' trusts4 <- subset(ae_attendances, orgs & type == 1)
 #'
 #' # spcOptions should be supplied the the options argument within the spc function.
-#' spc(trusts4, valueField = "breaches", dateField = "period", facetField = "org_code",
-#'     options = spcOptions(improvementDirection = "decrease",
-#'                          fixedYAxisMultiple = FALSE,
-#'                          xAxisBreaks = "3 months"))
-
-spcOptions <- function(
-  rebase = NULL,
-  fixAfterNPoints = NULL,
-  improvementDirection = NULL,
-  outputChart = NULL,
-  pointSize = NULL,
-  percentageYAxis = NULL,
-  target = NULL,
-  trajectory = NULL,
-  mainTitle = NULL,
-  xAxisLabel = NULL,
-  yAxisLabel = NULL,
-  fixedXAxisMultiple = NULL,
-  fixedYAxisMultiple = NULL,
-  xAxisDateFormat = NULL,
-  xAxisBreaks = NULL,
-  yAxisBreaks = NULL
-) {
+#' spc(trusts4,
+#'   valueField = "breaches", dateField = "period", facetField = "org_code",
+#'   options = spcOptions(
+#'     improvementDirection = "decrease",
+#'     fixedYAxisMultiple = FALSE,
+#'     xAxisBreaks = "3 months"
+#'   )
+#' )
+spcOptions <- function(rebase = NULL,
+                       fixAfterNPoints = NULL,
+                       improvementDirection = NULL,
+                       outputChart = NULL,
+                       pointSize = NULL,
+                       percentageYAxis = NULL,
+                       target = NULL,
+                       trajectory = NULL,
+                       mainTitle = NULL,
+                       xAxisLabel = NULL,
+                       yAxisLabel = NULL,
+                       fixedXAxisMultiple = NULL,
+                       fixedYAxisMultiple = NULL,
+                       xAxisDateFormat = NULL,
+                       xAxisBreaks = NULL,
+                       yAxisBreaks = NULL) {
   if (!(is.null(improvementDirection))) {
     if (length(improvementDirection) > 1) {
-      stop("Improvement direction should be numeric (1 or -1) or character (increase or decrease). ",
-           "Multiple values are not valid.")
+      stop(
+        "Improvement direction should be numeric (1 or -1) or character (increase or decrease). ",
+        "Multiple values are not valid."
+      )
     } else {
       if (is.numeric(improvementDirection)) {
         if (improvementDirection != 1 && improvementDirection != -1) {
