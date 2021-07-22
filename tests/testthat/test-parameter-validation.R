@@ -14,7 +14,7 @@ test_that("error when df is not a data.frame", {
 #valueField parameter
 test_that("error when valueField is not of type 'character'", {
   #arrange
-  data <- c(1,2,3,4,5,6,7,8,9,10,11,12)
+  data <- c(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12)
   date <- seq(as.Date("2021-03-22"), by = 1, length.out = 12)
   df <- tibble(data, date)
 
@@ -27,7 +27,7 @@ test_that("error when valueField is not of type 'character'", {
 
 test_that("error when valueField is not a vector of length 1", {
   #arrange
-  data <- c(1,2,3,4,5,6,7,8,9,10,11,12)
+  data <- c(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12)
   date <- seq(as.Date("2021-03-22"), by = 1, length.out = 12)
   df <- tibble(data, date)
 
@@ -40,7 +40,7 @@ test_that("error when valueField is not a vector of length 1", {
 
 test_that("error when valueField is not a column in the data frame", {
   #arrange
-  data <- c(1,2,3,4,5,6,7,8,9,10,11,12)
+  data <- c(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12)
   date <- seq(as.Date("2021-03-22"), by = 1, length.out = 12)
   df <- tibble(data, date)
 
@@ -54,7 +54,7 @@ test_that("error when valueField is not a column in the data frame", {
 #dateField parameter
 test_that("error when dateField is not of type 'character'", {
   #arrange
-  data <- c(1,2,3,4,5,6,7,8,9,10,11,12)
+  data <- c(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12)
   date <- seq(as.Date("2021-03-22"), by = 1, length.out = 12)
   df <- tibble(data, date)
 
@@ -67,12 +67,12 @@ test_that("error when dateField is not of type 'character'", {
 
 test_that("error when dateField is not a vector of length 1", {
   #arrange
-  data <- c(1,2,3,4,5,6,7,8,9,10,11,12)
+  data <- c(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12)
   date <- seq(as.Date("2021-03-22"), by = 1, length.out = 12)
   df <- tibble(data, date)
 
   #act
-  p <- function() spc(df, "data" ,c("date", "invalid 2nd item in vector"))
+  p <- function() spc(df, "data", c("date", "invalid 2nd item in vector"))
 
   #assert
   expect_error(p(), "spc:")
@@ -80,7 +80,7 @@ test_that("error when dateField is not a vector of length 1", {
 
 test_that("error when dateField is not a column in the data frame", {
   #arrange
-  data <- c(1,2,3,4,5,6,7,8,9,10,11,12)
+  data <- c(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12)
   date <- seq(as.Date("2021-03-22"), by = 1, length.out = 12)
   df <- tibble(data, date)
 
@@ -94,7 +94,7 @@ test_that("error when dateField is not a column in the data frame", {
 #facetField parameter
 test_that("error when facetField is not of type 'character'", {
   #arrange
-  data <- c(1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24)
+  data <- c(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24)
   date <- seq(as.Date("2021-03-22"), by = 1, length.out = 24)
   category <- c(rep("Category A", times = 12), rep("Category B", times = 12))
   df <- tibble(data, date, category)
@@ -108,7 +108,7 @@ test_that("error when facetField is not of type 'character'", {
 
 test_that("error when facetField is not a vector of length 1", {
   #arrange
-  data <- c(1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24)
+  data <- c(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24)
   date <- seq(as.Date("2021-03-22"), by = 1, length.out = 24)
   category <- c(rep("Category A", times = 12), rep("Category B", times = 12))
   df <- tibble(data, date, category)
@@ -122,7 +122,7 @@ test_that("error when facetField is not a vector of length 1", {
 
 test_that("error when facetField is not a column in the data frame", {
   #arrange
-  data <- c(1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24)
+  data <- c(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24)
   date <- seq(as.Date("2021-03-22"), by = 1, length.out = 24)
   category <- c(rep("Category A", times = 12), rep("Category B", times = 12))
   df <- tibble(data, date)
@@ -137,12 +137,12 @@ test_that("error when facetField is not a column in the data frame", {
 #options
 test_that("error when options is not of type 'list'", {
   #arrange
-  data <- c(1,2,3,4,5,6,7,8,9,10,11,12)
+  data <- c(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12)
   date <- seq(as.Date("2021-03-22"), by = 1, length.out = 12)
   df <- tibble(data, date)
 
   #act
-  p <- function() spc(df, "data", "date", options = "this is not a list")
+  p <- function() spc(df, "data", "date", options <- "this is not a list")
 
   #assert
   expect_error(p(), "spc:")
@@ -151,11 +151,11 @@ test_that("error when options is not of type 'list'", {
 #options$rebase parameter
 test_that("error when options$rebase is not of type 'character'", {
   #arrange
-  data <- c(1,2,3,4,5,6,7,8,9,10,11,12)
+  data <- c(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12)
   date <- seq(as.Date("2021-03-22"), by = 1, length.out = 12)
-  rebaseField <- c(0,0,0,1,0,0,0,0,0,1,0,0)
+  rebaseField <- c(0, 0, 0, 1, 0, 0, 0, 0, 0, 1, 0, 0)
   df <- tibble(data, date, rebaseField)
-  options = list(
+  options <- list(
     rebase = 999
   )
 
@@ -168,11 +168,11 @@ test_that("error when options$rebase is not of type 'character'", {
 
 test_that("error when options$rebase is not a vector of length 1", {
   #arrange
-  data <- c(1,2,3,4,5,6,7,8,9,10,11,12)
+  data <- c(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12)
   date <- seq(as.Date("2021-03-22"), by = 1, length.out = 12)
-  rebaseField <- c(0,0,0,1,0,0,0,0,0,1,0,0)
+  rebaseField <- c(0, 0, 0, 1, 0, 0, 0, 0, 0, 1, 0, 0)
   df <- tibble(data, date, rebaseField)
-  options = list(
+  options <- list(
     rebase = c("rebaseField", "invalid 2nd item in vector")
   )
 
@@ -185,11 +185,11 @@ test_that("error when options$rebase is not a vector of length 1", {
 
 test_that("error when options$rebase is not a column in the data frame", {
   #arrange
-  data <- c(1,2,3,4,5,6,7,8,9,10,11,12)
+  data <- c(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12)
   date <- seq(as.Date("2021-03-22"), by = 1, length.out = 12)
-  rebaseField <- c(0,0,0,1,0,0,0,0,0,1,0,0)
+  rebaseField <- c(0, 0, 0, 1, 0, 0, 0, 0, 0, 1, 0, 0)
   df <- tibble(data, date, rebaseField)
-  options = list(
+  options <- list(
     rebase = "this rebase column isnt in the data frame"
   )
 
@@ -203,10 +203,10 @@ test_that("error when options$rebase is not a column in the data frame", {
 #options$improvementDirection parameter
 test_that("error when options$improvementDirection is an invalid character vector", {
   #arrange
-  data <- c(1,2,3,4,5,6,7,8,9,10,11,12)
+  data <- c(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12)
   date <- seq(as.Date("2021-03-22"), by = 1, length.out = 12)
   df <- tibble(data, date)
-  options = list(
+  options <- list(
     improvementDirection = "invalid entry"
   )
 
@@ -219,10 +219,10 @@ test_that("error when options$improvementDirection is an invalid character vecto
 
 test_that("error when options$improvementDirection is an invalid number", {
   #arrange
-  data <- c(1,2,3,4,5,6,7,8,9,10,11,12)
+  data <- c(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12)
   date <- seq(as.Date("2021-03-22"), by = 1, length.out = 12)
   df <- tibble(data, date)
-  options = list(
+  options <- list(
     improvementDirection = 2
   )
 
@@ -236,10 +236,10 @@ test_that("error when options$improvementDirection is an invalid number", {
 #options$outputChart parameter
 test_that("error when options$ouputChart is not TRUE or FALSE", {
   #arrange
-  data <- c(1,2,3,4,5,6,7,8,9,10,11,12)
+  data <- c(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12)
   date <- seq(as.Date("2021-03-22"), by = 1, length.out = 12)
   df <- tibble(data, date)
-  options = list(
+  options <- list(
     outputChart = 1
   )
 
@@ -253,10 +253,10 @@ test_that("error when options$ouputChart is not TRUE or FALSE", {
 #options$pointSize parameter
 test_that("error when options$pointSize is not a number", {
   #arrange
-  data <- c(1,2,3,4,5,6,7,8,9,10,11,12)
+  data <- c(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12)
   date <- seq(as.Date("2021-03-22"), by = 1, length.out = 12)
   df <- tibble(data, date)
-  options = list(
+  options <- list(
     pointSize = "not a number"
   )
 
@@ -269,10 +269,10 @@ test_that("error when options$pointSize is not a number", {
 
 test_that("error when options$pointSize is less than or equal to zero", {
   #arrange
-  data <- c(1,2,3,4,5,6,7,8,9,10,11,12)
+  data <- c(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12)
   date <- seq(as.Date("2021-03-22"), by = 1, length.out = 12)
   df <- tibble(data, date)
-  options = list(
+  options <- list(
     pointSize = 0
   )
 
@@ -285,10 +285,10 @@ test_that("error when options$pointSize is less than or equal to zero", {
 
 test_that("error when options$pointSize is greater than 10", {
   #arrange
-  data <- c(1,2,3,4,5,6,7,8,9,10,11,12)
+  data <- c(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12)
   date <- seq(as.Date("2021-03-22"), by = 1, length.out = 12)
   df <- tibble(data, date)
-  options = list(
+  options <- list(
     pointSize = 10.1
   )
 
@@ -302,10 +302,10 @@ test_that("error when options$pointSize is greater than 10", {
 #options$percentageYAxis parameter
 test_that("error when options$percentageYAxis is an invalid non-logical value", {
   #arrange
-  data <- c(1,2,3,4,5,6,7,8,9,10,11,12)
+  data <- c(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12)
   date <- seq(as.Date("2021-03-22"), by = 1, length.out = 12)
   df <- tibble(data, date)
-  options = list(
+  options <- list(
     percentageYAxis = "yes"
   )
 
@@ -318,10 +318,10 @@ test_that("error when options$percentageYAxis is an invalid non-logical value", 
 
 test_that("error when options$percentageYAxis is 1 or greater", {
   #arrange
-  data <- c(1,2,3,4,5,6,7,8,9,10,11,12)
+  data <- c(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12)
   date <- seq(as.Date("2021-03-22"), by = 1, length.out = 12)
   df <- tibble(data, date)
-  options = list(
+  options <- list(
     percentageYAxis = 1
   )
 
@@ -334,10 +334,10 @@ test_that("error when options$percentageYAxis is 1 or greater", {
 
 test_that("error when options$percentageYAxis is 0 or less", {
   #arrange
-  data <- c(1,2,3,4,5,6,7,8,9,10,11,12)
+  data <- c(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12)
   date <- seq(as.Date("2021-03-22"), by = 1, length.out = 12)
   df <- tibble(data, date)
-  options = list(
+  options <- list(
     percentageYAxis = 0
   )
 
@@ -351,11 +351,11 @@ test_that("error when options$percentageYAxis is 0 or less", {
 #options$target parameter
 test_that("error when options$target is not of type 'character'", {
   #arrange
-  data <- c(1,2,3,4,5,6,7,8,9,10,11,12)
+  data <- c(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12)
   date <- seq(as.Date("2021-03-22"), by = 1, length.out = 12)
   target <- rep(20, times = 12)
   df <- tibble(data, date, target)
-  options = list(
+  options <- list(
     target = 999
   )
 
@@ -368,11 +368,11 @@ test_that("error when options$target is not of type 'character'", {
 
 test_that("error when options$target is not a vector of length 1", {
   #arrange
-  data <- c(1,2,3,4,5,6,7,8,9,10,11,12)
+  data <- c(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12)
   date <- seq(as.Date("2021-03-22"), by = 1, length.out = 12)
   target <- rep(20, times = 12)
   df <- tibble(data, date, target)
-  options = list(
+  options <- list(
     target = c("target", "invalid 2nd item in vector")
   )
 
@@ -385,11 +385,11 @@ test_that("error when options$target is not a vector of length 1", {
 
 test_that("error when options$target is not a column in the data frame", {
   #arrange
-  data <- c(1,2,3,4,5,6,7,8,9,10,11,12)
+  data <- c(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12)
   date <- seq(as.Date("2021-03-22"), by = 1, length.out = 12)
   target <- rep(20, times = 12)
   df <- tibble(data, date, target)
-  options = list(
+  options <- list(
     target = "this target column isnt in the data frame"
   )
 
@@ -403,11 +403,11 @@ test_that("error when options$target is not a column in the data frame", {
 #options$trajectory parameter
 test_that("error when options$trajectory is not of type 'character'", {
   #arrange
-  data <- c(1,2,3,4,5,6,7,8,9,10,11,12)
+  data <- c(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12)
   date <- seq(as.Date("2021-03-22"), by = 1, length.out = 12)
   trajectory <- rep(20, times = 12)
   df <- tibble(data, date, trajectory)
-  options = list(
+  options <- list(
     trajectory = 999
   )
 
@@ -420,11 +420,11 @@ test_that("error when options$trajectory is not of type 'character'", {
 
 test_that("error when options$trajectory is not a vector of length 1", {
   #arrange
-  data <- c(1,2,3,4,5,6,7,8,9,10,11,12)
+  data <- c(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12)
   date <- seq(as.Date("2021-03-22"), by = 1, length.out = 12)
   trajectory <- rep(20, times = 12)
   df <- tibble(data, date, trajectory)
-  options = list(
+  options <- list(
     trajectory = c("trajectory", "invalid 2nd item in vector")
   )
 
@@ -437,11 +437,11 @@ test_that("error when options$trajectory is not a vector of length 1", {
 
 test_that("error when options$trajectory is not a column in the data frame", {
   #arrange
-  data <- c(1,2,3,4,5,6,7,8,9,10,11,12)
+  data <- c(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12)
   date <- seq(as.Date("2021-03-22"), by = 1, length.out = 12)
   trajectory <- rep(20, times = 12)
   df <- tibble(data, date, trajectory)
-  options = list(
+  options <- list(
     trajectory = "this trajectory column isnt in the data frame"
   )
 
@@ -455,10 +455,10 @@ test_that("error when options$trajectory is not a column in the data frame", {
 #options$mainTitle parameter
 test_that("error when options$mainTitle is not of type 'character'", {
   #arrange
-  data <- c(1,2,3,4,5,6,7,8,9,10,11,12)
+  data <- c(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12)
   date <- seq(as.Date("2021-03-22"), by = 1, length.out = 12)
   df <- tibble(data, date)
-  options = list(
+  options <- list(
     mainTitle = 999
   )
 
@@ -471,10 +471,10 @@ test_that("error when options$mainTitle is not of type 'character'", {
 
 test_that("error when options$mainTitle is not a vector of length 1", {
   #arrange
-  data <- c(1,2,3,4,5,6,7,8,9,10,11,12)
+  data <- c(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12)
   date <- seq(as.Date("2021-03-22"), by = 1, length.out = 12)
   df <- tibble(data, date)
-  options = list(
+  options <- list(
     mainTitle = c("New Title", "invalid 2nd item in vector")
   )
 
@@ -488,10 +488,10 @@ test_that("error when options$mainTitle is not a vector of length 1", {
 #options$xAxisLabel parameter
 test_that("error when options$xAxisLabel is not of type 'character'", {
   #arrange
-  data <- c(1,2,3,4,5,6,7,8,9,10,11,12)
+  data <- c(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12)
   date <- seq(as.Date("2021-03-22"), by = 1, length.out = 12)
   df <- tibble(data, date)
-  options = list(
+  options <- list(
     xAxisLabel = 999
   )
 
@@ -504,10 +504,10 @@ test_that("error when options$xAxisLabel is not of type 'character'", {
 
 test_that("error when options$xAxisLabel is not a vector of length 1", {
   #arrange
-  data <- c(1,2,3,4,5,6,7,8,9,10,11,12)
+  data <- c(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12)
   date <- seq(as.Date("2021-03-22"), by = 1, length.out = 12)
   df <- tibble(data, date)
-  options = list(
+  options <- list(
     xAxisLabel = c("New X Axis Label", "invalid 2nd item in vector")
   )
 
@@ -521,10 +521,10 @@ test_that("error when options$xAxisLabel is not a vector of length 1", {
 #options$yAxisLabel parameter
 test_that("error when options$yAxisLabel is not of type 'character'", {
   #arrange
-  data <- c(1,2,3,4,5,6,7,8,9,10,11,12)
+  data <- c(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12)
   date <- seq(as.Date("2021-03-22"), by = 1, length.out = 12)
   df <- tibble(data, date)
-  options = list(
+  options <- list(
     yAxisLabel = 999
   )
 
@@ -537,10 +537,10 @@ test_that("error when options$yAxisLabel is not of type 'character'", {
 
 test_that("error when options$yAxisLabel is not a vector of length 1", {
   #arrange
-  data <- c(1,2,3,4,5,6,7,8,9,10,11,12)
+  data <- c(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12)
   date <- seq(as.Date("2021-03-22"), by = 1, length.out = 12)
   df <- tibble(data, date)
-  options = list(
+  options <- list(
     yAxisLabel = c("New Y Axis Label", "invalid 2nd item in vector")
   )
 
@@ -554,10 +554,10 @@ test_that("error when options$yAxisLabel is not a vector of length 1", {
 #options$fixedXAxisMultiple parameter
 test_that("error when options$fixedXAxisMultiple is not TRUE or FALSE", {
   #arrange
-  data <- c(1,2,3,4,5,6,7,8,9,10,11,12)
+  data <- c(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12)
   date <- seq(as.Date("2021-03-22"), by = 1, length.out = 12)
   df <- tibble(data, date)
-  options = list(
+  options <- list(
     fixedXAxisMultiple = 1
   )
 
@@ -571,10 +571,10 @@ test_that("error when options$fixedXAxisMultiple is not TRUE or FALSE", {
 #options$fixedYAxisMultiple parameter
 test_that("error when options$fixedYAxisMultiple is not TRUE or FALSE", {
   #arrange
-  data <- c(1,2,3,4,5,6,7,8,9,10,11,12)
+  data <- c(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12)
   date <- seq(as.Date("2021-03-22"), by = 1, length.out = 12)
   df <- tibble(data, date)
-  options = list(
+  options <- list(
     fixedYAxisMultiple = 0
   )
 
@@ -588,10 +588,10 @@ test_that("error when options$fixedYAxisMultiple is not TRUE or FALSE", {
 #options$xAxisDateFormat parameter
 test_that("error when options$xAxisDateFormat is not of type 'character", {
   #arrange
-  data <- c(1,2,3,4,5,6,7,8,9,10,11,12)
+  data <- c(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12)
   date <- seq(as.Date("2021-03-22"), by = 1, length.out = 12)
   df <- tibble(data, date)
-  options = list(
+  options <- list(
     xAxisDateFormat = 999
   )
 
@@ -605,10 +605,10 @@ test_that("error when options$xAxisDateFormat is not of type 'character", {
 #options$xAxisBreaks parameter
 test_that("error when options$xAxisBreaks is not of type 'character", {
   #arrange
-  data <- c(1,2,3,4,5,6,7,8,9,10,11,12)
+  data <- c(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12)
   date <- seq(as.Date("2021-03-22"), by = 1, length.out = 12)
   df <- tibble(data, date)
-  options = list(
+  options <- list(
     xAxisBreaks = "test"
   )
 
@@ -621,10 +621,10 @@ test_that("error when options$xAxisBreaks is not of type 'character", {
 
 test_that("error when options$xAxisBreaks is not a valid string for seq.Date 'by'.", {
   #arrange
-  data <- c(1,2,3,4,5,6,7,8,9,10,11,12)
+  data <- c(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12)
   date <- seq(as.Date("2021-03-22"), by = 1, length.out = 12)
   df <- tibble(data, date)
-  options = list(
+  options <- list(
     xAxisBreaks = "1 blue moon"
   )
 
@@ -638,10 +638,10 @@ test_that("error when options$xAxisBreaks is not a valid string for seq.Date 'by
 #options$yAxisBreaks parameter
 test_that("error when options$yAxisBreaks is not of type 'numeric'", {
   #arrange
-  data <- c(1,2,3,4,5,6,7,8,9,10,11,12)
+  data <- c(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12)
   date <- seq(as.Date("2021-03-22"), by = 1, length.out = 12)
   df <- tibble(data, date)
-  options = list(
+  options <- list(
     yAxisBreaks = "not numeric"
   )
 
@@ -654,10 +654,10 @@ test_that("error when options$yAxisBreaks is not of type 'numeric'", {
 
 test_that("error when options$yAxisBreaks is not a vector of length 1", {
   #arrange
-  data <- c(1,2,3,4,5,6,7,8,9,10,11,12)
+  data <- c(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12)
   date <- seq(as.Date("2021-03-22"), by = 1, length.out = 12)
   df <- tibble(data, date)
-  options = list(
+  options <- list(
     yAxisBreaks = c(10, 20)
   )
 

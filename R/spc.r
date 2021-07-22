@@ -67,7 +67,7 @@ spc <- function(
   #           pointSize, returnChart, display legend
   options = NULL
 ) {
-  #validate all inputs.  Validation problems will generate an error and stop code execution.
+  # validate all inputs.  Validation problems will generate an error and stop code execution.
   validateParameters(.data, valueField, dateField, facetField, options)
 
   if (is.null(facetField)) { # If no facet field specified, bind a pseudo-facet field for grouping/joining purposes
