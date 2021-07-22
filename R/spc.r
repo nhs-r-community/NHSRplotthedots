@@ -103,7 +103,7 @@ spc <- function(.data,
   }
 
   # set point size
-  pointSize <- ifelse(is.null(options$pointSize), 2, options$pointSize)
+  pointSize <- ifelse(is.null(options$pointSize), 4, options$pointSize)
 
   # set x axis date format
   xAxisDateFormat <- ifelse(is.null(options$xAxisDateFormat), "%d/%m/%Y", options$xAxisDateFormat)

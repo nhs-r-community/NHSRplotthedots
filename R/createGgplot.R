@@ -25,14 +25,16 @@ createGgplot <- function(df, facetField, plotOptions) {
     yaxislabels <- seq(from = start, to = end, by = plotOptions$yAxisBreaks)
   }
 
+  lineSize <- plotOptions$pointSize / 3
+
   plot <- ggplot(df, aes(x = .data$x, y = .data$y)) +
     theme_minimal() +
-    geom_line(aes(y = .data$upl), linetype = "dashed", size = plotOptions$pointSize / 2.666666, color = .darkgrey) +
-    geom_line(aes(y = .data$lpl), linetype = "dashed", size = plotOptions$pointSize / 2.666666, color = .darkgrey) +
-    geom_line(aes(y = .data$target), linetype = "dashed", size = plotOptions$pointSize / 2.666666, color = .purple) +
-    geom_line(aes(y = .data$trajectory), linetype = "dashed", size = plotOptions$pointSize / 2.666666, color = .red) +
+    geom_line(aes(y = .data$upl), linetype = "dashed", size = lineSize, color = .darkgrey) +
+    geom_line(aes(y = .data$lpl), linetype = "dashed", size = lineSize, color = .darkgrey) +
+    geom_line(aes(y = .data$target), linetype = "dashed", size = lineSize, color = .purple) +
+    geom_line(aes(y = .data$trajectory), linetype = "dashed", size = lineSize, color = .red) +
     geom_line(aes(y = mean)) +
-    geom_line(color = .darkgrey, size = plotOptions$pointSize / 2.666666) +
+    geom_line(color = .darkgrey, size = lineSize) +
     geom_point(color = .darkgrey, size = plotOptions$pointSize)
 
   # Apply facet wrap if a facet field is present
