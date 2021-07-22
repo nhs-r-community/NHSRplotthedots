@@ -105,7 +105,7 @@ spcStandard <- function(.data, options = NULL) {
 
   # Create a data frame of rebase intervals, with first and last x axis points and all intervening x axis points which
   # will trigger a new rebase period
-  rebaseTable4 <- rbind(rebaseTable, rebaseTable2, rebaseTable3) %>%
+  rebaseTable4 <- bind_rows(rebaseTable, rebaseTable2, rebaseTable3) %>%
     # order by facet and x axis
     arrange(.data$f, .data$x) %>%
     # group by facet
@@ -132,7 +132,7 @@ spcStandard <- function(.data, options = NULL) {
   # Join data frame to rebase groupings, and filter to x axis between grouping start (inclusive) and end (exclusive)
   # - note that this will omit the last row in each facet because it belongs to the previous rebase group
   df2 <- .data %>%
-    left_join(rebaseTable4, by = c("f" = "f")) %>%
+    left_join(rebaseTable4, by = "f") %>%
     filter(.data$x >= .data$start, .data$x < .data$end) %>%
     # set the first moving range value in each rebase group to NA, as this is not included in the new mean calculations
     mutate(movingrange = case_when(
