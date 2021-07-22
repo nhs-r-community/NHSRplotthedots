@@ -54,7 +54,7 @@
 #' # spcOptions should be supplied the the options argument within the spc function.
 #' spc(trusts4, valueField = "breaches", dateField = "period", facetField = "org_code",
 #'     options = spcOptions(improvementDirection = "decrease",
-#'                          fixedYAxisMultiple = FALSE
+#'                          fixedYAxisMultiple = FALSE,
 #'                          xAxisBreaks = "3 months"))
 
 spcOptions <- function(
