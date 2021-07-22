@@ -24,7 +24,8 @@ Imports:
     ggplot2,
     scales,
     dplyr,
-    rlang
+    rlang,
+    crayon
 Suggests: 
     covr,
     lintr,
@@ -34,4 +35,3 @@ Suggests:
     NHSRdatasets
 VignetteBuilder: knitr
 Config/testthat/edition: 3
-
