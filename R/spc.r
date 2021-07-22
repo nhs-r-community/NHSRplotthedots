@@ -89,8 +89,15 @@ spc <- function(.data,
     options$improvementDirection
   }
 
+  ## Plot the dots SPC logic ----
+  df <- calculatePointHighlighting(df, improvementDirection)
+
   # set output chart
   outputChart <- is.null(options$outputChart) || options$outputChart
+
+  if (!outputChart) {
+    return(df)
+  }
 
   # set x axis breaks
   if (is.null(options$xAxisBreaks)) {
@@ -152,37 +159,19 @@ spc <- function(.data,
     0.1 * as.numeric(options$percentageYAxis)
   }
 
-  # set plot theme override
-  themeOverride <- if (is.null(options$plotThemeOverride)) {
-    NULL
-  } else {
-    options$plotThemeOverride
-  }
+  # build a list of plotOptions to pass into the createGgplot() function
+  plotOptions <- list(
+    pointSize = pointSize,
+    plottitle = plottitle,
+    xlabel = xlabel,
+    ylabel = ylabel,
+    xaxislabels = xaxislabels,
+    xAxisDateFormat = xAxisDateFormat,
+    convertToPercentages = convertToPercentages,
+    facetScales = facetScales,
+    yAxisBreaks = yAxisBreaks
+  )
 
-  ## Plot the dots SPC logic ----
-  df <- calculatePointHighlighting(df, improvementDirection)
-
-  ## Create ggplot using plot the dots colours OR output data frame ----
-  # Create chart if required
-  if (outputChart) {
-
-    # build a list of plotOptions to pass into the createGgplot() function
-    plotOptions <- list(
-      pointSize = pointSize,
-      plottitle = plottitle,
-      xlabel = xlabel,
-      ylabel = ylabel,
-      xaxislabels = xaxislabels,
-      xAxisDateFormat = xAxisDateFormat,
-      convertToPercentages = convertToPercentages,
-      facetScales = facetScales,
-      yAxisBreaks = yAxisBreaks,
-      themeOverride = themeOverride
-    )
-
-    # make and return the plot
-    return(createGgplot(df, facetField, plotOptions))
-  }
-
-  df
+  # make and return the plot
+  createGgplot(df, facetField, plotOptions)
 }
