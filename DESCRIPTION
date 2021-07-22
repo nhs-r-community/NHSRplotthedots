@@ -1,6 +1,6 @@
 Package: NHSRplotthedots
 Type: Package
-Title: A package to draw XmR charts in support of NHSE/I 'Making Data Count' programme
+Title: A Package to Draw XmR Charts in Support of NHSE/I 'Making Data Count' Programme
 Version: 0.1.0
 Authors@R: c(
           person("Christopher", "Reading", ,"christopher.reading1@nhs.net", c("cre", "aut")),
