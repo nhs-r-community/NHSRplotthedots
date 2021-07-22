@@ -46,9 +46,11 @@ createGgplot <- function(df, facetField, plotOptions) {
   plot <- plot +
     geom_point(aes(x = .data$x, y = .data$specialCauseImprovement), color = .skyblue, size = plotOptions$pointSize) +
     geom_point(aes(x = .data$x, y = .data$specialCauseConcern), color = .orange, size = plotOptions$pointSize) +
-    ggtitle(label = plotOptions$plottitle) +
-    xlab(label = plotOptions$xlabel) +
-    ylab(label = plotOptions$ylabel) +
+    labs(
+      title = plotOptions$plottitle,
+      x = plotOptions$xlabel,
+      y = plotOptions$ylabel
+    ) +
     scale_x_date(
       breaks = plotOptions$xaxislabels,
       labels = format(plotOptions$xaxislabels, format = plotOptions$xAxisDateFormat)
