@@ -4,10 +4,10 @@
 \alias{spc}
 \title{SPC Plotting Function}
 \usage{
-spc(data.frame, valueField, dateField, facetField = NULL, options = NULL)
+spc(.data, valueField, dateField, facetField = NULL, options = NULL)
 }
 \arguments{
-\item{data.frame}{A data frame containing a value field, a date field,
+\item{.data}{A data frame containing a value field, a date field,
 and a category field (if for faceting). There should be no gaps in the time series
 for each category.}
 
@@ -17,13 +17,16 @@ Field name can be specified using non-standard evaluation (i.e. no quotation mar
 \item{dateField}{Specify the field name which contains the date data, to be plotted on x axis.
 Field name can be specified using non-standard evaluation (i.e. no quotation marks).}
 
-\item{facetField}{Optional: Specify field name which contains a grouping/faceting variable. SPC logic will be applied to each group separately, with outputs combined. Currently accepts 1 variable only.
+\item{facetField}{Optional: Specify field name which contains a grouping/faceting variable. SPC logic will be applied
+    to each group separately, with outputs combined. Currently accepts 1 variable only.
 Field name can be specified using non-standard evaluation (i.e. no quotation marks).}
 
-\item{options}{Optional: A list object containing additional control and formatting properties. Preferably created using the spcOptions function.}
+\item{options}{Optional: A list object containing additional control and formatting properties. Preferably created
+using the spcOptions function.}
 }
 \value{
-A ggplot2 object of the spc charts.  This will automatically print the plot, but can also be saved as an object if you want to manipulate it further.
+A ggplot2 object of the spc charts.  This will automatically print the plot, but can also be saved as an
+    object if you want to manipulate it further.
 }
 \description{
 `spc` returns a plot object or data table with SPC values using NHSI 'plot the dots' logic.
