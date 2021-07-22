@@ -17,6 +17,10 @@ options <- list(
   trajectory = "h"
 )
 
+test_that("it throws an error if .data is not a data.frame", {
+  expect_error(spc("x", "a", "b"), "spc: .data must be a data.frame")
+})
+
 test_that("it returns a ptd_spc_df object", {
   stub(spc, "spcOptions", options)
   stub(spc, "validate", TRUE)
