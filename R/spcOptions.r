@@ -8,25 +8,7 @@
 #'
 #' @inheritParams spc
 #'
-#' @examples
-#' library(NHSRdatasets)
-#' data("ae_attendances")
-#'
-#' # Pick a few trust, and plot individually using facet
-#' # Also set the xaxis scale to vary for each and date groups to 3 months, using spcOptions
-#'
-#' orgs <- ae_attendances$org_code %in% c("RAS", "RJZ", "RR1", "RJC", "RQ1")
-#' trusts4 <- subset(ae_attendances, orgs & type == 1)
-#'
-#' # spcOptions should be supplied the the options argument within the spc function.
-#' spc(trusts4,
-#'   valueField = "breaches", dateField = "period", facetField = "org_code",
-#'   options = spcOptions(
-#'     improvementDirection = "decrease",
-#'     fixedYAxisMultiple = FALSE,
-#'     xAxisBreaks = "3 months"
-#'   )
-#' )
+#' @noRd
 spcOptions <- function(valueField,
                        dateField,
                        facetField = NULL,
@@ -94,8 +76,8 @@ validate.ptd_spc_options <- function(options, .data) {
 
 validate.ptd_spc_options.data.frame <- function(options, .data) {
   check <- function(op) {
-    if (is.null(options[[op]])) return (TRUE)
-    if (options[[op]] %in% colnames(.data)) return (TRUE)
+    if (is.null(options[[op]])) return(TRUE)
+    if (options[[op]] %in% colnames(.data)) return(TRUE)
     stop(op, ": '", options[[op]], "' must be a valid column name in the data frame.")
   }
   check("valueField")
