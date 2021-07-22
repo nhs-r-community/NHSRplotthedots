@@ -1,6 +1,7 @@
 linters: with_defaults(
   line_length_linter(120),
-  object_name_linter("camelCase"))
+  object_name_linter("camelCase"),
+  cyclocomp_linter(25))
 exclusions: list()
 exclude: "# Exclude Linting"
 exclude_start: "# Begin Exclude Linting"

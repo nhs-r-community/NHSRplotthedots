@@ -7,7 +7,7 @@
 #' logic produced by NHSI. The function can return either a plot or data frame.
 #'
 #'
-#' @param data.frame A data frame containing a value field, a date field,
+#' @param .data A data frame containing a value field, a date field,
 #' and a category field (if for faceting). There should be no gaps in the time series
 #' for each category.
 #' @param valueField Specify the field name which contains the value data, to be plotted on y axis.
@@ -59,7 +59,7 @@
 
 
 spc <- function(
-  data.frame,
+  .data,
   valueField,
   dateField,
   facetField = NULL,
@@ -67,107 +67,62 @@ spc <- function(
   #           pointSize, returnChart, display legend
   options = NULL
 ) {
-
-  # initialise variables
-  f <- NULL
-
   #validate all inputs.  Validation problems will generate an error and stop code execution.
-  validateParameters(data.frame, valueField, dateField, facetField, options)
+  validateParameters(.data, valueField, dateField, facetField, options)
 
   if (is.null(facetField)) { # If no facet field specified, bind a pseudo-facet field for grouping/joining purposes
     facetField <- "pseudo_facet_col_name"
   }
 
-  df <- spcStandard(data.frame, valueField, dateField, facetField, options)
+  df <- spcStandard(.data, valueField, dateField, facetField, options)
 
   # Declare improvement direction as integer
-  if (!(is.null(options$improvementDirection))) {
-
-    if (options$improvementDirection == "increase" || options$improvementDirection == 1) {
-      improvementDirection <- 1
-    } else if (options$improvementDirection == "decrease" || options$improvementDirection == -1) {
-      improvementDirection <- -1
-    }
+  improvementDirection <- if (is.null(options$improvementDirection)) {
+    1
+  } else if (options$improvementDirection == "increase") {
+    1
+  } else if (options$improvementDirection == "decrease") {
+    -1
   } else {
-    improvementDirection <- 1
+    options$improvementDirection
   }
 
-  #set output chart
-  if (!(is.null(options$outputChart))) { # Check if chart required as output
-    if (options$outputChart == TRUE) {
-      outputChart <- 1
-    } else if (options$outputChart == FALSE) {
-      outputChart <- 0
-    }
-  } else {
-    outputChart <- 1
-  }
+  # set output chart
+  outputChart <- is.null(options$outputChart) || options$outputChart
 
-  #set x axis breaks
-  if (!(is.null(options$xAxisBreaks))) {
+  # set x axis breaks
+  if (is.null(options$xAxisBreaks)) {
+    xaxislabels <- df$x
+  } else {
     xaxis <- df$x
     start <- min(xaxis, na.rm = TRUE)
     end <- max(xaxis, na.rm = TRUE)
     xaxislabels <- seq.Date(from = as.Date(start), to = as.Date(end), by = options$xAxisBreaks)
-  } else {
-    xaxislabels <- df$x
   }
 
-  #set point size
-  pointSize <- if (is.null(options$pointSize)) {
-    2
-  } else {
-    options$pointSize
-  }
+  # set point size
+  pointSize <- ifelse(is.null(options$pointSize), 2, options$pointSize)
 
-  #set x axis date format
-  if (!(is.null(options$xAxisDateFormat))) {
-    xAxisDateFormat <- options$xAxisDateFormat
-  } else {
-    xAxisDateFormat <- "%d/%m/%Y"
-  }
+  # set x axis date format
+  xAxisDateFormat <- ifelse(is.null(options$xAxisDateFormat), "%d/%m/%Y", options$xAxisDateFormat)
 
-  #set main plot title
-  if (!(is.null(options$mainTitle))) {
-    plottitle <- options$mainTitle
-  } else {
-    plottitle <- "SPC Chart"
-  }
+  # set main plot title
+  plottitle <- ifelse(is.null(options$mainTitle), "SPC Chart", options$mainTitle)
 
-  #set x axis label
-  if (!(is.null(options$xAxisLabel))) {
-    xlabel <- options$xAxisLabel
-  } else {
-    xlabel <- capitalise(dateField)
-  }
+  # set x axis label
+  xlabel <- ifelse(is.null(options$xAxisLabel), capitalise(dateField), options$xAxisLabel)
 
-  #set y axis label
-  if (!(is.null(options$yAxisLabel))) {
-    ylabel <- options$yAxisLabel
-  } else {
-    ylabel <- capitalise(valueField)
-  }
+  # set y axis label
+  ylabel <- ifelse(is.null(options$yAxisLabel), capitalise(valueField), options$yAxisLabel)
 
-  #set y axis breaks
-  if (!(is.null(options$yAxisBreaks))) {
-    yAxisBreaks <- options$yAxisBreaks
-  } else {
-    yAxisBreaks <- NULL
-  }
+  # set y axis breaks
+  yAxisBreaks <- options$yAxisBreaks
 
-  #set x axis fixed scaling for facet plots
-  if (!(is.null(options$fixedXAxisMultiple))) {
-    scaleXFixed <- options$fixedXAxis
-  } else {
-    scaleXFixed <- TRUE
-  }
+  # set x axis fixed scaling for facet plots
+  scaleXFixed <- ifelse(is.null(options$fixedXAxisMultiple), TRUE, options$fixedXAxis)
 
-  #set y axis fixed scaling for facet plots
-  if (!(is.null(options$fixedYAxisMultiple))) {
-    scaleYFixed <- options$fixedYAxis
-  } else {
-    scaleYFixed <- TRUE
-  }
+  # set y axis fixed scaling for facet plots
+  scaleYFixed <- ifelse(is.null(options$fixedYAxisMultiple), TRUE, options$fixedYAxis)
 
   # For multiple facet chart, derived fixed/free scales value from x and y axis properties
   facetScales <- if (scaleYFixed == TRUE && scaleXFixed == TRUE) {
@@ -180,28 +135,23 @@ spc <- function(
     "free"
   }
 
-
-
-  #set percentage y axis
-  if (!(is.null(options$percentageYAxis))) { # Check if Y values are percentages
-    if (is.numeric(options$percentageYAxis)) {
-      convertToPercentages <- options$percentageYAxis
-    } else if (is.logical(options$percentageYAxis)) {
-      convertToPercentages <- 0.1 * as.numeric(options$percentageYAxis)
-    }
-  } else {
-    convertToPercentages <- 0
+  # set percentage y axis
+  convertToPercentages <- if (is.null(options$percentageYAxis)) {
+    0
+  } else if (is.numeric(options$percentageYAxis)) {
+    options$percentageYAxis
+  } else if (is.logical(options$percentageYAxis)) {
+    0.1 * as.numeric(options$percentageYAxis)
   }
-
 
   ## Plot the dots SPC logic ----
   df <- calculatePointHighlighting(df, improvementDirection)
 
   ## Create ggplot using plot the dots colours OR output data frame ----
   # Create chart if required
-  if (outputChart == 1) {
+  if (outputChart) {
 
-    #build a list of plotOptions to pass into the createGgplot() function
+    # build a list of plotOptions to pass into the createGgplot() function
     plotOptions <- list(
       pointSize = pointSize,
       plottitle = plottitle,
@@ -214,13 +164,9 @@ spc <- function(
       yAxisBreaks = yAxisBreaks
     )
 
-    #make and return the plot
-    plot <- createGgplot(df, facetField, plotOptions)
-    return(plot)
-
-  } else if (outputChart == 0) {
-
-    #or return the calculated dataframe
-    return(df)
+    # make and return the plot
+    return(createGgplot(df, facetField, plotOptions))
   }
+
+  df
 }
