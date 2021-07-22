@@ -12,7 +12,9 @@ Authors@R: c(
           person("NHS-R community", role = "cph")
           )
 Maintainer: Christopher Reading <christopher.reading1@nhs.net>
-Description: This package is built by the NHS-R community to provide tools for drawing statistical process control (SPC) charts. This package supports the NHSE/I programme 'Making Data Count', and allows users to draw XmR charts, use change points and apply rules with summary indicators for when rules are breached.
+Description: Provides tools for drawing Statistical Process Control (SPC) charts. This package supports the NHSE/I
+  programme 'Making Data Count', and allows users to draw XmR charts, use change points and apply rules with summary
+  indicators for when rules are breached.
 License: MIT + file LICENSE
 Encoding: UTF-8
 LazyData: true
