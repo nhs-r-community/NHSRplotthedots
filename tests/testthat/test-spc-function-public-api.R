@@ -11,7 +11,7 @@ test_that("spc function can create a ggplot", {
 
   # assert
   expect_s3_class(result, "ggplot")
-  expect_identical(result$labels$title, "SPC Chart")
+  expect_identical(result$labels$title, "SPC Chart of Data, starting 22/03/2021")
   expect_identical(result$labels$subtitle, NULL)
   expect_identical(result$labels$caption, NULL)
   expect_identical(result$labels$x, "Date")
