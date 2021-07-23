@@ -108,8 +108,8 @@ create_spc_plot <- function(.data,
     theme_minimal() +
     geom_line(aes(y = .data$upl), linetype = "dashed", size = pointSize / 2.666666, color = .darkgrey) +
     geom_line(aes(y = .data$lpl), linetype = "dashed", size = pointSize / 2.666666, color = .darkgrey) +
-    geom_line(aes(y = .data$target), linetype = "dashed", size = pointSize / 2.666666, color = .purple) +
-    geom_line(aes(y = .data$trajectory), linetype = "dashed", size = pointSize / 2.666666, color = .red) +
+    geom_line(aes(y = .data$target), linetype = "dashed", size = pointSize / 2.666666, color = .purple, na.rm = TRUE) +
+    geom_line(aes(y = .data$trajectory), linetype = "dashed", size = pointSize / 2.666666, color = .red, na.rm = TRUE) +
     geom_line(aes(y = mean)) +
     geom_line(color = .darkgrey, size = pointSize / 2.666666) +
     geom_point(color = .darkgrey, size = pointSize)
@@ -121,8 +121,8 @@ create_spc_plot <- function(.data,
   }
 
   plot <- plot +
-    geom_point(aes(x = .data$x, y = .data$specialCauseImprovement), color = .skyblue, size = pointSize) +
-    geom_point(aes(x = .data$x, y = .data$specialCauseConcern), color = .orange, size = pointSize) +
+    geom_point(aes(x = .data$x, y = .data$specialCauseImprovement), color = .skyblue, size = pointSize, na.rm = TRUE) +
+    geom_point(aes(x = .data$x, y = .data$specialCauseConcern), color = .orange, size = pointSize, na.rm = TRUE) +
     labs(title = plottitle,
          x = xlabel,
          y = ylabel) +
