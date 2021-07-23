@@ -65,7 +65,7 @@ partOfSevenTrend <- function(v) {
     c(sapply(seq_along(v)[-(1:6)], function(i) {
         any(v[i - 0:6] == 1)
       }),
-      tail(v, 6)) | v
+      utils::tail(v, 6)) | v
   )
 }
 

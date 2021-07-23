@@ -26,7 +26,8 @@ Imports:
     scales,
     dplyr,
     rlang,
-    crayon
+    crayon,
+    utils
 Suggests: 
     covr,
     lintr,
