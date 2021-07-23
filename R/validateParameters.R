@@ -40,16 +40,18 @@ validateParameters <- function(df, valueField, dateField, facetField, options) {
     if (!(is.list(options))) stop("spc: options argument must be of type 'list'.")
   }
 
-  # if provided, options$rebase must be of character type, length 1, and a column name from within the data frame
+  # if provided, options$rebase must be of character type, length 1, and a column name from within the data frame OR a vector of dates
   if (!is.null(options$rebase)) {
-    if (!is.character(options$rebase)) {
-      stop("spc: options$rebase argument must be of type 'character'.")
-    }
-    if (length(options$rebase) > 1) {
-      stop("spc: options$rebase argument must be a vector of length 1.")
-    }
-    if (!(options$rebase %in% colnames(df))) {
-      stop("spc: options$rebase argument must be a column name from the data frame.")
+    if(!all(isDate(options$rebase))){
+      if (!is.character(options$rebase)) {
+        stop("spc: options$rebase argument must be of type 'character'.")
+      }
+      if (length(options$rebase) > 1) {
+        stop("spc: options$rebase argument must be either: 1) a vector of length 1 specifying a column name from within the dataset, or 2) a vector of dates in '%Y-%m-%d' format.")
+      }
+      if (!(options$rebase %in% colnames(df))) {
+        stop("spc: options$rebase argument must be either: 1) a vector of length 1 specifying a column name from within the dataset, or 2) a vector of dates in '%Y-%m-%d' format.")
+      }
     }
   }
 

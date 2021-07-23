@@ -26,21 +26,9 @@
 spcStandard <- function(.data, valueField, dateField, facetField = NULL, options = NULL) {
 
   # Identify a rebase, trajectory and target fields, if provided in SPC options object
-  rebaseField <- options$rebase[[1]]
+  rebaseField <- options$rebase
   trajectoryField <- options$trajectory[[1]]
   targetField <- options$target[[1]]
-
-  # Declare improvement direction as integer
-  # TODO: This is not used! Is it meant to be?
-  if (!(is.null(options$improvementDirection))) {
-    if (options$improvementDirection == "increase" || options$improvementDirection == 1) {
-      improvementDirection <- 1
-    } else if (options$improvementDirection == "decrease" || options$improvementDirection == -1) {
-      improvementDirection <- -1
-    }
-  } else {
-    improvementDirection <- 1
-  }
 
   # set trajectory field
   if (!(is.null(trajectoryField))) {
@@ -64,9 +52,14 @@ spcStandard <- function(.data, valueField, dateField, facetField = NULL, options
 
   # Set rebase field or create pseudo
   if (!(is.null(rebaseField))) {
-    .data$rebase <- .data[[rebaseField]]
+    if (rebaseField[[1]] %in% names(.data)) {
+      .data$rebase <- .data[[rebaseField[[1]]]]
+    } else if (all(isDate(rebaseField))) {
+      dates <- .data[[dateField]]
+      .data$rebase <- as.integer(as.Date(dates) %in% as.Date(rebaseField))
+    }
   } else {
-    .data$rebase <- rep(0, nrow(.data)) # If no rebase field supplied, create an empty rebase field (all NAs)
+    .data$rebase <- rep(0, nrow(.data))
   }
 
   # Check validity of rebase field supplied - should be 1s and 0s only -

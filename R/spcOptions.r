@@ -7,10 +7,10 @@
 #' the spc function, with the options listed within spcOptions.  See examples below.
 #'
 #'
-#' @param rebase Specify a field name which contains a control limit rebasing flag.
-#'     This field should contain integer values 0 and 1, and any date value where the rebase field is 1 will
-#'     trigger a recalculation of the control limits.
-#'     Field name can be specified using non-standard evaluation (i.e. no quotation marks).
+#' @param rebase Specify either 1) a vector of dates in format "%Y-%m-%d" which will be used to rebase chart
+#'     (including all facets) at the same date intervals, or 2) a field name which contains a control limit
+#'     rebasing flag. If a field name, the field should contain integer values 0 and 1, and any date value
+#'     where the rebase field is 1 will trigger a recalculation of the control limits.
 #' @param fixAfterNPoints Specify a number points after which to fix SPC calculations.
 #' @param improvementDirection Specify whether an increase or decrease in measured variable signifies
 #'     process improvement. Accepted values are 1 or 'increase' for increase as improvement or -1 or 'decrease' for

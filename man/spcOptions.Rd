@@ -24,10 +24,10 @@ spcOptions(
 )
 }
 \arguments{
-\item{rebase}{Specify a field name which contains a control limit rebasing flag.
-This field should contain integer values 0 and 1, and any date value where the rebase field is 1 will
-trigger a recalculation of the control limits.
-Field name can be specified using non-standard evaluation (i.e. no quotation marks).}
+\item{rebase}{Specify either 1) a vector of dates in format "%Y-%m-%d" which will be used to rebase chart (including all facets) at the same date intervals,
+or 2) a field name which contains a control limit rebasing flag.
+If a field name, the field should contain integer values 0 and 1, and any date value where the rebase field is 1 will
+trigger a recalculation of the control limits.}
 
 \item{fixAfterNPoints}{Specify a number points after which to fix SPC calculations.}
 
