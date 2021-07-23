@@ -51,6 +51,8 @@ calculatePointHighlighting <- function(.data, improvementDirection) {
 }
 
 sevenPointOneSideOfMean <- function(v) {
+  # edge case: length(v) < 7
+  if (length(v) < 7) return(numeric(length(v)))
   # the first 6 points will be 0
   c(rep(0, 6),
     # then, do a rolling apply to check for equality
@@ -60,16 +62,21 @@ sevenPointOneSideOfMean <- function(v) {
 }
 
 partOfSevenTrend <- function(v) {
+  # edge case: length(v) < 7
+  if (length(v) < 7) return(numeric(length(v)))
+  # pad v
+  vp <- c(v, rep(0, 6))
   # either, this value is already part of 7, or one of the following 6 points is
   as.numeric(
-    c(sapply(seq_along(v)[-(1:6)], function(i) {
-        any(v[i - 0:6] == 1)
-      }),
-      utils::tail(v, 6)) | v
+    sapply(seq_along(v), function(i) {
+      any(vp[i + 0:6] == 1)
+    })
   )
 }
 
 sevenPointTrend <- function(y) {
+  # edge case: length(v) < 7
+  if (length(y) < 7) return(numeric(length(y)))
   # the first 6 points will be 0
   c(rep(0, 6),
     sapply(seq_along(y)[-(1:6)], function(i) {
@@ -81,6 +88,7 @@ sevenPointTrend <- function(y) {
 }
 
 twoInThree <- function(v) {
+  if (length(v) == 0) return(numeric())
   # pad the vector with two 0 at start, two 0 at end
   vp <- c(0, 0, v, 0, 0)
   sapply(seq_along(v), function(i) {
@@ -117,8 +125,7 @@ specialCauseImprovement <- function(outsideLimits,
     outsideLimits == 1 & relativeToMean == improvementDirection ~ y,
     partOfSevenPointOneSideOfMean == 1 & relativeToMean == improvementDirection ~ y,
     partOfTwoInThree == 1 & relativeToMean == improvementDirection ~ y,
-    partOfSevenPointTrend == 1 & improvementDirection == 1 ~ y,
-    partOfSevenPointTrend == -1 & improvementDirection == -1 ~ y
+    abs(partOfSevenPointTrend) == 1 & improvementDirection == partOfSevenPointTrend ~ y
   )
 }
 
