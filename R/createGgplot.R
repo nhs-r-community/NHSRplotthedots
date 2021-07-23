@@ -25,7 +25,7 @@
 createGgplot <- function(.data,
                          pointSize = 2.5,
                          percentageYAxis = FALSE,
-                         mainTitle = NULL,
+                         mainTitle = "SPC Chart",
                          xAxisLabel = NULL,
                          yAxisLabel = NULL,
                          fixedXAxisMultiple = NULL,
@@ -33,16 +33,17 @@ createGgplot <- function(.data,
                          xAxisDateFormat = "%d/%m/%Y",
                          xAxisBreaks = NULL,
                          yAxisBreaks = NULL) {
-  validatePlotOptions$pointSize(pointSize)
-  validatePlotOptions$percentageYAxis(percentageYAxis)
-  validatePlotOptions$mainTitle(mainTitle)
-  validatePlotOptions$xAxisLabel(xAxisLabel)
-  validatePlotOptions$yAxisLabel(yAxisLabel)
-  validatePlotOptions$fixedXAxisMultiple(fixedXAxisMultiple)
-  validatePlotOptions$fixedYAxisMultiple(fixedYAxisMultiple)
-  validatePlotOptions$xAxisDateFormat(xAxisDateFormat)
-  validatePlotOptions$xAxisBreaks(xAxisBreaks)
-  validatePlotOptions$yAxisBreaks(yAxisBreaks)
+
+  validatePlotOptions(pointSize,
+                      percentageYAxis,
+                      mainTitle,
+                      xAxisLabel,
+                      yAxisLabel,
+                      fixedXAxisMultiple,
+                      fixedYAxisMultiple,
+                      xAxisDateFormat,
+                      xAxisBreaks,
+                      yAxisBreaks)
 
   # Colour Palette for ggplot
   .darkgrey <- "#7B7D7D"
@@ -61,11 +62,6 @@ createGgplot <- function(.data,
     start <- min(xaxis, na.rm = TRUE)
     end <- max(xaxis, na.rm = TRUE)
     xaxislabels <- seq.Date(from = as.Date(start), to = as.Date(end), by = xAxisBreaks)
-  }
-
-  # set main plot title
-  if (is.null(mainTitle)) {
-    mainTitle <- "SPC Chart"
   }
 
   # set x axis label
@@ -192,8 +188,16 @@ plot.ptd_spc_df <- function(x, ...) {
   createGgplot(x, ...)
 }
 
-validatePlotOptions <- list()
-validatePlotOptions$pointSize <- function(pointSize) {
+validatePlotOptions <- function(pointSize = NULL,
+                                percentageYAxis = NULL,
+                                mainTitle = NULL,
+                                xAxisLabel = NULL,
+                                yAxisLabel = NULL,
+                                fixedXAxisMultiple = NULL,
+                                fixedYAxisMultiple = NULL,
+                                xAxisDateFormat = NULL,
+                                xAxisBreaks = NULL,
+                                yAxisBreaks = NULL) {
   if (!is.null(pointSize) && !(
     is.numeric(pointSize) &&
     length(pointSize) == 1 &&
@@ -202,8 +206,7 @@ validatePlotOptions$pointSize <- function(pointSize) {
   )) {
     stop("pointSize must be a single number greater than 0 and less than or equal to 10.")
   }
-}
-validatePlotOptions$percentageYAxis <- function(percentageYAxis) {
+
   if (!is.null(percentageYAxis) && !(
     (is.logical(percentageYAxis) || is.numeric(percentageYAxis)) &&
     length(percentageYAxis) == 1 &&
@@ -212,56 +215,49 @@ validatePlotOptions$percentageYAxis <- function(percentageYAxis) {
   )) {
     stop("percentageYAxis argument must a single value of TRUE, FALSE, or a numeric between 0 and 1.")
   }
-}
-validatePlotOptions$mainTitle <- function(mainTitle) {
+
   if (!is.null(mainTitle) && !(
     is.character(mainTitle) &&
     length(mainTitle) == 1
   )) {
     stop("mainTitle argument must be a character of length 1.")
   }
-}
-validatePlotOptions$xAxisLabel <- function(xAxisLabel) {
+
   if (!is.null(xAxisLabel) && !(
     is.character(xAxisLabel) &&
     length(xAxisLabel) == 1
   )) {
     stop("xAxisLabel argument must be a character of length 1.")
   }
-}
-validatePlotOptions$yAxisLabel <- function(yAxisLabel) {
+
   if (!is.null(yAxisLabel) && !(
     is.character(yAxisLabel) &&
     length(yAxisLabel) == 1
   )) {
     stop("yAxisLabel argument must be a character of length 1.")
   }
-}
-validatePlotOptions$fixedXAxisMultiple <- function(fixedXAxisMultiple) {
+
   if (!is.null(fixedXAxisMultiple) && !(
     is.logical(fixedXAxisMultiple) &&
     length(fixedXAxisMultiple) == 1
   )) {
     stop("fixedXAxisMultiple argument must be a logical of length 1.")
   }
-}
-validatePlotOptions$fixedYAxisMultiple <- function(fixedYAxisMultiple) {
+
   if (!is.null(fixedYAxisMultiple) && !(
     is.logical(fixedYAxisMultiple) &&
     length(fixedYAxisMultiple) == 1
   )) {
     stop("fixedYAxisMultiple argument must be a logical of length 1.")
   }
-}
-validatePlotOptions$xAxisDateFormat <- function(xAxisDateFormat) {
+
   if (!is.null(xAxisDateFormat) && !(
     is.character(xAxisDateFormat) &&
     length(xAxisDateFormat) == 1
   )) {
     stop("xAxisDateFormat argument must be a character of length 1.")
   }
-}
-validatePlotOptions$xAxisBreaks <- function(xAxisBreaks) {
+
   if (!is.null(xAxisBreaks) && !(
     is.character(xAxisBreaks) &&
     length(xAxisBreaks) == 1 &&
@@ -272,12 +268,13 @@ validatePlotOptions$xAxisBreaks <- function(xAxisBreaks) {
       "See seq.Date for more information."
     )
   }
-}
-validatePlotOptions$yAxisBreaks <- function(yAxisBreaks) {
+
   if (!is.null(yAxisBreaks) && !(
     is.character(yAxisBreaks) &&
     length(yAxisBreaks) == 1
   )) {
     stop("yAxisBreaks argument must be a character of length 1.")
   }
+
+  invisible(TRUE)
 }
