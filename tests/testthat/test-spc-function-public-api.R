@@ -84,7 +84,7 @@ test_that("ggplot title and axis labels can be modified with options", {
 
 test_that("ggplot theme can be over-ridden with options", {
   #arrange
-  data <- c(1,2,3,4,5,6,7,8,9,10,11,12)
+  data <- c(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12)
   date <- seq(as.Date("2021-03-22"), by = 1, length.out = 12)
   df <- tibble(data, date)
   options = list(

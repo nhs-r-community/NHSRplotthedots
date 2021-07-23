@@ -110,10 +110,10 @@ spc <- function(.data,
 
   # set main plot title
   plottitle <- ifelse(
-    is.null(options$mainTitle), 
+    is.null(options$mainTitle),
     paste0(
       "SPC Chart of ", capitalise(valueField), ", starting ", format(min(df$x, na.rm = TRUE), format = "%d/%m/%Y")
-    ), 
+    ),
     options$mainTitle
   )
 
@@ -154,7 +154,7 @@ spc <- function(.data,
 
   # set plot theme override
   themeOverride <- if (is.null(options$plotThemeOverride)) {
-    NULL 
+    NULL
   } else {
     options$plotThemeOverride
   }
