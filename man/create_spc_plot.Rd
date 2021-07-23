@@ -11,6 +11,8 @@ create_spc_plot(
   mainTitle = NULL,
   xAxisLabel = NULL,
   yAxisLabel = NULL,
+  fixedXAxis = NULL,
+  fixedYAxis = NULL,
   fixedXAxisMultiple = NULL,
   fixedYAxisMultiple = NULL,
   xAxisDateFormat = "\%d/\%m/\%Y",
@@ -31,6 +33,10 @@ decimal values. Accepted values are TRUE for percentage y axis, FALSE for intege
 \item{xAxisLabel}{Specify a character string value for the x axis title.}
 
 \item{yAxisLabel}{Specify a character string value for the y axis title.}
+
+\item{fixedXAxis}{TODO: complete}
+
+\item{fixedYAxis}{TODO: complete}
 
 \item{fixedXAxisMultiple}{Specify whether, if producing a faceted spc, x axis should be fixed for all facet plots.
 Accepted values are TRUE for fixed x axes or FALSE for individual x axes.}

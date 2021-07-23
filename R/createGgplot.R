@@ -9,8 +9,6 @@
 #' @param mainTitle Specify a character string value for the ggplot title.
 #' @param xAxisLabel Specify a character string value for the x axis title.
 #' @param yAxisLabel Specify a character string value for the y axis title.
-#' @param fixedXAxis TODO: complete
-#' @param fixedYAxis TODO: complete
 #' @param fixedXAxisMultiple Specify whether, if producing a faceted spc, x axis should be fixed for all facet plots.
 #'     Accepted values are TRUE for fixed x axes or FALSE for individual x axes.
 #' @param fixedYAxisMultiple Specify whether, if producing a faceted spc, y axis should be fixed for all facet plots.
@@ -30,8 +28,6 @@ create_spc_plot <- function(.data,
                             mainTitle = NULL,
                             xAxisLabel = NULL,
                             yAxisLabel = NULL,
-                            fixedXAxis = NULL,
-                            fixedYAxis = NULL,
                             fixedXAxisMultiple = NULL,
                             fixedYAxisMultiple = NULL,
                             xAxisDateFormat = "%d/%m/%Y",
@@ -84,10 +80,10 @@ create_spc_plot <- function(.data,
   }
 
   # set x axis fixed scaling for facet plots
-  scaleXFixed <- ifelse(is.null(fixedXAxisMultiple), TRUE, fixedXAxis)
+  scaleXFixed <- ifelse(is.null(fixedXAxisMultiple), TRUE, fixedXAxisMultiple)
 
   # set y axis fixed scaling for facet plots
-  scaleYFixed <- ifelse(is.null(fixedYAxisMultiple), TRUE, fixedYAxis)
+  scaleYFixed <- ifelse(is.null(fixedYAxisMultiple), TRUE, fixedYAxisMultiple)
 
   # For multiple facet chart, derived fixed/free scales value from x and y axis properties
   facetScales <- if (scaleYFixed == TRUE && scaleXFixed == TRUE) {
