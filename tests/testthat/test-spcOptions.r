@@ -105,6 +105,10 @@ test_that("printing output", {
 
 # validateSpcOptions() ----
 
+test_that("options must be created by spcOptions()", {
+  expect_error(validateSpcOptions(list(), NULL), "options must be created by spcOptions()")
+})
+
 test_that(".data must be a data.frame", {
   d <- data.frame(a = 1, b = 2)
   o <- spcOptions("a", "b")

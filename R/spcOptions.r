@@ -70,7 +70,8 @@ spcOptions <- function(valueField,
 }
 
 validateSpcOptions <- function(options, .data) {
-  stopifnot(".data must be a data.frame" = inherits(.data, "data.frame"))
+  stopifnot("options must be created by spcOptions()" = inherits(options, "ptd_spc_options"),
+            ".data must be a data.frame" = inherits(.data, "data.frame"))
 
   check <- function(op) {
     if (is.null(options[[op]])) return(TRUE)
