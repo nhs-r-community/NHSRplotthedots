@@ -163,7 +163,7 @@ test_that("sevenPointTrend works as expected", {
   expect_equal(sevenPointTrend(1:6),
                c(0, 0, 0, 0, 0, 0))
 
-  a <- sevenPointTrend(c(1:3,3:6))
+  a <- sevenPointTrend(c(1:3, 3:6))
   expect_equal(a, c(0, 0, 0, 0, 0, 0, 0))
 
   b <- sevenPointTrend(1:7)
@@ -265,9 +265,9 @@ test_that("specialCauseFlag works as expected", {
   expect_equal(b, c(1, 0, 1, 1, 1, 1, 1, 1, 1))
 
   c <- specialCauseFlag(c(-1,  0,  0),
-                        c( 0, -1,  0),
-                        c( 0,  0, -1),
-                        c( 0,  0,  0))
+                        c(+0, -1,  0),
+                        c(+0,  0, -1),
+                        c(+0,  0,  0))
   expect_equal(c, c(1, 1, 1))
 })
 
@@ -276,32 +276,32 @@ test_that("specialCauseImprovement works as expected", {
   # no signal
   expect_equal(specialCauseImprovement(0, 0, 0,  0, "y",  1,  1), as.character(NA))
 
-  # outsideLimits: relative mean != improvement direction
+  # outsideLimits => relative mean != improvement direction
   expect_equal(specialCauseImprovement(1, 0, 0,  0, "y",  1, -1), as.character(NA))
   expect_equal(specialCauseImprovement(1, 0, 0,  0, "y", -1,  1), as.character(NA))
-  # outsideLimits: relative mean == improvement direction
+  # outsideLimits => relative mean == improvement direction
   expect_equal(specialCauseImprovement(1, 0, 0,  0, "y",  1,  1), "y")
   expect_equal(specialCauseImprovement(1, 0, 0,  0, "y", -1, -1), "y")
 
-  # partOfSevenPointOneSideOfMean: relative mean != improvement direction
+  # partOfSevenPointOneSideOfMean => relative mean != improvement direction
   expect_equal(specialCauseImprovement(0, 1, 0,  0, "y",  1, -1), as.character(NA))
   expect_equal(specialCauseImprovement(0, 1, 0,  0, "y", -1,  1), as.character(NA))
-  # partOfSevenPointOneSideOfMean: relative mean == improvement direction
+  # partOfSevenPointOneSideOfMean => relative mean == improvement direction
   expect_equal(specialCauseImprovement(0, 1, 0,  0, "y",  1,  1), "y")
   expect_equal(specialCauseImprovement(0, 1, 0,  0, "y", -1, -1), "y")
 
-  # partOfTwoInThree: relative mean != improvement direction
+  # partOfTwoInThree => relative mean != improvement direction
   expect_equal(specialCauseImprovement(0, 0, 1,  0, "y",  1, -1), as.character(NA))
   expect_equal(specialCauseImprovement(0, 0, 1,  0, "y", -1,  1), as.character(NA))
-  # partOfTwoInThree: relative mean == improvement direction
+  # partOfTwoInThree => relative mean == improvement direction
   expect_equal(specialCauseImprovement(0, 0, 1,  0, "y",  1,  1), "y")
   expect_equal(specialCauseImprovement(0, 0, 1,  0, "y", -1, -1), "y")
 
-  # partOfSevenPointTrend: partOfSevenPointTrend != improvementDirection
+  # partOfSevenPointTrend => partOfSevenPointTrend != improvementDirection
   expect_equal(specialCauseImprovement(0, 0, 0,  1, "y",  1, -1), as.character(NA))
   expect_equal(specialCauseImprovement(0, 0, 0, -1, "y",  1,  1), as.character(NA))
 
-  # partOfSevenPointTrend: partOfSevenPointTrend == improvementDirection
+  # partOfSevenPointTrend => partOfSevenPointTrend == improvementDirection
   expect_equal(specialCauseImprovement(0, 0, 0,  1, "y",  1,  1), "y")
   expect_equal(specialCauseImprovement(0, 0, 0, -1, "y",  1, -1), "y")
 })

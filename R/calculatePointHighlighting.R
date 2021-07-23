@@ -56,7 +56,7 @@ sevenPointOneSideOfMean <- function(v) {
   # the first 6 points will be 0
   c(rep(0, 6),
     # then, do a rolling apply to check for equality
-    sapply(seq_along(v)[-(1:6)], function(i) {
+    sapply(seq_along(v)[- (1:6)], function(i) {
       all(v[[i]] == v[i - 1:6]) & v[[i]] != 0
     }))
 }
@@ -79,9 +79,9 @@ sevenPointTrend <- function(y) {
   if (length(y) < 7) return(numeric(length(y)))
   # the first 6 points will be 0
   c(rep(0, 6),
-    sapply(seq_along(y)[-(1:6)], function(i) {
+    sapply(seq_along(y)[- (1:6)], function(i) {
       d <- sign(diff(y[i - 0:6])) * -1
-      if (all(d ==  1)) return( 1)
+      if (all(d ==  1)) return(1)
       if (all(d == -1)) return(-1)
       0
     }))
@@ -144,4 +144,3 @@ specialCauseConcern <- function(outsideLimits,
                           relativeToMean,
                           improvementDirection * - 1)
 }
-
