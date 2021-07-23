@@ -42,6 +42,13 @@ test_that("facetField is either null, or a scalar character", {
   expect_error(spcOptions("a", "b", facetField = c("a", "b")), "facetField argument must be a 'character' of length 1.")
 })
 
+test_that("rebase is either null, or a scalar character", {
+  # this should run without an error
+  spcOptions("a", "b", rebase = NULL)
+  expect_error(spcOptions("a", "b", rebase = 1), "rebase argument must be a 'character' of length 1.")
+  expect_error(spcOptions("a", "b", rebase = c("a", "b")), "rebase argument must be a 'character' of length 1.")
+})
+
 test_that("fixAfterNPoints must be a single numeric that is greater than or equal to 12.", {
   expect_error(spcOptions("a", "b", fixAfterNPoints = "a"),
                "fixAfterNPoints must be a single numeric that is greater than or equal to 12.")

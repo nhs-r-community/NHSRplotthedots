@@ -70,4 +70,16 @@ test_that("it raises an error if the rebase field is not 0 or 1", {
                "spc: rebase column must define a field containing only 0 or 1 values.")
 })
 
+test_that("setting fixAfterNPoints changes the calculations", {
+  set.seed(123)
+  data <- data.frame(x = 1:20, y = rnorm(20))
+
+  s0 <- spcStandard(data, spcOptions("x", "y"))
+  s1 <- spcStandard(data, spcOptions("x", "y", fixAfterNPoints = 12))
+
+  expect_gt(s1$movingrangeaverage[[1]], s0$movingrangeaverage[[1]])
+  expect_lt(s1$lpl[[1]], s0$lpl[[1]])
+  expect_gt(s1$upl[[1]], s0$upl[[1]])
+})
+
 # cannot think of useful tests for lines 66 through 183

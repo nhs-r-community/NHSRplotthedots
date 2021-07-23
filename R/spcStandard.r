@@ -166,8 +166,6 @@ spcStandard <- function(.data, options = NULL) {
   if (is.null(fixAfterNPoints)) {
     ## If no point fix has been specified, find the largest number of points per facet/rebase
     fixAfterNPoints <- max(.data$n, na.rm = TRUE)
-  } else {
-    fixAfterNPoints <- fixAfterNPoints
   }
 
   dfAvg <- .data %>%
