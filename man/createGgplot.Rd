@@ -8,7 +8,7 @@ createGgplot(
   .data,
   pointSize = 2.5,
   percentageYAxis = FALSE,
-  mainTitle = NULL,
+  mainTitle = "SPC Chart",
   xAxisLabel = NULL,
   yAxisLabel = NULL,
   fixedXAxisMultiple = NULL,
