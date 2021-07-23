@@ -69,12 +69,10 @@ spcOptions <- function(valueField,
   )
 }
 
-# double dispatch
+#' @export
 validate.ptd_spc_options <- function(options, .data) {
-  UseMethod("validate.ptd_spc_options", .data)
-}
+  stopifnot(".data must be a data.frame" = inherits(.data, "data.frame"))
 
-validate.ptd_spc_options.data.frame <- function(options, .data) {
   check <- function(op) {
     if (is.null(options[[op]])) return(TRUE)
     if (options[[op]] %in% colnames(.data)) return(TRUE)

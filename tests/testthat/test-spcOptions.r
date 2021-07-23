@@ -1,5 +1,6 @@
 library(testthat)
 
+# spcOptions() ----
 test_that("it returns correct data", {
   r <- spcOptions(
     valueField = "valueField",
@@ -78,6 +79,8 @@ test_that("trajectory is either null, or a scalar character", {
   expect_error(spcOptions("a", "b", trajectory = c("a", "b")), "trajectory argument must be a 'character' of length 1.")
 })
 
+# print() ----
+
 test_that("printing output", {
   r <- spcOptions("hello", "world")
   expect_output(print(r), "Plot the Dots SPC options:")
@@ -91,4 +94,52 @@ test_that("printing output", {
   expect_output(print(r), "target:.*not set")
   expect_output(print(r), "trajectory:.*not set")
   expect_output(print(r), "--------------------------------")
+})
+
+# validate() ----
+
+test_that(".data must be a data.frame", {
+  d <- data.frame(a = 1, b = 2)
+  o <- spcOptions("a", "b")
+
+  expect_error(validate(o, NULL), ".data must be a data.frame")
+  expect_error(validate(o, 1),    ".data must be a data.frame")
+  expect_error(validate(o, "a"),  ".data must be a data.frame")
+  validate(o, d)
+})
+
+test_that("it returns an error if valueField does not exist in .data", {
+  d <- data.frame(a = 1, b = 2)
+  o <- spcOptions("x", "b")
+  expect_error(validate(o, d), "valueField: 'x' must be a valid column name in the data frame.")
+})
+
+test_that("it returns an error if dateField does not exist in .data", {
+  d <- data.frame(a = 1, b = 2)
+  o <- spcOptions("a", "x")
+  expect_error(validate(o, d), "dateField: 'x' must be a valid column name in the data frame.")
+})
+
+test_that("it returns an error if facetField does not exist in .data", {
+  d <- data.frame(a = 1, b = 2)
+  o <- spcOptions("a", "b", facetField = "c")
+  expect_error(validate(o, d), "facetField: 'c' must be a valid column name in the data frame.")
+})
+
+test_that("it returns an error if rebase does not exist in .data", {
+  d <- data.frame(a = 1, b = 2)
+  o <- spcOptions("a", "b", rebase = "c")
+  expect_error(validate(o, d), "rebase: 'c' must be a valid column name in the data frame.")
+})
+
+test_that("it returns an error if target does not exist in .data", {
+  d <- data.frame(a = 1, b = 2)
+  o <- spcOptions("a", "b", target = "c")
+  expect_error(validate(o, d), "target: 'c' must be a valid column name in the data frame.")
+})
+
+test_that("it returns an error if trajectory does not exist in .data", {
+  d <- data.frame(a = 1, b = 2)
+  o <- spcOptions("a", "b", trajectory = "c")
+  expect_error(validate(o, d), "trajectory: 'c' must be a valid column name in the data frame.")
 })
