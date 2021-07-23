@@ -109,7 +109,13 @@ spc <- function(.data,
   xAxisDateFormat <- ifelse(is.null(options$xAxisDateFormat), "%d/%m/%y", options$xAxisDateFormat)
 
   # set main plot title
-  plottitle <- ifelse(is.null(options$mainTitle), paste0("SPC Chart of ", capitalise(valueField), ", starting ", format(min(df$x, na.rm = TRUE), format = "%d/%m/%Y")), options$mainTitle)
+  plottitle <- ifelse(
+    is.null(options$mainTitle), 
+    paste0(
+      "SPC Chart of ", capitalise(valueField), ", starting ", format(min(df$x, na.rm = TRUE), format = "%d/%m/%Y")
+    ), 
+    options$mainTitle
+  )
 
   # set x axis label
   xlabel <- ifelse(is.null(options$xAxisLabel), capitalise(dateField), options$xAxisLabel)
@@ -147,7 +153,11 @@ spc <- function(.data,
   }
 
   # set plot theme override
-  themeOverride <- if (is.null(options$plotThemeOverride)) NULL else {options$plotThemeOverride}
+  themeOverride <- if (is.null(options$plotThemeOverride)) {
+    NULL 
+  } else {
+    options$plotThemeOverride
+  }
 
   ## Plot the dots SPC logic ----
   df <- calculatePointHighlighting(df, improvementDirection)
