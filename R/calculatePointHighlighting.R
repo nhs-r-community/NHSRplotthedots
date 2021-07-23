@@ -3,7 +3,7 @@
 #' Performs calculations to identify which data points should be highlighted in the final plot
 #'   based on points outside process limits, trends, shifts, etc.
 #'
-#' @param df A data frame containing the information to be plotted.
+#' @param .data A data frame containing the information to be plotted.
 #' @param improvementDirection An integer signifying whether improvement is represented by increasing or decreasing
 #'     values
 #' @return The calculated data frame
@@ -11,114 +11,130 @@
 #' @noRd
 #'
 
-calculatePointHighlighting <- function(df, improvementDirection) {
+calculatePointHighlighting <- function(.data, improvementDirection) {
   # Begin plot the dots logical tests
-  df %>%
+  .data %>%
+    group_by(.data$f) %>%
     mutate(
-      sevenPointOneSideOfMean = as.numeric(
-        # Identify if a point is the 7th in a run above or below the mean
-        (.data$relativeToMean == lag(.data$relativeToMean, 1) & .data$f == lag(.data$f, 1)) &
-          (.data$relativeToMean == lag(.data$relativeToMean, 2) & .data$f == lag(.data$f, 2)) &
-          (.data$relativeToMean == lag(.data$relativeToMean, 3) & .data$f == lag(.data$f, 3)) &
-          (.data$relativeToMean == lag(.data$relativeToMean, 4) & .data$f == lag(.data$f, 4)) &
-          (.data$relativeToMean == lag(.data$relativeToMean, 5) & .data$f == lag(.data$f, 5)) &
-          (.data$relativeToMean == lag(.data$relativeToMean, 6) & .data$f == lag(.data$f, 6))
+      sevenPointOneSideOfMean = sevenPointOneSideOfMean(.data$relativeToMean),
+      partOfSevenPointOneSideOfMean = partOfSevenTrend(.data$sevenPointOneSideOfMean),
+      sevenPointTrend = sevenPointTrend(.data$y),
+      partOfSevenPointTrend = partOfSevenTrend(.data$sevenPointTrend),
+      twoInThree = twoInThree(.data$closeToLimits),
+      partOfTwoInThree = partOfTwoInThree(.data$twoInThree, .data$closeToLimits),
+      specialCauseFlag = specialCauseFlag(
+        .data$outsideLimits,
+        .data$partOfSevenPointOneSideOfMean,
+        .data$partOfSevenPointTrend,
+        .data$partOfTwoInThree
       ),
-      partOfSevenPointOneSideOfMean = as.numeric(
-        # Identify if any of the six points following the current point are the 7th in a run above or below the mean
-        # (i.e. part of that run)
-        .data$sevenPointOneSideOfMean == 1 |
-          (lead(.data$sevenPointOneSideOfMean, 1) == 1 & lead(.data$f, 1) == .data$f) |
-          (lead(.data$sevenPointOneSideOfMean, 2) == 1 & lead(.data$f, 2) == .data$f) |
-          (lead(.data$sevenPointOneSideOfMean, 3) == 1 & lead(.data$f, 3) == .data$f) |
-          (lead(.data$sevenPointOneSideOfMean, 4) == 1 & lead(.data$f, 4) == .data$f) |
-          (lead(.data$sevenPointOneSideOfMean, 5) == 1 & lead(.data$f, 5) == .data$f) |
-          (lead(.data$sevenPointOneSideOfMean, 6) == 1 & lead(.data$f, 6) == .data$f)
+      specialCauseConcern = specialCauseConcern(
+        .data$outsideLimits,
+        .data$partOfSevenPointOneSideOfMean,
+        .data$partOfTwoInThree,
+        .data$partOfSevenPointTrend,
+        .data$y,
+        .data$relativeToMean,
+        improvementDirection
       ),
-      sevenPointTrend = case_when(
-        # Identify if a point is the 6th in an increasing or decreasing trend
-        (.data$y > lag(.data$y, 1) & .data$f == lag(.data$f, 1)) &
-          (lag(.data$y, 1) > lag(.data$y, 2) & lag(.data$f, 1) == lag(.data$f, 2)) &
-          (lag(.data$y, 2) > lag(.data$y, 3) & lag(.data$f, 2) == lag(.data$f, 3)) &
-          (lag(.data$y, 3) > lag(.data$y, 4) & lag(.data$f, 3) == lag(.data$f, 4)) &
-          (lag(.data$y, 4) > lag(.data$y, 5) & lag(.data$f, 4) == lag(.data$f, 5)) &
-          (lag(.data$y, 5) > lag(.data$y, 6) & lag(.data$f, 5) == lag(.data$f, 6)) ~ 1,
-        (.data$y < lag(.data$y, 1) & .data$f == lag(.data$f, 1)) &
-          (lag(.data$y, 1) < lag(.data$y, 2) & lag(.data$f, 1) == lag(.data$f, 2)) &
-          (lag(.data$y, 2) < lag(.data$y, 3) & lag(.data$f, 2) == lag(.data$f, 3)) &
-          (lag(.data$y, 3) < lag(.data$y, 4) & lag(.data$f, 3) == lag(.data$f, 4)) &
-          (lag(.data$y, 4) < lag(.data$y, 5) & lag(.data$f, 4) == lag(.data$f, 5)) &
-          (lag(.data$y, 5) < lag(.data$y, 6) & lag(.data$f, 5) == lag(.data$f, 6)) ~ -1,
-        TRUE ~ 0
-      ),
-      partOfSevenPointTrend = case_when(
-        # Identify if a point belongs to a 7 point increasing or decreasing trend
-        # Part of a 7 point ascending trend
-        .data$sevenPointTrend == 1 |
-          lead(.data$sevenPointTrend, 1) == 1 & .data$f == lead(.data$f, 1) |
-          lead(.data$sevenPointTrend, 2) == 1 & .data$f == lead(.data$f, 2) |
-          lead(.data$sevenPointTrend, 3) == 1 & .data$f == lead(.data$f, 3) |
-          lead(.data$sevenPointTrend, 4) == 1 & .data$f == lead(.data$f, 4) |
-          lead(.data$sevenPointTrend, 5) == 1 & .data$f == lead(.data$f, 5) |
-          lead(.data$sevenPointTrend, 6) == 1 & .data$f == lead(.data$f, 6) ~ 1,
-        # Part of a 7 point descending trend
-        .data$sevenPointTrend == -1 |
-          lead(.data$sevenPointTrend, 1) == -1 & .data$f == lead(.data$f, 1) |
-          lead(.data$sevenPointTrend, 2) == -1 & .data$f == lead(.data$f, 2) |
-          lead(.data$sevenPointTrend, 3) == -1 & .data$f == lead(.data$f, 3) |
-          lead(.data$sevenPointTrend, 4) == -1 & .data$f == lead(.data$f, 4) |
-          lead(.data$sevenPointTrend, 5) == -1 & .data$f == lead(.data$f, 5) |
-          lead(.data$sevenPointTrend, 6) == -1 & .data$f == lead(.data$f, 6) ~ -1,
-        TRUE ~ 0
-      ),
-      twoInThree = case_when(
-        # Identify if two out of three points in a set are between the process limits and near process limits
-        (abs(.data$closeToLimits) +
-          abs(lag(.data$closeToLimits, 1, default = 0)) +
-          abs(lag(.data$closeToLimits, 2, default = 0)) >= 2
-        ) &
-          .data$f == lag(.data$f, 1) &
-          .data$f == lag(.data$f, 2) ~ 1,
-        (abs(.data$closeToLimits) +
-          abs(lag(.data$closeToLimits, 1, default = 0)) +
-          abs(lead(.data$closeToLimits, 1, default = 0)) >= 2
-        ) &
-          .data$f == lag(.data$f, 1) &
-          .data$f == lead(.data$f, 1) ~ 1,
-        (abs(.data$closeToLimits) +
-          abs(lead(.data$closeToLimits, 1, default = 0)) +
-          abs(lead(.data$closeToLimits, 2, default = 0)) >= 2
-        ) &
-          .data$f == lead(.data$f, 1) &
-          .data$f == lead(.data$f, 2) ~ 1,
-        TRUE ~ 0
-      ),
-      partOfTwoInThree = as.numeric(
-        # Identify if a point belongs to a 2 in 3 set
-        .data$twoInThree == 1 & abs(.data$closeToLimits) == 1
-      ),
-      specialCauseFlag = as.numeric(
-        # Identify a special cause variation for any of the four rules
-        abs(.data$outsideLimits) == 1 |
-          abs(.data$partOfSevenPointOneSideOfMean) == 1 |
-          abs(.data$partOfSevenPointTrend) == 1 |
-          .data$partOfTwoInThree == 1
-      ),
-      specialCauseConcern = case_when(
-        # Identify a special cause variation against the improvement direction
-        .data$outsideLimits == 1 & .data$relativeToMean == (improvementDirection * -1) ~ .data$y,
-        .data$partOfSevenPointOneSideOfMean == 1 & .data$relativeToMean == (improvementDirection * -1) ~ .data$y,
-        .data$partOfTwoInThree == 1 & .data$relativeToMean == (improvementDirection * -1) ~ .data$y,
-        .data$partOfSevenPointTrend == 1 & improvementDirection == -1 ~ .data$y,
-        .data$partOfSevenPointTrend == -1 & improvementDirection == 1 ~ .data$y,
-      ),
-      specialCauseImprovement = case_when(
-        # Identify a special cause variation towards the improvement direction
-        .data$outsideLimits == 1 & .data$relativeToMean == improvementDirection ~ .data$y,
-        .data$partOfSevenPointOneSideOfMean == 1 & .data$relativeToMean == improvementDirection ~ .data$y,
-        .data$partOfTwoInThree == 1 & .data$relativeToMean == improvementDirection ~ .data$y,
-        .data$partOfSevenPointTrend == 1 & improvementDirection == 1 ~ .data$y,
-        .data$partOfSevenPointTrend == -1 & improvementDirection == -1 ~ .data$y
+      specialCauseImprovement = specialCauseImprovement(
+        .data$outsideLimits,
+        .data$partOfSevenPointOneSideOfMean,
+        .data$partOfTwoInThree,
+        .data$partOfSevenPointTrend,
+        .data$y,
+        .data$relativeToMean,
+        improvementDirection
       )
-    )
+    ) %>%
+    ungroup()
 }
+
+sevenPointOneSideOfMean <- function(v) {
+  # the first 6 points will be 0
+  c(rep(0, 6),
+    # then, do a rolling apply to check for equality
+    sapply(seq_along(v)[-(1:6)], function(i) {
+      all(v[[i]] == v[i - 1:6]) & v[[i]] != 0
+    }))
+}
+
+partOfSevenTrend <- function(v) {
+  # either, this value is already part of 7, or one of the following 6 points is
+  as.numeric(
+    c(sapply(seq_along(v)[-(1:6)], function(i) {
+        any(v[i - 0:6] == 1)
+      }),
+      tail(v, 6)) | v
+  )
+}
+
+sevenPointTrend <- function(y) {
+  # the first 6 points will be 0
+  c(rep(0, 6),
+    sapply(seq_along(y)[-(1:6)], function(i) {
+      d <- sign(diff(y[i - 0:6])) * -1
+      if (all(d ==  1)) return( 1)
+      if (all(d == -1)) return(-1)
+      0
+    }))
+}
+
+twoInThree <- function(v) {
+  # pad the vector with two 0 at start, two 0 at end
+  vp <- c(0, 0, v, 0, 0)
+  sapply(seq_along(v), function(i) {
+    as.numeric(
+      sum(vp[i + 0:2]) >= 2 || sum(vp[i + 1:3]) >= 2 || sum(vp[i + 2:4]) >= 2
+    )
+  })
+}
+
+partOfTwoInThree <- function(v, x) {
+  as.numeric(v == 1 & abs(x) == 1)
+}
+
+specialCauseFlag <- function(outsideLimits,
+                             partOfSevenPointOneSideOfMean,
+                             partOfSevenPointTrend,
+                             partOfTwoInThree) {
+  as.numeric(
+    abs(outsideLimits) == 1 |
+    abs(partOfSevenPointOneSideOfMean) == 1 |
+    abs(partOfSevenPointTrend) == 1 |
+    partOfTwoInThree == 1
+  )
+}
+
+specialCauseImprovement <- function(outsideLimits,
+                                    partOfSevenPointOneSideOfMean,
+                                    partOfTwoInThree,
+                                    partOfSevenPointTrend,
+                                    y,
+                                    relativeToMean,
+                                    improvementDirection) {
+  case_when(
+    outsideLimits == 1 & relativeToMean == improvementDirection ~ y,
+    partOfSevenPointOneSideOfMean == 1 & relativeToMean == improvementDirection ~ y,
+    partOfTwoInThree == 1 & relativeToMean == improvementDirection ~ y,
+    partOfSevenPointTrend == 1 & improvementDirection == 1 ~ y,
+    partOfSevenPointTrend == -1 & improvementDirection == -1 ~ y
+  )
+}
+
+specialCauseConcern <- function(outsideLimits,
+                                partOfSevenPointOneSideOfMean,
+                                partOfTwoInThree,
+                                partOfSevenPointTrend,
+                                y,
+                                relativeToMean,
+                                improvementDirection) {
+  specialCauseImprovement(outsideLimits,
+                          partOfSevenPointOneSideOfMean,
+                          partOfTwoInThree,
+                          partOfSevenPointTrend,
+                          y,
+                          relativeToMean,
+                          improvementDirection * - 1)
+}
+
