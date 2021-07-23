@@ -17,7 +17,7 @@ test_that("spc function can create a ggplot", {
   expect_identical(result$labels$x, "Date")
   expect_identical(result$labels$y, "Data")
   # default date format
-  expect_identical(ggplot_build(result)$layout$panel_scales_x[[1]]$labels[[1]], "22/03/2021")
+  expect_identical(ggplot_build(result)$layout$panel_scales_x[[1]]$labels[[1]], "22/03/21")
 })
 
 test_that("spc function can create a faceted ggplot", {
@@ -350,9 +350,9 @@ test_that("x axis breaks can be specified", {
   firstXLabel <- ggplot_build(result)$layout$panel_scales_x[[1]]$labels[[1]]
   secondXLabel <- ggplot_build(result)$layout$panel_scales_x[[1]]$labels[[2]]
   # first label (as default)
-  expect_identical(firstXLabel, "22/03/2021")
+  expect_identical(firstXLabel, "22/03/21")
   # second label is one week later
-  expect_identical(secondXLabel, "29/03/2021")
+  expect_identical(secondXLabel, "29/03/21")
 })
 
 test_that("y axis breaks can be specified", {
