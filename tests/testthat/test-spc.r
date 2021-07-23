@@ -17,6 +17,8 @@ options <- list(
   trajectory = "h"
 )
 
+# spc() ----
+
 test_that("it throws an error if .data is not a data.frame", {
   expect_error(spc("x", "a", "b"), "spc: .data must be a data.frame")
 })
@@ -35,7 +37,6 @@ test_that("it returns a ptd_spc_df object", {
   s <- spc(data, "y", "x")
 
   expect_s3_class(s, c("ptd_spc_df", "data.frame"))
-
 })
 
 test_that("it has options as an attribute, created by spcOptions", {
@@ -110,4 +111,32 @@ test_that("it calls calculatePointHighlighting (decrease)", {
 
   expect_called(m, 1)
   expect_args(m, 1, data, -1)
+})
+
+# print() ----
+
+test_that("it calls plot", {
+  m <- mock("plot")
+  stub(print.ptd_spc_df, "plot", m)
+
+  s <- spc(data, "x", "y")
+  o <- capture_output(print(s))
+
+  expect_called(m, 1)
+  expect_args(m, 1, s)
+
+  # check that print is called on the return of plot: this is a mocked output
+  expect_equal(o, "[1] \"plot\"")
+})
+
+test_that("it calls print", {
+  m <- mock("print")
+  stub(print.ptd_spc_df, "plot", "plot")
+  stub(print.ptd_spc_df, "print", m)
+
+  s <- spc(data, "x", "y")
+  o <- capture_output(print(s))
+
+  expect_called(m, 1)
+  expect_args(m, 1, "plot")
 })
