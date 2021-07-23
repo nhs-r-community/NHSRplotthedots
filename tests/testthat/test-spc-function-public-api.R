@@ -12,6 +12,8 @@ test_that("spc function can create a ggplot", {
   # assert
   expect_s3_class(result, "ggplot")
   expect_identical(result$labels$title, "SPC Chart")
+  expect_identical(result$labels$subtitle, NULL)
+  expect_identical(result$labels$caption, NULL)
   expect_identical(result$labels$x, "Date")
   expect_identical(result$labels$y, "Data")
   # default date format
@@ -79,6 +81,37 @@ test_that("ggplot title and axis labels can be modified with options", {
   expect_identical(result$labels$x, "New X Label")
   expect_identical(result$labels$y, "New Y Label")
 })
+
+test_that("ggplot theme can be over-ridden with options", {
+  #arrange
+  data <- c(1,2,3,4,5,6,7,8,9,10,11,12)
+  date <- seq(as.Date("2021-03-22"), by = 1, length.out = 12)
+  df <- tibble(data, date)
+  options = list(
+    plotThemeOverride = list(
+      
+      #an example complete theme 
+      theme_dark(), 
+      
+      #over-ridden elements
+      labs(
+        title = "A directly over-ridden title",
+        subtitle = "A new non-standard subtitle",
+        caption = "A fancy caption"
+      )
+    )
+  )
+
+  #act
+  result <- suppressMessages(spc(df, "data", "date", options = options))
+
+  #assert
+  expect_s3_class(result,"ggplot")
+  expect_identical(result$labels$title, "A directly over-ridden title")
+  expect_identical(result$labels$subtitle, "A new non-standard subtitle")
+  expect_identical(result$labels$caption, "A fancy caption")
+})
+
 
 test_that("limits can be rebased at an intervention point", {
   # arrange

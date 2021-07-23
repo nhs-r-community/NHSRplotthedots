@@ -88,5 +88,9 @@ createGgplot <- function(df, facetField, plotOptions) {
       scale_y_continuous(labels = scales::percent)
   }
 
+  # finally, apply any theme overrides
+  plot <- plot +
+    plotOptions$themeOverride
+
   plot
 }

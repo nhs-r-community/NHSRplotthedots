@@ -146,6 +146,9 @@ spc <- function(.data,
     0.1 * as.numeric(options$percentageYAxis)
   }
 
+  # set plot theme override
+  themeOverride <- if (is.null(options$plotThemeOverride)) NULL else {options$plotThemeOverride}
+
   ## Plot the dots SPC logic ----
   df <- calculatePointHighlighting(df, improvementDirection)
 
@@ -163,7 +166,8 @@ spc <- function(.data,
       xAxisDateFormat = xAxisDateFormat,
       convertToPercentages = convertToPercentages,
       facetScales = facetScales,
-      yAxisBreaks = yAxisBreaks
+      yAxisBreaks = yAxisBreaks,
+      themeOverride = themeOverride
     )
 
     # make and return the plot
