@@ -7,13 +7,13 @@
 \method{plot}{ptd_spc_df}(x, ...)
 }
 \arguments{
-\item{x}{data passed to .data argument of \code{\link[=create_spc_plot]{create_spc_plot()}}}
+\item{x}{data passed to .data argument of \code{\link[=createGgplot]{createGgplot()}}}
 
-\item{...}{other arguments passed to \code{\link[=create_spc_plot]{create_spc_plot()}}}
+\item{...}{other arguments passed to \code{\link[=createGgplot]{createGgplot()}}}
 }
 \description{
-Plot function for a ptd_spc_df object. It calls \code{\link[=create_spc_plot]{create_spc_plot()}}.
+Plot function for a ptd_spc_df object. It calls \code{\link[=createGgplot]{createGgplot()}}.
 }
 \seealso{
-create_spc_plot
+createGgplot
 }

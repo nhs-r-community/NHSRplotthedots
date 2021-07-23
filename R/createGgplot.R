@@ -22,28 +22,27 @@
 #'     is in use.
 #' @return The ggplot2 object
 #' @export
-create_spc_plot <- function(.data,
-                            pointSize = 2.5,
-                            percentageYAxis = FALSE,
-                            mainTitle = NULL,
-                            xAxisLabel = NULL,
-                            yAxisLabel = NULL,
-                            fixedXAxisMultiple = NULL,
-                            fixedYAxisMultiple = NULL,
-                            xAxisDateFormat = "%d/%m/%Y",
-                            xAxisBreaks = NULL,
-                            yAxisBreaks = NULL) {
-
-  validatePlotOptions(pointSize,
-                      percentageYAxis,
-                      mainTitle,
-                      xAxisLabel,
-                      yAxisLabel,
-                      fixedXAxisMultiple,
-                      fixedYAxisMultiple,
-                      xAxisDateFormat,
-                      xAxisBreaks,
-                      yAxisBreaks)
+createGgplot <- function(.data,
+                         pointSize = 2.5,
+                         percentageYAxis = FALSE,
+                         mainTitle = NULL,
+                         xAxisLabel = NULL,
+                         yAxisLabel = NULL,
+                         fixedXAxisMultiple = NULL,
+                         fixedYAxisMultiple = NULL,
+                         xAxisDateFormat = "%d/%m/%Y",
+                         xAxisBreaks = NULL,
+                         yAxisBreaks = NULL) {
+  validatePlotOptions$pointSize(pointSize)
+  validatePlotOptions$percentageYAxis(percentageYAxis)
+  validatePlotOptions$mainTitle(mainTitle)
+  validatePlotOptions$xAxisLabel(xAxisLabel)
+  validatePlotOptions$yAxisLabel(yAxisLabel)
+  validatePlotOptions$fixedXAxisMultiple(fixedXAxisMultiple)
+  validatePlotOptions$fixedYAxisMultiple(fixedYAxisMultiple)
+  validatePlotOptions$xAxisDateFormat(xAxisDateFormat)
+  validatePlotOptions$xAxisBreaks(xAxisBreaks)
+  validatePlotOptions$yAxisBreaks(yAxisBreaks)
 
   # Colour Palette for ggplot
   .darkgrey <- "#7B7D7D"
@@ -56,9 +55,9 @@ create_spc_plot <- function(.data,
 
   # set x axis breaks
   if (is.null(xAxisBreaks)) {
-    xaxislabels <- .data$x
+    xaxislabels <- .data[["x"]]
   } else {
-    xaxis <- .data$x
+    xaxis <- .data[["x"]]
     start <- min(xaxis, na.rm = TRUE)
     end <- max(xaxis, na.rm = TRUE)
     xaxislabels <- seq.Date(from = as.Date(start), to = as.Date(end), by = xAxisBreaks)
@@ -71,12 +70,12 @@ create_spc_plot <- function(.data,
 
   # set x axis label
   if (is.null(xAxisLabel)) {
-    xAxisLabel <- capitalise(options$dateField)
+    xAxisLabel <- capitalise(options[["dateField"]])
   }
 
   # set y axis label
   if (is.null(yAxisLabel)) {
-    yAxisLabel <- capitalise(options$valueField)
+    yAxisLabel <- capitalise(options[["valueField"]])
   }
 
   # set x axis fixed scaling for facet plots
@@ -106,7 +105,7 @@ create_spc_plot <- function(.data,
   }
 
   if (!(is.null(yAxisBreaks))) {
-    yaxis <- c(.data$y, .data$upl, .data$lpl)
+    yaxis <- c(.data[["y"]], .data[["upl"]], .data[["lpl"]])
     start <- floor(min(yaxis, na.rm = TRUE) / yAxisBreaks) * yAxisBreaks
     end <- max(yaxis, na.rm = TRUE)
     yaxislabels <- seq(from = start, to = end, by = yAxisBreaks)
@@ -154,7 +153,7 @@ create_spc_plot <- function(.data,
           scale_y_continuous(breaks = yaxislabels, labels = yaxislabels)
       }
     } else if (convertToPercentages != 0) {
-      percentLimit <- max(.data$upl, na.rm = TRUE)
+      percentLimit <- max(.data[["upl"]], na.rm = TRUE)
 
       interval <- if (!(is.null(yAxisBreaks))) {
         yAxisBreaks
@@ -167,7 +166,7 @@ create_spc_plot <- function(.data,
     }
     # else if the plot is faceted
   } else if (convertToPercentages != 0) {
-    percentLimit <- max(.data$upl, na.rm = TRUE)
+    percentLimit <- max(.data[["upl"]], na.rm = TRUE)
 
     plot <- plot +
       scale_y_continuous(labels = scales::percent)
@@ -182,28 +181,19 @@ create_spc_plot <- function(.data,
 
 #' Plot ptd_spc_df object
 #'
-#' Plot function for a ptd_spc_df object. It calls [create_spc_plot()].
+#' Plot function for a ptd_spc_df object. It calls [createGgplot()].
 #'
-#' @seealso create_spc_plot
+#' @seealso createGgplot
 #'
 #' @export
-#' @param x data passed to .data argument of [create_spc_plot()]
-#' @param ... other arguments passed to [create_spc_plot()]
+#' @param x data passed to .data argument of [createGgplot()]
+#' @param ... other arguments passed to [createGgplot()]
 plot.ptd_spc_df <- function(x, ...) {
-  create_spc_plot(x, ...)
+  createGgplot(x, ...)
 }
 
-validatePlotOptions <- function(pointSize,
-                                percentageYAxis,
-                                mainTitle,
-                                xAxisLabel,
-                                yAxisLabel,
-                                fixedXAxisMultiple,
-                                fixedYAxisMultiple,
-                                xAxisDateFormat,
-                                xAxisBreaks,
-                                yAxisBreaks) {
-
+validatePlotOptions <- list()
+validatePlotOptions$pointSize <- function(pointSize) {
   if (!is.null(pointSize) && !(
     is.numeric(pointSize) &&
     length(pointSize) == 1 &&
@@ -212,60 +202,69 @@ validatePlotOptions <- function(pointSize,
   )) {
     stop("pointSize must be a single number greater than 0 and less than or equal to 10.")
   }
-
+}
+validatePlotOptions$percentageYAxis <- function(percentageYAxis) {
   if (!is.null(percentageYAxis) && !(
     (is.logical(percentageYAxis) || is.numeric(percentageYAxis)) &&
     length(percentageYAxis) == 1 &&
     percentageYAxis >= 0 &&
-    percentageYAxis <= 0
+    percentageYAxis <= 1
   )) {
     stop("percentageYAxis argument must a single value of TRUE, FALSE, or a numeric between 0 and 1.")
   }
-
+}
+validatePlotOptions$mainTitle <- function(mainTitle) {
   if (!is.null(mainTitle) && !(
     is.character(mainTitle) &&
     length(mainTitle) == 1
   )) {
     stop("mainTitle argument must be a character of length 1.")
   }
-
+}
+validatePlotOptions$xAxisLabel <- function(xAxisLabel) {
   if (!is.null(xAxisLabel) && !(
     is.character(xAxisLabel) &&
     length(xAxisLabel) == 1
   )) {
     stop("xAxisLabel argument must be a character of length 1.")
   }
-
+}
+validatePlotOptions$yAxisLabel <- function(yAxisLabel) {
   if (!is.null(yAxisLabel) && !(
     is.character(yAxisLabel) &&
     length(yAxisLabel) == 1
   )) {
     stop("yAxisLabel argument must be a character of length 1.")
   }
-
+}
+validatePlotOptions$fixedXAxisMultiple <- function(fixedXAxisMultiple) {
   if (!is.null(fixedXAxisMultiple) && !(
     is.logical(fixedXAxisMultiple) &&
     length(fixedXAxisMultiple) == 1
   )) {
     stop("fixedXAxisMultiple argument must be a logical of length 1.")
   }
-
+}
+validatePlotOptions$fixedYAxisMultiple <- function(fixedYAxisMultiple) {
   if (!is.null(fixedYAxisMultiple) && !(
     is.logical(fixedYAxisMultiple) &&
     length(fixedYAxisMultiple) == 1
   )) {
     stop("fixedYAxisMultiple argument must be a logical of length 1.")
   }
-
+}
+validatePlotOptions$xAxisDateFormat <- function(xAxisDateFormat) {
   if (!is.null(xAxisDateFormat) && !(
     is.character(xAxisDateFormat) &&
     length(xAxisDateFormat) == 1
   )) {
-    stop("fixedXAxisMultiple argument must be a character of length 1.")
+    stop("xAxisDateFormat argument must be a character of length 1.")
   }
-
+}
+validatePlotOptions$xAxisBreaks <- function(xAxisBreaks) {
   if (!is.null(xAxisBreaks) && !(
     is.character(xAxisBreaks) &&
+    length(xAxisBreaks) == 1 &&
     grepl("^\\d+ (day|week|month|quarter|year)s?$", xAxisBreaks)
   )) {
     stop(
@@ -273,13 +272,12 @@ validatePlotOptions <- function(pointSize,
       "See seq.Date for more information."
     )
   }
-
+}
+validatePlotOptions$yAxisBreaks <- function(yAxisBreaks) {
   if (!is.null(yAxisBreaks) && !(
     is.character(yAxisBreaks) &&
     length(yAxisBreaks) == 1
   )) {
     stop("yAxisBreaks argument must be a character of length 1.")
   }
-
-  invisible(TRUE)
 }
