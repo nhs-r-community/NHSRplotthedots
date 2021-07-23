@@ -9,6 +9,8 @@
 #' @param mainTitle Specify a character string value for the ggplot title.
 #' @param xAxisLabel Specify a character string value for the x axis title.
 #' @param yAxisLabel Specify a character string value for the y axis title.
+#' @param fixedXAxis TODO: complete
+#' @param fixedYAxis TODO: complete
 #' @param fixedXAxisMultiple Specify whether, if producing a faceted spc, x axis should be fixed for all facet plots.
 #'     Accepted values are TRUE for fixed x axes or FALSE for individual x axes.
 #' @param fixedYAxisMultiple Specify whether, if producing a faceted spc, y axis should be fixed for all facet plots.
@@ -28,11 +30,24 @@ create_spc_plot <- function(.data,
                             mainTitle = NULL,
                             xAxisLabel = NULL,
                             yAxisLabel = NULL,
+                            fixedXAxis = NULL,
+                            fixedYAxis = NULL,
                             fixedXAxisMultiple = NULL,
                             fixedYAxisMultiple = NULL,
                             xAxisDateFormat = "%d/%m/%Y",
                             xAxisBreaks = NULL,
                             yAxisBreaks = NULL) {
+
+  validatePlotOptions(pointSize,
+                      percentageYAxis,
+                      mainTitle,
+                      xAxisLabel,
+                      yAxisLabel,
+                      fixedXAxisMultiple,
+                      fixedYAxisMultiple,
+                      xAxisDateFormat,
+                      xAxisBreaks,
+                      yAxisBreaks)
 
   # Colour Palette for ggplot
   .darkgrey <- "#7B7D7D"
@@ -44,38 +59,35 @@ create_spc_plot <- function(.data,
   options <- attr(.data, "options")
 
   # set x axis breaks
-  if (is.null(options$xAxisBreaks)) {
+  if (is.null(xAxisBreaks)) {
     xaxislabels <- .data$x
   } else {
     xaxis <- .data$x
     start <- min(xaxis, na.rm = TRUE)
     end <- max(xaxis, na.rm = TRUE)
-    xaxislabels <- seq.Date(from = as.Date(start), to = as.Date(end), by = options$xAxisBreaks)
+    xaxislabels <- seq.Date(from = as.Date(start), to = as.Date(end), by = xAxisBreaks)
   }
 
-  # set point size
-  pointSize <- ifelse(is.null(options$pointSize), 2, options$pointSize)
-
-  # set x axis date format
-  xAxisDateFormat <- ifelse(is.null(options$xAxisDateFormat), "%d/%m/%Y", options$xAxisDateFormat)
-
   # set main plot title
-  plottitle <- ifelse(is.null(options$mainTitle), "SPC Chart", options$mainTitle)
+  if (is.null(mainTitle)) {
+    mainTitle <- "SPC Chart"
+  }
 
   # set x axis label
-  xlabel <- ifelse(is.null(options$xAxisLabel), capitalise(options$dateField), options$xAxisLabel)
+  if (is.null(xAxisLabel)) {
+    xAxisLabel <- capitalise(options$dateField)
+  }
 
   # set y axis label
-  ylabel <- ifelse(is.null(options$yAxisLabel), capitalise(options$valueField), options$yAxisLabel)
-
-  # set y axis breaks
-  yAxisBreaks <- options$yAxisBreaks
+  if (is.null(yAxisLabel)) {
+    yAxisLabel <- capitalise(options$valueField)
+  }
 
   # set x axis fixed scaling for facet plots
-  scaleXFixed <- ifelse(is.null(options$fixedXAxisMultiple), TRUE, options$fixedXAxis)
+  scaleXFixed <- ifelse(is.null(fixedXAxisMultiple), TRUE, fixedXAxis)
 
   # set y axis fixed scaling for facet plots
-  scaleYFixed <- ifelse(is.null(options$fixedYAxisMultiple), TRUE, options$fixedYAxis)
+  scaleYFixed <- ifelse(is.null(fixedYAxisMultiple), TRUE, fixedYAxis)
 
   # For multiple facet chart, derived fixed/free scales value from x and y axis properties
   facetScales <- if (scaleYFixed == TRUE && scaleXFixed == TRUE) {
@@ -89,12 +101,12 @@ create_spc_plot <- function(.data,
   }
 
   # set percentage y axis
-  convertToPercentages <- if (is.null(options$percentageYAxis)) {
+  convertToPercentages <- if (is.null(percentageYAxis)) {
     0
-  } else if (is.numeric(options$percentageYAxis)) {
-    options$percentageYAxis
-  } else if (is.logical(options$percentageYAxis)) {
-    0.1 * as.numeric(options$percentageYAxis)
+  } else if (is.numeric(percentageYAxis)) {
+    percentageYAxis
+  } else if (is.logical(percentageYAxis)) {
+    0.1 * as.numeric(percentageYAxis)
   }
 
   if (!(is.null(yAxisBreaks))) {
@@ -123,9 +135,9 @@ create_spc_plot <- function(.data,
   plot <- plot +
     geom_point(aes(x = .data$x, y = .data$specialCauseImprovement), color = .skyblue, size = pointSize, na.rm = TRUE) +
     geom_point(aes(x = .data$x, y = .data$specialCauseConcern), color = .orange, size = pointSize, na.rm = TRUE) +
-    labs(title = plottitle,
-         x = xlabel,
-         y = ylabel) +
+    labs(title = mainTitle,
+         x = xAxisLabel,
+         y = yAxisLabel) +
     theme(plot.title = element_text(hjust = 0.5)) +
     scale_x_date(
       breaks = xaxislabels,
@@ -183,4 +195,95 @@ create_spc_plot <- function(.data,
 #' @param ... other arguments passed to [create_spc_plot()]
 plot.ptd_spc_df <- function(x, ...) {
   create_spc_plot(x, ...)
+}
+
+validatePlotOptions <- function(pointSize,
+                                percentageYAxis,
+                                mainTitle,
+                                xAxisLabel,
+                                yAxisLabel,
+                                fixedXAxisMultiple,
+                                fixedYAxisMultiple,
+                                xAxisDateFormat,
+                                xAxisBreaks,
+                                yAxisBreaks) {
+
+  if (!is.null(pointSize) && !(
+    is.numeric(pointSize) &&
+    length(pointSize) == 1 &&
+    pointSize >   0 &&
+    pointSize <= 10
+  )) {
+    stop("pointSize must be a single number greater than 0 and less than or equal to 10.")
+  }
+
+  if (!is.null(percentageYAxis) && !(
+    (is.logical(percentageYAxis) || is.numeric(percentageYAxis)) &&
+    length(percentageYAxis) == 1 &&
+    percentageYAxis >= 0 &&
+    percentageYAxis <= 0
+  )) {
+    stop("percentageYAxis argument must a single value of TRUE, FALSE, or a numeric between 0 and 1.")
+  }
+
+  if (!is.null(mainTitle) && !(
+    is.character(mainTitle) &&
+    length(mainTitle) == 1
+  )) {
+    stop("mainTitle argument must be a character of length 1.")
+  }
+
+  if (!is.null(xAxisLabel) && !(
+    is.character(xAxisLabel) &&
+    length(xAxisLabel) == 1
+  )) {
+    stop("xAxisLabel argument must be a character of length 1.")
+  }
+
+  if (!is.null(yAxisLabel) && !(
+    is.character(yAxisLabel) &&
+    length(yAxisLabel) == 1
+  )) {
+    stop("yAxisLabel argument must be a character of length 1.")
+  }
+
+  if (!is.null(fixedXAxisMultiple) && !(
+    is.logical(fixedXAxisMultiple) &&
+    length(fixedXAxisMultiple) == 1
+  )) {
+    stop("fixedXAxisMultiple argument must be a logical of length 1.")
+  }
+
+  if (!is.null(fixedYAxisMultiple) && !(
+    is.logical(fixedYAxisMultiple) &&
+    length(fixedYAxisMultiple) == 1
+  )) {
+    stop("fixedYAxisMultiple argument must be a logical of length 1.")
+  }
+
+  if (!is.null(xAxisDateFormat) && !(
+    is.character(xAxisDateFormat) &&
+    length(xAxisDateFormat) == 1
+  )) {
+    stop("fixedXAxisMultiple argument must be a character of length 1.")
+  }
+
+  if (!is.null(xAxisBreaks) && !(
+    is.character(xAxisBreaks) &&
+    grepl("^\\d+ (day|week|month|quarter|year)s?$", xAxisBreaks)
+  )) {
+    stop(
+      "xAxisBreaks argument must be a character of length 1, and be a valid string for seq.Date 'by'. ",
+      "See seq.Date for more information."
+    )
+  }
+
+  if (!is.null(yAxisBreaks) && !(
+    is.character(yAxisBreaks) &&
+    length(yAxisBreaks) == 1
+  )) {
+    stop("yAxisBreaks argument must be a character of length 1.")
+  }
+
+  invisible(TRUE)
 }
