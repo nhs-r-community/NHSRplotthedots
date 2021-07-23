@@ -26,7 +26,7 @@ test_that("it returns a ggplot object", {
 
 test_that("it facet's the plot if facetField is set", {
   set.seed(123)
-  d <- data.frame(x = as.Date("2020-01-01") + 1:20, y = rnorm(20), g = rep(c(1,2), each = 10))
+  d <- data.frame(x = as.Date("2020-01-01") + 1:20, y = rnorm(20), g = rep(c(1, 2), each = 10))
 
   s1 <- spc(d, "y", "x")
   p1 <- createGgplot(s1)
@@ -78,7 +78,7 @@ test_that("it sets yAxisLabel correctly", {
 
 test_that("it sets scales correctly in a faceted plot", {
   set.seed(123)
-  d <- data.frame(x = as.Date("2020-01-01") + 1:20, y = rnorm(20), g = rep(c(1,2), each = 10))
+  d <- data.frame(x = as.Date("2020-01-01") + 1:20, y = rnorm(20), g = rep(c(1, 2), each = 10))
   s <- spc(d, "y", "x", facetField = "g")
 
   p1 <- createGgplot(s)
