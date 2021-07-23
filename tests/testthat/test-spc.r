@@ -25,7 +25,7 @@ test_that("it throws an error if .data is not a data.frame", {
 
 test_that("it returns a ptd_spc_df object", {
   stub(spc, "spcOptions", options)
-  stub(spc, "validate", TRUE)
+  stub(spc, "validateSpcOptions", TRUE)
   stub(spc, "spcStandard", function(x, ...) x)
   stub(spc, "calculatePointHighlighting", function(x, ...) x)
 
@@ -43,7 +43,7 @@ test_that("it has options as an attribute, created by spcOptions", {
   m <- mock(options)
 
   stub(spc, "spcOptions", m)
-  stub(spc, "validate", TRUE)
+  stub(spc, "validateSpcOptions", TRUE)
   stub(spc, "spcStandard", function(x, ...) x)
   stub(spc, "calculatePointHighlighting", function(x, ...) x)
 
@@ -59,7 +59,7 @@ test_that("it validates the options", {
   m <- mock(TRUE)
 
   stub(spc, "spcOptions", options)
-  stub(spc, "validate", m)
+  stub(spc, "validateSpcOptions", m)
   stub(spc, "spcStandard", function(x, ...) x)
   stub(spc, "calculatePointHighlighting", function(x, ...) x)
 
@@ -73,7 +73,7 @@ test_that("it calls spcStandard", {
   m <- mock("spcStandard")
 
   stub(spc, "spcOptions", options)
-  stub(spc, "validate", TRUE)
+  stub(spc, "validateSpcOptions", TRUE)
   stub(spc, "spcStandard", m)
   stub(spc, "calculatePointHighlighting", function(x, ...) x)
 
@@ -88,7 +88,7 @@ test_that("it calls calculatePointHighlighting (increase)", {
 
   options$improvementDirection <- "increase"
   stub(spc, "spcOptions", options)
-  stub(spc, "validate", TRUE)
+  stub(spc, "validateSpcOptions", TRUE)
   stub(spc, "spcStandard", function(x, ...) x)
   stub(spc, "calculatePointHighlighting", m)
 
@@ -103,7 +103,7 @@ test_that("it calls calculatePointHighlighting (decrease)", {
 
   options$improvementDirection <- "decrease"
   stub(spc, "spcOptions", options)
-  stub(spc, "validate", TRUE)
+  stub(spc, "validateSpcOptions", TRUE)
   stub(spc, "spcStandard", function(x, ...) x)
   stub(spc, "calculatePointHighlighting", m)
 

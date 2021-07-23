@@ -69,8 +69,7 @@ spcOptions <- function(valueField,
   )
 }
 
-#' @export
-validate.ptd_spc_options <- function(options, .data) {
+validateSpcOptions <- function(options, .data) {
   stopifnot(".data must be a data.frame" = inherits(.data, "data.frame"))
 
   check <- function(op) {

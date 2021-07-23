@@ -84,7 +84,7 @@ spc <- function(.data,
   options <- spcOptions(valueField, dateField, facetField, rebase, fixAfterNPoints, improvementDirection, target,
                         trajectory)
 
-  validate(options, .data)
+  validateSpcOptions(options, .data)
 
   # Declare improvement direction as integer
   improvementDirection <- ifelse(options$improvementDirection == "increase", 1, -1)

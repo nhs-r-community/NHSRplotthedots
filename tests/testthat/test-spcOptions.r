@@ -103,50 +103,50 @@ test_that("printing output", {
   expect_output(print(r), "--------------------------------")
 })
 
-# validate() ----
+# validateSpcOptions() ----
 
 test_that(".data must be a data.frame", {
   d <- data.frame(a = 1, b = 2)
   o <- spcOptions("a", "b")
 
-  expect_error(validate(o, NULL), ".data must be a data.frame")
-  expect_error(validate(o, 1),    ".data must be a data.frame")
-  expect_error(validate(o, "a"),  ".data must be a data.frame")
-  validate(o, d)
+  expect_error(validateSpcOptions(o, NULL), ".data must be a data.frame")
+  expect_error(validateSpcOptions(o, 1),    ".data must be a data.frame")
+  expect_error(validateSpcOptions(o, "a"),  ".data must be a data.frame")
+  validateSpcOptions(o, d)
 })
 
 test_that("it returns an error if valueField does not exist in .data", {
   d <- data.frame(a = 1, b = 2)
   o <- spcOptions("x", "b")
-  expect_error(validate(o, d), "valueField: 'x' must be a valid column name in the data frame.")
+  expect_error(validateSpcOptions(o, d), "valueField: 'x' must be a valid column name in the data frame.")
 })
 
 test_that("it returns an error if dateField does not exist in .data", {
   d <- data.frame(a = 1, b = 2)
   o <- spcOptions("a", "x")
-  expect_error(validate(o, d), "dateField: 'x' must be a valid column name in the data frame.")
+  expect_error(validateSpcOptions(o, d), "dateField: 'x' must be a valid column name in the data frame.")
 })
 
 test_that("it returns an error if facetField does not exist in .data", {
   d <- data.frame(a = 1, b = 2)
   o <- spcOptions("a", "b", facetField = "c")
-  expect_error(validate(o, d), "facetField: 'c' must be a valid column name in the data frame.")
+  expect_error(validateSpcOptions(o, d), "facetField: 'c' must be a valid column name in the data frame.")
 })
 
 test_that("it returns an error if rebase does not exist in .data", {
   d <- data.frame(a = 1, b = 2)
   o <- spcOptions("a", "b", rebase = "c")
-  expect_error(validate(o, d), "rebase: 'c' must be a valid column name in the data frame.")
+  expect_error(validateSpcOptions(o, d), "rebase: 'c' must be a valid column name in the data frame.")
 })
 
 test_that("it returns an error if target does not exist in .data", {
   d <- data.frame(a = 1, b = 2)
   o <- spcOptions("a", "b", target = "c")
-  expect_error(validate(o, d), "target: 'c' must be a valid column name in the data frame.")
+  expect_error(validateSpcOptions(o, d), "target: 'c' must be a valid column name in the data frame.")
 })
 
 test_that("it returns an error if trajectory does not exist in .data", {
   d <- data.frame(a = 1, b = 2)
   o <- spcOptions("a", "b", trajectory = "c")
-  expect_error(validate(o, d), "trajectory: 'c' must be a valid column name in the data frame.")
+  expect_error(validateSpcOptions(o, d), "trajectory: 'c' must be a valid column name in the data frame.")
 })
