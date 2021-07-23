@@ -21,7 +21,7 @@
 #'     either an integer for integer scales or a decimal value for percentage scales. This option is ignored if faceting
 #'     is in use.
 #' @return The ggplot2 object
-
+#' @export
 create_spc_plot <- function(.data,
                             pointSize = 2.5,
                             percentageYAxis = FALSE,
