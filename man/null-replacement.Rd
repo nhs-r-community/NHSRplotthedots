@@ -16,8 +16,9 @@ a \%||\% b
 if \code{a} is null, choose \code{b}.
 }
 \examples{
-
+\dontrun{
 1 \%||\% 2 == 1
 NULL \%||\% 2 == 2
+}
 
 }

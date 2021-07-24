@@ -6,9 +6,10 @@
 #' @param b a value to replace `a` with if `a` is null
 #'
 #' @examples
-#'
+#' \dontrun{
 #' 1 %||% 2 == 1
 #' NULL %||% 2 == 2
+#' }
 #'
 #' @name null-replacement
 
