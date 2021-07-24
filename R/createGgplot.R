@@ -131,10 +131,6 @@ createGgplot <- function(x,
       scale_y_continuous(breaks = yaxislabels, labels = yaxislabels)
   }
 
-  # finally, apply any theme overrides
-  plot <- plot +
-    plotOptions$themeOverride
-
   plot
 }
 
