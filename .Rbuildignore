@@ -7,3 +7,6 @@
 ^\.github$
 ^codecov\.yml$
 ^\.github$
+
+^_pkgdown.yml$
+^pkgdown/

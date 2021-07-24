@@ -15,6 +15,7 @@ Maintainer: Christopher Reading <christopher.reading1@nhs.net>
 Description: Provides tools for drawing Statistical Process Control (SPC) charts. This package supports the NHSE/I
   programme 'Making Data Count', and allows users to draw XmR charts, use change points and apply rules with summary
   indicators for when rules are breached.
+URL: https://nhs-r-community.github.io/NHSRplotthedots/
 License: MIT + file LICENSE
 Encoding: UTF-8
 LazyData: true
