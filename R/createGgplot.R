@@ -20,20 +20,23 @@
 #' @param yAxisBreaks Specify an interval value for breaks on the y axis. Value should be a numeric vector of length 1,
 #'     either an integer for integer scales or a decimal value for percentage scales. This option is ignored if faceting
 #'     is in use.
+#' @param themeOverride Specify a list containing ggplot theme elements which can be used to override the default
+#'     appearance of the plot.
 #' @param ... currently ignored
 #' @return The ggplot2 object
 #' @export
 createGgplot <- function(x,
-                         pointSize = 2.5,
+                         pointSize = 4,
                          percentageYAxis = FALSE,
                          mainTitle = "SPC Chart",
                          xAxisLabel = NULL,
                          yAxisLabel = NULL,
                          fixedXAxisMultiple = TRUE,
                          fixedYAxisMultiple = TRUE,
-                         xAxisDateFormat = "%d/%m/%Y",
+                         xAxisDateFormat = "%d/%m/%y",
                          xAxisBreaks = NULL,
                          yAxisBreaks = NULL,
+                         themeOverride = NULL,
                          ...) {
 
   if (!inherits(x, "ptd_spc_df")) {
@@ -50,7 +53,8 @@ createGgplot <- function(x,
                       fixedYAxisMultiple,
                       xAxisDateFormat,
                       xAxisBreaks,
-                      yAxisBreaks)
+                      yAxisBreaks,
+                      themeOverride)
 
   # Colour Palette for ggplot
   .darkgrey <- "#7B7D7D"
@@ -72,31 +76,33 @@ createGgplot <- function(x,
     seq.Date(from = as.Date(start), to = as.Date(end), by = xAxisBreaks)
   }
 
+  lineSize <- pointSize / 3
+
   plot <- ggplot(.data, aes(x = .data$x, y = .data$y)) +
-    theme_minimal() +
-    geom_line(aes(y = .data$upl), linetype = "dashed", size = pointSize / 2.666666, color = .darkgrey) +
-    geom_line(aes(y = .data$lpl), linetype = "dashed", size = pointSize / 2.666666, color = .darkgrey) +
-    geom_line(aes(y = .data$target), linetype = "dashed", size = pointSize / 2.666666, color = .purple, na.rm = TRUE) +
-    geom_line(aes(y = .data$trajectory), linetype = "dashed", size = pointSize / 2.666666, color = .red, na.rm = TRUE) +
+    geom_line(aes(y = .data$upl), linetype = "dashed", size = lineSize, color = .darkgrey) +
+    geom_line(aes(y = .data$lpl), linetype = "dashed", size = lineSize, color = .darkgrey) +
+    geom_line(aes(y = .data$target), linetype = "dashed", size = lineSize, color = .purple, na.rm = TRUE) +
+    geom_line(aes(y = .data$trajectory), linetype = "dashed", size = lineSize, color = .red, na.rm = TRUE) +
     geom_line(aes(y = mean)) +
-    geom_line(color = .darkgrey, size = pointSize / 2.666666) +
+    geom_line(color = .darkgrey, size = lineSize) +
     geom_point(color = .darkgrey, size = pointSize) +
     geom_point(aes(x = .data$x, y = .data$specialCauseImprovement), color = .skyblue, size = pointSize, na.rm = TRUE) +
     geom_point(aes(x = .data$x, y = .data$specialCauseConcern), color = .orange, size = pointSize, na.rm = TRUE) +
     labs(title = mainTitle,
          x = xAxisLabel %||% capitalise(options[["dateField"]]),
          y = yAxisLabel %||% capitalise(options[["valueField"]])) +
-    theme(plot.title = element_text(hjust = 0.5)) +
     scale_x_date(
       breaks = xaxislabels,
       labels = format(xaxislabels, format = xAxisDateFormat)
     ) +
+    theme_minimal() +
     theme(
       plot.margin = unit(c(5, 5, 5, 5), "mm"), #5mm of white space around plot edge
       axis.text.x = element_text(angle = 90, hjust = 1),
       panel.grid.major.x = element_blank(), #remove major x gridlines
       panel.grid.minor.x = element_blank() #remove minor x gridlines
-    )
+    ) +
+    themeOverride
 
   # Apply facet wrap if a facet field is present
   if (!is.null(options$facetField)) {
@@ -135,16 +141,17 @@ createGgplot <- function(x,
 #' @rdname createGgplot
 #' @export
 plot.ptd_spc_df <- function(x,
-                            pointSize = 2.5,
+                            pointSize = 4,
                             percentageYAxis = FALSE,
                             mainTitle = "SPC Chart",
                             xAxisLabel = NULL,
                             yAxisLabel = NULL,
                             fixedXAxisMultiple = TRUE,
                             fixedYAxisMultiple = TRUE,
-                            xAxisDateFormat = "%d/%m/%Y",
+                            xAxisDateFormat = "%d/%m/%y",
                             xAxisBreaks = NULL,
                             yAxisBreaks = NULL,
+                            themeOverride = NULL,
                             ...) {
   createGgplot(x,
                pointSize,
@@ -156,7 +163,9 @@ plot.ptd_spc_df <- function(x,
                fixedYAxisMultiple,
                xAxisDateFormat,
                xAxisBreaks,
-               yAxisBreaks)
+               yAxisBreaks,
+               themeOverride,
+               ...)
 }
 
 validatePlotOptions <- function(pointSize = NULL,
@@ -168,7 +177,8 @@ validatePlotOptions <- function(pointSize = NULL,
                                 fixedYAxisMultiple = NULL,
                                 xAxisDateFormat = NULL,
                                 xAxisBreaks = NULL,
-                                yAxisBreaks = NULL) {
+                                yAxisBreaks = NULL,
+                                themeOverride = NULL) {
   if (!is.null(pointSize)) {
     assertthat::assert_that(
       is.numeric(pointSize),
@@ -252,6 +262,13 @@ validatePlotOptions <- function(pointSize = NULL,
       is.numeric(yAxisBreaks),
       assertthat::is.scalar(yAxisBreaks),
       msg = "yAxisBreaks argument must be a numeric of length 1."
+    )
+  }
+
+  if (!is.null(themeOverride)) {
+    assertthat::assert_that(
+      inherits(themeOverride, c("theme", "gg")),
+      msg = "themeOverride must be an object created by theme()"
     )
   }
 

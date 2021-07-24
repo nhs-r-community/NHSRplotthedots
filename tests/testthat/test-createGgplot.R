@@ -7,11 +7,11 @@ test_that("it calls validatePlotOptions", {
   stub(createGgplot, "validatePlotOptions", m)
 
   try(createGgplot(spc(data.frame(x = 1, y = 1), "y", "x"),
-                   1, 2, 3, 4, 5, 6, 7, 8, 9, 10),
+                   1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11),
       silent = TRUE)
 
   expect_called(m, 1)
-  expect_args(m, 1, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10)
+  expect_args(m, 1, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11)
 })
 
 test_that("it returns a ggplot object", {
@@ -46,11 +46,11 @@ test_that("it sets the xAxisBreaks correctly", {
   # no breaks set
   p1 <- createGgplot(s)
   expect_equal(p1$scales$scales[[1]]$labels,
-               format(as.Date("2020-01-01") + 1:20, "%d/%m/%Y"))
+               format(as.Date("2020-01-01") + 1:20, "%d/%m/%y"))
 
   p2 <- createGgplot(s, xAxisBreaks = "3 days")
   expect_equal(p2$scales$scales[[1]]$labels,
-               format(as.Date("2020-01-01") + seq(1, 20, 3), "%d/%m/%Y"))
+               format(as.Date("2020-01-01") + seq(1, 20, 3), "%d/%m/%y"))
 })
 
 test_that("it sets xAxisLabel correctly", {
@@ -132,6 +132,18 @@ test_that("it sets the y-axis if yAxisBreaks is provided", {
   expect_true(all(diff(p2$scales$scales[[2]]$breaks) == 0.5))
 })
 
+test_that("it adds themeOverride to the plot", {
+  set.seed(123)
+  d <- data.frame(x = as.Date("2020-01-01") + 1:20, y = rnorm(20))
+  s <- spc(d, "y", "x")
+
+  p1 <- createGgplot(s)
+  expect_equal(p1$theme$panel.background$fill, NULL)
+
+  p2 <- createGgplot(s, themeOverride = theme(panel.background = element_rect("black")))
+  expect_equal(p2$theme$panel.background$fill, "black")
+})
+
 # plot() ----
 test_that("it calls createGgplot()", {
   set.seed(123)
@@ -145,16 +157,17 @@ test_that("it calls createGgplot()", {
 
   expect_called(m, 1)
   expect_args(m, 1, s,
-              pointSize = 2.5,
+              pointSize = 4,
               percentageYAxis = FALSE,
               mainTitle = "SPC Chart",
               xAxisLabel = NULL,
               yAxisLabel = NULL,
               fixedXAxisMultiple = TRUE,
               fixedYAxisMultiple = TRUE,
-              xAxisDateFormat = "%d/%m/%Y",
+              xAxisDateFormat = "%d/%m/%y",
               xAxisBreaks = NULL,
-              yAxisBreaks = NULL)
+              yAxisBreaks = NULL,
+              themeOverride = NULL)
 })
 
 # validatePlotOptions() ----
@@ -278,4 +291,13 @@ test_that("it handles yAxisBreaks correctly", {
   em <- "yAxisBreaks argument must be a numeric of length 1."
   expect_error(validatePlotOptions(yAxisBreaks = "a"), em)
   expect_error(validatePlotOptions(yAxisBreaks = c(1, 2)), em)
+})
+
+test_that("it handles themeOverride correctly", {
+  # these should run fine
+  validatePlotOptions(themeOverride = theme())
+
+  # these will error
+  em <- "themeOverride must be an object created by theme()"
+  expect_error(validatePlotOptions(themeOverride = list()), em)
 })
