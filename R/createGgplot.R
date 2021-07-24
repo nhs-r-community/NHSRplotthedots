@@ -177,82 +177,92 @@ validatePlotOptions <- function(pointSize = NULL,
                                 xAxisDateFormat = NULL,
                                 xAxisBreaks = NULL,
                                 yAxisBreaks = NULL) {
-  if (!is.null(pointSize) && !(
-    is.numeric(pointSize) &&
-    length(pointSize) == 1 &&
-    pointSize >   0 &&
-    pointSize <= 10
-  )) {
-    stop("pointSize must be a single number greater than 0 and less than or equal to 10.")
-  }
-
-  if (!is.null(percentageYAxis) && !(
-    (is.logical(percentageYAxis) || is.numeric(percentageYAxis)) &&
-    length(percentageYAxis) == 1 &&
-    percentageYAxis >= 0 &&
-    percentageYAxis <= 1
-  )) {
-    stop("percentageYAxis argument must a single value of TRUE, FALSE, or a numeric between 0 and 1.")
-  }
-
-  if (!is.null(mainTitle) && !(
-    is.character(mainTitle) &&
-    length(mainTitle) == 1
-  )) {
-    stop("mainTitle argument must be a character of length 1.")
-  }
-
-  if (!is.null(xAxisLabel) && !(
-    is.character(xAxisLabel) &&
-    length(xAxisLabel) == 1
-  )) {
-    stop("xAxisLabel argument must be a character of length 1.")
-  }
-
-  if (!is.null(yAxisLabel) && !(
-    is.character(yAxisLabel) &&
-    length(yAxisLabel) == 1
-  )) {
-    stop("yAxisLabel argument must be a character of length 1.")
-  }
-
-  if (!is.null(fixedXAxisMultiple) && !(
-    is.logical(fixedXAxisMultiple) &&
-    length(fixedXAxisMultiple) == 1
-  )) {
-    stop("fixedXAxisMultiple argument must be a logical of length 1.")
-  }
-
-  if (!is.null(fixedYAxisMultiple) && !(
-    is.logical(fixedYAxisMultiple) &&
-    length(fixedYAxisMultiple) == 1
-  )) {
-    stop("fixedYAxisMultiple argument must be a logical of length 1.")
-  }
-
-  if (!is.null(xAxisDateFormat) && !(
-    is.character(xAxisDateFormat) &&
-    length(xAxisDateFormat) == 1
-  )) {
-    stop("xAxisDateFormat argument must be a character of length 1.")
-  }
-
-  if (!is.null(xAxisBreaks) && !(
-    is.character(xAxisBreaks) &&
-    length(xAxisBreaks) == 1 &&
-    grepl("^\\d+ (day|week|month|quarter|year)s?$", xAxisBreaks)
-  )) {
-    stop(
-      "xAxisBreaks argument must be a character of length 1, and be a valid string for seq.Date 'by'. ",
-      "See seq.Date for more information."
+  if (!is.null(pointSize)) {
+    assertthat::assert_that(
+      is.numeric(pointSize),
+      assertthat::is.scalar(pointSize),
+      pointSize > 0,
+      pointSize <= 10,
+      msg = "pointSize must be a single number greater than 0 and less than or equal to 10."
     )
   }
 
-  if (!is.null(yAxisBreaks) && !(
-    is.numeric(yAxisBreaks) &&
-    length(yAxisBreaks) == 1
-  )) {
-    stop("yAxisBreaks argument must be a numeric of length 1.")
+  if (!is.null(percentageYAxis)) {
+    assertthat::assert_that(
+      (is.logical(percentageYAxis) || is.numeric(percentageYAxis)),
+      assertthat::is.scalar(percentageYAxis),
+      percentageYAxis >= 0,
+      percentageYAxis <= 1,
+      msg = "percentageYAxis argument must a single value of TRUE, FALSE, or a numeric between 0 and 1."
+    )
+  }
+
+  if (!is.null(mainTitle)) {
+    assertthat::assert_that(
+      is.character(mainTitle),
+      assertthat::is.scalar(mainTitle),
+      msg = "mainTitle argument must be a character of length 1."
+    )
+  }
+
+  if (!is.null(xAxisLabel)) {
+    assertthat::assert_that(
+      is.character(xAxisLabel),
+      assertthat::is.scalar(xAxisLabel),
+      msg = "xAxisLabel argument must be a character of length 1."
+    )
+  }
+
+  if (!is.null(yAxisLabel)) {
+    assertthat::assert_that(
+      is.character(yAxisLabel),
+      assertthat::is.scalar(yAxisLabel),
+      msg = "yAxisLabel argument must be a character of length 1."
+    )
+  }
+
+  if (!is.null(fixedXAxisMultiple)) {
+    assertthat::assert_that(
+      is.logical(fixedXAxisMultiple),
+      assertthat::is.scalar(fixedXAxisMultiple),
+      msg = "fixedXAxisMultiple argument must be a logical of length 1."
+    )
+  }
+
+  if (!is.null(fixedYAxisMultiple)) {
+    assertthat::assert_that(
+      is.logical(fixedYAxisMultiple),
+      assertthat::is.scalar(fixedYAxisMultiple),
+      msg = "fixedYAxisMultiple argument must be a logical of length 1."
+    )
+  }
+
+  if (!is.null(xAxisDateFormat)) {
+    assertthat::assert_that(
+      is.character(xAxisDateFormat),
+      assertthat::is.scalar(xAxisDateFormat),
+      msg = "xAxisDateFormat argument must be a character of length 1."
+    )
+  }
+
+  if (!is.null(xAxisBreaks)) {
+    assertthat::assert_that(
+      is.character(xAxisBreaks),
+      assertthat::is.scalar(xAxisBreaks),
+      grepl("^\\d+ (day|week|month|quarter|year)s?$", xAxisBreaks),
+      msg = paste0(
+        "xAxisBreaks argument must be a character of length 1, and be a valid string for seq.Date 'by'. ",
+        "See seq.Date for more information."
+      )
+    )
+  }
+
+  if (!is.null(yAxisBreaks)) {
+    assertthat::assert_that(
+      is.numeric(yAxisBreaks),
+      assertthat::is.scalar(yAxisBreaks),
+      msg = "yAxisBreaks argument must be a numeric of length 1."
+    )
   }
 
   invisible(TRUE)

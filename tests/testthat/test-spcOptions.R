@@ -69,7 +69,7 @@ test_that("improvementDirection must be one of increase or decrease", {
   spcOptions("a", "b", improvementDirection = "decrease")
 
   expect_error(spcOptions("a", "b", improvementDirection = "a"),
-               "Improvement direction should be a either 'increase' or 'decrease'.")
+               "'arg' should be one of \"increase\", \"decrease\"")
 })
 
 test_that("target is either null, or a scalar character", {

@@ -14,44 +14,63 @@ spcOptions <- function(valueField,
                        facetField = NULL,
                        rebase = NULL,
                        fixAfterNPoints = NULL,
-                       improvementDirection = "increase",
+                       improvementDirection = c("increase", "decrease"),
                        target = NULL,
                        trajectory = NULL) {
 
-  if (!(is.character(valueField) && length(valueField) == 1)) {
-    stop("valueField argument must be a 'character' of length 1.")
+  assertthat::assert_that(
+    is.character(valueField),
+    assertthat::is.scalar(valueField),
+    msg = "valueField argument must be a 'character' of length 1."
+  )
+
+  assertthat::assert_that(
+    is.character(dateField),
+    assertthat::is.scalar(dateField),
+    msg = "dateField argument must be a 'character' of length 1."
+  )
+
+  if (!is.null(facetField)) {
+    assertthat::assert_that(
+      is.character(facetField),
+      assertthat::is.scalar(facetField),
+      msg = "facetField argument must be a 'character' of length 1."
+    )
   }
 
-  if (!(is.character(dateField) && length(dateField) == 1)) {
-    stop("dateField argument must be a 'character' of length 1.")
+  if (!is.null(rebase)) {
+    assertthat::assert_that(
+      is.character(rebase),
+      assertthat::is.scalar(rebase),
+      msg = "rebase argument must be a 'character' of length 1."
+    )
   }
 
-  if (!is.null(facetField) && !(is.character(facetField) && length(facetField) == 1)) {
-    stop("facetField argument must be a 'character' of length 1.")
+  if (!is.null(fixAfterNPoints)) {
+    assertthat::assert_that(
+      is.numeric(fixAfterNPoints),
+      assertthat::is.scalar(fixAfterNPoints),
+      fixAfterNPoints >= 12,
+      msg = "fixAfterNPoints must be a single numeric that is greater than or equal to 12."
+    )
   }
 
-  if (!is.null(rebase) && !(is.character(rebase) && length(rebase) == 1)) {
-    stop("rebase argument must be a 'character' of length 1.")
+  improvementDirection <- match.arg(improvementDirection)
+
+  if (!is.null(target)) {
+    assertthat::assert_that(
+      is.character(target),
+      assertthat::is.scalar(target),
+      msg = "target argument must be a 'character' of length 1."
+    )
   }
 
-  if (!is.null(fixAfterNPoints) && !(
-    is.numeric(fixAfterNPoints) &&
-    length(fixAfterNPoints) == 1 &&
-    fixAfterNPoints >= 12
-  )) {
-    stop("fixAfterNPoints must be a single numeric that is greater than or equal to 12.")
-  }
-
-  if (!improvementDirection %in% c("increase", "decrease")) {
-    stop("Improvement direction should be a either 'increase' or 'decrease'.")
-  }
-
-  if (!is.null(target) && !(is.character(target) && length(target) == 1)) {
-    stop("target argument must be a 'character' of length 1.")
-  }
-
-  if (!is.null(trajectory) && !(is.character(trajectory) && length(trajectory) == 1)) {
-    stop("trajectory argument must be a 'character' of length 1.")
+  if (!is.null(trajectory)) {
+    assertthat::assert_that(
+      is.character(trajectory),
+      assertthat::is.scalar(trajectory),
+      msg = "trajectory argument must be a 'character' of length 1."
+    )
   }
 
   structure(

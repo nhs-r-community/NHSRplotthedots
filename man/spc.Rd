@@ -39,8 +39,8 @@ Field name can be specified using non-standard evaluation (i.e. no quotation mar
 \item{fixAfterNPoints}{Specify a number points after which to fix SPC calculations.}
 
 \item{improvementDirection}{Specify whether an increase or decrease in measured variable signifies
-process improvement. Accepted values are 1 or 'increase' for increase as improvement or -1 or 'decrease' for
-decrease as improvement.}
+process improvement. Accepted values are 'increase' for increase as improvement or 'decrease' for
+decrease as improvement. Defaults to 'increase'.}
 
 \item{target}{Specify a field name which contains a target value.
 Field name can be specified using non-standard evaluation (i.e. no quotation marks).}

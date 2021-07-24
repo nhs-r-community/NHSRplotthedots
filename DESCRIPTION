@@ -27,7 +27,8 @@ Imports:
     dplyr,
     rlang,
     crayon,
-    utils
+    utils,
+    assertthat
 Suggests: 
     covr,
     lintr,
