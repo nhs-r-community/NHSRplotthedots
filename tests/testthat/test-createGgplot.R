@@ -6,7 +6,8 @@ test_that("it calls validatePlotOptions", {
   m <- mock(stop())
   stub(createGgplot, "validatePlotOptions", m)
 
-  try(createGgplot(data.frame(), 1, 2, 3, 4, 5, 6, 7, 8, 9, 10),
+  try(createGgplot(spc(data.frame(x = 1, y = 1), "y", "x"),
+                   1, 2, 3, 4, 5, 6, 7, 8, 9, 10),
       silent = TRUE)
 
   expect_called(m, 1)
@@ -138,11 +139,19 @@ test_that("it calls createGgplot()", {
   m <- mock()
   stub(plot.ptd_spc_df, "createGgplot", m)
   plot(s)
-  plot(s, 5, mainTitle = "Plot")
 
-  expect_called(m, 2)
-  expect_args(m, 1, s)
-  expect_args(m, 2, s, 5, mainTitle = "Plot")
+  expect_called(m, 1)
+  expect_args(m, 1, s,
+              pointSize = 2.5,
+              percentageYAxis = FALSE,
+              mainTitle = "SPC Chart",
+              xAxisLabel = NULL,
+              yAxisLabel = NULL,
+              fixedXAxisMultiple = NULL,
+              fixedYAxisMultiple = NULL,
+              xAxisDateFormat = "%d/%m/%Y",
+              xAxisBreaks = NULL,
+              yAxisBreaks = NULL)
 })
 
 # validatePlotOptions() ----

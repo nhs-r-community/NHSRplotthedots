@@ -2,7 +2,7 @@
 #'
 #' Creates a ggplot2 object using the parameters passed in.
 #'
-#' @param .data A data frame containing the information to be plotted.
+#' @param x an object created by [spc()]
 #' @param pointSize Specify the plotting point size for the ggplot output. Default is 2.5.
 #' @param percentageYAxis Specify whether the y axis values are percentages. Percentages in the data frame should be
 #'     decimal values. Accepted values are TRUE for percentage y axis, FALSE for integer y axis.
@@ -20,9 +20,10 @@
 #' @param yAxisBreaks Specify an interval value for breaks on the y axis. Value should be a numeric vector of length 1,
 #'     either an integer for integer scales or a decimal value for percentage scales. This option is ignored if faceting
 #'     is in use.
+#' @param ... currently ignored
 #' @return The ggplot2 object
 #' @export
-createGgplot <- function(.data,
+createGgplot <- function(x,
                          pointSize = 2.5,
                          percentageYAxis = FALSE,
                          mainTitle = "SPC Chart",
@@ -32,7 +33,13 @@ createGgplot <- function(.data,
                          fixedYAxisMultiple = NULL,
                          xAxisDateFormat = "%d/%m/%Y",
                          xAxisBreaks = NULL,
-                         yAxisBreaks = NULL) {
+                         yAxisBreaks = NULL,
+                         ...) {
+
+  if (!inherits(x, "ptd_spc_df")) {
+    stop("x argument must be an 'ptc_spc_df' objected, created by spc()")
+  }
+  .data <- x
 
   validatePlotOptions(pointSize,
                       percentageYAxis,
@@ -133,17 +140,31 @@ createGgplot <- function(.data,
   plot
 }
 
-#' Plot ptd_spc_df object
-#'
-#' Plot function for a ptd_spc_df object. It calls [createGgplot()].
-#'
-#' @seealso createGgplot
-#'
+#' @rdname createGgplot
 #' @export
-#' @param x data passed to .data argument of [createGgplot()]
-#' @param ... other arguments passed to [createGgplot()]
-plot.ptd_spc_df <- function(x, ...) {
-  createGgplot(x, ...)
+plot.ptd_spc_df <- function(x,
+                            pointSize = 2.5,
+                            percentageYAxis = FALSE,
+                            mainTitle = "SPC Chart",
+                            xAxisLabel = NULL,
+                            yAxisLabel = NULL,
+                            fixedXAxisMultiple = NULL,
+                            fixedYAxisMultiple = NULL,
+                            xAxisDateFormat = "%d/%m/%Y",
+                            xAxisBreaks = NULL,
+                            yAxisBreaks = NULL,
+                            ...) {
+  createGgplot(x,
+               pointSize,
+               percentageYAxis,
+               mainTitle,
+               xAxisLabel,
+               yAxisLabel,
+               fixedXAxisMultiple,
+               fixedYAxisMultiple,
+               xAxisDateFormat,
+               xAxisBreaks,
+               yAxisBreaks)
 }
 
 validatePlotOptions <- function(pointSize = NULL,

@@ -2,10 +2,11 @@
 % Please edit documentation in R/createGgplot.R
 \name{createGgplot}
 \alias{createGgplot}
+\alias{plot.ptd_spc_df}
 \title{Create ggplot2}
 \usage{
 createGgplot(
-  .data,
+  x,
   pointSize = 2.5,
   percentageYAxis = FALSE,
   mainTitle = "SPC Chart",
@@ -15,11 +16,27 @@ createGgplot(
   fixedYAxisMultiple = NULL,
   xAxisDateFormat = "\%d/\%m/\%Y",
   xAxisBreaks = NULL,
-  yAxisBreaks = NULL
+  yAxisBreaks = NULL,
+  ...
+)
+
+\method{plot}{ptd_spc_df}(
+  x,
+  pointSize = 2.5,
+  percentageYAxis = FALSE,
+  mainTitle = "SPC Chart",
+  xAxisLabel = NULL,
+  yAxisLabel = NULL,
+  fixedXAxisMultiple = NULL,
+  fixedYAxisMultiple = NULL,
+  xAxisDateFormat = "\%d/\%m/\%Y",
+  xAxisBreaks = NULL,
+  yAxisBreaks = NULL,
+  ...
 )
 }
 \arguments{
-\item{.data}{A data frame containing the information to be plotted.}
+\item{x}{an object created by \code{\link[=spc]{spc()}}}
 
 \item{pointSize}{Specify the plotting point size for the ggplot output. Default is 2.5.}
 
@@ -47,6 +64,8 @@ interval length and type, e.g. "3 months", "7 days".}
 \item{yAxisBreaks}{Specify an interval value for breaks on the y axis. Value should be a numeric vector of length 1,
 either an integer for integer scales or a decimal value for percentage scales. This option is ignored if faceting
 is in use.}
+
+\item{...}{currently ignored}
 }
 \value{
 The ggplot2 object
