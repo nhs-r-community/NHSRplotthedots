@@ -154,3 +154,13 @@ test_that("it returns an error if trajectory does not exist in .data", {
   o <- spcOptions("a", "b", trajectory = "c")
   expect_error(validateSpcOptions(o, d), "trajectory: 'c' must be a valid column name in the data frame.")
 })
+
+test_that("dateField can only appear once per facet", {
+  d <- data.frame(a = c(1, 1), b = 1:2, g = 1:2)
+
+  o1 <- spcOptions("b", "a")
+  expect_error(validateSpcOptions(o1, d), "duplicate rows found in 'a'")
+
+  o2 <- spcOptions("b", "a", facetField = "g")
+  expect_true(validateSpcOptions(o2, d))
+})

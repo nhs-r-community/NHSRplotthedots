@@ -89,8 +89,14 @@ spcOptions <- function(valueField,
 }
 
 validateSpcOptions <- function(options, .data) {
-  stopifnot("options must be created by spcOptions()" = inherits(options, "ptd_spc_options"),
-            ".data must be a data.frame" = inherits(.data, "data.frame"))
+  assertthat::assert_that(
+    inherits(options, "ptd_spc_options"),
+    msg = "options must be created by spcOptions()"
+  )
+  assertthat::assert_that(
+    inherits(.data, "data.frame"),
+    msg = ".data must be a data.frame"
+  )
 
   check <- function(op) {
     if (is.null(options[[op]])) return(TRUE)
@@ -103,6 +109,11 @@ validateSpcOptions <- function(options, .data) {
   check("rebase")
   check("target")
   check("trajectory")
+
+  assertthat::assert_that(
+    all(count(group_by_at(.data, all_of(c(options[["dateField"]], options[["facetField"]]))))$n == 1),
+    msg = paste0("duplicate rows found in '", options[["dateField"]], "'")
+  )
 
   invisible(TRUE)
 }
