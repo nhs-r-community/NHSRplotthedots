@@ -51,27 +51,20 @@ calculatePointHighlighting <- function(.data, improvementDirection) {
 }
 
 sevenPointOneSideOfMean <- function(v) {
-  # edge case: length(v) < 7
-  if (length(v) < 7) return(numeric(length(v)))
-  # the first 6 points will be 0
-  c(rep(0, 6),
-    # then, do a rolling apply to check for equality
-    sapply(seq_along(v)[- (1:6)], function(i) {
-      all(v[[i]] == v[i - 1:6]) & v[[i]] != 0
-    }))
+  # pad the vector with 6 zero's at the beginning
+  vp <- c(rep(0, 6), v)
+  vapply(seq_along(v) + 6, function(i) {
+    all(vp[[i]] == vp[i - 1:6]) & vp[[i]] != 0
+  }, numeric(1))
 }
 
 partOfSevenTrend <- function(v) {
-  # edge case: length(v) < 7
-  if (length(v) < 7) return(numeric(length(v)))
-  # pad v
+  # pad the vector with 6 zero's at the beginning
   vp <- c(v, rep(0, 6))
   # either, this value is already part of 7, or one of the following 6 points is
-  as.numeric(
-    sapply(seq_along(v), function(i) {
-      any(vp[i + 0:6] == 1)
-    })
-  )
+  vapply(seq_along(v), function(i) {
+    any(vp[i + 0:6] == 1)
+  }, numeric(1))
 }
 
 sevenPointTrend <- function(y) {
@@ -79,23 +72,21 @@ sevenPointTrend <- function(y) {
   if (length(y) < 7) return(numeric(length(y)))
   # the first 6 points will be 0
   c(rep(0, 6),
-    sapply(seq_along(y)[- (1:6)], function(i) {
+    vapply(seq_along(y)[- (1:6)], function(i) {
       d <- sign(diff(y[i - 0:6])) * -1
       if (all(d ==  1)) return(1)
       if (all(d == -1)) return(-1)
       0
-    }))
+    }, numeric(1)))
 }
 
 twoInThree <- function(v) {
   if (length(v) == 0) return(numeric())
   # pad the vector with two 0 at start, two 0 at end
   vp <- c(0, 0, v, 0, 0)
-  sapply(seq_along(v), function(i) {
-    as.numeric(
-      sum(vp[i + 0:2]) >= 2 || sum(vp[i + 1:3]) >= 2 || sum(vp[i + 2:4]) >= 2
-    )
-  })
+  vapply(seq_along(v), function(i) {
+    sum(vp[i + 0:2]) >= 2 || sum(vp[i + 1:3]) >= 2 || sum(vp[i + 2:4]) >= 2
+  }, numeric(1))
 }
 
 partOfTwoInThree <- function(v, x) {
