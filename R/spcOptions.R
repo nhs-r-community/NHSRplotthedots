@@ -115,6 +115,18 @@ validateSpcOptions <- function(options, .data) {
     msg = paste0("duplicate rows found in '", options[["dateField"]], "'")
   )
 
+  assertthat::assert_that(
+    inherits(.data[[options[["dateField"]]]], c("Date", "POSIXt")),
+    msg = paste0("dateField must be a Date or POSIXt vector ('",
+                 options["dateField"], "' is a '", class(.data[[options[["dateField"]]]]), "').")
+  )
+
+  assertthat::assert_that(
+    is.numeric(.data[[options[["valueField"]]]]),
+    msg = paste0("valueField must be a numeric vector ('",
+                 options["valueField"], "' is a '", class(.data[[options[["valueField"]]]]), "').")
+  )
+
   invisible(TRUE)
 }
 

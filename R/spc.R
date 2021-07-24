@@ -87,6 +87,8 @@ spc <- function(.data,
 
   validateSpcOptions(options, .data)
 
+  .data[[dateField]] <- as.POSIXct(.data[[dateField]], tz = "utc")
+
   # Declare improvement direction as integer
   improvementDirection <- ifelse(options$improvementDirection == "increase", 1, -1)
 

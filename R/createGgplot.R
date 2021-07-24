@@ -94,7 +94,7 @@ createGgplot <- function(x,
     labs(title = mainTitle,
          x = xAxisLabel %||% capitalise(options[["dateField"]]),
          y = yAxisLabel %||% capitalise(options[["valueField"]])) +
-    scale_x_date(
+    scale_x_datetime(
       breaks = xaxislabels,
       labels = format(xaxislabels, format = xAxisDateFormat)
     ) +

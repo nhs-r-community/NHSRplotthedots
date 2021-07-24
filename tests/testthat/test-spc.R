@@ -1,8 +1,9 @@
 library(testthat)
 library(mockery)
 
+set.seed(123)
 data <- data.frame(
-  x = 1:20,
+  x = as.Date("2020-01-01") + 1:20,
   y = rnorm(20)
 )
 
@@ -28,11 +29,7 @@ test_that("it returns a ptd_spc_df object", {
   stub(spc, "validateSpcOptions", TRUE)
   stub(spc, "spcStandard", function(x, ...) x)
   stub(spc, "calculatePointHighlighting", function(x, ...) x)
-
-  data <- data.frame(
-    x = 1:20,
-    y = rnorm(20)
-  )
+  stub(spc, "as.POSIXct", function(x, ...) x)
 
   s <- spc(data, "y", "x")
 
@@ -46,6 +43,7 @@ test_that("it has options as an attribute, created by spcOptions", {
   stub(spc, "validateSpcOptions", TRUE)
   stub(spc, "spcStandard", function(x, ...) x)
   stub(spc, "calculatePointHighlighting", function(x, ...) x)
+  stub(spc, "as.POSIXct", function(x, ...) x)
 
   s <- spc(data, "a", "b", "c", "d", "e", "f", "g", "h")
   options <- attr(s, "options")
@@ -62,6 +60,8 @@ test_that("it validates the options", {
   stub(spc, "validateSpcOptions", m)
   stub(spc, "spcStandard", function(x, ...) x)
   stub(spc, "calculatePointHighlighting", function(x, ...) x)
+  stub(spc, "as.POSIXct", function(x, ...) x)
+  stub(spc, "as.POSIXct", function(x, ...) x)
 
   s <- spc(data, "y", "x")
 
@@ -76,6 +76,7 @@ test_that("it calls spcStandard", {
   stub(spc, "validateSpcOptions", TRUE)
   stub(spc, "spcStandard", m)
   stub(spc, "calculatePointHighlighting", function(x, ...) x)
+  stub(spc, "as.POSIXct", function(x, ...) x)
 
   s <- spc(data, "y", "x")
 
@@ -91,6 +92,7 @@ test_that("it calls calculatePointHighlighting (increase)", {
   stub(spc, "validateSpcOptions", TRUE)
   stub(spc, "spcStandard", function(x, ...) x)
   stub(spc, "calculatePointHighlighting", m)
+  stub(spc, "as.POSIXct", function(x, ...) x)
 
   spc(data, "y", "x")
 
@@ -106,11 +108,28 @@ test_that("it calls calculatePointHighlighting (decrease)", {
   stub(spc, "validateSpcOptions", TRUE)
   stub(spc, "spcStandard", function(x, ...) x)
   stub(spc, "calculatePointHighlighting", m)
+  stub(spc, "as.POSIXct", function(x, ...) x)
 
   spc(data, "y", "x")
 
   expect_called(m, 1)
   expect_args(m, 1, data, -1)
+})
+
+test_that("it converts dateField to POSIXct", {
+  m <- mock("as.POSIXct")
+
+  options$improvementDirection <- "decrease"
+  stub(spc, "spcOptions", options)
+  stub(spc, "validateSpcOptions", TRUE)
+  stub(spc, "spcStandard", function(x, ...) x)
+  stub(spc, "calculatePointHighlighting", function(x, ...) x)
+  stub(spc, "as.POSIXct", m)
+
+  spc(data, "y", "x")
+
+  expect_called(m, 1)
+  expect_args(m, 1, data$x, tz = "utc")
 })
 
 # print() ----
@@ -119,7 +138,7 @@ test_that("it calls plot", {
   m <- mock("plot")
   stub(print.ptd_spc_df, "plot", m)
 
-  s <- spc(data, "x", "y")
+  s <- spc(data, "y", "x")
   o <- capture_output(print(s))
 
   expect_called(m, 1)
@@ -134,7 +153,7 @@ test_that("it calls print", {
   stub(print.ptd_spc_df, "plot", "plot")
   stub(print.ptd_spc_df, "print", m)
 
-  s <- spc(data, "x", "y")
+  s <- spc(data, "y", "x")
   o <- capture_output(print(s))
 
   expect_called(m, 1)

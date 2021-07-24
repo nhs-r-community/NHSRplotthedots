@@ -11,7 +11,7 @@ test_that("it calls validatePlotOptions", {
   m <- mock(stop())
   stub(createGgplot, "validatePlotOptions", m)
 
-  try(createGgplot(spc(data.frame(x = 1, y = 1), "y", "x"),
+  try(createGgplot(spc(data.frame(x = Sys.Date(), y = 1), "y", "x"),
                    1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11),
       silent = TRUE)
 
@@ -21,7 +21,7 @@ test_that("it calls validatePlotOptions", {
 
 test_that("it returns a ggplot object", {
   set.seed(123)
-  d <- data.frame(x = 1:20, y = rnorm(20))
+  d <- data.frame(x = as.Date("2020-01-01") + 1:20, y = rnorm(20))
   s <- spc(d, "y", "x")
   p <- createGgplot(s)
 
