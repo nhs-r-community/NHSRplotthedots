@@ -44,18 +44,20 @@ test_that("it facet's the plot if facetField is set", {
 })
 
 test_that("it sets the xAxisBreaks correctly", {
+  m <- mock()
+  stub(createGgplot, "scale_x_datetime", m)
+
   set.seed(123)
   d <- data.frame(x = as.Date("2020-01-01") + 1:20, y = rnorm(20))
   s <- spc(d, "y", "x")
 
   # no breaks set
   p1 <- createGgplot(s)
-  expect_equal(p1$scales$scales[[1]]$labels,
-               format(as.Date("2020-01-01") + 1:20, "%d/%m/%y"))
-
   p2 <- createGgplot(s, xAxisBreaks = "3 days")
-  expect_equal(p2$scales$scales[[1]]$labels,
-               format(as.Date("2020-01-01") + seq(1, 20, 3), "%d/%m/%y"))
+
+  expect_called(m, 2)
+  expect_args(m, 1,  date_breaks = waiver(), date_labels = "%d/%m/%y")
+  expect_args(m, 2,  date_breaks = "3 days", date_labels = "%d/%m/%y")
 })
 
 test_that("it sets xAxisLabel correctly", {

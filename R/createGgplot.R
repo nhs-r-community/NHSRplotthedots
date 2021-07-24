@@ -68,17 +68,6 @@ createGgplot <- function(x,
 
   options <- attr(.data, "options")
 
-  # set x axis breaks
-  xaxislabels  <- if (is.null(xAxisBreaks)) {
-    .data[["x"]]
-  } else {
-    xaxis <- .data[["x"]]
-    start <- min(xaxis, na.rm = TRUE)
-    end <- max(xaxis, na.rm = TRUE)
-
-    seq.Date(from = as.Date(start), to = as.Date(end), by = xAxisBreaks)
-  }
-
   lineSize <- pointSize / 3
 
   plot <- ggplot(.data, aes(x = .data$x, y = .data$y)) +
@@ -95,8 +84,8 @@ createGgplot <- function(x,
          x = xAxisLabel %||% capitalise(options[["dateField"]]),
          y = yAxisLabel %||% capitalise(options[["valueField"]])) +
     scale_x_datetime(
-      breaks = xaxislabels,
-      labels = format(xaxislabels, format = xAxisDateFormat)
+      date_breaks = xAxisBreaks %||% waiver(),
+      date_labels = xAxisDateFormat
     ) +
     theme_minimal() +
     theme(
