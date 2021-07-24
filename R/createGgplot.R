@@ -55,40 +55,14 @@ createGgplot <- function(.data,
   options <- attr(.data, "options")
 
   # set x axis breaks
-  if (is.null(xAxisBreaks)) {
-    xaxislabels <- .data[["x"]]
+  xaxislabels  <- if (is.null(xAxisBreaks)) {
+    .data[["x"]]
   } else {
     xaxis <- .data[["x"]]
     start <- min(xaxis, na.rm = TRUE)
     end <- max(xaxis, na.rm = TRUE)
-    xaxislabels <- seq.Date(from = as.Date(start), to = as.Date(end), by = xAxisBreaks)
-  }
 
-  # set x axis label
-  if (is.null(xAxisLabel)) {
-    xAxisLabel <- capitalise(options[["dateField"]])
-  }
-
-  # set y axis label
-  if (is.null(yAxisLabel)) {
-    yAxisLabel <- capitalise(options[["valueField"]])
-  }
-
-  # set x axis fixed scaling for facet plots
-  scaleXFixed <- ifelse(is.null(fixedXAxisMultiple), TRUE, fixedXAxisMultiple)
-
-  # set y axis fixed scaling for facet plots
-  scaleYFixed <- ifelse(is.null(fixedYAxisMultiple), TRUE, fixedYAxisMultiple)
-
-  # For multiple facet chart, derived fixed/free scales value from x and y axis properties
-  facetScales <- if (scaleYFixed == TRUE && scaleXFixed == TRUE) {
-    "fixed"
-  } else if (scaleYFixed == TRUE && scaleXFixed == FALSE) {
-    "free_x"
-  } else if (scaleYFixed == FALSE && scaleXFixed == TRUE) {
-    "free_y"
-  } else if (scaleYFixed == FALSE && scaleXFixed == FALSE) {
-    "free"
+    seq.Date(from = as.Date(start), to = as.Date(end), by = xAxisBreaks)
   }
 
   # set percentage y axis
@@ -115,20 +89,12 @@ createGgplot <- function(.data,
     geom_line(aes(y = .data$trajectory), linetype = "dashed", size = pointSize / 2.666666, color = .red, na.rm = TRUE) +
     geom_line(aes(y = mean)) +
     geom_line(color = .darkgrey, size = pointSize / 2.666666) +
-    geom_point(color = .darkgrey, size = pointSize)
-
-  # Apply facet wrap if a facet field is present
-  if (!is.null(options$facetField)) {
-    plot <- plot +
-      facet_wrap(vars(.data$f), scales = facetScales)
-  }
-
-  plot <- plot +
+    geom_point(color = .darkgrey, size = pointSize) +
     geom_point(aes(x = .data$x, y = .data$specialCauseImprovement), color = .skyblue, size = pointSize, na.rm = TRUE) +
     geom_point(aes(x = .data$x, y = .data$specialCauseConcern), color = .orange, size = pointSize, na.rm = TRUE) +
     labs(title = mainTitle,
-         x = xAxisLabel,
-         y = yAxisLabel) +
+         x = xAxisLabel %||% capitalise(options[["dateField"]]),
+         y = yAxisLabel %||% capitalise(options[["valueField"]])) +
     theme(plot.title = element_text(hjust = 0.5)) +
     scale_x_date(
       breaks = xaxislabels,
@@ -141,31 +107,45 @@ createGgplot <- function(.data,
       panel.grid.minor.x = element_blank() #remove minor x gridlines
     )
 
-  # if the plot is not faceted (ie it's the default facet column name)
-  if (is.null(options$facetField)) {
-    if (convertToPercentages == FALSE) {
-      if (!(is.null(yAxisBreaks))) {
-        plot <- plot +
-          scale_y_continuous(breaks = yaxislabels, labels = yaxislabels)
-      }
-    } else if (convertToPercentages != 0) {
+  # Apply facet wrap if a facet field is present
+  if (!is.null(options$facetField)) {
+    # For multiple facet chart, derived fixed/free scales value from x and y axis properties
+    fixedXAxisMultiple <- fixedXAxisMultiple %||% TRUE
+    fixedYAxisMultiple <- fixedYAxisMultiple %||% TRUE
+
+    facetScales <- if (fixedXAxisMultiple) {
+      ifelse(fixedYAxisMultiple, "fixed", "free_y")
+    } else {
+      ifelse(fixedYAxisMultiple, "free_x", "free")
+    }
+
+    plot <- plot +
+      facet_wrap(vars(.data$f), scales = facetScales)
+
+    if (convertToPercentages != 0) {
       percentLimit <- max(.data[["upl"]], na.rm = TRUE)
 
-      interval <- if (!(is.null(yAxisBreaks))) {
-        yAxisBreaks
-      } else {
-        convertToPercentages
-      }
-
       plot <- plot +
-        scale_y_continuous(labels = scales::percent, breaks = seq(from = 0, to = percentLimit, by = interval))
+        scale_y_continuous(labels = scales::percent)
     }
-    # else if the plot is faceted
+  } else if (convertToPercentages == FALSE) {
+    # if the plot is not faceted (ie it's the default facet column name)
+
+    if (!(is.null(yAxisBreaks))) {
+      plot <- plot +
+        scale_y_continuous(breaks = yaxislabels, labels = yaxislabels)
+    }
   } else if (convertToPercentages != 0) {
     percentLimit <- max(.data[["upl"]], na.rm = TRUE)
 
+    interval <- if (!(is.null(yAxisBreaks))) {
+      yAxisBreaks
+    } else {
+      convertToPercentages
+    }
+
     plot <- plot +
-      scale_y_continuous(labels = scales::percent)
+      scale_y_continuous(labels = scales::percent, breaks = seq(from = 0, to = percentLimit, by = interval))
   }
 
   # finally, apply any theme overrides
