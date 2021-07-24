@@ -28,7 +28,7 @@
 createGgplot <- function(x,
                          pointSize = 4,
                          percentageYAxis = FALSE,
-                         mainTitle = "SPC Chart",
+                         mainTitle = NULL,
                          xAxisLabel = NULL,
                          yAxisLabel = NULL,
                          fixedXAxisMultiple = TRUE,
@@ -68,6 +68,15 @@ createGgplot <- function(x,
 
   options <- attr(.data, "options")
 
+  mainTitle <- if(is.null(mainTitle)) {
+    paste0(
+      "SPC Chart of ",
+      capitalise(options$valueField),
+      ", starting ",
+      format(min(.data[["x"]], na.rm = TRUE), format = "%d/%m/%Y")
+    )
+  }
+
   lineSize <- pointSize / 3
 
   plot <- ggplot(.data, aes(x = .data$x, y = .data$y)) +
@@ -83,10 +92,6 @@ createGgplot <- function(x,
     labs(title = mainTitle,
          x = xAxisLabel %||% capitalise(options[["dateField"]]),
          y = yAxisLabel %||% capitalise(options[["valueField"]])) +
-    scale_x_datetime(
-      date_breaks = xAxisBreaks %||% waiver(),
-      date_labels = xAxisDateFormat
-    ) +
     theme_minimal() +
     theme(
       plot.margin = unit(c(5, 5, 5, 5), "mm"), #5mm of white space around plot edge
@@ -95,6 +100,18 @@ createGgplot <- function(x,
       panel.grid.minor.x = element_blank() #remove minor x gridlines
     ) +
     themeOverride
+
+  plot <- plot + if (is.null(xAxisBreaks)) {
+    scale_x_datetime(
+      breaks = sort(unique(.data$x)),
+      date_labels = xAxisDateFormat
+    )
+  } else {
+    scale_x_datetime(
+      date_breaks = xAxisBreaks,
+      date_labels = xAxisDateFormat
+    )
+  }
 
   # Apply facet wrap if a facet field is present
   if (!is.null(options$facetField)) {
@@ -131,7 +148,7 @@ createGgplot <- function(x,
 plot.ptd_spc_df <- function(x,
                             pointSize = 4,
                             percentageYAxis = FALSE,
-                            mainTitle = "SPC Chart",
+                            mainTitle = NULL,
                             xAxisLabel = NULL,
                             yAxisLabel = NULL,
                             fixedXAxisMultiple = TRUE,

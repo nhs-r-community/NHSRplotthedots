@@ -27,7 +27,7 @@ test_that("it returns a ggplot object", {
 
   expect_s3_class(p, c("gg", "ggplot"))
   expect_length(p$layers, 9)
-  expect_equal(p$labels, list(x = "X", y = "Y", title = "SPC Chart"))
+  expect_equal(p$labels, list(x = "X", y = "Y", title = "SPC Chart of Y, starting 02/01/2020"))
 })
 
 test_that("it facet's the plot if facetField is set", {
@@ -48,16 +48,20 @@ test_that("it sets the xAxisBreaks correctly", {
   stub(createGgplot, "scale_x_datetime", m)
 
   set.seed(123)
-  d <- data.frame(x = as.Date("2020-01-01") + 1:20, y = rnorm(20))
+  d <- data.frame(x = as.POSIXct("2020-01-01", tz = "utc") + 1:20, y = rnorm(20))
   s <- spc(d, "y", "x")
 
   # no breaks set
   p1 <- createGgplot(s)
   p2 <- createGgplot(s, xAxisBreaks = "3 days")
+  p3 <- createGgplot(s, xAxisDateFormat = "%Y-%m-%d")
+  p4 <- createGgplot(s, xAxisBreaks = "3 days", xAxisDateFormat = "%Y-%m-%d")
 
-  expect_called(m, 2)
-  expect_args(m, 1,  date_breaks = waiver(), date_labels = "%d/%m/%y")
-  expect_args(m, 2,  date_breaks = "3 days", date_labels = "%d/%m/%y")
+  expect_called(m, 4)
+  expect_args(m, 1, breaks = d$x, date_labels = "%d/%m/%y")
+  expect_args(m, 2, date_breaks = "3 days", date_labels = "%d/%m/%y")
+  expect_args(m, 3, breaks = d$x, date_labels = "%Y-%m-%d")
+  expect_args(m, 4, date_breaks = "3 days", date_labels = "%Y-%m-%d")
 })
 
 test_that("it sets xAxisLabel correctly", {
@@ -166,7 +170,7 @@ test_that("it calls createGgplot()", {
   expect_args(m, 1, s,
               pointSize = 4,
               percentageYAxis = FALSE,
-              mainTitle = "SPC Chart",
+              mainTitle = NULL,
               xAxisLabel = NULL,
               yAxisLabel = NULL,
               fixedXAxisMultiple = TRUE,
