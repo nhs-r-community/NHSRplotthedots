@@ -76,9 +76,10 @@ spc <- function(.data,
                 improvementDirection = "increase",
                 target = NULL,
                 trajectory = NULL) {
-  if (!inherits(.data, "data.frame")) {
-    stop("spc: .data must be a data.frame")
-  }
+  assertthat::assert_that(
+    inherits(.data, "data.frame"),
+    msg = "spc: .data must be a data.frame"
+  )
 
   # validate all inputs.  Validation problems will generate an error and stop code execution.
   options <- spcOptions(valueField, dateField, facetField, rebase, fixAfterNPoints, improvementDirection, target,
