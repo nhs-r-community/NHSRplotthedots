@@ -4,8 +4,8 @@
 #'
 #' @param x an object created by [spc()]
 #' @param pointSize Specify the plotting point size for the ggplot output. Default is 2.5.
-#' @param percentageYAxis Specify whether the y axis values are percentages. Percentages in the data frame should be
-#'     decimal values. Accepted values are TRUE for percentage y axis, FALSE for integer y axis.
+#' @param percentageYAxis Specify whether the y axis values are percentages. Accepted values are TRUE for percentage y
+#'     axis, FALSE for integer y axis. Defaults to FALSE.
 #' @param mainTitle Specify a character string value for the ggplot title.
 #' @param xAxisLabel Specify a character string value for the x axis title.
 #' @param yAxisLabel Specify a character string value for the y axis title.
@@ -29,8 +29,8 @@ createGgplot <- function(x,
                          mainTitle = "SPC Chart",
                          xAxisLabel = NULL,
                          yAxisLabel = NULL,
-                         fixedXAxisMultiple = NULL,
-                         fixedYAxisMultiple = NULL,
+                         fixedXAxisMultiple = TRUE,
+                         fixedYAxisMultiple = TRUE,
                          xAxisDateFormat = "%d/%m/%Y",
                          xAxisBreaks = NULL,
                          yAxisBreaks = NULL,
@@ -101,9 +101,6 @@ createGgplot <- function(x,
   # Apply facet wrap if a facet field is present
   if (!is.null(options$facetField)) {
     # For multiple facet chart, derived fixed/free scales value from x and y axis properties
-    fixedXAxisMultiple <- fixedXAxisMultiple %||% TRUE
-    fixedYAxisMultiple <- fixedYAxisMultiple %||% TRUE
-
     facetScales <- if (fixedXAxisMultiple) {
       ifelse(fixedYAxisMultiple, "fixed", "free_y")
     } else {
@@ -115,13 +112,8 @@ createGgplot <- function(x,
   }
 
   if (percentageYAxis %||% FALSE) {
-    convertToPercentages <- ifelse(is.logical(percentageYAxis), 0.1, 1) * percentageYAxis
-
     plot <- plot +
-      scale_y_continuous(labels = scales::percent,
-                         breaks = seq(from = 0,
-                                      to = max(.data[["upl"]], na.rm = TRUE),
-                                      by = yAxisBreaks %||% convertToPercentages))
+      scale_y_continuous(labels = scales::percent_format(yAxisBreaks %||% 0.1))
   } else if (!is.null(yAxisBreaks)) {
     yaxis <- c(.data[["y"]], .data[["upl"]], .data[["lpl"]])
     start <- floor(min(yaxis, na.rm = TRUE) / yAxisBreaks) * yAxisBreaks
@@ -148,8 +140,8 @@ plot.ptd_spc_df <- function(x,
                             mainTitle = "SPC Chart",
                             xAxisLabel = NULL,
                             yAxisLabel = NULL,
-                            fixedXAxisMultiple = NULL,
-                            fixedYAxisMultiple = NULL,
+                            fixedXAxisMultiple = TRUE,
+                            fixedYAxisMultiple = TRUE,
                             xAxisDateFormat = "%d/%m/%Y",
                             xAxisBreaks = NULL,
                             yAxisBreaks = NULL,
@@ -189,11 +181,9 @@ validatePlotOptions <- function(pointSize = NULL,
 
   if (!is.null(percentageYAxis)) {
     assertthat::assert_that(
-      (is.logical(percentageYAxis) || is.numeric(percentageYAxis)),
+      is.logical(percentageYAxis),
       assertthat::is.scalar(percentageYAxis),
-      percentageYAxis >= 0,
-      percentageYAxis <= 1,
-      msg = "percentageYAxis argument must a single value of TRUE, FALSE, or a numeric between 0 and 1."
+      msg = "percentageYAxis argument must a single logical."
     )
   }
 

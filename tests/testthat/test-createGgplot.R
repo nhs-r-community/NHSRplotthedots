@@ -105,16 +105,19 @@ test_that("it sets scales correctly in a faceted plot", {
 
 test_that("it sets the y-axis to percentages if convertToPercentages is provided", {
   set.seed(123)
+
+  m <- mock()
+  stub(createGgplot, "scales::percent_format", m)
+
   d <- data.frame(x = as.Date("2020-01-01") + 1:20, y = rnorm(20))
   s <- spc(d, "y", "x")
 
   p1 <- createGgplot(s, percentageYAxis = TRUE)
-  expect_equal(p1$scales$scales[[2]]$labels(0.1), "10%")
-  expect_equal(p1$scales$scales[[2]]$breaks[1:11], seq(0, 1, 0.1))
+  p2 <- createGgplot(s, percentageYAxis = TRUE, yAxisBreaks = 0.2)
 
-  p2 <- createGgplot(s, percentageYAxis = 0.2)
-  expect_equal(p2$scales$scales[[2]]$labels(0.1), "10%")
-  expect_equal(p2$scales$scales[[2]]$breaks[1:6], seq(0, 1, 0.2))
+  expect_called(m, 2)
+  expect_args(m, 1, breaks = 0.1)
+  expect_args(m, 2, breaks = 0.2)
 })
 
 test_that("it sets the y-axis if yAxisBreaks is provided", {
@@ -147,8 +150,8 @@ test_that("it calls createGgplot()", {
               mainTitle = "SPC Chart",
               xAxisLabel = NULL,
               yAxisLabel = NULL,
-              fixedXAxisMultiple = NULL,
-              fixedYAxisMultiple = NULL,
+              fixedXAxisMultiple = TRUE,
+              fixedYAxisMultiple = TRUE,
               xAxisDateFormat = "%d/%m/%Y",
               xAxisBreaks = NULL,
               yAxisBreaks = NULL)
@@ -172,15 +175,14 @@ test_that("it handles percentageYAxis correctly", {
   # these should run fine
   validatePlotOptions(percentageYAxis = NULL)
   validatePlotOptions(percentageYAxis = TRUE)
-  validatePlotOptions(percentageYAxis = 0)
-  validatePlotOptions(percentageYAxis = 1)
+  validatePlotOptions(percentageYAxis = FALSE)
 
   # these will error
-  em <- "percentageYAxis argument must a single value of TRUE, FALSE, or a numeric between 0 and 1."
+  em <- "percentageYAxis argument must a single logical."
   expect_error(validatePlotOptions(percentageYAxis = "a"), em)
   expect_error(validatePlotOptions(percentageYAxis = -1), em)
   expect_error(validatePlotOptions(percentageYAxis = 2), em)
-  expect_error(validatePlotOptions(percentageYAxis = c(0, 1)), em)
+  expect_error(validatePlotOptions(percentageYAxis = c(TRUE, FALSE)), em)
 })
 
 test_that("it handles mainTitle correctly", {
