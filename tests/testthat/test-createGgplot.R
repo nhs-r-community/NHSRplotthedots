@@ -2,6 +2,11 @@ library(testthat)
 library(mockery)
 
 # createGgplot() ----
+test_that("it raises an error is x is not a ptd_spc_df object", {
+  expect_error(createGgplot(data.frame(x = 1, y = 2)),
+               "x argument must be an 'ptd_spc_df' object, created by spc().")
+})
+
 test_that("it calls validatePlotOptions", {
   m <- mock(stop())
   stub(createGgplot, "validatePlotOptions", m)

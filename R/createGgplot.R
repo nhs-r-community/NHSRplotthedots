@@ -39,9 +39,12 @@ createGgplot <- function(x,
                          themeOverride = NULL,
                          ...) {
 
-  if (!inherits(x, "ptd_spc_df")) {
-    stop("x argument must be an 'ptc_spc_df' objected, created by spc()")
-  }
+  assertthat::assert_that(
+    inherits(x, "ptd_spc_df"),
+    msg = "x argument must be an 'ptd_spc_df' object, created by spc()."
+  )
+  # argument needs to be called x for s3 plot method, but rename it to .data so it's more obvious through the rest of
+  # the method
   .data <- x
 
   validatePlotOptions(pointSize,
