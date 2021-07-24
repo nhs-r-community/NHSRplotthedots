@@ -7,31 +7,33 @@
 \usage{
 createGgplot(
   x,
-  pointSize = 2.5,
+  pointSize = 4,
   percentageYAxis = FALSE,
   mainTitle = "SPC Chart",
   xAxisLabel = NULL,
   yAxisLabel = NULL,
   fixedXAxisMultiple = TRUE,
   fixedYAxisMultiple = TRUE,
-  xAxisDateFormat = "\%d/\%m/\%Y",
+  xAxisDateFormat = "\%d/\%m/\%y",
   xAxisBreaks = NULL,
   yAxisBreaks = NULL,
+  themeOverride = NULL,
   ...
 )
 
 \method{plot}{ptd_spc_df}(
   x,
-  pointSize = 2.5,
+  pointSize = 4,
   percentageYAxis = FALSE,
   mainTitle = "SPC Chart",
   xAxisLabel = NULL,
   yAxisLabel = NULL,
   fixedXAxisMultiple = TRUE,
   fixedYAxisMultiple = TRUE,
-  xAxisDateFormat = "\%d/\%m/\%Y",
+  xAxisDateFormat = "\%d/\%m/\%y",
   xAxisBreaks = NULL,
   yAxisBreaks = NULL,
+  themeOverride = NULL,
   ...
 )
 }
@@ -64,6 +66,9 @@ interval length and type, e.g. "3 months", "7 days".}
 \item{yAxisBreaks}{Specify an interval value for breaks on the y axis. Value should be a numeric vector of length 1,
 either an integer for integer scales or a decimal value for percentage scales. This option is ignored if faceting
 is in use.}
+
+\item{themeOverride}{Specify a list containing ggplot theme elements which can be used to override the default
+appearance of the plot.}
 
 \item{...}{currently ignored}
 }
