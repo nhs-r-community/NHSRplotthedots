@@ -65,22 +65,6 @@ createGgplot <- function(.data,
     seq.Date(from = as.Date(start), to = as.Date(end), by = xAxisBreaks)
   }
 
-  # set percentage y axis
-  convertToPercentages <- if (is.null(percentageYAxis)) {
-    0
-  } else if (is.numeric(percentageYAxis)) {
-    percentageYAxis
-  } else if (is.logical(percentageYAxis)) {
-    0.1 * as.numeric(percentageYAxis)
-  }
-
-  if (!(is.null(yAxisBreaks))) {
-    yaxis <- c(.data[["y"]], .data[["upl"]], .data[["lpl"]])
-    start <- floor(min(yaxis, na.rm = TRUE) / yAxisBreaks) * yAxisBreaks
-    end <- max(yaxis, na.rm = TRUE)
-    yaxislabels <- seq(from = start, to = end, by = yAxisBreaks)
-  }
-
   plot <- ggplot(.data, aes(x = .data$x, y = .data$y)) +
     theme_minimal() +
     geom_line(aes(y = .data$upl), linetype = "dashed", size = pointSize / 2.666666, color = .darkgrey) +
@@ -121,31 +105,25 @@ createGgplot <- function(.data,
 
     plot <- plot +
       facet_wrap(vars(.data$f), scales = facetScales)
+  }
 
-    if (convertToPercentages != 0) {
-      percentLimit <- max(.data[["upl"]], na.rm = TRUE)
-
-      plot <- plot +
-        scale_y_continuous(labels = scales::percent)
-    }
-  } else if (convertToPercentages == FALSE) {
-    # if the plot is not faceted (ie it's the default facet column name)
-
-    if (!(is.null(yAxisBreaks))) {
-      plot <- plot +
-        scale_y_continuous(breaks = yaxislabels, labels = yaxislabels)
-    }
-  } else if (convertToPercentages != 0) {
-    percentLimit <- max(.data[["upl"]], na.rm = TRUE)
-
-    interval <- if (!(is.null(yAxisBreaks))) {
-      yAxisBreaks
-    } else {
-      convertToPercentages
-    }
+  if (percentageYAxis %||% FALSE) {
+    convertToPercentages <- ifelse(is.logical(percentageYAxis), 0.1, 1) * percentageYAxis
 
     plot <- plot +
-      scale_y_continuous(labels = scales::percent, breaks = seq(from = 0, to = percentLimit, by = interval))
+      scale_y_continuous(labels = scales::percent,
+                         breaks = seq(from = 0,
+                                      to = max(.data[["upl"]], na.rm = TRUE),
+                                      by = yAxisBreaks %||% convertToPercentages))
+  } else if (!is.null(yAxisBreaks)) {
+    yaxis <- c(.data[["y"]], .data[["upl"]], .data[["lpl"]])
+    start <- floor(min(yaxis, na.rm = TRUE) / yAxisBreaks) * yAxisBreaks
+    end <- max(yaxis, na.rm = TRUE)
+
+    yaxislabels <- seq(from = start, to = end, by = yAxisBreaks)
+
+    plot <- plot +
+      scale_y_continuous(breaks = yaxislabels, labels = yaxislabels)
   }
 
   # finally, apply any theme overrides
@@ -250,10 +228,10 @@ validatePlotOptions <- function(pointSize = NULL,
   }
 
   if (!is.null(yAxisBreaks) && !(
-    is.character(yAxisBreaks) &&
+    is.numeric(yAxisBreaks) &&
     length(yAxisBreaks) == 1
   )) {
-    stop("yAxisBreaks argument must be a character of length 1.")
+    stop("yAxisBreaks argument must be a numeric of length 1.")
   }
 
   invisible(TRUE)
