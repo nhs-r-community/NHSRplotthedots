@@ -141,7 +141,7 @@ test_that("sevenPointOneSideOfMean works as expected", {
 # partOfSevenTrend() ----
 test_that("partOfSevenTrend works as expected", {
   expect_equal(partOfSevenTrend(numeric()), numeric())
-  expect_equal(partOfSevenTrend(rep(1, 6)),
+  expect_equal(partOfSevenTrend(rep(0, 6)),
                c(0, 0, 0, 0, 0, 0))
 
   a <- sevenPointOneSideOfMean(c(rep(1, 6), -1))
