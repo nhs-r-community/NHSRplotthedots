@@ -12,8 +12,8 @@ createGgplot(
   mainTitle = "SPC Chart",
   xAxisLabel = NULL,
   yAxisLabel = NULL,
-  fixedXAxisMultiple = NULL,
-  fixedYAxisMultiple = NULL,
+  fixedXAxisMultiple = TRUE,
+  fixedYAxisMultiple = TRUE,
   xAxisDateFormat = "\%d/\%m/\%Y",
   xAxisBreaks = NULL,
   yAxisBreaks = NULL,
@@ -27,8 +27,8 @@ createGgplot(
   mainTitle = "SPC Chart",
   xAxisLabel = NULL,
   yAxisLabel = NULL,
-  fixedXAxisMultiple = NULL,
-  fixedYAxisMultiple = NULL,
+  fixedXAxisMultiple = TRUE,
+  fixedYAxisMultiple = TRUE,
   xAxisDateFormat = "\%d/\%m/\%Y",
   xAxisBreaks = NULL,
   yAxisBreaks = NULL,
@@ -40,8 +40,8 @@ createGgplot(
 
 \item{pointSize}{Specify the plotting point size for the ggplot output. Default is 2.5.}
 
-\item{percentageYAxis}{Specify whether the y axis values are percentages. Percentages in the data frame should be
-decimal values. Accepted values are TRUE for percentage y axis, FALSE for integer y axis.}
+\item{percentageYAxis}{Specify whether the y axis values are percentages. Accepted values are TRUE for percentage y
+axis, FALSE for integer y axis. Defaults to FALSE.}
 
 \item{mainTitle}{Specify a character string value for the ggplot title.}
 
