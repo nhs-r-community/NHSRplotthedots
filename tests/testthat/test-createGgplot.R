@@ -102,7 +102,31 @@ test_that("it sets scales correctly in a faceted plot", {
   expect_false(p5$facet$params$free$y)
 })
 
-# TODO: test percentageYAxis
+test_that("it sets the y-axis to percentages if convertToPercentages is provided", {
+  set.seed(123)
+  d <- data.frame(x = as.Date("2020-01-01") + 1:20, y = rnorm(20))
+  s <- spc(d, "y", "x")
+
+  p1 <- createGgplot(s, percentageYAxis = TRUE)
+  expect_equal(p1$scales$scales[[2]]$labels(0.1), "10%")
+  expect_equal(p1$scales$scales[[2]]$breaks[1:11], seq(0, 1, 0.1))
+
+  p2 <- createGgplot(s, percentageYAxis = 0.2)
+  expect_equal(p2$scales$scales[[2]]$labels(0.1), "10%")
+  expect_equal(p2$scales$scales[[2]]$breaks[1:6], seq(0, 1, 0.2))
+})
+
+test_that("it sets the y-axis if yAxisBreaks is provided", {
+  set.seed(123)
+  d <- data.frame(x = as.Date("2020-01-01") + 1:20, y = rnorm(20))
+  s <- spc(d, "y", "x")
+
+  p1 <- createGgplot(s, yAxisBreaks = 1)
+  expect_true(all(diff(p1$scales$scales[[2]]$breaks) == 1))
+
+  p2 <- createGgplot(s, yAxisBreaks = 0.5)
+  expect_true(all(diff(p2$scales$scales[[2]]$breaks) == 0.5))
+})
 
 # plot() ----
 test_that("it calls createGgplot()", {
@@ -237,10 +261,10 @@ test_that("it handles xAxisBreaks correctly", {
 test_that("it handles yAxisBreaks correctly", {
   # these should run fine
   validatePlotOptions(yAxisBreaks = NULL)
-  validatePlotOptions(yAxisBreaks = "a")
+  validatePlotOptions(yAxisBreaks = 1)
 
   # these will error
-  em <- "yAxisBreaks argument must be a character of length 1."
-  expect_error(validatePlotOptions(yAxisBreaks = 1), em)
-  expect_error(validatePlotOptions(yAxisBreaks = c("a", "b")), em)
+  em <- "yAxisBreaks argument must be a numeric of length 1."
+  expect_error(validatePlotOptions(yAxisBreaks = "a"), em)
+  expect_error(validatePlotOptions(yAxisBreaks = c(1, 2)), em)
 })
