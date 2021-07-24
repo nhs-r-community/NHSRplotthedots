@@ -25,14 +25,16 @@ createGgplot <- function(df, facetField, plotOptions) {
     yaxislabels <- seq(from = start, to = end, by = plotOptions$yAxisBreaks)
   }
 
+  lineSize <- plotOptions$pointSize / 3
+
   plot <- ggplot(df, aes(x = .data$x, y = .data$y)) +
     theme_minimal() +
-    geom_line(aes(y = .data$upl), linetype = "dashed", size = plotOptions$pointSize / 2.666666, color = .darkgrey) +
-    geom_line(aes(y = .data$lpl), linetype = "dashed", size = plotOptions$pointSize / 2.666666, color = .darkgrey) +
-    geom_line(aes(y = .data$target), linetype = "dashed", size = plotOptions$pointSize / 2.666666, color = .purple) +
-    geom_line(aes(y = .data$trajectory), linetype = "dashed", size = plotOptions$pointSize / 2.666666, color = .red) +
+    geom_line(aes(y = .data$upl), linetype = "dashed", size = lineSize, color = .darkgrey) +
+    geom_line(aes(y = .data$lpl), linetype = "dashed", size = lineSize, color = .darkgrey) +
+    geom_line(aes(y = .data$target), linetype = "dashed", size = lineSize, color = .purple) +
+    geom_line(aes(y = .data$trajectory), linetype = "dashed", size = lineSize, color = .red) +
     geom_line(aes(y = mean)) +
-    geom_line(color = .darkgrey, size = plotOptions$pointSize / 2.666666) +
+    geom_line(color = .darkgrey, size = lineSize) +
     geom_point(color = .darkgrey, size = plotOptions$pointSize)
 
   # Apply facet wrap if a facet field is present
@@ -44,15 +46,21 @@ createGgplot <- function(df, facetField, plotOptions) {
   plot <- plot +
     geom_point(aes(x = .data$x, y = .data$specialCauseImprovement), color = .skyblue, size = plotOptions$pointSize) +
     geom_point(aes(x = .data$x, y = .data$specialCauseConcern), color = .orange, size = plotOptions$pointSize) +
-    ggtitle(label = plotOptions$plottitle) +
-    xlab(label = plotOptions$xlabel) +
-    ylab(label = plotOptions$ylabel) +
-    theme(plot.title = element_text(hjust = 0.5)) +
+    labs(
+      title = plotOptions$plottitle,
+      x = plotOptions$xlabel,
+      y = plotOptions$ylabel
+    ) +
     scale_x_date(
       breaks = plotOptions$xaxislabels,
       labels = format(plotOptions$xaxislabels, format = plotOptions$xAxisDateFormat)
     ) +
-    theme(axis.text.x = element_text(angle = 90, hjust = 1))
+    theme(
+      plot.margin = unit(c(5, 5, 5, 5), "mm"), #5mm of white space around plot edge
+      axis.text.x = element_text(angle = 90, hjust = 1),
+      panel.grid.major.x = element_blank(), #remove major x gridlines
+      panel.grid.minor.x = element_blank() #remove minor x gridlines
+    )
 
   # if the plot is not faceted (ie it's the default facet column name)
   if (facetField == "pseudo_facet_col_name") {
@@ -80,6 +88,10 @@ createGgplot <- function(df, facetField, plotOptions) {
     plot <- plot +
       scale_y_continuous(labels = scales::percent)
   }
+
+  # finally, apply any theme overrides
+  plot <- plot +
+    plotOptions$themeOverride
 
   plot
 }
