@@ -64,7 +64,7 @@ createGgplot <- function(x,
 
   options <- attr(.data, "options")
 
-  mainTitle <- if(is.null(mainTitle)) {
+  mainTitle <- if (is.null(mainTitle)) {
     paste0(
       "SPC Chart of ",
       capitalise(options$valueField),
