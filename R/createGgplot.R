@@ -56,6 +56,7 @@ createGgplot <- function(df, facetField, plotOptions) {
       labels = format(plotOptions$xaxislabels, format = plotOptions$xAxisDateFormat)
     ) +
     theme(
+      plot.background = element_rect(color = "grey", size = 1), # border around whole plot
       plot.margin = unit(c(5, 5, 5, 5), "mm"), #5mm of white space around plot edge
       axis.text.x = element_text(angle = 90, hjust = 1),
       panel.grid.major.x = element_blank(), #remove major x gridlines
