@@ -72,7 +72,8 @@ interval length and type, e.g. "3 months", "7 days".}
 either an integer for integer scales or a decimal value for percentage scales. This option is ignored if faceting
 is in use.}
 
-\item{plotThemeOverride}{Specify a list containing ggplot theme elements which can be used to override the default appearance of the plot.}
+\item{plotThemeOverride}{Specify a list containing ggplot theme elements which can be used to override the default
+appearance of the plot.}
 }
 \description{
 `spcOptions` returns a list object containing properties which adjust the output of the 'spc' function.
