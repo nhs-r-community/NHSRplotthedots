@@ -28,23 +28,10 @@ calculatePointHighlighting <- function(.data, improvementDirection) {
         .data$partOfSevenPointTrend,
         .data$partOfTwoInThree
       ),
-      specialCauseConcern = specialCauseConcern(
-        .data$outsideLimits,
-        .data$partOfSevenPointOneSideOfMean,
-        .data$partOfTwoInThree,
-        .data$partOfSevenPointTrend,
-        .data$y,
-        .data$relativeToMean,
-        improvementDirection
-      ),
-      specialCauseImprovement = specialCauseImprovement(
-        .data$outsideLimits,
-        .data$partOfSevenPointOneSideOfMean,
-        .data$partOfTwoInThree,
-        .data$partOfSevenPointTrend,
-        .data$y,
-        .data$relativeToMean,
-        improvementDirection
+      pointType = case_when(
+        !specialCauseFlag                      ~ "normal_cause",
+        relativeToMean == improvementDirection ~ "special_cause_improvement",
+        TRUE                                   ~ "special_cause_concern"
       )
     ) %>%
     ungroup()
@@ -103,35 +90,4 @@ specialCauseFlag <- function(outsideLimits,
     abs(partOfSevenPointTrend) == 1 |
     partOfTwoInThree == 1
   )
-}
-
-specialCauseImprovement <- function(outsideLimits,
-                                    partOfSevenPointOneSideOfMean,
-                                    partOfTwoInThree,
-                                    partOfSevenPointTrend,
-                                    y,
-                                    relativeToMean,
-                                    improvementDirection) {
-  case_when(
-    outsideLimits == 1 & relativeToMean == improvementDirection ~ y,
-    partOfSevenPointOneSideOfMean == 1 & relativeToMean == improvementDirection ~ y,
-    partOfTwoInThree == 1 & relativeToMean == improvementDirection ~ y,
-    abs(partOfSevenPointTrend) == 1 & improvementDirection == partOfSevenPointTrend ~ y
-  )
-}
-
-specialCauseConcern <- function(outsideLimits,
-                                partOfSevenPointOneSideOfMean,
-                                partOfTwoInThree,
-                                partOfSevenPointTrend,
-                                y,
-                                relativeToMean,
-                                improvementDirection) {
-  specialCauseImprovement(outsideLimits,
-                          partOfSevenPointOneSideOfMean,
-                          partOfTwoInThree,
-                          partOfSevenPointTrend,
-                          y,
-                          relativeToMean,
-                          improvementDirection * - 1)
 }

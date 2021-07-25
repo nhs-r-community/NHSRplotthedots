@@ -26,8 +26,12 @@ test_that("it returns a ggplot object", {
   p <- createGgplot(s)
 
   expect_s3_class(p, c("gg", "ggplot"))
-  expect_length(p$layers, 9)
-  expect_equal(p$labels, list(x = "X", y = "Y", title = "SPC Chart of Y, starting 02/01/2020"))
+  expect_length(p$layers, 7)
+  expect_equal(p$labels,
+               list(x = "X",
+                    y = "Y",
+                    title = "SPC Chart of Y, starting 02/01/2020",
+                    colour = "pointType"))
 })
 
 test_that("it facet's the plot if facetField is set", {
@@ -137,10 +141,10 @@ test_that("it sets the y-axis if yAxisBreaks is provided", {
   s <- spc(d, "y", "x")
 
   p1 <- createGgplot(s, yAxisBreaks = 1)
-  expect_true(all(diff(p1$scales$scales[[2]]$breaks) == 1))
+  expect_true(all(diff(p1$scales$scales[[3]]$breaks) == 1))
 
   p2 <- createGgplot(s, yAxisBreaks = 0.5)
-  expect_true(all(diff(p2$scales$scales[[2]]$breaks) == 0.5))
+  expect_true(all(diff(p2$scales$scales[[3]]$breaks) == 0.5))
 })
 
 test_that("it adds themeOverride to the plot", {
@@ -153,6 +157,27 @@ test_that("it adds themeOverride to the plot", {
 
   p2 <- createGgplot(s, themeOverride = theme(panel.background = element_rect("black")))
   expect_equal(p2$theme$panel.background$fill, "black")
+})
+
+test_that("it sets the colour of the points based on the type", {
+  m <- mock()
+
+  stub(createGgplot, "scale_colour_manual", m)
+
+  set.seed(123)
+  d <- data.frame(x = as.Date("2020-01-01") + 1:20, y = rnorm(20))
+  s <- spc(d, "y", "x")
+
+  p <- createGgplot(s)
+
+  colours <- list(
+    normal_cause              = "#7B7D7D",
+    special_cause_improvement = "#289de0",
+    special_cause_concern     = "#fab428"
+  )
+
+  expect_called(m, 1)
+  expect_args(m, 1, values = colours, labels = titleCase)
 })
 
 # plot() ----

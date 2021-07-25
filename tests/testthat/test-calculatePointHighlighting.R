@@ -15,8 +15,7 @@ test_that("it calls functions as expected (no facet groups)", {
   m4 <- mock("twoInThree")
   m5 <- mock("partOfTwoInThree")
   m6 <- mock("specialCauseFlag")
-  m7 <- mock("specialCauseImprovement")
-  m8 <- mock("specialCauseConcern")
+  m7 <- mock("pointType")
 
   stub(calculatePointHighlighting, "sevenPointOneSideOfMean", m1)
   stub(calculatePointHighlighting, "partOfSevenTrend", m2)
@@ -24,8 +23,7 @@ test_that("it calls functions as expected (no facet groups)", {
   stub(calculatePointHighlighting, "twoInThree", m4)
   stub(calculatePointHighlighting, "partOfTwoInThree", m5)
   stub(calculatePointHighlighting, "specialCauseFlag", m6)
-  stub(calculatePointHighlighting, "specialCauseImprovement", m7)
-  stub(calculatePointHighlighting, "specialCauseConcern", m8)
+  stub(calculatePointHighlighting, "case_when", m7)
 
   calculatePointHighlighting(a, "improvementDirection")
 
@@ -36,7 +34,6 @@ test_that("it calls functions as expected (no facet groups)", {
   expect_called(m5, 1)
   expect_called(m6, 1)
   expect_called(m7, 1)
-  expect_called(m8, 1)
 
   expect_args(m1, 1, a$relativeToMean)
   expect_args(m2, 1, rep("sevenPointOneSideOfMean", 4))
@@ -49,22 +46,10 @@ test_that("it calls functions as expected (no facet groups)", {
               rep("partOfSevenTrend_1", 4),
               rep("partOfSevenTrend_2", 4),
               rep("partOfTwoInThree", 4))
-  expect_args(m7, 1,
-              a$outsideLimits,
-              rep("partOfSevenTrend_1", 4),
-              rep("partOfTwoInThree", 4),
-              rep("partOfSevenTrend_2", 4),
-              a$y,
-              a$relativeToMean,
-              "improvementDirection")
-  expect_args(m8, 1,
-              a$outsideLimits,
-              rep("partOfSevenTrend_1", 4),
-              rep("partOfTwoInThree", 4),
-              rep("partOfSevenTrend_2", 4),
-              a$y,
-              a$relativeToMean,
-              "improvementDirection")
+  expect_call(m7, 1, case_when(
+    !specialCauseFlag ~ "normal_cause",
+    relativeToMean == improvementDirection ~ "special_cause_improvement",
+    TRUE ~ "special_cause_concern"))
 })
 
 test_that("it calls functions as expected (with facet groups)", {
@@ -80,8 +65,7 @@ test_that("it calls functions as expected (with facet groups)", {
   m4 <- mock("twoInThree", cycle = TRUE)
   m5 <- mock("partOfTwoInThree", cycle = TRUE)
   m6 <- mock("specialCauseFlag", cycle = TRUE)
-  m7 <- mock("specialCauseImprovement", cycle = TRUE)
-  m8 <- mock("specialCauseConcern", cycle = TRUE)
+  m7 <- mock("case_when", cycle = TRUE)
 
   stub(calculatePointHighlighting, "sevenPointOneSideOfMean", m1)
   stub(calculatePointHighlighting, "partOfSevenTrend", m2)
@@ -89,8 +73,7 @@ test_that("it calls functions as expected (with facet groups)", {
   stub(calculatePointHighlighting, "twoInThree", m4)
   stub(calculatePointHighlighting, "partOfTwoInThree", m5)
   stub(calculatePointHighlighting, "specialCauseFlag", m6)
-  stub(calculatePointHighlighting, "specialCauseImprovement", m7)
-  stub(calculatePointHighlighting, "specialCauseConcern", m8)
+  stub(calculatePointHighlighting, "case_when", m7)
 
   calculatePointHighlighting(a, 1)
 
@@ -101,7 +84,6 @@ test_that("it calls functions as expected (with facet groups)", {
   expect_called(m5, 4)
   expect_called(m6, 4)
   expect_called(m7, 4)
-  expect_called(m8, 4)
 })
 
 test_that("it returns the mutated data", {
@@ -269,52 +251,4 @@ test_that("specialCauseFlag works as expected", {
                         c(+0,  0, -1),
                         c(+0,  0,  0))
   expect_equal(c, c(1, 1, 1))
-})
-
-# specialCauseImprovement() ----
-test_that("specialCauseImprovement works as expected", {
-  # no signal
-  expect_equal(specialCauseImprovement(0, 0, 0,  0, "y",  1,  1), as.character(NA))
-
-  # outsideLimits => relative mean != improvement direction
-  expect_equal(specialCauseImprovement(1, 0, 0,  0, "y",  1, -1), as.character(NA))
-  expect_equal(specialCauseImprovement(1, 0, 0,  0, "y", -1,  1), as.character(NA))
-  # outsideLimits => relative mean == improvement direction
-  expect_equal(specialCauseImprovement(1, 0, 0,  0, "y",  1,  1), "y")
-  expect_equal(specialCauseImprovement(1, 0, 0,  0, "y", -1, -1), "y")
-
-  # partOfSevenPointOneSideOfMean => relative mean != improvement direction
-  expect_equal(specialCauseImprovement(0, 1, 0,  0, "y",  1, -1), as.character(NA))
-  expect_equal(specialCauseImprovement(0, 1, 0,  0, "y", -1,  1), as.character(NA))
-  # partOfSevenPointOneSideOfMean => relative mean == improvement direction
-  expect_equal(specialCauseImprovement(0, 1, 0,  0, "y",  1,  1), "y")
-  expect_equal(specialCauseImprovement(0, 1, 0,  0, "y", -1, -1), "y")
-
-  # partOfTwoInThree => relative mean != improvement direction
-  expect_equal(specialCauseImprovement(0, 0, 1,  0, "y",  1, -1), as.character(NA))
-  expect_equal(specialCauseImprovement(0, 0, 1,  0, "y", -1,  1), as.character(NA))
-  # partOfTwoInThree => relative mean == improvement direction
-  expect_equal(specialCauseImprovement(0, 0, 1,  0, "y",  1,  1), "y")
-  expect_equal(specialCauseImprovement(0, 0, 1,  0, "y", -1, -1), "y")
-
-  # partOfSevenPointTrend => partOfSevenPointTrend != improvementDirection
-  expect_equal(specialCauseImprovement(0, 0, 0,  1, "y",  1, -1), as.character(NA))
-  expect_equal(specialCauseImprovement(0, 0, 0, -1, "y",  1,  1), as.character(NA))
-
-  # partOfSevenPointTrend => partOfSevenPointTrend == improvementDirection
-  expect_equal(specialCauseImprovement(0, 0, 0,  1, "y",  1,  1), "y")
-  expect_equal(specialCauseImprovement(0, 0, 0, -1, "y",  1, -1), "y")
-})
-
-# specialCauseConcern() ----
-test_that("it calls specialCauseImprovement with the direction inverted", {
-  m <- mock("specialCauseImprovement")
-
-  stub(specialCauseConcern, "specialCauseImprovement", m)
-
-  r <- specialCauseConcern("a", "b", "c", "d", "e", "f", 1)
-
-  expect_called(m, 1)
-  expect_args(m, 1, "a", "b", "c", "d", "e", "f", -1)
-  expect_equal(r, "specialCauseImprovement")
 })

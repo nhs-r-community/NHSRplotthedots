@@ -60,11 +60,17 @@ createGgplot <- function(x,
                       themeOverride)
 
   # Colour Palette for ggplot
-  .darkgrey <- "#7B7D7D"
-  .orange <- "#fab428"
-  .skyblue <- "#289de0"
-  .purple <- "#361475"
-  .red <- "#de1b1b"
+  colours <- list(
+    normal_cause              = "#7B7D7D",
+    special_cause_improvement = "#289de0",
+    special_cause_concern     = "#fab428",
+    value_line                = "#7B7D7D",
+    mean_line                 = "#000000",
+    lpl                       = "#7B7D7D",
+    upl                       = "#7B7D7D",
+    target                    = "#361475",
+    trajectory                = "#de1b1b"
+  )
 
   options <- attr(.data, "options")
 
@@ -80,15 +86,22 @@ createGgplot <- function(x,
   lineSize <- pointSize / 3
 
   plot <- ggplot(.data, aes(x = .data$x, y = .data$y)) +
-    geom_line(aes(y = .data$upl), linetype = "dashed", size = lineSize, color = .darkgrey) +
-    geom_line(aes(y = .data$lpl), linetype = "dashed", size = lineSize, color = .darkgrey) +
-    geom_line(aes(y = .data$target), linetype = "dashed", size = lineSize, color = .purple, na.rm = TRUE) +
-    geom_line(aes(y = .data$trajectory), linetype = "dashed", size = lineSize, color = .red, na.rm = TRUE) +
-    geom_line(aes(y = mean)) +
-    geom_line(color = .darkgrey, size = lineSize) +
-    geom_point(color = .darkgrey, size = pointSize) +
-    geom_point(aes(x = .data$x, y = .data$specialCauseImprovement), color = .skyblue, size = pointSize, na.rm = TRUE) +
-    geom_point(aes(x = .data$x, y = .data$specialCauseConcern), color = .orange, size = pointSize, na.rm = TRUE) +
+    geom_line(aes(y = .data$upl),
+              linetype = "dashed", size = lineSize, colour = colours$upl) +
+    geom_line(aes(y = .data$lpl),
+              linetype = "dashed", size = lineSize, colour = colours$lpl) +
+    geom_line(aes(y = .data$target),
+              linetype = "dashed", size = lineSize, colour = colours$target, na.rm = TRUE) +
+    geom_line(aes(y = .data$trajectory),
+              linetype = "dashed", size = lineSize, colour = colours$trajectory, na.rm = TRUE) +
+    geom_line(aes(y = mean),
+              linetype = "solid", colour = colours$mean_line) +
+    geom_line(linetype = "solid", size = lineSize, colour = colours$value_line) +
+    geom_point(aes(colour = .data$pointType), size = pointSize) +
+    scale_colour_manual(values = colours[c("normal_cause",
+                                           "special_cause_improvement",
+                                           "special_cause_concern")],
+                        labels = titleCase) +
     labs(title = mainTitle,
          x = xAxisLabel %||% capitalise(options[["dateField"]]),
          y = yAxisLabel %||% capitalise(options[["valueField"]])) +
@@ -97,7 +110,9 @@ createGgplot <- function(x,
       plot.margin = unit(c(5, 5, 5, 5), "mm"), #5mm of white space around plot edge
       axis.text.x = element_text(angle = 90, hjust = 1),
       panel.grid.major.x = element_blank(), #remove major x gridlines
-      panel.grid.minor.x = element_blank() #remove minor x gridlines
+      panel.grid.minor.x = element_blank(), #remove minor x gridlines
+      legend.position = "bottom",
+      legend.title = element_blank()
     ) +
     themeOverride
 
