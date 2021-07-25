@@ -20,6 +20,7 @@
 #' @param yAxisBreaks Specify an interval value for breaks on the y axis. Value should be a numeric vector of length 1,
 #'     either an integer for integer scales or a decimal value for percentage scales. This option is ignored if faceting
 #'     is in use.
+#' @param colours Specify the colours to use in the plot, use the [spcColours()] function to change defaults.
 #' @param themeOverride Specify a list containing ggplot theme elements which can be used to override the default
 #'     appearance of the plot.
 #' @param ... currently ignored
@@ -36,6 +37,7 @@ createGgplot <- function(x,
                          xAxisDateFormat = "%d/%m/%y",
                          xAxisBreaks = NULL,
                          yAxisBreaks = NULL,
+                         colours = spcColours(),
                          themeOverride = NULL,
                          ...) {
 
@@ -57,20 +59,8 @@ createGgplot <- function(x,
                       xAxisDateFormat,
                       xAxisBreaks,
                       yAxisBreaks,
+                      colours,
                       themeOverride)
-
-  # Colour Palette for ggplot
-  colours <- list(
-    normal_cause              = "#7B7D7D",
-    special_cause_improvement = "#289de0",
-    special_cause_concern     = "#fab428",
-    value_line                = "#7B7D7D",
-    mean_line                 = "#000000",
-    lpl                       = "#7B7D7D",
-    upl                       = "#7B7D7D",
-    target                    = "#361475",
-    trajectory                = "#de1b1b"
-  )
 
   options <- attr(.data, "options")
 
@@ -98,7 +88,7 @@ createGgplot <- function(x,
               linetype = "solid", colour = colours$mean_line) +
     geom_line(linetype = "solid", size = lineSize, colour = colours$value_line) +
     geom_point(aes(colour = .data$pointType), size = pointSize) +
-    scale_colour_manual(values = colours[c("normal_cause",
+    scale_colour_manual(values = colours[c("common_cause",
                                            "special_cause_improvement",
                                            "special_cause_concern")],
                         labels = titleCase) +
@@ -171,6 +161,7 @@ plot.ptd_spc_df <- function(x,
                             xAxisDateFormat = "%d/%m/%y",
                             xAxisBreaks = NULL,
                             yAxisBreaks = NULL,
+                            colours = spcColours(),
                             themeOverride = NULL,
                             ...) {
   createGgplot(x,
@@ -184,6 +175,7 @@ plot.ptd_spc_df <- function(x,
                xAxisDateFormat,
                xAxisBreaks,
                yAxisBreaks,
+               colours,
                themeOverride,
                ...)
 }
@@ -198,6 +190,7 @@ validatePlotOptions <- function(pointSize = NULL,
                                 xAxisDateFormat = NULL,
                                 xAxisBreaks = NULL,
                                 yAxisBreaks = NULL,
+                                colours = NULL,
                                 themeOverride = NULL) {
   if (!is.null(pointSize)) {
     assertthat::assert_that(
@@ -285,10 +278,17 @@ validatePlotOptions <- function(pointSize = NULL,
     )
   }
 
+  if (!is.null(colours)) {
+    assertthat::assert_that(
+      inherits(colours, "ptd_spc_colours"),
+      msg = "colours must be an object created by spcColours()."
+    )
+  }
+
   if (!is.null(themeOverride)) {
     assertthat::assert_that(
       inherits(themeOverride, c("theme", "gg")),
-      msg = "themeOverride must be an object created by theme()"
+      msg = "themeOverride must be an object created by theme()."
     )
   }
 

@@ -47,7 +47,7 @@ test_that("it calls functions as expected (no facet groups)", {
               rep("partOfSevenTrend_2", 4),
               rep("partOfTwoInThree", 4))
   expect_call(m7, 1, case_when(
-    !specialCauseFlag ~ "normal_cause",
+    !specialCauseFlag ~ "common_cause",
     relativeToMean == improvementDirection ~ "special_cause_improvement",
     TRUE ~ "special_cause_concern"))
 })

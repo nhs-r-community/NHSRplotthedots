@@ -29,7 +29,7 @@ calculatePointHighlighting <- function(.data, improvementDirection) {
         .data$partOfTwoInThree
       ),
       pointType = case_when(
-        !specialCauseFlag                      ~ "normal_cause",
+        !specialCauseFlag                      ~ "common_cause",
         relativeToMean == improvementDirection ~ "special_cause_improvement",
         TRUE                                   ~ "special_cause_concern"
       )

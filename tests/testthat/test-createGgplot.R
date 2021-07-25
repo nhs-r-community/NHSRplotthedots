@@ -12,11 +12,11 @@ test_that("it calls validatePlotOptions", {
   stub(createGgplot, "validatePlotOptions", m)
 
   try(createGgplot(spc(data.frame(x = Sys.Date(), y = 1), "y", "x"),
-                   1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11),
+                   1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12),
       silent = TRUE)
 
   expect_called(m, 1)
-  expect_args(m, 1, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11)
+  expect_args(m, 1, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12)
 })
 
 test_that("it returns a ggplot object", {
@@ -171,7 +171,7 @@ test_that("it sets the colour of the points based on the type", {
   p <- createGgplot(s)
 
   colours <- list(
-    normal_cause              = "#7B7D7D",
+    common_cause              = "#7B7D7D",
     special_cause_improvement = "#289de0",
     special_cause_concern     = "#fab428"
   )
@@ -189,6 +189,7 @@ test_that("it calls createGgplot()", {
 
   m <- mock()
   stub(plot.ptd_spc_df, "createGgplot", m)
+  stub(plot.ptd_spc_df, "spcColours", "colours")
   plot(s)
 
   expect_called(m, 1)
@@ -203,6 +204,7 @@ test_that("it calls createGgplot()", {
               xAxisDateFormat = "%d/%m/%y",
               xAxisBreaks = NULL,
               yAxisBreaks = NULL,
+              colours = "colours",
               themeOverride = NULL)
 })
 
@@ -329,11 +331,20 @@ test_that("it handles yAxisBreaks correctly", {
   expect_error(validatePlotOptions(yAxisBreaks = c(1, 2)), em)
 })
 
+test_that("it handles colours correctly", {
+  # these should run fine
+  validatePlotOptions(colours = spcColours())
+
+  # these will error
+  em <- "colours must be an object created by spcColours()."
+  expect_error(validatePlotOptions(colours = list()), em)
+})
+
 test_that("it handles themeOverride correctly", {
   # these should run fine
   validatePlotOptions(themeOverride = theme())
 
   # these will error
-  em <- "themeOverride must be an object created by theme()"
+  em <- "themeOverride must be an object created by theme()."
   expect_error(validatePlotOptions(themeOverride = list()), em)
 })
