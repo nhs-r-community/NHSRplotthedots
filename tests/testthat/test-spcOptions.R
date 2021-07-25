@@ -7,7 +7,7 @@ test_that("it returns correct data", {
     dateField = "dateField",
     facetField = "facetField",
     rebase = "rebase",
-    fixAfterNPoints = 12,
+    fixAfterNPoints = NULL,
     improvementDirection = "increase",
     target = "target",
     trajectory = "trajectory"
@@ -17,7 +17,7 @@ test_that("it returns correct data", {
   expect_equal(r$dateField, "dateField")
   expect_equal(r$facetField, "facetField")
   expect_equal(r$rebase, "rebase")
-  expect_equal(r$fixAfterNPoints, 12)
+  expect_equal(r$fixAfterNPoints, NULL)
   expect_equal(r$improvementDirection, "increase")
   expect_equal(r$target, "target")
   expect_equal(r$trajectory, "trajectory")
@@ -185,4 +185,9 @@ test_that("valueField must be a numeric", {
   expect_error(validateSpcOptions(o, data.frame(a = Sys.Date(), b = "a")),
                "valueField must be a numeric vector ('b' is a 'character').",
                fixed = TRUE)
+})
+
+test_that("you cannot rebase and fixAfterNPoints", {
+  expect_error(spcOptions("b", "a", rebase = "c", fixAfterNPoints = 12),
+               "cannot rebase and fixAfterNPoints")
 })

@@ -73,6 +73,12 @@ spcOptions <- function(valueField,
     )
   }
 
+  # TODO: check that this is correct
+  assertthat::assert_that(
+    is.null(fixAfterNPoints) || is.null(rebase),
+    msg = "cannot rebase and fixAfterNPoints"
+  )
+
   structure(
     list(
       valueField = valueField,
