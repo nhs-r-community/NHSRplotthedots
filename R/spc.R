@@ -107,3 +107,28 @@ print.ptd_spc_df <- function(x, ...) {
   p <- plot(x, ...)
   print(p)
 }
+
+#' @export
+summary.ptd_spc_df <- function(object, ...) {
+  options <- attr(object, "options")
+  print(options)
+
+  s <- object %>%
+    group_by(.data$f, .data$rebaseGroup) %>%
+    summarise(across(c(.data$mean, .data$lpl, .data$upl), first),
+              n = n(),
+              common_cause = n - sum(.data$specialCauseFlag),
+              special_cause_improvement = sum(.data$pointType == "special_cause_improvement"),
+              special_cause_concern = sum(.data$pointType == "special_cause_concern"),
+              .groups = "drop")
+
+  if (is.null(options$facetField)) {
+    s <- select(s, -.data$f)
+  }
+
+  if (is.null(options$rebase)) {
+    s <- select(s, -.data$rebaseGroup)
+  }
+
+  s
+}

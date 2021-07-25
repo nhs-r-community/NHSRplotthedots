@@ -159,3 +159,25 @@ test_that("it calls print", {
   expect_called(m, 1)
   expect_args(m, 1, "plot")
 })
+
+# summary() ----
+test_that("it outputs expected content", {
+  d <- data
+
+  d$rebase <- 0
+  d$rebase[10] <- 1
+
+  d$facet <- rep(c(0, 1), each = 10)
+
+  s1 <- spc(d, "y", "x")
+  expect_snapshot_output(summary(s1))
+
+  s2 <- spc(d, "y", "x", rebase = "rebase")
+  expect_snapshot_output(summary(s2))
+
+  s3 <- spc(d, "y", "x", facetField = "facet")
+  expect_snapshot_output(summary(s3))
+
+  s4 <- spc(d, "y", "x", rebase = "rebase", facetField = "facet")
+  expect_snapshot_output(summary(s4))
+})
