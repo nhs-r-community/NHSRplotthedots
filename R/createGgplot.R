@@ -31,8 +31,8 @@ createGgplot <- function(df, facetField, plotOptions) {
     theme_minimal() +
     geom_line(aes(y = .data$upl), linetype = "dashed", size = lineSize, color = .darkgrey) +
     geom_line(aes(y = .data$lpl), linetype = "dashed", size = lineSize, color = .darkgrey) +
-    geom_line(aes(y = .data$target), linetype = "dashed", size = lineSize, color = .purple) +
-    geom_line(aes(y = .data$trajectory), linetype = "dashed", size = lineSize, color = .red) +
+    geom_line(aes(y = .data$target), linetype = "dashed", size = lineSize, color = .purple, na.rm = TRUE) +
+    geom_line(aes(y = .data$trajectory), linetype = "dashed", size = lineSize, color = .red, na.rm = TRUE) +
     geom_line(aes(y = mean)) +
     geom_line(color = .darkgrey, size = lineSize) +
     geom_point(color = .darkgrey, size = plotOptions$pointSize)
@@ -44,8 +44,8 @@ createGgplot <- function(df, facetField, plotOptions) {
   }
 
   plot <- plot +
-    geom_point(aes(x = .data$x, y = .data$specialCauseImprovement), color = .skyblue, size = plotOptions$pointSize) +
-    geom_point(aes(x = .data$x, y = .data$specialCauseConcern), color = .orange, size = plotOptions$pointSize) +
+    geom_point(aes(x = .data$x, y = .data$specialCauseImprovement), color = .skyblue, size = plotOptions$pointSize, na.rm = TRUE) +
+    geom_point(aes(x = .data$x, y = .data$specialCauseConcern), color = .orange, size = plotOptions$pointSize, na.rm = TRUE) +
     labs(
       title = plotOptions$plottitle,
       x = plotOptions$xlabel,
