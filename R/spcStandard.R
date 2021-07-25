@@ -44,7 +44,7 @@ spcStandard <- function(.data, options = NULL) {
   # If no facet field specified, bind a pseudo-facet field for grouping/joining purposes
   if (is.null(facetField)) {
     facetField <- "pseudo_facet_col_name"
-    .data <- mutate(.data, pseudo_facet_col_name = "no facet")
+    .data$pseudo_facet_col_name <- "no facet"
   }
 
   # Set rebase field or create pseudo
@@ -55,7 +55,7 @@ spcStandard <- function(.data, options = NULL) {
   }
 
   # Check validity of rebase field supplied - should be 1s and 0s only -
-  # QUESTION: should this go into the validateParameters function? Or not as it's validating data?
+  # TODO: this go into the validateSpcOptions function
   dferrors <- .data$rebase[.data$rebase != 1 & .data$rebase != 0]
   if (length(dferrors) > 0) stop("spc: rebase column must define a field containing only 0 or 1 values.")
 
@@ -66,9 +66,9 @@ spcStandard <- function(.data, options = NULL) {
   # Restructure starting data frame
   .data <- .data %>%
     select(
-      y = all_of(valueField),
-      x = all_of(dateField),
-      f = all_of(facetField),
+      y = .data[[valueField]],
+      x = .data[[dateField]],
+      f = .data[[facetField]],
       rebase = .data$rebase,
       trajectory = .data$trajectory,
       target = .data$target
@@ -77,127 +77,29 @@ spcStandard <- function(.data, options = NULL) {
     group_by(.data$f) %>%
     # Order data frame by facet, and x axis variable
     arrange(.data$f, .data$x) %>%
-    # Add an index to each facet group
-    mutate(n = row_number()) %>%
-    # Ungroup for tidiness
-    ungroup() %>%
+    # convert rebase 0/1's to group indices
+    mutate(rebaseGroup = cumsum(.data$rebase)) %>%
+    group_by(.data$rebaseGroup, .add = TRUE) %>%
     mutate(
-      movingrange = case_when(
-        # Add moving range, as used for basis of sigma in 'plot the dots' logic
-        .data$n > 1 ~ abs(.data$y - lag(.data$y, 1))
-      )
-    )
-
-  # Identify facets/indices which have been flagged for rebasing
-  rebaseTable <- .data %>%
-    filter(.data$rebase == 1) %>%
-    select(.data$f, .data$x)
-
-  # Identify the earliest x axis point for each facet - start of rebase group 1
-  rebaseTable2 <- .data %>%
-    group_by(.data$f) %>%
-    summarise(x = min(.data$x))
-
-  # Identify the latest x axis point for each facet - end of rebase group n
-  rebaseTable3 <- .data %>%
-    group_by(.data$f) %>%
-    summarise(x = max(.data$x))
-
-  # Create a data frame of rebase intervals, with first and last x axis points and all intervening x axis points which
-  # will trigger a new rebase period
-  rebaseTable4 <- bind_rows(rebaseTable, rebaseTable2, rebaseTable3) %>%
-    # order by facet and x axis
-    arrange(.data$f, .data$x) %>%
-    # group by facet
-    group_by(.data$f) %>%
-    # add a row number which will create an index for each rebase interval within the group,
-    # and identify the starting x axis coordinate for each index, using lag function
-    mutate(rn = row_number(), start = lag(.data$x, 1)) %>%
-    # ungroup for tidiness
-    ungroup() %>%
-    # remove the first rebase row from each facet, as this will have an end date but no start date
-    filter(.data$rn != 1) %>%
-    # limit data frame to each facet, and it's rebase start/end points
-    select(.data$f, .data$start, end = .data$x) %>%
-    # regroup by facet
-    group_by(.data$f) %>%
-    # recreate the row number index for each rebase interval within the group, now that the 1st row has been excluded
-    mutate(rn = row_number()) %>%
-    # reorder the data frame by facet and descending date order - to allow identification of last period in each facet
-    arrange(.data$f, desc(.data$start)) %>%
-    # add second row number to identify last rebase group in each facet
-    mutate(rn2 = row_number()) %>%
-    ungroup()
-
-  # Join data frame to rebase groupings, and filter to x axis between grouping start (inclusive) and end (exclusive)
-  # - note that this will omit the last row in each facet because it belongs to the previous rebase group
-  df2 <- .data %>%
-    left_join(rebaseTable4, by = "f") %>%
-    filter(.data$x >= .data$start, .data$x < .data$end) %>%
-    # set the first moving range value in each rebase group to NA, as this is not included in the new mean calculations
-    mutate(movingrange = case_when(
-      .data$x != .data$start ~ as.numeric(.data$movingrange),
-      TRUE ~ as.numeric(NA)
-    ))
-
-  # Identify the last row in each facet, to add to the previous rebase group
-  df3 <- .data %>%
-    left_join(rebaseTable4, by = "f") %>%
-    filter(.data$rn2 == 1, .data$x == .data$end)
-
-  # Bind together last two data frames, so that all data points are present with a link to the appropriate rebase group
-  .data <- bind_rows(df2, df3) %>%
-    arrange(.data$f, .data$x) %>%
-    select(
-      .data$y,
-      .data$x,
-      .data$f,
-      .data$rebase,
-      .data$n,
-      .data$target,
-      .data$trajectory,
-      .data$movingrange,
-      rebaseGroup = .data$rn
-    ) %>%
-    group_by(.data$f, .data$rebaseGroup) %>%
-    mutate(fixPointsRN = row_number())
-
-  # Identify the mean and moving range average within each facet and rebase group
-  if (is.null(fixAfterNPoints)) {
-    ## If no point fix has been specified, find the largest number of points per facet/rebase
-    fixAfterNPoints <- max(.data$n, na.rm = TRUE)
-  }
-
-  dfAvg <- .data %>%
-    ## Added to allow any rebase period to be fixed after N points
-    filter(.data$fixPointsRN <= fixAfterNPoints) %>%
-    group_by(.data$f, .data$rebaseGroup) %>%
-    summarise(
-      mean = mean(.data$y, na.rm = TRUE),
-      movingrangeaverage = mean(.data$movingrange, na.rm = TRUE)
-    )
-
-  # Join data frame to moving range average and mean data, then perform standard logical tests
-  .data %>%
-    left_join(dfAvg, by = c("f", "rebaseGroup")) %>%
-    mutate(
+      fixY = ifelse(row_number() <= (fixAfterNPoints %||% Inf), .data$y, NA),
+      mean = mean(.data$fixY, na.rm = TRUE),
+      amr = mean(abs(diff(.data$fixY)), na.rm = TRUE),
       # identify lower/upper process limits
-      lpl = .data$mean - (limit * .data$movingrangeaverage),
-      upl = .data$mean + (limit * .data$movingrangeaverage),
+      lpl = .data$mean - (limit * .data$amr),
+      upl = .data$mean + (limit * .data$amr),
       # identify near lower/upper process limits
-      nlpl = .data$mean - (limitclose * .data$movingrangeaverage),
-      nupl = .data$mean + (limitclose * .data$movingrangeaverage),
+      nlpl = .data$mean - (limitclose * .data$amr),
+      nupl = .data$mean + (limitclose * .data$amr),
 
       # Identify any points which are outside the upper or lower process limits
-      outsideLimits = ifelse(.data$y > .data$upl | .data$y < .data$lpl, 1, 0),
+      outsideLimits = (.data$y > .data$upl | .data$y < .data$lpl),
       # Identify whether a point is above or below the mean
       relativeToMean = sign(.data$y - .data$mean),
 
       # Identify if a point is between the near process limits and process limits
-      closeToLimits = case_when(
-        .data$y > .data$nupl & .data$y <= .data$upl ~ 1,
-        .data$y < .data$nlpl & .data$y >= .data$lpl ~ 1,
-        TRUE ~ 0
-      )
-    )
+      closeToLimits = !.data$outsideLimits & (.data$y < .data$nlpl | .data$y > .data$nupl)
+    ) %>%
+    # clean up by removing columns that no longer serve a purpose and ungrouping data
+    select(-.data$nlpl, -.data$nupl, -.data$amr, -.data$rebase) %>%
+    ungroup()
 }

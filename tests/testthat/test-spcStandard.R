@@ -50,16 +50,16 @@ test_that("it creates the pseudo facet column if no facetField is set", {
   expect_equal(r2$f, rep("no facet", 20))
 })
 
-test_that("it sets the rebase field", {
+test_that("it sets the rebaseGroup field", {
   data <- data.frame(x = 1:20, y = rnorm(20), t = c(rep(0, 10), 1, rep(0, 9)))
 
   # when options$target is set
   r1 <- spcStandard(data, list(valueField = "y", dateField = "x", rebase = "t"))
-  expect_equal(r1$rebase, c(rep(0, 10), 1, rep(0, 9)))
+  expect_equal(r1$rebaseGroup, c(rep(0, 10), rep(1, 10)))
 
   # when options$target is not set
   r2 <- spcStandard(data, list(valueField = "y", dateField = "x"))
-  expect_equal(r2$rebase, rep(0, 20))
+  expect_equal(r2$rebaseGroup, rep(0, 20))
 })
 
 test_that("it raises an error if the rebase field is not 0 or 1", {
@@ -77,7 +77,6 @@ test_that("setting fixAfterNPoints changes the calculations", {
   s0 <- spcStandard(data, spcOptions("x", "y"))
   s1 <- spcStandard(data, spcOptions("x", "y", fixAfterNPoints = 12))
 
-  expect_gt(s1$movingrangeaverage[[1]], s0$movingrangeaverage[[1]])
   expect_lt(s1$lpl[[1]], s0$lpl[[1]])
   expect_gt(s1$upl[[1]], s0$upl[[1]])
 })
