@@ -44,8 +44,19 @@ createGgplot <- function(df, facetField, plotOptions) {
   }
 
   plot <- plot +
-    geom_point(aes(x = .data$x, y = .data$specialCauseImprovement), color = .skyblue, size = plotOptions$pointSize, na.rm = TRUE) +
-    geom_point(aes(x = .data$x, y = .data$specialCauseConcern), color = .orange, size = plotOptions$pointSize, na.rm = TRUE) +
+    geom_point(
+      aes(x = .data$x,
+      y = .data$specialCauseImprovement),
+      color = .skyblue,
+      size = plotOptions$pointSize,
+      na.rm = TRUE
+    ) +
+    geom_point(
+      aes(x = .data$x, y = .data$specialCauseConcern),
+      color = .orange,
+      size = plotOptions$pointSize,
+      na.rm = TRUE
+    ) +
     labs(
       title = plotOptions$plottitle,
       x = plotOptions$xlabel,
