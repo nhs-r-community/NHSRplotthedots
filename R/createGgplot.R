@@ -45,8 +45,7 @@ createGgplot <- function(df, facetField, plotOptions) {
 
   plot <- plot +
     geom_point(
-      aes(x = .data$x,
-      y = .data$specialCauseImprovement),
+      aes(x = .data$x, y = .data$specialCauseImprovement),
       color = .skyblue,
       size = plotOptions$pointSize,
       na.rm = TRUE
@@ -67,10 +66,10 @@ createGgplot <- function(df, facetField, plotOptions) {
       labels = format(plotOptions$xaxislabels, format = plotOptions$xAxisDateFormat)
     ) +
     theme(
-      plot.margin = unit(c(5, 5, 5, 5), "mm"), #5mm of white space around plot edge
+      plot.margin = unit(c(5, 5, 5, 5), "mm"), # 5mm of white space around plot edge
       axis.text.x = element_text(angle = 90, hjust = 1),
-      panel.grid.major.x = element_blank(), #remove major x gridlines
-      panel.grid.minor.x = element_blank() #remove minor x gridlines
+      panel.grid.major.x = element_blank(), # remove major x gridlines
+      panel.grid.minor.x = element_blank() # remove minor x gridlines
     )
 
   # if the plot is not faceted (ie it's the default facet column name)

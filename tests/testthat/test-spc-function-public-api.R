@@ -83,17 +83,17 @@ test_that("ggplot title and axis labels can be modified with options", {
 })
 
 test_that("ggplot theme can be over-ridden with options", {
-  #arrange
+  # arrange
   data <- c(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12)
   date <- seq(as.Date("2021-03-22"), by = 1, length.out = 12)
   df <- tibble(data, date)
   options <- list(
     plotThemeOverride = list(
 
-      #an example complete theme
+      # an example complete theme
       theme_dark(),
 
-      #over-ridden elements
+      # over-ridden elements
       labs(
         title = "A directly over-ridden title",
         subtitle = "A new non-standard subtitle",
@@ -102,10 +102,10 @@ test_that("ggplot theme can be over-ridden with options", {
     )
   )
 
-  #act
+  # act
   result <- spc(df, "data", "date", options = options)
 
-  #assert
+  # assert
   expect_s3_class(result, "ggplot")
   expect_identical(result$labels$title, "A directly over-ridden title")
   expect_identical(result$labels$subtitle, "A new non-standard subtitle")
