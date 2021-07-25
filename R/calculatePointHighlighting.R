@@ -16,18 +16,7 @@ calculatePointHighlighting <- function(.data, improvementDirection) {
   .data %>%
     group_by(.data$f) %>%
     mutate(
-      sevenPointOneSideOfMean = sevenPointOneSideOfMean(.data$relativeToMean),
-      partOfSevenPointOneSideOfMean = partOfSevenTrend(.data$sevenPointOneSideOfMean),
-      sevenPointTrend = sevenPointTrend(.data$y),
-      partOfSevenPointTrend = partOfSevenTrend(.data$sevenPointTrend),
-      twoInThree = twoInThree(.data$closeToLimits),
-      partOfTwoInThree = partOfTwoInThree(.data$twoInThree, .data$closeToLimits),
-      specialCauseFlag = specialCauseFlag(
-        .data$outsideLimits,
-        .data$partOfSevenPointOneSideOfMean,
-        .data$partOfSevenPointTrend,
-        .data$partOfTwoInThree
-      ),
+      specialCauseFlag = specialCauseFlag(.data$y, .data$relativeToMean, .data$closeToLimits, .data$outsideLimits),
       pointType = case_when(
         !specialCauseFlag                      ~ "common_cause",
         relativeToMean == improvementDirection ~ "special_cause_improvement",
@@ -80,10 +69,12 @@ partOfTwoInThree <- function(v, x) {
   as.numeric(v == 1 & abs(x) == 1)
 }
 
-specialCauseFlag <- function(outsideLimits,
-                             partOfSevenPointOneSideOfMean,
-                             partOfSevenPointTrend,
-                             partOfTwoInThree) {
+specialCauseFlag <- function(y, relativeToMean, closeToLimits, outsideLimits) {
+
+  partOfSevenPointOneSideOfMean <- partOfSevenTrend(sevenPointOneSideOfMean(relativeToMean))
+  partOfSevenPointTrend <- partOfSevenTrend(sevenPointTrend(y))
+  partOfTwoInThree <- partOfTwoInThree(twoInThree(closeToLimits), closeToLimits)
+
   as.numeric(
     abs(outsideLimits) == 1 |
     abs(partOfSevenPointOneSideOfMean) == 1 |

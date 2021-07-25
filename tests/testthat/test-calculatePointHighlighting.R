@@ -9,44 +9,19 @@ test_that("it calls functions as expected (no facet groups)", {
                   y = rep(3, 4),
                   outsideLimits = rep(4, 4))
 
-  m1 <- mock("sevenPointOneSideOfMean")
-  m2 <- mock("partOfSevenTrend_1", "partOfSevenTrend_2")
-  m3 <- mock("sevenPointTrend")
-  m4 <- mock("twoInThree")
-  m5 <- mock("partOfTwoInThree")
-  m6 <- mock("specialCauseFlag")
-  m7 <- mock("pointType")
+  m1 <- mock("specialCauseFlag")
+  m2 <- mock("pointType")
 
-  stub(calculatePointHighlighting, "sevenPointOneSideOfMean", m1)
-  stub(calculatePointHighlighting, "partOfSevenTrend", m2)
-  stub(calculatePointHighlighting, "sevenPointTrend", m3)
-  stub(calculatePointHighlighting, "twoInThree", m4)
-  stub(calculatePointHighlighting, "partOfTwoInThree", m5)
-  stub(calculatePointHighlighting, "specialCauseFlag", m6)
-  stub(calculatePointHighlighting, "case_when", m7)
+  stub(calculatePointHighlighting, "specialCauseFlag", m1)
+  stub(calculatePointHighlighting, "case_when", m2)
 
   calculatePointHighlighting(a, "improvementDirection")
 
   expect_called(m1, 1)
-  expect_called(m2, 2)
-  expect_called(m3, 1)
-  expect_called(m4, 1)
-  expect_called(m5, 1)
-  expect_called(m6, 1)
-  expect_called(m7, 1)
+  expect_called(m2, 1)
 
-  expect_args(m1, 1, a$relativeToMean)
-  expect_args(m2, 1, rep("sevenPointOneSideOfMean", 4))
-  expect_args(m3, 1, a$y)
-  expect_args(m2, 2, rep("sevenPointTrend", 4))
-  expect_args(m4, 1, a$closeToLimits)
-  expect_args(m5, 1, rep("twoInThree", 4), a$closeToLimits)
-  expect_args(m6, 1,
-              a$outsideLimits,
-              rep("partOfSevenTrend_1", 4),
-              rep("partOfSevenTrend_2", 4),
-              rep("partOfTwoInThree", 4))
-  expect_call(m7, 1, case_when(
+  expect_args(m1, 1, a$y, a$relativeToMean, a$closeToLimits, a$outsideLimits)
+  expect_call(m2, 1, case_when(
     !specialCauseFlag ~ "common_cause",
     relativeToMean == improvementDirection ~ "special_cause_improvement",
     TRUE ~ "special_cause_concern"))
@@ -59,31 +34,16 @@ test_that("it calls functions as expected (with facet groups)", {
                   y = rep(3, 4),
                   outsideLimits = rep(4, 4))
 
-  m1 <- mock("sevenPointOneSideOfMean", cycle = TRUE)
-  m2 <- mock("partOfSevenTrend", cycle = TRUE)
-  m3 <- mock("sevenPointTrend", cycle = TRUE)
-  m4 <- mock("twoInThree", cycle = TRUE)
-  m5 <- mock("partOfTwoInThree", cycle = TRUE)
-  m6 <- mock("specialCauseFlag", cycle = TRUE)
-  m7 <- mock("case_when", cycle = TRUE)
+  m1 <- mock("specialCauseFlag", cycle = TRUE)
+  m2 <- mock("pointType", cycle = TRUE)
 
-  stub(calculatePointHighlighting, "sevenPointOneSideOfMean", m1)
-  stub(calculatePointHighlighting, "partOfSevenTrend", m2)
-  stub(calculatePointHighlighting, "sevenPointTrend", m3)
-  stub(calculatePointHighlighting, "twoInThree", m4)
-  stub(calculatePointHighlighting, "partOfTwoInThree", m5)
-  stub(calculatePointHighlighting, "specialCauseFlag", m6)
-  stub(calculatePointHighlighting, "case_when", m7)
+  stub(calculatePointHighlighting, "specialCauseFlag", m1)
+  stub(calculatePointHighlighting, "case_when", m2)
 
   calculatePointHighlighting(a, 1)
 
   expect_called(m1, 4)
-  expect_called(m2, 8)
-  expect_called(m3, 4)
-  expect_called(m4, 4)
-  expect_called(m5, 4)
-  expect_called(m6, 4)
-  expect_called(m7, 4)
+  expect_called(m2, 4)
 })
 
 test_that("it returns the mutated data", {
@@ -233,22 +193,23 @@ test_that("partOfTwoInThree works as expected", {
 
 # specialCauseFlag() ----
 test_that("specialCauseFlag works as expected", {
-  a <- specialCauseFlag(rep(0, 4),
-                        rep(0, 4),
-                        rep(0, 4),
-                        rep(0, 4))
-  expect_equal(a, rep(0, 4))
+  # there are 7 possible inpts that result in a 1 result, and 1 input that results in a 0.
+  # we can mock the functions that are called and return results that can test these cases
+  m1 <- mock("sevenPointOneSideOfMean")
+  m2 <- mock("sevenPointTrend")
+  # partOfSevenTrend: this is called twice
+  m3 <- mock(c(1, -1, 0,  0, 0, 0, 0, 0),
+             c(0,  0, 1, -1, 0, 0, 0, 0))
+  m4 <- mock("twoInThree")
+  m5 <- mock(c(0, 0, 0, 0, 1, 0, 0, 0)) # partOfTwoInThree
 
+  stub(specialCauseFlag, "sevenPointOneSideOfMean", m1)
+  stub(specialCauseFlag, "sevenPointTrend", m2)
+  stub(specialCauseFlag, "partOfSevenTrend", m3)
+  stub(specialCauseFlag, "twoInThree", m4)
+  stub(specialCauseFlag, "partOfTwoInThree", m5)
 
-  b <- specialCauseFlag(c(1, 0, 1, 0, 0, 0, 1, 1, 1),
-                        c(1, 0, 0, 1, 0, 0, 1, 0, 0),
-                        c(1, 0, 0, 0, 1, 0, 0, 1, 0),
-                        c(1, 0, 0, 0, 0, 1, 0, 0, 1))
-  expect_equal(b, c(1, 0, 1, 1, 1, 1, 1, 1, 1))
-
-  c <- specialCauseFlag(c(-1,  0,  0),
-                        c(+0, -1,  0),
-                        c(+0,  0, -1),
-                        c(+0,  0,  0))
-  expect_equal(c, c(1, 1, 1))
+  a <- specialCauseFlag(1:8, "relativeToMean", "closeToLimits",
+                        c(0, 0, 0, 0, 0, 1, -1, 0))
+  expect_equal(a, c(rep(1, 7), 0))
 })
