@@ -133,6 +133,14 @@ validateSpcOptions <- function(options, .data) {
                  options["valueField"], "' is a '", class(.data[[options[["valueField"]]]]), "').")
   )
 
+  if (!is.null(options[["rebase"]])) {
+    assertthat::assert_that(
+      (is.numeric(.data[[options[["rebase"]]]]) || is.logical(.data[[options[["rebase"]]]])),
+      all(.data[[options[["rebase"]]]] %in% c(0, 1)),
+      msg = "values in the rebase column must either be 0 or 1."
+    )
+  }
+
   invisible(TRUE)
 }
 

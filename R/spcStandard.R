@@ -54,12 +54,7 @@ spcStandard <- function(.data, options = NULL) {
     .data$rebase <- rep(0, nrow(.data)) # If no rebase field supplied, create an empty rebase field (all NAs)
   }
 
-  # Check validity of rebase field supplied - should be 1s and 0s only -
-  # TODO: this go into the validateSpcOptions function
-  dferrors <- .data$rebase[.data$rebase != 1 & .data$rebase != 0]
-  if (length(dferrors) > 0) stop("spc: rebase column must define a field containing only 0 or 1 values.")
-
-  ## Constants ----
+  # Constants
   limit <- 2.66
   limitclose <- 2 * (limit / 3)
 

@@ -62,14 +62,6 @@ test_that("it sets the rebaseGroup field", {
   expect_equal(r2$rebaseGroup, rep(0, 20))
 })
 
-test_that("it raises an error if the rebase field is not 0 or 1", {
-  data <- data.frame(x = 1:20, y = rnorm(20), t = 1:20)
-
-  # when options$target is set
-  expect_error(spcStandard(data, list(valueField = "y", dateField = "x", rebase = "t")),
-               "spc: rebase column must define a field containing only 0 or 1 values.")
-})
-
 test_that("setting fixAfterNPoints changes the calculations", {
   set.seed(123)
   data <- data.frame(x = 1:20, y = rnorm(20))

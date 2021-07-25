@@ -86,6 +86,11 @@ test_that("trajectory is either null, or a scalar character", {
   expect_error(spcOptions("a", "b", trajectory = c("a", "b")), "trajectory argument must be a 'character' of length 1.")
 })
 
+test_that("you cannot rebase and fixAfterNPoints", {
+  expect_error(spcOptions("b", "a", rebase = "c", fixAfterNPoints = 12),
+               "cannot rebase and fixAfterNPoints")
+})
+
 # print() ----
 
 test_that("printing output", {
@@ -187,7 +192,15 @@ test_that("valueField must be a numeric", {
                fixed = TRUE)
 })
 
-test_that("you cannot rebase and fixAfterNPoints", {
-  expect_error(spcOptions("b", "a", rebase = "c", fixAfterNPoints = 12),
-               "cannot rebase and fixAfterNPoints")
+test_that("rebase values must be either 0 or 1", {
+  # this should work
+  o <- spcOptions("b", "a", rebase = "r")
+  validateSpcOptions(o, data.frame(a = Sys.Date() + 1:2, b = 1:2, r = c(0, 1)))
+  validateSpcOptions(o, data.frame(a = Sys.Date() + 1:2, b = 1:2, r = c(TRUE, FALSE)))
+
+  # this should error
+  expect_error(validateSpcOptions(o, data.frame(a = Sys.Date() + 1:2, b = 1:2, r = c("a", "b"))),
+               "values in the rebase column must either be 0 or 1.")
+  expect_error(validateSpcOptions(o, data.frame(a = Sys.Date() + 1:2, b = 1:2, r = c(2, 3))),
+               "values in the rebase column must either be 0 or 1.")
 })
