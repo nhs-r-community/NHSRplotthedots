@@ -27,24 +27,25 @@ spcStandard <- function(.data, options = NULL) {
   trajectoryField <- options$trajectory
 
   # set trajectory field
-  if (!(is.null(trajectoryField))) {
-    .data$trajectory <- .data[[trajectoryField]]
-  } else {
+  if (is.null(trajectoryField)) {
     .data$trajectory <- rep(as.numeric(NA), nrow(.data))
+  } else {
+    .data$trajectory <- .data[[trajectoryField]]
   }
 
   # Set target field or create pseudo
-  if (!(is.null(targetField))) {
-    .data$target <- .data[[targetField]]
-  } else {
+  if (is.null(targetField)) {
     .data$target <- rep(as.numeric(NA), nrow(.data))
+  } else {
+    .data$target <- .data[[targetField]]
   }
 
   # Set facet/grouping or create pseudo
   # If no facet field specified, bind a pseudo-facet field for grouping/joining purposes
   if (is.null(facetField)) {
-    facetField <- "pseudo_facet_col_name"
-    .data$pseudo_facet_col_name <- "no facet"
+    .data$facet <- "no facet"
+  } else {
+    .data$facet <- .data[[facetField]]
   }
 
   # Set rebase field or create pseudo
@@ -63,7 +64,7 @@ spcStandard <- function(.data, options = NULL) {
     select(
       y = .data[[valueField]],
       x = .data[[dateField]],
-      f = .data[[facetField]],
+      f = .data$facet,
       rebase = .data$rebase,
       trajectory = .data$trajectory,
       target = .data$target
