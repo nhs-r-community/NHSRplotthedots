@@ -348,4 +348,3 @@ test_that("it handles themeOverride correctly", {
   em <- "themeOverride must be an object created by theme()."
   expect_error(ptd_validatePlotOptions(themeOverride = list()), em)
 })
-

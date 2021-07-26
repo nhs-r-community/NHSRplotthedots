@@ -213,4 +213,3 @@ test_that("specialCauseFlag works as expected", {
                         c(0, 0, 0, 0, 0, 1, -1, 0))
   expect_equal(a, c(rep(1, 7), 0))
 })
-
