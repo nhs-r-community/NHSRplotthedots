@@ -38,8 +38,12 @@ test_that("dateField can only be a scalar character", {
 test_that("facetField is either null, or a scalar character", {
   # this should run without an error
   ptd_spcOptions("a", "b", facetField = NULL)
-  expect_error(ptd_spcOptions("a", "b", facetField = 1), "facetField argument must be a 'character' of length 1.")
-  expect_error(ptd_spcOptions("a", "b", facetField = c("a", "b")), "facetField argument must be a 'character' of length 1.")
+  expect_error(ptd_spcOptions("a", "b"
+                              , facetField = 1)
+               , "facetField argument must be a 'character' of length 1.")
+  expect_error(ptd_spcOptions("a", "b"
+                              , facetField = c("a", "b"))
+               , "facetField argument must be a 'character' of length 1.")
 })
 
 test_that("rebase is either null, or a scalar character", {
@@ -82,8 +86,10 @@ test_that("target is either null, or a scalar character", {
 test_that("trajectory is either null, or a scalar character", {
   # this should run without an error
   ptd_spcOptions("a", "b", trajectory = NULL)
-  expect_error(ptd_spcOptions("a", "b", trajectory = 1), "trajectory argument must be a 'character' of length 1.")
-  expect_error(ptd_spcOptions("a", "b", trajectory = c("a", "b")), "trajectory argument must be a 'character' of length 1.")
+  expect_error(ptd_spcOptions("a", "b", trajectory = 1)
+               , "trajectory argument must be a 'character' of length 1.")
+  expect_error(ptd_spcOptions("a", "b", trajectory = c("a", "b"))
+               , "trajectory argument must be a 'character' of length 1.")
 })
 
 test_that("you cannot rebase and fixAfterNPoints", {
@@ -204,4 +210,3 @@ test_that("rebase values must be either 0 or 1", {
   expect_error(ptd_validateSpcOptions(o, data.frame(a = Sys.Date() + 1:2, b = 1:2, r = c(2, 3))),
                "values in the rebase column must either be 0 or 1.")
 })
-
