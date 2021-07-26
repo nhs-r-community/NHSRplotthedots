@@ -1,13 +1,15 @@
 library(testthat)
 library(mockery)
 
-# calculatePointHighlighting() ----
+# ptd_calculatePointHighlighting() ----
 test_that("it calls functions as expected (no facet groups)", {
-  a <- data.frame(f = rep(1, 1),
-                  relativeToMean = rep(1, 4),
-                  closeToLimits = rep(2, 4),
-                  y = rep(3, 4),
-                  outsideLimits = rep(4, 4))
+  a <- data.frame(
+    f = rep(1, 1),
+    relativeToMean = rep(1, 4),
+    closeToLimits = rep(2, 4),
+    y = rep(3, 4),
+    outsideLimits = rep(4, 4)
+  )
 
   m1 <- mock("ptd_specialCauseFlag")
   m2 <- mock("pointType")
@@ -24,15 +26,18 @@ test_that("it calls functions as expected (no facet groups)", {
   expect_call(m2, 1, case_when(
     !specialCauseFlag ~ "common_cause",
     relativeToMean == improvementDirection ~ "special_cause_improvement",
-    TRUE ~ "special_cause_concern"))
+    TRUE ~ "special_cause_concern"
+  ))
 })
 
 test_that("it calls functions as expected (with facet groups)", {
-  a <- data.frame(f = 1:4,
-                  relativeToMean = rep(1, 4),
-                  closeToLimits = rep(2, 4),
-                  y = rep(3, 4),
-                  outsideLimits = rep(4, 4))
+  a <- data.frame(
+    f = 1:4,
+    relativeToMean = rep(1, 4),
+    closeToLimits = rep(2, 4),
+    y = rep(3, 4),
+    outsideLimits = rep(4, 4)
+  )
 
   m1 <- mock("ptd_specialCauseFlag", cycle = TRUE)
   m2 <- mock("ptd_pointType", cycle = TRUE)
@@ -67,43 +72,61 @@ test_that("it groups and ungroups the data", {
   expect_equal(groups(a), list(as.symbol("f")))
 })
 
-# sevenPointOneSideOfMean() ----
+# ptd_sevenPointOneSideOfMean() ----
 test_that("sevenPointOneSideOfMean works as expected", {
   expect_equal(ptd_sevenPointOneSideOfMean(numeric()), numeric())
-  expect_equal(ptd_sevenPointOneSideOfMean(rep(1, 6)),
-               c(0, 0, 0, 0, 0, 0))
-  expect_equal(ptd_sevenPointOneSideOfMean(c(rep(1, 6), -1)),
-               c(0, 0, 0, 0, 0, 0, 0))
-  expect_equal(ptd_sevenPointOneSideOfMean(c(rep(1, 8), -1)),
-               c(0, 0, 0, 0, 0, 0, 1, 1, 0))
-  expect_equal(ptd_sevenPointOneSideOfMean(c(rep(-1, 8), 1)),
-               c(0, 0, 0, 0, 0, 0, 1, 1, 0))
+  expect_equal(
+    ptd_sevenPointOneSideOfMean(rep(1, 6)),
+    c(0, 0, 0, 0, 0, 0)
+  )
+  expect_equal(
+    ptd_sevenPointOneSideOfMean(c(rep(1, 6), -1)),
+    c(0, 0, 0, 0, 0, 0, 0)
+  )
+  expect_equal(
+    ptd_sevenPointOneSideOfMean(c(rep(1, 8), -1)),
+    c(0, 0, 0, 0, 0, 0, 1, 1, 0)
+  )
+  expect_equal(
+    ptd_sevenPointOneSideOfMean(c(rep(-1, 8), 1)),
+    c(0, 0, 0, 0, 0, 0, 1, 1, 0)
+  )
 })
 
-# partOfSevenTrend() ----
+# ptd_partOfSevenTrend() ----
 test_that("partOfSevenTrend works as expected", {
   expect_equal(ptd_partOfSevenTrend(numeric()), numeric())
-  expect_equal(ptd_partOfSevenTrend(rep(0, 6)),
-               c(0, 0, 0, 0, 0, 0))
+  expect_equal(
+    ptd_partOfSevenTrend(rep(0, 6)),
+    c(0, 0, 0, 0, 0, 0)
+  )
 
   a <- ptd_sevenPointOneSideOfMean(c(rep(1, 6), -1))
-  expect_equal(ptd_partOfSevenTrend(a),
-               c(0, 0, 0, 0, 0, 0, 0))
+  expect_equal(
+    ptd_partOfSevenTrend(a),
+    c(0, 0, 0, 0, 0, 0, 0)
+  )
 
   b <- ptd_sevenPointOneSideOfMean(c(-1, rep(1, 8), -1))
-  expect_equal(ptd_partOfSevenTrend(b),
-               c(0, 1, 1, 1, 1, 1, 1, 1, 1, 0))
+  expect_equal(
+    ptd_partOfSevenTrend(b),
+    c(0, 1, 1, 1, 1, 1, 1, 1, 1, 0)
+  )
 
   c <- ptd_sevenPointOneSideOfMean(c(1, rep(-1, 8), 1))
-  expect_equal(ptd_partOfSevenTrend(c),
-               c(0, 1, 1, 1, 1, 1, 1, 1, 1, 0))
+  expect_equal(
+    ptd_partOfSevenTrend(c),
+    c(0, 1, 1, 1, 1, 1, 1, 1, 1, 0)
+  )
 })
 
-# sevenPointTrend() ----
+# ptd_sevenPointTrend() ----
 test_that("sevenPointTrend works as expected", {
   expect_equal(ptd_sevenPointTrend(numeric()), numeric())
-  expect_equal(ptd_sevenPointTrend(1:6),
-               c(0, 0, 0, 0, 0, 0))
+  expect_equal(
+    ptd_sevenPointTrend(1:6),
+    c(0, 0, 0, 0, 0, 0)
+  )
 
   a <- ptd_sevenPointTrend(c(1:3, 3:6))
   expect_equal(a, c(0, 0, 0, 0, 0, 0, 0))
@@ -121,7 +144,7 @@ test_that("sevenPointTrend works as expected", {
   expect_equal(e, c(0, 0, 0, 0, 0, 0, 0, -1, 0))
 })
 
-# twoInThree() ----
+# ptd_twoInThree() ----
 test_that("twoInThree works as expected", {
   a <- ptd_twoInThree(numeric())
   expect_equal(a, numeric())
@@ -143,9 +166,9 @@ test_that("twoInThree works as expected", {
   expect_equal(g, c(0, 1, 1, 1, 1, 0, 0))
 })
 
-# partOfTwoInThree() ----
+# ptd_partOfTwoInThree() ----
 test_that("partOfTwoInThree works as expected", {
-  av  <- numeric()
+  av <- numeric()
   at <- ptd_twoInThree(av)
   aa <- ptd_partOfTwoInThree(at, av)
   expect_equal(aa, av)
@@ -155,7 +178,7 @@ test_that("partOfTwoInThree works as expected", {
   ba <- ptd_partOfTwoInThree(bv, bt)
   expect_equal(ba, bv)
 
-  cv  <- c(1, 0, 1)
+  cv <- c(1, 0, 1)
   ct <- ptd_twoInThree(cv)
   ca <- ptd_partOfTwoInThree(ct, cv)
   expect_equal(ca, cv)
@@ -191,15 +214,17 @@ test_that("partOfTwoInThree works as expected", {
   expect_equal(ia, c(0, 0, 0, 1, 1))
 })
 
-# specialCauseFlag() ----
+# ptd_specialCauseFlag() ----
 test_that("specialCauseFlag works as expected", {
   # there are 7 possible inpts that result in a 1 result, and 1 input that results in a 0.
   # we can mock the functions that are called and return results that can test these cases
   m1 <- mock("ptd_sevenPointOneSideOfMean")
   m2 <- mock("ptd_sevenPointTrend")
   # partOfSevenTrend: this is called twice
-  m3 <- mock(c(1, -1, 0,  0, 0, 0, 0, 0),
-             c(0,  0, 1, -1, 0, 0, 0, 0))
+  m3 <- mock(
+    c(1, -1, 0, 0, 0, 0, 0, 0),
+    c(0, 0, 1, -1, 0, 0, 0, 0)
+  )
   m4 <- mock("ptd_twoInThree")
   m5 <- mock(c(0, 0, 0, 0, 1, 0, 0, 0)) # partOfTwoInThree
 
@@ -209,7 +234,9 @@ test_that("specialCauseFlag works as expected", {
   stub(ptd_specialCauseFlag, "ptd_twoInThree", m4)
   stub(ptd_specialCauseFlag, "ptd_partOfTwoInThree", m5)
 
-  a <- ptd_specialCauseFlag(1:8, "ptd_relativeToMean", "ptd_closeToLimits",
-                        c(0, 0, 0, 0, 0, 1, -1, 0))
+  a <- ptd_specialCauseFlag(
+    1:8, "ptd_relativeToMean", "ptd_closeToLimits",
+    c(0, 0, 0, 0, 0, 1, -1, 0)
+  )
   expect_equal(a, c(rep(1, 7), 0))
 })

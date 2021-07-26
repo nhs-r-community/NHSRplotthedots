@@ -3,17 +3,22 @@ library(mockery)
 
 # ptd_createGgplot() ----
 test_that("it raises an error is x is not a ptd_spc_df object", {
-  expect_error(ptd_createGgplot(data.frame(x = 1, y = 2)),
-               "x argument must be an 'ptd_spc_df' object, created by ptd_spc().")
+  expect_error(
+    ptd_createGgplot(data.frame(x = 1, y = 2)),
+    "x argument must be an 'ptd_spc_df' object, created by ptd_spc()."
+  )
 })
 
 test_that("it calls validatePlotOptions", {
   m <- mock(stop())
   stub(ptd_createGgplot, "ptd_validatePlotOptions", m)
 
-  try(ptd_createGgplot(ptd_spc(data.frame(x = Sys.Date(), y = 1), "y", "x"),
-                   1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12),
-      silent = TRUE)
+  try(ptd_createGgplot(
+    ptd_spc(data.frame(x = Sys.Date(), y = 1), "y", "x"),
+    1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12
+  ),
+  silent = TRUE
+  )
 
   expect_called(m, 1)
   expect_args(m, 1, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12)
@@ -27,11 +32,15 @@ test_that("it returns a ggplot object", {
 
   expect_s3_class(p, c("gg", "ggplot"))
   expect_length(p$layers, 7)
-  expect_equal(p$labels,
-               list(x = "X",
-                    y = "Y",
-                    title = "SPC Chart of Y, starting 02/01/2020",
-                    colour = "pointType"))
+  expect_equal(
+    p$labels,
+    list(
+      x = "X",
+      y = "Y",
+      title = "SPC Chart of Y, starting 02/01/2020",
+      colour = "pointType"
+    )
+  )
 })
 
 test_that("it facet's the plot if facetField is set", {
@@ -183,9 +192,13 @@ test_that("it sets the colour of the points based on the type", {
 # plot() ----
 test_that("it calls ptd_createGgplot()", {
   set.seed(123)
-  s <- ptd_spc(data.frame(x = Sys.Date() + 1:20,
-                      y = rnorm(20)),
-           "y", "x")
+  s <- ptd_spc(
+    data.frame(
+      x = Sys.Date() + 1:20,
+      y = rnorm(20)
+    ),
+    "y", "x"
+  )
 
   m <- mock()
   stub(plot.ptd_spc_df, "ptd_createGgplot", m)
@@ -194,18 +207,19 @@ test_that("it calls ptd_createGgplot()", {
 
   expect_called(m, 1)
   expect_args(m, 1, s,
-              pointSize = 4,
-              percentageYAxis = FALSE,
-              mainTitle = NULL,
-              xAxisLabel = NULL,
-              yAxisLabel = NULL,
-              fixedXAxisMultiple = TRUE,
-              fixedYAxisMultiple = TRUE,
-              xAxisDateFormat = "%d/%m/%y",
-              xAxisBreaks = NULL,
-              yAxisBreaks = NULL,
-              colours = "colours",
-              themeOverride = NULL)
+    pointSize = 4,
+    percentageYAxis = FALSE,
+    mainTitle = NULL,
+    xAxisLabel = NULL,
+    yAxisLabel = NULL,
+    fixedXAxisMultiple = TRUE,
+    fixedYAxisMultiple = TRUE,
+    xAxisDateFormat = "%d/%m/%y",
+    xAxisBreaks = NULL,
+    yAxisBreaks = NULL,
+    colours = "colours",
+    themeOverride = NULL
+  )
 })
 
 # validatePlotOptions() ----

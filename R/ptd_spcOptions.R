@@ -10,14 +10,13 @@
 #'
 #' @noRd
 ptd_spcOptions <- function(valueField,
-                       dateField,
-                       facetField = NULL,
-                       rebase = NULL,
-                       fixAfterNPoints = NULL,
-                       improvementDirection = c("increase", "decrease"),
-                       target = NULL,
-                       trajectory = NULL) {
-
+                           dateField,
+                           facetField = NULL,
+                           rebase = NULL,
+                           fixAfterNPoints = NULL,
+                           improvementDirection = c("increase", "decrease"),
+                           target = NULL,
+                           trajectory = NULL) {
   assertthat::assert_that(
     is.character(valueField),
     assertthat::is.scalar(valueField),
@@ -105,8 +104,12 @@ ptd_validateSpcOptions <- function(options, .data) {
   )
 
   check <- function(op) {
-    if (is.null(options[[op]])) return(TRUE)
-    if (options[[op]] %in% colnames(.data)) return(TRUE)
+    if (is.null(options[[op]])) {
+      return(TRUE)
+    }
+    if (options[[op]] %in% colnames(.data)) {
+      return(TRUE)
+    }
     stop(op, ": '", options[[op]], "' must be a valid column name in the data frame.")
   }
   check("valueField")
@@ -123,14 +126,18 @@ ptd_validateSpcOptions <- function(options, .data) {
 
   assertthat::assert_that(
     inherits(.data[[options[["dateField"]]]], c("Date", "POSIXt")),
-    msg = paste0("dateField must be a Date or POSIXt vector ('",
-                 options["dateField"], "' is a '", class(.data[[options[["dateField"]]]]), "').")
+    msg = paste0(
+      "dateField must be a Date or POSIXt vector ('",
+      options["dateField"], "' is a '", class(.data[[options[["dateField"]]]]), "')."
+    )
   )
 
   assertthat::assert_that(
     is.numeric(.data[[options[["valueField"]]]]),
-    msg = paste0("valueField must be a numeric vector ('",
-                 options["valueField"], "' is a '", class(.data[[options[["valueField"]]]]), "').")
+    msg = paste0(
+      "valueField must be a numeric vector ('",
+      options["valueField"], "' is a '", class(.data[[options[["valueField"]]]]), "')."
+    )
   )
 
   if (!is.null(options[["rebase"]])) {

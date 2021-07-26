@@ -97,7 +97,7 @@ test_that("it calls calculatePointHighlighting (increase)", {
   ptd_spc(data, "y", "x")
 
   expect_called(m, 1)
-  expect_args(m, 1, data,  1)
+  expect_args(m, 1, data, 1)
 })
 
 test_that("it calls calculatePointHighlighting (decrease)", {
