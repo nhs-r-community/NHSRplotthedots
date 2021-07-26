@@ -1,7 +1,7 @@
 Package: NHSRplotthedots
 Type: Package
 Title: A Package to Draw XmR Charts in Support of NHSE/I 'Making Data Count' Programme
-Version: 0.1.0
+Version: 0.0.0.9000
 Authors@R: c(
           person("Christopher", "Reading", ,"christopher.reading1@nhs.net", c("cre", "aut")),
           person("Simon", "Wellesley-Miller", ,"simon.wellesley-miller@nhs.net", "aut"),
@@ -20,18 +20,22 @@ License: MIT + file LICENSE
 Encoding: UTF-8
 LazyData: true
 RoxygenNote: 7.1.1
+Roxygen: list(markdown = TRUE)
 Imports: 
     ggplot2,
     scales,
     dplyr,
-    rlang
+    rlang,
+    crayon,
+    utils,
+    assertthat
 Suggests: 
     covr,
     lintr,
     testthat (>= 3.0.0),
     rmarkdown,
     knitr,
-    NHSRdatasets
+    NHSRdatasets,
+    mockery
 VignetteBuilder: knitr
 Config/testthat/edition: 3
-
