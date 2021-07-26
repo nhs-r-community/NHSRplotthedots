@@ -16,7 +16,7 @@
 
 #' @import dplyr
 
-spcStandard <- function(.data, options = NULL) {
+ptd_spcStandard <- function(.data, options = NULL) {
   # get values from options
   valueField <- options$valueField
   dateField <- options$dateField

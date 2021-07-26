@@ -9,7 +9,7 @@
 #' @inheritParams spc
 #'
 #' @noRd
-spcOptions <- function(valueField,
+ptd_spcOptions <- function(valueField,
                        dateField,
                        facetField = NULL,
                        rebase = NULL,
@@ -94,10 +94,10 @@ spcOptions <- function(valueField,
   )
 }
 
-validateSpcOptions <- function(options, .data) {
+ptd_validateSpcOptions <- function(options, .data) {
   assertthat::assert_that(
     inherits(options, "ptd_spc_options"),
-    msg = "options must be created by spcOptions()"
+    msg = "options must be created by ptd_spcOptions()"
   )
   assertthat::assert_that(
     inherits(.data, "data.frame"),

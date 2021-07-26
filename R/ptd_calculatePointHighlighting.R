@@ -11,12 +11,12 @@
 #' @noRd
 #'
 
-calculatePointHighlighting <- function(.data, improvementDirection) {
+ptd_calculatePointHighlighting <- function(.data, improvementDirection) {
   # Begin plot the dots logical tests
   .data %>%
     group_by(.data$f) %>%
     mutate(
-      specialCauseFlag = specialCauseFlag(.data$y, .data$relativeToMean, .data$closeToLimits, .data$outsideLimits),
+      specialCauseFlag = ptd_specialCauseFlag(.data$y, .data$relativeToMean, .data$closeToLimits, .data$outsideLimits),
       pointType = case_when(
         !specialCauseFlag                      ~ "common_cause",
         relativeToMean == improvementDirection ~ "special_cause_improvement",
@@ -26,7 +26,7 @@ calculatePointHighlighting <- function(.data, improvementDirection) {
     ungroup()
 }
 
-sevenPointOneSideOfMean <- function(v) {
+ptd_sevenPointOneSideOfMean <- function(v) {
   # pad the vector with 6 zero's at the beginning
   vp <- c(rep(0, 6), v)
   vapply(seq_along(v) + 6, function(i) {
@@ -34,7 +34,7 @@ sevenPointOneSideOfMean <- function(v) {
   }, numeric(1))
 }
 
-partOfSevenTrend <- function(v) {
+ptd_partOfSevenTrend <- function(v) {
   # pad the vector with 6 zero's at the beginning
   vp <- c(v, rep(0, 6))
   # either, this value is already part of 7, or one of the following 6 points is
@@ -43,7 +43,7 @@ partOfSevenTrend <- function(v) {
   }, numeric(1))
 }
 
-sevenPointTrend <- function(y) {
+ptd_sevenPointTrend <- function(y) {
   # edge case: length(v) < 7
   if (length(y) < 7) return(numeric(length(y)))
   # the first 6 points will be 0
@@ -56,7 +56,7 @@ sevenPointTrend <- function(y) {
     }, numeric(1)))
 }
 
-twoInThree <- function(v) {
+ptd_twoInThree <- function(v) {
   if (length(v) == 0) return(numeric())
   # pad the vector with two 0 at start, two 0 at end
   vp <- c(0, 0, v, 0, 0)
@@ -65,15 +65,15 @@ twoInThree <- function(v) {
   }, numeric(1))
 }
 
-partOfTwoInThree <- function(v, x) {
+ptd_partOfTwoInThree <- function(v, x) {
   as.numeric(v == 1 & abs(x) == 1)
 }
 
-specialCauseFlag <- function(y, relativeToMean, closeToLimits, outsideLimits) {
+ptd_specialCauseFlag <- function(y, relativeToMean, closeToLimits, outsideLimits) {
 
-  partOfSevenPointOneSideOfMean <- partOfSevenTrend(sevenPointOneSideOfMean(relativeToMean))
-  partOfSevenPointTrend <- partOfSevenTrend(sevenPointTrend(y))
-  partOfTwoInThree <- partOfTwoInThree(twoInThree(closeToLimits), closeToLimits)
+  partOfSevenPointOneSideOfMean <- ptd_partOfSevenTrend(ptd_sevenPointOneSideOfMean(relativeToMean))
+  partOfSevenPointTrend <- ptd_partOfSevenTrend(ptd_sevenPointTrend(y))
+  partOfTwoInThree <- ptd_partOfTwoInThree(ptd_twoInThree(closeToLimits), closeToLimits)
 
   as.numeric(
     abs(outsideLimits) == 1 |
