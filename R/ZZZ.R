@@ -16,9 +16,10 @@
 
 # Begin Exclude Linting
 `%||%` <- function(a, b) {
-  if (is.null(a))
+  if (is.null(a)) {
     b
-  else
+  } else {
     a
+  }
 }
 # End Exclude Linting

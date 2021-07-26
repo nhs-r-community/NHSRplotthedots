@@ -27,20 +27,19 @@
 #' @return The ggplot2 object
 #' @export
 ptd_createGgplot <- function(x,
-                         pointSize = 4,
-                         percentageYAxis = FALSE,
-                         mainTitle = NULL,
-                         xAxisLabel = NULL,
-                         yAxisLabel = NULL,
-                         fixedXAxisMultiple = TRUE,
-                         fixedYAxisMultiple = TRUE,
-                         xAxisDateFormat = "%d/%m/%y",
-                         xAxisBreaks = NULL,
-                         yAxisBreaks = NULL,
-                         colours = ptd_spcColours(),
-                         themeOverride = NULL,
-                         ...) {
-
+                             pointSize = 4,
+                             percentageYAxis = FALSE,
+                             mainTitle = NULL,
+                             xAxisLabel = NULL,
+                             yAxisLabel = NULL,
+                             fixedXAxisMultiple = TRUE,
+                             fixedYAxisMultiple = TRUE,
+                             xAxisDateFormat = "%d/%m/%y",
+                             xAxisBreaks = NULL,
+                             yAxisBreaks = NULL,
+                             colours = ptd_spcColours(),
+                             themeOverride = NULL,
+                             ...) {
   assertthat::assert_that(
     inherits(x, "ptd_spc_df"),
     msg = "x argument must be an 'ptd_spc_df' object, created by ptd_spc()."
@@ -49,18 +48,20 @@ ptd_createGgplot <- function(x,
   # the method
   .data <- x
 
-  ptd_validatePlotOptions(pointSize,
-                      percentageYAxis,
-                      mainTitle,
-                      xAxisLabel,
-                      yAxisLabel,
-                      fixedXAxisMultiple,
-                      fixedYAxisMultiple,
-                      xAxisDateFormat,
-                      xAxisBreaks,
-                      yAxisBreaks,
-                      colours,
-                      themeOverride)
+  ptd_validatePlotOptions(
+    pointSize,
+    percentageYAxis,
+    mainTitle,
+    xAxisLabel,
+    yAxisLabel,
+    fixedXAxisMultiple,
+    fixedYAxisMultiple,
+    xAxisDateFormat,
+    xAxisBreaks,
+    yAxisBreaks,
+    colours,
+    themeOverride
+  )
 
   options <- attr(.data, "options")
 
@@ -77,30 +78,39 @@ ptd_createGgplot <- function(x,
 
   plot <- ggplot(.data, aes(x = .data$x, y = .data$y)) +
     geom_line(aes(y = .data$upl),
-              linetype = "dashed", size = lineSize, colour = colours$upl) +
+      linetype = "dashed", size = lineSize, colour = colours$upl
+    ) +
     geom_line(aes(y = .data$lpl),
-              linetype = "dashed", size = lineSize, colour = colours$lpl) +
+      linetype = "dashed", size = lineSize, colour = colours$lpl
+    ) +
     geom_line(aes(y = .data$target),
-              linetype = "dashed", size = lineSize, colour = colours$target, na.rm = TRUE) +
+      linetype = "dashed", size = lineSize, colour = colours$target, na.rm = TRUE
+    ) +
     geom_line(aes(y = .data$trajectory),
-              linetype = "dashed", size = lineSize, colour = colours$trajectory, na.rm = TRUE) +
+      linetype = "dashed", size = lineSize, colour = colours$trajectory, na.rm = TRUE
+    ) +
     geom_line(aes(y = mean),
-              linetype = "solid", colour = colours$mean_line) +
+      linetype = "solid", colour = colours$mean_line
+    ) +
     geom_line(linetype = "solid", size = lineSize, colour = colours$value_line) +
     geom_point(aes(colour = .data$pointType), size = pointSize) +
-    scale_colour_manual(values = colours[c("common_cause",
-                                           "special_cause_improvement",
-                                           "special_cause_concern")],
-                        labels = ptd_titleCase) +
-    labs(title = mainTitle,
-         x = xAxisLabel %||% ptd_capitalise(options[["dateField"]]),
-         y = yAxisLabel %||% ptd_capitalise(options[["valueField"]])) +
+    scale_colour_manual(
+      values = colours[c(
+        "common_cause",
+        "special_cause_improvement",
+        "special_cause_concern"
+      )],
+      labels = ptd_titleCase
+    ) +
+    labs(
+      title = mainTitle,
+      x = xAxisLabel %||% ptd_capitalise(options[["dateField"]]),
+      y = yAxisLabel %||% ptd_capitalise(options[["valueField"]])
+    ) +
     theme_minimal() +
     theme(
-      plot.background = element_rect(color = "grey", size = 1), # border around whole plot
       plot.margin = unit(c(5, 5, 5, 5), "mm"), # 5mm of white space around plot edge
       axis.text.x = element_text(angle = 90, hjust = 1),
-      panel.grid = element_line(color = "grey70"), # gridline colour
       panel.grid.major.x = element_blank(), # remove major x gridlines
       panel.grid.minor.x = element_blank(), # remove minor x gridlines
       legend.position = "bottom",
@@ -167,34 +177,36 @@ plot.ptd_spc_df <- function(x,
                             colours = ptd_spcColours(),
                             themeOverride = NULL,
                             ...) {
-  ptd_createGgplot(x,
-               pointSize,
-               percentageYAxis,
-               mainTitle,
-               xAxisLabel,
-               yAxisLabel,
-               fixedXAxisMultiple,
-               fixedYAxisMultiple,
-               xAxisDateFormat,
-               xAxisBreaks,
-               yAxisBreaks,
-               colours,
-               themeOverride,
-               ...)
+  ptd_createGgplot(
+    x,
+    pointSize,
+    percentageYAxis,
+    mainTitle,
+    xAxisLabel,
+    yAxisLabel,
+    fixedXAxisMultiple,
+    fixedYAxisMultiple,
+    xAxisDateFormat,
+    xAxisBreaks,
+    yAxisBreaks,
+    colours,
+    themeOverride,
+    ...
+  )
 }
 
 ptd_validatePlotOptions <- function(pointSize = NULL,
-                                percentageYAxis = NULL,
-                                mainTitle = NULL,
-                                xAxisLabel = NULL,
-                                yAxisLabel = NULL,
-                                fixedXAxisMultiple = NULL,
-                                fixedYAxisMultiple = NULL,
-                                xAxisDateFormat = NULL,
-                                xAxisBreaks = NULL,
-                                yAxisBreaks = NULL,
-                                colours = NULL,
-                                themeOverride = NULL) {
+                                    percentageYAxis = NULL,
+                                    mainTitle = NULL,
+                                    xAxisLabel = NULL,
+                                    yAxisLabel = NULL,
+                                    fixedXAxisMultiple = NULL,
+                                    fixedYAxisMultiple = NULL,
+                                    xAxisDateFormat = NULL,
+                                    xAxisBreaks = NULL,
+                                    yAxisBreaks = NULL,
+                                    colours = NULL,
+                                    themeOverride = NULL) {
   if (!is.null(pointSize)) {
     assertthat::assert_that(
       is.numeric(pointSize),
