@@ -103,13 +103,19 @@ spc <- function(.data,
   }
 
   # set point size
-  pointSize <- ifelse(is.null(options$pointSize), 2, options$pointSize)
+  pointSize <- ifelse(is.null(options$pointSize), 4, options$pointSize)
 
   # set x axis date format
-  xAxisDateFormat <- ifelse(is.null(options$xAxisDateFormat), "%d/%m/%Y", options$xAxisDateFormat)
+  xAxisDateFormat <- ifelse(is.null(options$xAxisDateFormat), "%d/%m/%y", options$xAxisDateFormat)
 
   # set main plot title
-  plottitle <- ifelse(is.null(options$mainTitle), "SPC Chart", options$mainTitle)
+  plottitle <- ifelse(
+    is.null(options$mainTitle),
+    paste0(
+      "SPC Chart of ", capitalise(valueField), ", starting ", format(min(df$x, na.rm = TRUE), format = "%d/%m/%Y")
+    ),
+    options$mainTitle
+  )
 
   # set x axis label
   xlabel <- ifelse(is.null(options$xAxisLabel), capitalise(dateField), options$xAxisLabel)
@@ -146,6 +152,13 @@ spc <- function(.data,
     0.1 * as.numeric(options$percentageYAxis)
   }
 
+  # set plot theme override
+  themeOverride <- if (is.null(options$plotThemeOverride)) {
+    NULL
+  } else {
+    options$plotThemeOverride
+  }
+
   ## Plot the dots SPC logic ----
   df <- calculatePointHighlighting(df, improvementDirection)
 
@@ -163,7 +176,8 @@ spc <- function(.data,
       xAxisDateFormat = xAxisDateFormat,
       convertToPercentages = convertToPercentages,
       facetScales = facetScales,
-      yAxisBreaks = yAxisBreaks
+      yAxisBreaks = yAxisBreaks,
+      themeOverride = themeOverride
     )
 
     # make and return the plot

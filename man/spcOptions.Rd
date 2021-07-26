@@ -20,7 +20,8 @@ spcOptions(
   fixedYAxisMultiple = NULL,
   xAxisDateFormat = NULL,
   xAxisBreaks = NULL,
-  yAxisBreaks = NULL
+  yAxisBreaks = NULL,
+  plotThemeOverride = NULL
 )
 }
 \arguments{
@@ -70,6 +71,8 @@ interval length and type, e.g. "3 months", "7 days".}
 \item{yAxisBreaks}{Specify an interval value for breaks on the y axis. Value should be a numeric vector of length 1,
 either an integer for integer scales or a decimal value for percentage scales. This option is ignored if faceting
 is in use.}
+
+\item{plotThemeOverride}{Specify a list containing ggplot theme elements which can be used to override the default appearance of the plot.}
 }
 \description{
 `spcOptions` returns a list object containing properties which adjust the output of the 'spc' function.
