@@ -38,12 +38,18 @@ test_that("dateField can only be a scalar character", {
 test_that("facetField is either null, or a scalar character", {
   # this should run without an error
   ptd_spcOptions("a", "b", facetField = NULL)
-  expect_error(ptd_spcOptions("a", "b"
-                              , facetField = 1)
-               , "facetField argument must be a 'character' of length 1.")
-  expect_error(ptd_spcOptions("a", "b"
-                              , facetField = c("a", "b"))
-               , "facetField argument must be a 'character' of length 1.")
+  expect_error(
+    ptd_spcOptions("a", "b",
+      facetField = 1
+    ),
+    "facetField argument must be a 'character' of length 1."
+  )
+  expect_error(
+    ptd_spcOptions("a", "b",
+      facetField = c("a", "b")
+    ),
+    "facetField argument must be a 'character' of length 1."
+  )
 })
 
 test_that("rebase is either null, or a scalar character", {
@@ -54,12 +60,18 @@ test_that("rebase is either null, or a scalar character", {
 })
 
 test_that("fixAfterNPoints must be a single numeric that is greater than or equal to 12.", {
-  expect_error(ptd_spcOptions("a", "b", fixAfterNPoints = "a"),
-               "fixAfterNPoints must be a single numeric that is greater than or equal to 12.")
-  expect_error(ptd_spcOptions("a", "b", fixAfterNPoints = c(15, 20)),
-               "fixAfterNPoints must be a single numeric that is greater than or equal to 12.")
-  expect_error(ptd_spcOptions("a", "b", fixAfterNPoints = 11),
-               "fixAfterNPoints must be a single numeric that is greater than or equal to 12.")
+  expect_error(
+    ptd_spcOptions("a", "b", fixAfterNPoints = "a"),
+    "fixAfterNPoints must be a single numeric that is greater than or equal to 12."
+  )
+  expect_error(
+    ptd_spcOptions("a", "b", fixAfterNPoints = c(15, 20)),
+    "fixAfterNPoints must be a single numeric that is greater than or equal to 12."
+  )
+  expect_error(
+    ptd_spcOptions("a", "b", fixAfterNPoints = 11),
+    "fixAfterNPoints must be a single numeric that is greater than or equal to 12."
+  )
   ptd_spcOptions("a", "b", fixAfterNPoints = 12)
 })
 
@@ -72,8 +84,10 @@ test_that("improvementDirection must be one of increase or decrease", {
   ptd_spcOptions("a", "b", improvementDirection = "increase")
   ptd_spcOptions("a", "b", improvementDirection = "decrease")
 
-  expect_error(ptd_spcOptions("a", "b", improvementDirection = "a"),
-               "'arg' should be one of \"increase\", \"decrease\"")
+  expect_error(
+    ptd_spcOptions("a", "b", improvementDirection = "a"),
+    "'arg' should be one of \"increase\", \"decrease\""
+  )
 })
 
 test_that("target is either null, or a scalar character", {
@@ -86,15 +100,21 @@ test_that("target is either null, or a scalar character", {
 test_that("trajectory is either null, or a scalar character", {
   # this should run without an error
   ptd_spcOptions("a", "b", trajectory = NULL)
-  expect_error(ptd_spcOptions("a", "b", trajectory = 1)
-               , "trajectory argument must be a 'character' of length 1.")
-  expect_error(ptd_spcOptions("a", "b", trajectory = c("a", "b"))
-               , "trajectory argument must be a 'character' of length 1.")
+  expect_error(
+    ptd_spcOptions("a", "b", trajectory = 1),
+    "trajectory argument must be a 'character' of length 1."
+  )
+  expect_error(
+    ptd_spcOptions("a", "b", trajectory = c("a", "b")),
+    "trajectory argument must be a 'character' of length 1."
+  )
 })
 
 test_that("you cannot rebase and fixAfterNPoints", {
-  expect_error(ptd_spcOptions("b", "a", rebase = "c", fixAfterNPoints = 12),
-               "cannot rebase and fixAfterNPoints")
+  expect_error(
+    ptd_spcOptions("b", "a", rebase = "c", fixAfterNPoints = 12),
+    "cannot rebase and fixAfterNPoints"
+  )
 })
 
 # print() ----
@@ -125,8 +145,8 @@ test_that(".data must be a data.frame", {
   o <- ptd_spcOptions("b", "a")
 
   expect_error(ptd_validateSpcOptions(o, NULL), ".data must be a data.frame")
-  expect_error(ptd_validateSpcOptions(o, 1),    ".data must be a data.frame")
-  expect_error(ptd_validateSpcOptions(o, "a"),  ".data must be a data.frame")
+  expect_error(ptd_validateSpcOptions(o, 1), ".data must be a data.frame")
+  expect_error(ptd_validateSpcOptions(o, "a"), ".data must be a data.frame")
   ptd_validateSpcOptions(o, d)
 })
 
@@ -182,11 +202,13 @@ test_that("dateField must be either a Date or POSIXt vector", {
   ptd_validateSpcOptions(o, data.frame(a = Sys.time(), b = 1))
 
   expect_error(ptd_validateSpcOptions(o, data.frame(a = 1, b = 1)),
-               "dateField must be a Date or POSIXt vector ('a' is a 'numeric').",
-               fixed = TRUE)
+    "dateField must be a Date or POSIXt vector ('a' is a 'numeric').",
+    fixed = TRUE
+  )
   expect_error(ptd_validateSpcOptions(o, data.frame(a = "a", b = 1)),
-               "dateField must be a Date or POSIXt vector ('a' is a 'character').",
-               fixed = TRUE)
+    "dateField must be a Date or POSIXt vector ('a' is a 'character').",
+    fixed = TRUE
+  )
 })
 
 test_that("valueField must be a numeric", {
@@ -194,8 +216,9 @@ test_that("valueField must be a numeric", {
   ptd_validateSpcOptions(o, data.frame(a = Sys.Date(), b = 1))
 
   expect_error(ptd_validateSpcOptions(o, data.frame(a = Sys.Date(), b = "a")),
-               "valueField must be a numeric vector ('b' is a 'character').",
-               fixed = TRUE)
+    "valueField must be a numeric vector ('b' is a 'character').",
+    fixed = TRUE
+  )
 })
 
 test_that("rebase values must be either 0 or 1", {
@@ -205,8 +228,12 @@ test_that("rebase values must be either 0 or 1", {
   ptd_validateSpcOptions(o, data.frame(a = Sys.Date() + 1:2, b = 1:2, r = c(TRUE, FALSE)))
 
   # this should error
-  expect_error(ptd_validateSpcOptions(o, data.frame(a = Sys.Date() + 1:2, b = 1:2, r = c("a", "b"))),
-               "values in the rebase column must either be 0 or 1.")
-  expect_error(ptd_validateSpcOptions(o, data.frame(a = Sys.Date() + 1:2, b = 1:2, r = c(2, 3))),
-               "values in the rebase column must either be 0 or 1.")
+  expect_error(
+    ptd_validateSpcOptions(o, data.frame(a = Sys.Date() + 1:2, b = 1:2, r = c("a", "b"))),
+    "values in the rebase column must either be 0 or 1."
+  )
+  expect_error(
+    ptd_validateSpcOptions(o, data.frame(a = Sys.Date() + 1:2, b = 1:2, r = c(2, 3))),
+    "values in the rebase column must either be 0 or 1."
+  )
 })

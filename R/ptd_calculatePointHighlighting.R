@@ -18,9 +18,9 @@ ptd_calculatePointHighlighting <- function(.data, improvementDirection) {
     mutate(
       specialCauseFlag = ptd_specialCauseFlag(.data$y, .data$relativeToMean, .data$closeToLimits, .data$outsideLimits),
       pointType = case_when(
-        !specialCauseFlag                      ~ "common_cause",
+        !specialCauseFlag ~ "common_cause",
         relativeToMean == improvementDirection ~ "special_cause_improvement",
-        TRUE                                   ~ "special_cause_concern"
+        TRUE ~ "special_cause_concern"
       )
     ) %>%
     ungroup()
@@ -45,19 +45,29 @@ ptd_partOfSevenTrend <- function(v) {
 
 ptd_sevenPointTrend <- function(y) {
   # edge case: length(v) < 7
-  if (length(y) < 7) return(numeric(length(y)))
+  if (length(y) < 7) {
+    return(numeric(length(y)))
+  }
   # the first 6 points will be 0
-  c(rep(0, 6),
-    vapply(seq_along(y)[- (1:6)], function(i) {
+  c(
+    rep(0, 6),
+    vapply(seq_along(y)[-(1:6)], function(i) {
       d <- sign(diff(y[i - 0:6])) * -1
-      if (all(d ==  1)) return(1)
-      if (all(d == -1)) return(-1)
+      if (all(d == 1)) {
+        return(1)
+      }
+      if (all(d == -1)) {
+        return(-1)
+      }
       0
-    }, numeric(1)))
+    }, numeric(1))
+  )
 }
 
 ptd_twoInThree <- function(v) {
-  if (length(v) == 0) return(numeric())
+  if (length(v) == 0) {
+    return(numeric())
+  }
   # pad the vector with two 0 at start, two 0 at end
   vp <- c(0, 0, v, 0, 0)
   vapply(seq_along(v), function(i) {
@@ -70,15 +80,14 @@ ptd_partOfTwoInThree <- function(v, x) {
 }
 
 ptd_specialCauseFlag <- function(y, relativeToMean, closeToLimits, outsideLimits) {
-
   partOfSevenPointOneSideOfMean <- ptd_partOfSevenTrend(ptd_sevenPointOneSideOfMean(relativeToMean))
   partOfSevenPointTrend <- ptd_partOfSevenTrend(ptd_sevenPointTrend(y))
   partOfTwoInThree <- ptd_partOfTwoInThree(ptd_twoInThree(closeToLimits), closeToLimits)
 
   as.numeric(
     abs(outsideLimits) == 1 |
-    abs(partOfSevenPointOneSideOfMean) == 1 |
-    abs(partOfSevenPointTrend) == 1 |
-    partOfTwoInThree == 1
+      abs(partOfSevenPointOneSideOfMean) == 1 |
+      abs(partOfSevenPointTrend) == 1 |
+      partOfTwoInThree == 1
   )
 }
