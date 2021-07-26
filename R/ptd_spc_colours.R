@@ -12,7 +12,7 @@
 #' @return a list of colours
 #'
 #' @export
-spcColours <- function(
+ptd_spcColours <- function(
   # Begin Exclude Linting
   common_cause              = "#7B7D7D",
   special_cause_improvement = "#289de0",

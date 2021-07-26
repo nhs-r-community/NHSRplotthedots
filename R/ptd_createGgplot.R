@@ -2,7 +2,7 @@
 #'
 #' Creates a ggplot2 object using the parameters passed in.
 #'
-#' @param x an object created by [spc()]
+#' @param x an object created by [ptd_spc()]
 #' @param pointSize Specify the plotting point size for the ggplot output. Default is 2.5.
 #' @param percentageYAxis Specify whether the y axis values are percentages. Accepted values are TRUE for percentage y
 #'     axis, FALSE for integer y axis. Defaults to FALSE.
@@ -20,13 +20,13 @@
 #' @param yAxisBreaks Specify an interval value for breaks on the y axis. Value should be a numeric vector of length 1,
 #'     either an integer for integer scales or a decimal value for percentage scales. This option is ignored if faceting
 #'     is in use.
-#' @param colours Specify the colours to use in the plot, use the [spcColours()] function to change defaults.
+#' @param colours Specify the colours to use in the plot, use the [ptd_spcColours()] function to change defaults.
 #' @param themeOverride Specify a list containing ggplot theme elements which can be used to override the default
 #'     appearance of the plot.
 #' @param ... currently ignored
 #' @return The ggplot2 object
 #' @export
-createGgplot <- function(x,
+ptd_createGgplot <- function(x,
                          pointSize = 4,
                          percentageYAxis = FALSE,
                          mainTitle = NULL,
@@ -37,19 +37,19 @@ createGgplot <- function(x,
                          xAxisDateFormat = "%d/%m/%y",
                          xAxisBreaks = NULL,
                          yAxisBreaks = NULL,
-                         colours = spcColours(),
+                         colours = ptd_spcColours(),
                          themeOverride = NULL,
                          ...) {
 
   assertthat::assert_that(
     inherits(x, "ptd_spc_df"),
-    msg = "x argument must be an 'ptd_spc_df' object, created by spc()."
+    msg = "x argument must be an 'ptd_spc_df' object, created by ptd_spc()."
   )
   # argument needs to be called x for s3 plot method, but rename it to .data so it's more obvious through the rest of
   # the method
   .data <- x
 
-  validatePlotOptions(pointSize,
+  ptd_validatePlotOptions(pointSize,
                       percentageYAxis,
                       mainTitle,
                       xAxisLabel,
@@ -67,7 +67,7 @@ createGgplot <- function(x,
   mainTitle <- if (is.null(mainTitle)) {
     paste0(
       "SPC Chart of ",
-      capitalise(options$valueField),
+      ptd_capitalise(options$valueField),
       ", starting ",
       format(min(.data[["x"]], na.rm = TRUE), format = "%d/%m/%Y")
     )
@@ -91,10 +91,10 @@ createGgplot <- function(x,
     scale_colour_manual(values = colours[c("common_cause",
                                            "special_cause_improvement",
                                            "special_cause_concern")],
-                        labels = titleCase) +
+                        labels = ptd_titleCase) +
     labs(title = mainTitle,
-         x = xAxisLabel %||% capitalise(options[["dateField"]]),
-         y = yAxisLabel %||% capitalise(options[["valueField"]])) +
+         x = xAxisLabel %||% ptd_capitalise(options[["dateField"]]),
+         y = yAxisLabel %||% ptd_capitalise(options[["valueField"]])) +
     theme_minimal() +
     theme(
       plot.margin = unit(c(5, 5, 5, 5), "mm"), #5mm of white space around plot edge
@@ -148,8 +148,9 @@ createGgplot <- function(x,
   plot
 }
 
-#' @rdname createGgplot
+#' @rdname ptd_createGgplot
 #' @export
+#' @noRd
 plot.ptd_spc_df <- function(x,
                             pointSize = 4,
                             percentageYAxis = FALSE,
@@ -161,10 +162,10 @@ plot.ptd_spc_df <- function(x,
                             xAxisDateFormat = "%d/%m/%y",
                             xAxisBreaks = NULL,
                             yAxisBreaks = NULL,
-                            colours = spcColours(),
+                            colours = ptd_spcColours(),
                             themeOverride = NULL,
                             ...) {
-  createGgplot(x,
+  ptd_createGgplot(x,
                pointSize,
                percentageYAxis,
                mainTitle,
@@ -180,7 +181,7 @@ plot.ptd_spc_df <- function(x,
                ...)
 }
 
-validatePlotOptions <- function(pointSize = NULL,
+ptd_validatePlotOptions <- function(pointSize = NULL,
                                 percentageYAxis = NULL,
                                 mainTitle = NULL,
                                 xAxisLabel = NULL,
@@ -281,7 +282,7 @@ validatePlotOptions <- function(pointSize = NULL,
   if (!is.null(colours)) {
     assertthat::assert_that(
       inherits(colours, "ptd_spc_colours"),
-      msg = "colours must be an object created by spcColours()."
+      msg = "colours must be an object created by ptd_spcColours()."
     )
   }
 

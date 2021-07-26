@@ -9,13 +9,13 @@ test_that("it calls functions as expected (no facet groups)", {
                   y = rep(3, 4),
                   outsideLimits = rep(4, 4))
 
-  m1 <- mock("specialCauseFlag")
+  m1 <- mock("ptd_specialCauseFlag")
   m2 <- mock("pointType")
 
-  stub(calculatePointHighlighting, "specialCauseFlag", m1)
-  stub(calculatePointHighlighting, "case_when", m2)
+  stub(ptd_calculatePointHighlighting, "ptd_specialCauseFlag", m1)
+  stub(ptd_calculatePointHighlighting, "case_when", m2)
 
-  calculatePointHighlighting(a, "improvementDirection")
+  ptd_calculatePointHighlighting(a, "improvementDirection")
 
   expect_called(m1, 1)
   expect_called(m2, 1)
@@ -34,13 +34,13 @@ test_that("it calls functions as expected (with facet groups)", {
                   y = rep(3, 4),
                   outsideLimits = rep(4, 4))
 
-  m1 <- mock("specialCauseFlag", cycle = TRUE)
-  m2 <- mock("pointType", cycle = TRUE)
+  m1 <- mock("ptd_specialCauseFlag", cycle = TRUE)
+  m2 <- mock("ptd_pointType", cycle = TRUE)
 
-  stub(calculatePointHighlighting, "specialCauseFlag", m1)
-  stub(calculatePointHighlighting, "case_when", m2)
+  stub(ptd_calculatePointHighlighting, "ptd_specialCauseFlag", m1)
+  stub(ptd_calculatePointHighlighting, "case_when", m2)
 
-  calculatePointHighlighting(a, 1)
+  ptd_calculatePointHighlighting(a, 1)
 
   expect_called(m1, 4)
   expect_called(m2, 4)
@@ -48,10 +48,10 @@ test_that("it calls functions as expected (with facet groups)", {
 
 test_that("it returns the mutated data", {
   d <- data.frame(f = 1)
-  stub(calculatePointHighlighting, "mutate", "mutate")
-  stub(calculatePointHighlighting, "ungroup", "ungroup")
+  stub(ptd_calculatePointHighlighting, "mutate", "mutate")
+  stub(ptd_calculatePointHighlighting, "ungroup", "ungroup")
 
-  a <- calculatePointHighlighting(d, 1)
+  a <- ptd_calculatePointHighlighting(d, 1)
 
   expect_equal(a, "ungroup")
 })
@@ -59,135 +59,135 @@ test_that("it returns the mutated data", {
 test_that("it groups and ungroups the data", {
   d <- data.frame(f = 1)
 
-  stub(calculatePointHighlighting, "mutate", function(x, ...) x)
-  stub(calculatePointHighlighting, "ungroup", identity)
+  stub(ptd_calculatePointHighlighting, "mutate", function(x, ...) x)
+  stub(ptd_calculatePointHighlighting, "ungroup", identity)
 
-  a <- calculatePointHighlighting(d, 1)
+  a <- ptd_calculatePointHighlighting(d, 1)
 
   expect_equal(groups(a), list(as.symbol("f")))
 })
 
 # sevenPointOneSideOfMean() ----
 test_that("sevenPointOneSideOfMean works as expected", {
-  expect_equal(sevenPointOneSideOfMean(numeric()), numeric())
-  expect_equal(sevenPointOneSideOfMean(rep(1, 6)),
+  expect_equal(ptd_sevenPointOneSideOfMean(numeric()), numeric())
+  expect_equal(ptd_sevenPointOneSideOfMean(rep(1, 6)),
                c(0, 0, 0, 0, 0, 0))
-  expect_equal(sevenPointOneSideOfMean(c(rep(1, 6), -1)),
+  expect_equal(ptd_sevenPointOneSideOfMean(c(rep(1, 6), -1)),
                c(0, 0, 0, 0, 0, 0, 0))
-  expect_equal(sevenPointOneSideOfMean(c(rep(1, 8), -1)),
+  expect_equal(ptd_sevenPointOneSideOfMean(c(rep(1, 8), -1)),
                c(0, 0, 0, 0, 0, 0, 1, 1, 0))
-  expect_equal(sevenPointOneSideOfMean(c(rep(-1, 8), 1)),
+  expect_equal(ptd_sevenPointOneSideOfMean(c(rep(-1, 8), 1)),
                c(0, 0, 0, 0, 0, 0, 1, 1, 0))
 })
 
 # partOfSevenTrend() ----
 test_that("partOfSevenTrend works as expected", {
-  expect_equal(partOfSevenTrend(numeric()), numeric())
-  expect_equal(partOfSevenTrend(rep(0, 6)),
+  expect_equal(ptd_partOfSevenTrend(numeric()), numeric())
+  expect_equal(ptd_partOfSevenTrend(rep(0, 6)),
                c(0, 0, 0, 0, 0, 0))
 
-  a <- sevenPointOneSideOfMean(c(rep(1, 6), -1))
-  expect_equal(partOfSevenTrend(a),
+  a <- ptd_sevenPointOneSideOfMean(c(rep(1, 6), -1))
+  expect_equal(ptd_partOfSevenTrend(a),
                c(0, 0, 0, 0, 0, 0, 0))
 
-  b <- sevenPointOneSideOfMean(c(-1, rep(1, 8), -1))
-  expect_equal(partOfSevenTrend(b),
+  b <- ptd_sevenPointOneSideOfMean(c(-1, rep(1, 8), -1))
+  expect_equal(ptd_partOfSevenTrend(b),
                c(0, 1, 1, 1, 1, 1, 1, 1, 1, 0))
 
-  c <- sevenPointOneSideOfMean(c(1, rep(-1, 8), 1))
-  expect_equal(partOfSevenTrend(c),
+  c <- ptd_sevenPointOneSideOfMean(c(1, rep(-1, 8), 1))
+  expect_equal(ptd_partOfSevenTrend(c),
                c(0, 1, 1, 1, 1, 1, 1, 1, 1, 0))
 })
 
 # sevenPointTrend() ----
 test_that("sevenPointTrend works as expected", {
-  expect_equal(sevenPointTrend(numeric()), numeric())
-  expect_equal(sevenPointTrend(1:6),
+  expect_equal(ptd_sevenPointTrend(numeric()), numeric())
+  expect_equal(ptd_sevenPointTrend(1:6),
                c(0, 0, 0, 0, 0, 0))
 
-  a <- sevenPointTrend(c(1:3, 3:6))
+  a <- ptd_sevenPointTrend(c(1:3, 3:6))
   expect_equal(a, c(0, 0, 0, 0, 0, 0, 0))
 
-  b <- sevenPointTrend(1:7)
+  b <- ptd_sevenPointTrend(1:7)
   expect_equal(b, c(0, 0, 0, 0, 0, 0, 1))
 
-  c <- sevenPointTrend(c(2, 1:7, 3))
+  c <- ptd_sevenPointTrend(c(2, 1:7, 3))
   expect_equal(c, c(0, 0, 0, 0, 0, 0, 0, 1, 0))
 
-  d <- sevenPointTrend(7:1)
+  d <- ptd_sevenPointTrend(7:1)
   expect_equal(d, c(0, 0, 0, 0, 0, 0, -1))
 
-  e <- sevenPointTrend(c(2, 7:1, 3))
+  e <- ptd_sevenPointTrend(c(2, 7:1, 3))
   expect_equal(e, c(0, 0, 0, 0, 0, 0, 0, -1, 0))
 })
 
 # twoInThree() ----
 test_that("twoInThree works as expected", {
-  a <- twoInThree(numeric())
+  a <- ptd_twoInThree(numeric())
   expect_equal(a, numeric())
 
-  b <- twoInThree(numeric(3))
+  b <- ptd_twoInThree(numeric(3))
   expect_equal(b, numeric(3))
 
-  c <- twoInThree(c(1, 0, 1))
-  d <- twoInThree(c(0, 1, 1))
-  e <- twoInThree(c(1, 1, 0))
+  c <- ptd_twoInThree(c(1, 0, 1))
+  d <- ptd_twoInThree(c(0, 1, 1))
+  e <- ptd_twoInThree(c(1, 1, 0))
   expect_equal(c, d)
   expect_equal(c, e)
   expect_equal(c, rep(1, 3))
 
-  f <- twoInThree(c(0, 0, 1, 0, 1, 0, 0))
+  f <- ptd_twoInThree(c(0, 0, 1, 0, 1, 0, 0))
   expect_equal(f, c(0, 0, 1, 1, 1, 0, 0))
 
-  g <- twoInThree(c(0, 0, 1, 1, 0, 0, 0))
+  g <- ptd_twoInThree(c(0, 0, 1, 1, 0, 0, 0))
   expect_equal(g, c(0, 1, 1, 1, 1, 0, 0))
 })
 
 # partOfTwoInThree() ----
 test_that("partOfTwoInThree works as expected", {
   av  <- numeric()
-  at <- twoInThree(av)
-  aa <- partOfTwoInThree(at, av)
+  at <- ptd_twoInThree(av)
+  aa <- ptd_partOfTwoInThree(at, av)
   expect_equal(aa, av)
 
   bv <- numeric(3)
-  bt <- twoInThree(bv)
-  ba <- partOfTwoInThree(bv, bt)
+  bt <- ptd_twoInThree(bv)
+  ba <- ptd_partOfTwoInThree(bv, bt)
   expect_equal(ba, bv)
 
   cv  <- c(1, 0, 1)
-  ct <- twoInThree(cv)
-  ca <- partOfTwoInThree(ct, cv)
+  ct <- ptd_twoInThree(cv)
+  ca <- ptd_partOfTwoInThree(ct, cv)
   expect_equal(ca, cv)
 
   dv <- c(0, 1, 1)
-  dt <- twoInThree(dv)
-  da <- partOfTwoInThree(dt, dv)
+  dt <- ptd_twoInThree(dv)
+  da <- ptd_partOfTwoInThree(dt, dv)
   expect_equal(da, dv)
 
   ev <- c(1, 1, 0)
-  et <- twoInThree(ev)
-  ea <- partOfTwoInThree(et, ev)
+  et <- ptd_twoInThree(ev)
+  ea <- ptd_partOfTwoInThree(et, ev)
   expect_equal(ea, ev)
 
   fv <- c(0, 0, 1, 0, 1, 0, 0)
-  ft <- twoInThree(fv)
-  fa <- partOfTwoInThree(ft, fv)
+  ft <- ptd_twoInThree(fv)
+  fa <- ptd_partOfTwoInThree(ft, fv)
   expect_equal(fa, fv)
 
   gv <- c(0, 0, 1, 1, 0, 0, 0)
-  gt <- twoInThree(gv)
-  ga <- partOfTwoInThree(gv, gv)
+  gt <- ptd_twoInThree(gv)
+  ga <- ptd_partOfTwoInThree(gv, gv)
   expect_equal(ga, gv)
 
   hv <- c(1, 0, 0, 1)
-  ht <- twoInThree(hv)
-  ha <- partOfTwoInThree(ht, hv)
+  ht <- ptd_twoInThree(hv)
+  ha <- ptd_partOfTwoInThree(ht, hv)
   expect_equal(ha, c(0, 0, 0, 0))
 
   iv <- c(1, 0, 0, 1, 1)
-  it <- twoInThree(iv)
-  ia <- partOfTwoInThree(it, iv)
+  it <- ptd_twoInThree(iv)
+  ia <- ptd_partOfTwoInThree(it, iv)
   expect_equal(ia, c(0, 0, 0, 1, 1))
 })
 
@@ -195,21 +195,22 @@ test_that("partOfTwoInThree works as expected", {
 test_that("specialCauseFlag works as expected", {
   # there are 7 possible inpts that result in a 1 result, and 1 input that results in a 0.
   # we can mock the functions that are called and return results that can test these cases
-  m1 <- mock("sevenPointOneSideOfMean")
-  m2 <- mock("sevenPointTrend")
+  m1 <- mock("ptd_sevenPointOneSideOfMean")
+  m2 <- mock("ptd_sevenPointTrend")
   # partOfSevenTrend: this is called twice
   m3 <- mock(c(1, -1, 0,  0, 0, 0, 0, 0),
              c(0,  0, 1, -1, 0, 0, 0, 0))
-  m4 <- mock("twoInThree")
+  m4 <- mock("ptd_twoInThree")
   m5 <- mock(c(0, 0, 0, 0, 1, 0, 0, 0)) # partOfTwoInThree
 
-  stub(specialCauseFlag, "sevenPointOneSideOfMean", m1)
-  stub(specialCauseFlag, "sevenPointTrend", m2)
-  stub(specialCauseFlag, "partOfSevenTrend", m3)
-  stub(specialCauseFlag, "twoInThree", m4)
-  stub(specialCauseFlag, "partOfTwoInThree", m5)
+  stub(ptd_specialCauseFlag, "ptd_sevenPointOneSideOfMean", m1)
+  stub(ptd_specialCauseFlag, "ptd_sevenPointTrend", m2)
+  stub(ptd_specialCauseFlag, "ptd_partOfSevenTrend", m3)
+  stub(ptd_specialCauseFlag, "ptd_twoInThree", m4)
+  stub(ptd_specialCauseFlag, "ptd_partOfTwoInThree", m5)
 
-  a <- specialCauseFlag(1:8, "relativeToMean", "closeToLimits",
+  a <- ptd_specialCauseFlag(1:8, "ptd_relativeToMean", "ptd_closeToLimits",
                         c(0, 0, 0, 0, 0, 1, -1, 0))
   expect_equal(a, c(rep(1, 7), 0))
 })
+

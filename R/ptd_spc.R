@@ -1,6 +1,6 @@
 #' SPC Plotting Function
 #'
-#' `spc` returns a plot object or data table with SPC values using NHSI 'plot the dots' logic.
+#' `ptd_spc` returns a plot object or data table with SPC values using NHSI 'plot the dots' logic.
 #'
 #' This function is designed to produce consistent SPC charts
 #' across Information Department reporting, according to the 'plot the dots'
@@ -30,7 +30,7 @@
 #' @param trajectory Specify a field name which contains a trajectory value.
 #'     Field name can be specified using non-standard evaluation (i.e. no quotation marks).
 #'
-#' @export spc
+#' @export ptd_spc
 #'
 #' @return A ggplot2 object of the spc charts.  This will automatically print the plot, but can also be saved as an
 #'     object if you want to manipulate it further.
@@ -47,7 +47,7 @@
 #' trust1 <- subset(ae_attendances, org_code == "RJZ" & type == 1)
 #'
 #' # Basic chart with improvement direction decreasing
-#' spc(trust1,
+#' ptd_spc(trust1,
 #'     valueField = "breaches", dateField = "period",
 #'     improvementDirection = "decrease")
 #'
@@ -56,18 +56,18 @@
 #' orgs <- ae_attendances$org_code %in% c("RAS", "RJZ", "RR1", "RJC", "RQ1")
 #' trusts4 <- subset(ae_attendances, orgs & type == 1)
 #'
-#' s <- spc(trusts4,
+#' s <- ptd_spc(trusts4,
 #'          valueField = "breaches", dateField = "period", facetField = "org_code",
 #'          improvementDirection = "decrease")
 #' plot(s, fixedYAxisMultiple = FALSE, xAxisBreaks = "3 months")
 #'
 #' # Save the first chart as an object this time then alter the ggplot theme
-#' my_spc <- spc(trust1,
+#' my_spc <- ptd_spc(trust1,
 #'               valueField = "breaches", dateField = "period",
 #'               improvementDirection = "decrease")
 #'
 #' plot(my_spc) + ggplot2::theme_classic()
-spc <- function(.data,
+ptd_spc <- function(.data,
                 valueField,
                 dateField,
                 facetField = NULL,
@@ -78,14 +78,14 @@ spc <- function(.data,
                 trajectory = NULL) {
   assertthat::assert_that(
     inherits(.data, "data.frame"),
-    msg = "spc: .data must be a data.frame"
+    msg = "ptd_spc: .data must be a data.frame"
   )
 
   # validate all inputs.  Validation problems will generate an error and stop code execution.
-  options <- spcOptions(valueField, dateField, facetField, rebase, fixAfterNPoints, improvementDirection, target,
+  options <- ptd_spcOptions(valueField, dateField, facetField, rebase, fixAfterNPoints, improvementDirection, target,
                         trajectory)
 
-  validateSpcOptions(options, .data)
+  ptd_validateSpcOptions(options, .data)
 
   .data[[dateField]] <- as.POSIXct(.data[[dateField]], tz = "utc")
 
@@ -93,8 +93,8 @@ spc <- function(.data,
   improvementDirection <- ifelse(options$improvementDirection == "increase", 1, -1)
 
   df <- .data %>%
-    spcStandard(options) %>%
-    calculatePointHighlighting(improvementDirection)
+    ptd_spcStandard(options) %>%
+    ptd_calculatePointHighlighting(improvementDirection)
 
   class(df) <- c("ptd_spc_df", class(df))
   attr(df, "options") <- options
