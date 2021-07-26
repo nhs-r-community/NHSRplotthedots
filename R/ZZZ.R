@@ -12,6 +12,7 @@
 #' }
 #'
 #' @name null-replacement
+#' @noRd
 
 # Begin Exclude Linting
 `%||%` <- function(a, b) {

@@ -148,7 +148,7 @@ createGgplot <- function(x,
   plot
 }
 
-#' @rdname createGgplot
+#' @noRd
 #' @export
 plot.ptd_spc_df <- function(x,
                             pointSize = 4,

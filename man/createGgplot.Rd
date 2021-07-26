@@ -2,27 +2,9 @@
 % Please edit documentation in R/createGgplot.R
 \name{createGgplot}
 \alias{createGgplot}
-\alias{plot.ptd_spc_df}
 \title{Create ggplot2}
 \usage{
 createGgplot(
-  x,
-  pointSize = 4,
-  percentageYAxis = FALSE,
-  mainTitle = NULL,
-  xAxisLabel = NULL,
-  yAxisLabel = NULL,
-  fixedXAxisMultiple = TRUE,
-  fixedYAxisMultiple = TRUE,
-  xAxisDateFormat = "\%d/\%m/\%y",
-  xAxisBreaks = NULL,
-  yAxisBreaks = NULL,
-  colours = spcColours(),
-  themeOverride = NULL,
-  ...
-)
-
-\method{plot}{ptd_spc_df}(
   x,
   pointSize = 4,
   percentageYAxis = FALSE,
