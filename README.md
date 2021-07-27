@@ -30,7 +30,7 @@ possible, but until that time you can install from
 
 ``` r
 # install.packages("remotes")
-remotes::install_github("https://github.com/nhs-r-community/NHSRplotthedots")
+remotes::install_github("https://github.com/nhs-r-community/NHSRplotthedots", build_vignettes = TRUE)
 ```
 
 # Overview
@@ -60,13 +60,56 @@ sub_set <-
   ae_attendances %>% 
   filter(org_code == 'RQM' & type ==1 & period < as.Date('2018-04-01'))
 
-spc(sub_set, valueField = "breaches", dateField = "period"
-    , options = spcOptions(improvementDirection = "decrease"
-                           , yAxisLabel = "4-hour wait breaches"
-                           , mainTitle = "SPC of A&E waiting time breaches for RQM"))
+ptd_spc(sub_set, value_field = "breaches", date_field = "period",
+        improvement_direction = "decrease")
 ```
 
 <img src="man/figures/README-example-1.png" width="100%" />
+
+This plot is ok on it’s own, but we can specify more control options
+when we pass it on, using the `dplyr` pipe function below: `%>%` to the
+plot argument.
+
+``` r
+ptd_spc(sub_set, value_field = "breaches", date_field = "period",
+      improvement_direction = "decrease") %>% 
+  plot(y_axis_label = "4-hour wait breaches"
+       , main_title = "SPC of A&E waiting time breaches for RQM")
+```
+
+<img src="man/figures/README-unnamed-chunk-3-1.png" width="100%" />
+
+or alternatively:
+
+``` r
+ptd_spc(sub_set, value_field = "breaches", date_field = "period",
+      improvement_direction = "decrease") %>% 
+  ptd_create_ggplot(y_axis_label = "4-hour wait breaches"
+       , main_title = "SPC of A&E waiting time breaches for RQM")
+```
+
+## Getting help:
+
+To find out more about the ptd\_spc function, you can view the help
+with:
+
+``` r
+?ptd_spc
+```
+
+Details on the extra plot controls can be found using:
+
+``` r
+?ptd_create_ggplot
+```
+
+To view the vignette (worked example), use:
+
+``` r
+vignette("intro",package =  "NHSRplotthedots")
+
+vignette(package =  "NHSRplotthedots")
+```
 
 # Contribution
 

@@ -10,13 +10,13 @@
 #'
 #' @noRd
 ptd_spc_options <- function(value_field,
-                           date_field,
-                           facet_field = NULL,
-                           rebase = NULL,
-                           fix_after_n_points = NULL,
-                           improvement_direction = c("increase", "decrease"),
-                           target = NULL,
-                           trajectory = NULL) {
+                            date_field,
+                            facet_field = NULL,
+                            rebase = NULL,
+                            fix_after_n_points = NULL,
+                            improvement_direction = c("increase", "decrease"),
+                            target = NULL,
+                            trajectory = NULL) {
   assertthat::assert_that(
     is.character(value_field),
     assertthat::is.scalar(value_field),

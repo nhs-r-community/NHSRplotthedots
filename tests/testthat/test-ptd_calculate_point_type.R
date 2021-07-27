@@ -221,19 +221,23 @@ test_that("ptd_special_cause_flag works as expected", {
   m1 <- mock("sevenPointOneSideOfMean")
   m2 <- mock("sevenPointTrend")
   # partOfSevenTrend: this is called twice
-  m3 <- mock(c(1, -1, 0,  0, 0, 0, 0, 0),
-             c(0,  0, 1, -1, 0, 0, 0, 0))
+  m3 <- mock(
+    c(1, -1, 0, 0, 0, 0, 0, 0),
+    c(0, 0, 1, -1, 0, 0, 0, 0)
+  )
   m4 <- mock("twoInThree")
   m5 <- mock(c(0, 0, 0, 0, 1, 0, 0, 0)) # part_of_two_in_three
 
   # tie these areas up with the variable names in function that you want to stub.
-  stub(ptd_special_cause_flag, "ptd_seven_point_one_side_mean", m1)# -names
-  stub(ptd_special_cause_flag, "ptd_seven_point_trend", m2)# - names
-  stub(ptd_special_cause_flag, "ptd_part_of_seven_trend", m3)#- values
-  stub(ptd_special_cause_flag, "ptd_two_in_three", m4)# -value
-  stub(ptd_special_cause_flag, "ptd_part_of_two_in_three", m5)# -values
+  stub(ptd_special_cause_flag, "ptd_seven_point_one_side_mean", m1) # -names
+  stub(ptd_special_cause_flag, "ptd_seven_point_trend", m2) # - names
+  stub(ptd_special_cause_flag, "ptd_part_of_seven_trend", m3) #- values
+  stub(ptd_special_cause_flag, "ptd_two_in_three", m4) # -value
+  stub(ptd_special_cause_flag, "ptd_part_of_two_in_three", m5) # -values
 
-  a <- ptd_special_cause_flag(1:8, "relative_to_mean", "close_to_limits",
-                        c(0, 0, 0, 0, 0, 1, -1, 0))
+  a <- ptd_special_cause_flag(
+    1:8, "relative_to_mean", "close_to_limits",
+    c(0, 0, 0, 0, 0, 1, -1, 0)
+  )
   expect_equal(a, c(rep(1, 7), 0))
 })
