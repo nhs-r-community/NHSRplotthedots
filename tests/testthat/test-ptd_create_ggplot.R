@@ -13,11 +13,12 @@ test_that("it calls ptd_validate_plot_options", {
   m <- mock(stop())
   stub(ptd_create_ggplot, "ptd_validate_plot_options", m)
 
-  try(ptd_create_ggplot(
-    ptd_spc(data.frame(x = Sys.Date(), y = 1), "y", "x"),
-    1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12
-  ),
-  silent = TRUE
+  try(
+    ptd_create_ggplot(
+      ptd_spc(data.frame(x = Sys.Date(), y = 1), "y", "x"),
+      1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12
+    ),
+    silent = TRUE
   )
 
   expect_called(m, 1)

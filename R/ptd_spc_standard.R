@@ -21,23 +21,23 @@ ptd_spc_standard <- function(.data, options = NULL) {
   value_field <- options$value_field
   date_field <- options$date_field
   facet_field <- options$facet_field
-  rebaseField <- options$rebase
+  rebase_field <- options$rebase
   fix_after_n_points <- options$fix_after_n_points
-  targetField <- options$target
-  trajectoryField <- options$trajectory
+  target_field <- options$target
+  trajectory_field <- options$trajectory
 
   # set trajectory field
-  if (is.null(trajectoryField)) {
+  if (is.null(trajectory_field)) {
     .data$trajectory <- rep(as.numeric(NA), nrow(.data))
   } else {
-    .data$trajectory <- .data[[trajectoryField]]
+    .data$trajectory <- .data[[trajectory_field]]
   }
 
   # Set target field or create pseudo
-  if (is.null(targetField)) {
+  if (is.null(target_field)) {
     .data$target <- rep(as.numeric(NA), nrow(.data))
   } else {
-    .data$target <- .data[[targetField]]
+    .data$target <- .data[[target_field]]
   }
 
   # Set facet/grouping or create pseudo
@@ -49,8 +49,8 @@ ptd_spc_standard <- function(.data, options = NULL) {
   }
 
   # Set rebase field or create pseudo
-  if (!(is.null(rebaseField))) {
-    .data$rebase <- .data[[rebaseField]]
+  if (!(is.null(rebase_field))) {
+    .data$rebase <- .data[[rebase_field]]
   } else {
     .data$rebase <- rep(0, nrow(.data)) # If no rebase field supplied, create an empty rebase field (all NAs)
   }
@@ -77,9 +77,9 @@ ptd_spc_standard <- function(.data, options = NULL) {
     mutate(rebase_group = cumsum(.data$rebase)) %>%
     group_by(.data$rebase_group, .add = TRUE) %>%
     mutate(
-      fixY = ifelse(row_number() <= (fix_after_n_points %||% Inf), .data$y, NA),
-      mean = mean(.data$fixY, na.rm = TRUE),
-      amr = mean(abs(diff(.data$fixY)), na.rm = TRUE),
+      fix_y = ifelse(row_number() <= (fix_after_n_points %||% Inf), .data$y, NA),
+      mean = mean(.data$fix_y, na.rm = TRUE),
+      amr = mean(abs(diff(.data$fix_y)), na.rm = TRUE),
       # identify lower/upper process limits
       lpl = .data$mean - (limit * .data$amr),
       upl = .data$mean + (limit * .data$amr),
@@ -88,12 +88,12 @@ ptd_spc_standard <- function(.data, options = NULL) {
       nupl = .data$mean + (limitclose * .data$amr),
 
       # Identify any points which are outside the upper or lower process limits
-      outsideLimits = (.data$y > .data$upl | .data$y < .data$lpl),
+      outside_limits = (.data$y > .data$upl | .data$y < .data$lpl),
       # Identify whether a point is above or below the mean
-      relativeToMean = sign(.data$y - .data$mean),
+      relative_to_mean = sign(.data$y - .data$mean),
 
       # Identify if a point is between the near process limits and process limits
-      closeToLimits = !.data$outsideLimits & (.data$y < .data$nlpl | .data$y > .data$nupl)
+      close_to_limits = !.data$outside_limits & (.data$y < .data$nlpl | .data$y > .data$nupl)
     ) %>%
     # clean up by removing columns that no longer serve a purpose and ungrouping data
     select(-.data$nlpl, -.data$nupl, -.data$amr, -.data$rebase) %>%

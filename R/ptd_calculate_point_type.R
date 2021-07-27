@@ -11,12 +11,17 @@
 #' @noRd
 #'
 
-ptd_calculate_point_highlighting <- function(.data, improvement_direction) {
+ptd_calculate_point_type <- function(.data, improvement_direction) {
   # Begin plot the dots logical tests
   .data %>%
     group_by(.data$f) %>%
     mutate(
-      special_cause_flag = ptd_special_cause_flag(.data$y, .data$relative_to_mean, .data$close_to_limits, .data$outside_limits),
+      special_cause_flag = ptd_special_cause_flag(
+        .data$y,
+        .data$relative_to_mean,
+        .data$close_to_limits,
+        .data$outside_limits
+      ),
       point_type = case_when(
         !special_cause_flag ~ "common_cause",
         relative_to_mean == improvement_direction ~ "special_cause_improvement",
@@ -26,7 +31,7 @@ ptd_calculate_point_highlighting <- function(.data, improvement_direction) {
     ungroup()
 }
 
-ptd_seven_point_one_side_of_mean <- function(v) {
+ptd_seven_point_one_side_mean <- function(v) {
   # pad the vector with 6 zero's at the beginning
   vp <- c(rep(0, 6), v)
   vapply(seq_along(v) + 6, function(i) {
@@ -51,7 +56,7 @@ ptd_seven_point_trend <- function(y) {
   # the first 6 points will be 0
   c(
     rep(0, 6),
-    vapply(seq_along(y)[-(1:6)], function(i) {
+    vapply(seq_along(y)[-(1:6)], function(i) { # Exclude Linting
       d <- sign(diff(y[i - 0:6])) * -1
       if (all(d == 1)) {
         return(1)
@@ -80,14 +85,14 @@ ptd_part_of_two_in_three <- function(v, x) {
 }
 
 ptd_special_cause_flag <- function(y, relative_to_mean, close_to_limits, outside_limits) {
-  part_of_seven_point_one_side_of_mean <- ptd_part_of_seven_trend(ptd_seven_point_one_side_of_mean(relative_to_mean))
-  part_of_seven_point_trend <- ptd_part_of_seven_trend(ptd_seven_point_trend(y))
-  part_of_two_in_three <- ptd_part_of_two_in_three(ptd_two_in_three(close_to_limits), close_to_limits)
+  part_seven_point_one_side_mean <- ptd_part_of_seven_trend(ptd_seven_point_one_side_mean(relative_to_mean))
+  part_seven_point_trend <- ptd_part_of_seven_trend(ptd_seven_point_trend(y))
+  part_two_in_three <- ptd_part_of_two_in_three(ptd_two_in_three(close_to_limits), close_to_limits)
 
   as.numeric(
     abs(outside_limits) == 1 |
-      abs(part_of_seven_point_one_side_of_mean) == 1 |
-      abs(part_of_seven_point_trend) == 1 |
-      part_of_two_in_three == 1
+      abs(part_seven_point_one_side_mean) == 1 |
+      abs(part_seven_point_trend) == 1 |
+      part_two_in_three == 1
   )
 }

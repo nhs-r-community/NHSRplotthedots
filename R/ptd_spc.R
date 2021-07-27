@@ -14,8 +14,8 @@
 #' Field name can be specified using non-standard evaluation (i.e. no quotation marks).
 #' @param date_field Specify the field name which contains the date data, to be plotted on x axis.
 #' Field name can be specified using non-standard evaluation (i.e. no quotation marks).
-#' @param facet_field Optional: Specify field name which contains a grouping/faceting variable. SPC logic will be applied
-#'     to each group separately, with outputs combined. Currently accepts 1 variable only.
+#' @param facet_field Optional: Specify field name which contains a grouping/faceting variable. SPC logic will be
+#'     applied to each group separately, with outputs combined. Currently accepts 1 variable only.
 #'     Field name can be specified using non-standard evaluation (i.e. no quotation marks).
 #' @param rebase Specify a field name which contains a control limit rebasing flag.
 #'     This field should contain integer values 0 and 1, and any date value where the rebase field is 1 will
@@ -99,7 +99,7 @@ ptd_spc <- function(.data,
 
   df <- .data %>%
     ptd_spc_standard(options) %>%
-    ptd_calculate_point_highlighting(improvement_direction)
+    ptd_calculate_point_type(improvement_direction)
 
   class(df) <- c("ptd_spc_df", class(df))
   attr(df, "options") <- options

@@ -42,7 +42,7 @@ test_that("it has options as an attribute, created by spcOptions", {
   stub(ptd_spc, "ptd_spc_options", m)
   stub(ptd_spc, "ptd_validate_spc_options", TRUE)
   stub(ptd_spc, "ptd_spc_standard", function(x, ...) x)
-  stub(ptd_spc, "ptd_calculate_point_highlighting", function(x, ...) x)
+  stub(ptd_spc, "ptd_calculate_point_type", function(x, ...) x)
   stub(ptd_spc, "as.POSIXct", function(x, ...) x)
 
   s <- ptd_spc(data, "a", "b", "c", "d", "e", "f", "g", "h")
@@ -59,7 +59,7 @@ test_that("it validates the options", {
   stub(ptd_spc, "ptd_spc_options", options)
   stub(ptd_spc, "ptd_validate_spc_options", m)
   stub(ptd_spc, "ptd_spc_standard", function(x, ...) x)
-  stub(ptd_spc, "ptd_calculate_point_highlighting", function(x, ...) x)
+  stub(ptd_spc, "ptd_calculate_point_type", function(x, ...) x)
   stub(ptd_spc, "as.POSIXct", function(x, ...) x)
   stub(ptd_spc, "as.POSIXct", function(x, ...) x)
 
@@ -75,7 +75,7 @@ test_that("it calls spcStandard", {
   stub(ptd_spc, "ptd_spc_options", options)
   stub(ptd_spc, "ptd_validate_spc_options", TRUE)
   stub(ptd_spc, "ptd_spc_standard", m)
-  stub(ptd_spc, "ptd_calculate_point_highlighting", function(x, ...) x)
+  stub(ptd_spc, "ptd_calculate_point_type", function(x, ...) x)
   stub(ptd_spc, "as.POSIXct", function(x, ...) x)
 
   s <- ptd_spc(data, "y", "x")
@@ -91,7 +91,7 @@ test_that("it calls calculatePointHighlighting (increase)", {
   stub(ptd_spc, "ptd_spc_options", options)
   stub(ptd_spc, "ptd_validate_spc_options", TRUE)
   stub(ptd_spc, "ptd_spc_standard", function(x, ...) x)
-  stub(ptd_spc, "ptd_calculate_point_highlighting", m)
+  stub(ptd_spc, "ptd_calculate_point_type", m)
   stub(ptd_spc, "as.POSIXct", function(x, ...) x)
 
   ptd_spc(data, "y", "x")
@@ -107,7 +107,7 @@ test_that("it calls calculatePointHighlighting (decrease)", {
   stub(ptd_spc, "ptd_spc_options", options)
   stub(ptd_spc, "ptd_validate_spc_options", TRUE)
   stub(ptd_spc, "ptd_spc_standard", function(x, ...) x)
-  stub(ptd_spc, "ptd_calculate_point_highlighting", m)
+  stub(ptd_spc, "ptd_calculate_point_type", m)
   stub(ptd_spc, "as.POSIXct", function(x, ...) x)
 
   ptd_spc(data, "y", "x")
@@ -123,7 +123,7 @@ test_that("it converts date_field to POSIXct", {
   stub(ptd_spc, "ptd_spc_options", options)
   stub(ptd_spc, "ptd_validate_spc_options", TRUE)
   stub(ptd_spc, "ptd_spc_standard", function(x, ...) x)
-  stub(ptd_spc, "ptd_calculate_point_highlighting", function(x, ...) x)
+  stub(ptd_spc, "ptd_calculate_point_type", function(x, ...) x)
   stub(ptd_spc, "as.POSIXct", m)
 
   ptd_spc(data, "y", "x")

@@ -1,7 +1,7 @@
 library(testthat)
 library(mockery)
 
-# ptd_calculate_point_highlighting() ----
+# ptd_calculate_point_type() ----
 test_that("it calls functions as expected (no facet groups)", {
   a <- data.frame(
     f = rep(1, 1),
@@ -14,10 +14,10 @@ test_that("it calls functions as expected (no facet groups)", {
   m1 <- mock("ptd_special_cause_flag")
   m2 <- mock("point_type")
 
-  stub(ptd_calculate_point_highlighting, "ptd_special_cause_flag", m1)
-  stub(ptd_calculate_point_highlighting, "case_when", m2)
+  stub(ptd_calculate_point_type, "ptd_special_cause_flag", m1)
+  stub(ptd_calculate_point_type, "case_when", m2)
 
-  ptd_calculate_point_highlighting(a, "improvement_direction")
+  ptd_calculate_point_type(a, "improvement_direction")
 
   expect_called(m1, 1)
   expect_called(m2, 1)
@@ -42,10 +42,10 @@ test_that("it calls functions as expected (with facet groups)", {
   m1 <- mock("ptd_special_cause_flag", cycle = TRUE)
   m2 <- mock("ptd_point_type", cycle = TRUE)
 
-  stub(ptd_calculate_point_highlighting, "ptd_special_cause_flag", m1)
-  stub(ptd_calculate_point_highlighting, "case_when", m2)
+  stub(ptd_calculate_point_type, "ptd_special_cause_flag", m1)
+  stub(ptd_calculate_point_type, "case_when", m2)
 
-  ptd_calculate_point_highlighting(a, 1)
+  ptd_calculate_point_type(a, 1)
 
   expect_called(m1, 4)
   expect_called(m2, 4)
@@ -53,10 +53,10 @@ test_that("it calls functions as expected (with facet groups)", {
 
 test_that("it returns the mutated data", {
   d <- data.frame(f = 1)
-  stub(ptd_calculate_point_highlighting, "mutate", "mutate")
-  stub(ptd_calculate_point_highlighting, "ungroup", "ungroup")
+  stub(ptd_calculate_point_type, "mutate", "mutate")
+  stub(ptd_calculate_point_type, "ungroup", "ungroup")
 
-  a <- ptd_calculate_point_highlighting(d, 1)
+  a <- ptd_calculate_point_type(d, 1)
 
   expect_equal(a, "ungroup")
 })
@@ -64,31 +64,31 @@ test_that("it returns the mutated data", {
 test_that("it groups and ungroups the data", {
   d <- data.frame(f = 1)
 
-  stub(ptd_calculate_point_highlighting, "mutate", function(x, ...) x)
-  stub(ptd_calculate_point_highlighting, "ungroup", identity)
+  stub(ptd_calculate_point_type, "mutate", function(x, ...) x)
+  stub(ptd_calculate_point_type, "ungroup", identity)
 
-  a <- ptd_calculate_point_highlighting(d, 1)
+  a <- ptd_calculate_point_type(d, 1)
 
   expect_equal(groups(a), list(as.symbol("f")))
 })
 
-# ptd_seven_point_one_side_of_mean() ----
-test_that("ptd_seven_point_one_side_of_mean works as expected", {
-  expect_equal(ptd_seven_point_one_side_of_mean(numeric()), numeric())
+# ptd_seven_point_one_side_mean() ----
+test_that("ptd_seven_point_one_side_mean works as expected", {
+  expect_equal(ptd_seven_point_one_side_mean(numeric()), numeric())
   expect_equal(
-    ptd_seven_point_one_side_of_mean(rep(1, 6)),
+    ptd_seven_point_one_side_mean(rep(1, 6)),
     c(0, 0, 0, 0, 0, 0)
   )
   expect_equal(
-    ptd_seven_point_one_side_of_mean(c(rep(1, 6), -1)),
+    ptd_seven_point_one_side_mean(c(rep(1, 6), -1)),
     c(0, 0, 0, 0, 0, 0, 0)
   )
   expect_equal(
-    ptd_seven_point_one_side_of_mean(c(rep(1, 8), -1)),
+    ptd_seven_point_one_side_mean(c(rep(1, 8), -1)),
     c(0, 0, 0, 0, 0, 0, 1, 1, 0)
   )
   expect_equal(
-    ptd_seven_point_one_side_of_mean(c(rep(-1, 8), 1)),
+    ptd_seven_point_one_side_mean(c(rep(-1, 8), 1)),
     c(0, 0, 0, 0, 0, 0, 1, 1, 0)
   )
 })
@@ -101,19 +101,19 @@ test_that("ptd_part_of_seven_trend works as expected", {
     c(0, 0, 0, 0, 0, 0)
   )
 
-  a <- ptd_seven_point_one_side_of_mean(c(rep(1, 6), -1))
+  a <- ptd_seven_point_one_side_mean(c(rep(1, 6), -1))
   expect_equal(
     a,
     c(0, 0, 0, 0, 0, 0, 0)
   )
 
-  b <- ptd_seven_point_one_side_of_mean(c(-1, rep(1, 8), -1))
+  b <- ptd_seven_point_one_side_mean(c(-1, rep(1, 8), -1))
   expect_equal(
     b,
     c(0, 0, 0, 0, 0, 0, 0, 1, 1, 0)
   )
 
-  d <- ptd_seven_point_one_side_of_mean(c(1, rep(-1, 8), 1))
+  d <- ptd_seven_point_one_side_mean(c(1, rep(-1, 8), 1))
   expect_equal(
     d,
     c(0, 0, 0, 0, 0, 0, 0, 1, 1, 0)
@@ -227,7 +227,7 @@ test_that("ptd_special_cause_flag works as expected", {
   m5 <- mock(c(0, 0, 0, 0, 1, 0, 0, 0)) # part_of_two_in_three
 
   # tie these areas up with the variable names in function that you want to stub.
-  stub(ptd_special_cause_flag, "ptd_seven_point_one_side_of_mean", m1)# -names
+  stub(ptd_special_cause_flag, "ptd_seven_point_one_side_mean", m1)# -names
   stub(ptd_special_cause_flag, "ptd_seven_point_trend", m2)# - names
   stub(ptd_special_cause_flag, "ptd_part_of_seven_trend", m3)#- values
   stub(ptd_special_cause_flag, "ptd_two_in_three", m4)# -value

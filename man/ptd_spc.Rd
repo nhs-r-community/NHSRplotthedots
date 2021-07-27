@@ -27,8 +27,8 @@ Field name can be specified using non-standard evaluation (i.e. no quotation mar
 \item{date_field}{Specify the field name which contains the date data, to be plotted on x axis.
 Field name can be specified using non-standard evaluation (i.e. no quotation marks).}
 
-\item{facet_field}{Optional: Specify field name which contains a grouping/faceting variable. SPC logic will be applied
-to each group separately, with outputs combined. Currently accepts 1 variable only.
+\item{facet_field}{Optional: Specify field name which contains a grouping/faceting variable. SPC logic will be
+applied to each group separately, with outputs combined. Currently accepts 1 variable only.
 Field name can be specified using non-standard evaluation (i.e. no quotation marks).}
 
 \item{rebase}{Specify a field name which contains a control limit rebasing flag.
