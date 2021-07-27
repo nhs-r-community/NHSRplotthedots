@@ -27,19 +27,19 @@
 #' @return The ggplot2 object
 #' @export
 ptd_create_ggplot <- function(x,
-                             point_size = 4,
-                             percentage_y_axis = FALSE,
-                             main_title = NULL,
-                             x_axis_label = NULL,
-                             y_axis_label = NULL,
-                             fixed_x_axis_multiple = TRUE,
-                             fixed_y_axis_multiple = TRUE,
-                             x_axis_date_format = "%d/%m/%y",
-                             x_axis_breaks = NULL,
-                             y_axis_breaks = NULL,
-                             colours = ptd_spc_colours(),
-                             theme_override = NULL,
-                             ...) {
+                              point_size = 4,
+                              percentage_y_axis = FALSE,
+                              main_title = NULL,
+                              x_axis_label = NULL,
+                              y_axis_label = NULL,
+                              fixed_x_axis_multiple = TRUE,
+                              fixed_y_axis_multiple = TRUE,
+                              x_axis_date_format = "%d/%m/%y",
+                              x_axis_breaks = NULL,
+                              y_axis_breaks = NULL,
+                              colours = ptd_spc_colours(),
+                              theme_override = NULL,
+                              ...) {
   assertthat::assert_that(
     inherits(x, "ptd_spc_df"),
     msg = "x argument must be an 'ptd_spc_df' object, created by ptd_spc()."
@@ -198,17 +198,17 @@ plot.ptd_spc_df <- function(x,
 }
 
 ptd_validate_plot_options <- function(point_size = NULL,
-                                    percentage_y_axis = NULL,
-                                    main_title = NULL,
-                                    x_axis_label = NULL,
-                                    y_axis_label = NULL,
-                                    fixed_x_axis_multiple = NULL,
-                                    fixed_y_axis_multiple = NULL,
-                                    x_axis_date_format = NULL,
-                                    x_axis_breaks = NULL,
-                                    y_axis_breaks = NULL,
-                                    colours = NULL,
-                                    theme_override = NULL) {
+                                      percentage_y_axis = NULL,
+                                      main_title = NULL,
+                                      x_axis_label = NULL,
+                                      y_axis_label = NULL,
+                                      fixed_x_axis_multiple = NULL,
+                                      fixed_y_axis_multiple = NULL,
+                                      x_axis_date_format = NULL,
+                                      x_axis_breaks = NULL,
+                                      y_axis_breaks = NULL,
+                                      colours = NULL,
+                                      theme_override = NULL) {
   if (!is.null(point_size)) {
     assertthat::assert_that(
       is.numeric(point_size),
