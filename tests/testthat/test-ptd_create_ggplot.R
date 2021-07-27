@@ -190,6 +190,17 @@ test_that("it sets the colour of the points based on the type", {
   expect_args(m, 1, values = colours, labels = ptd_title_case)
 })
 
+test_that("it sets the main title correctly", {
+  d <- data.frame(x = as.Date("2020-01-01") + 1:20, y = rnorm(20), z = rnorm(20))
+  s <- ptd_spc(d, "y", "x")
+
+  p1 <- ptd_create_ggplot(s)
+  expect_equal(p1$labels$title, "SPC Chart of Y, starting 02/01/2020")
+
+  p2 <- ptd_create_ggplot(s, main_title = "Thing")
+  expect_equal(p2$labels$title, "Thing")
+})
+
 # plot() ----
 test_that("it calls ptd_create_ggplot()", {
   set.seed(123)
