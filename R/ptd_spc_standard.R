@@ -16,13 +16,13 @@
 
 #' @import dplyr
 
-ptd_spcStandard <- function(.data, options = NULL) {
+ptd_spc_standard <- function(.data, options = NULL) {
   # get values from options
-  valueField <- options$valueField
-  dateField <- options$dateField
-  facetField <- options$facetField
+  value_field <- options$value_field
+  date_field <- options$date_field
+  facet_field <- options$facet_field
   rebaseField <- options$rebase
-  fixAfterNPoints <- options$fixAfterNPoints
+  fix_after_n_points <- options$fix_after_n_points
   targetField <- options$target
   trajectoryField <- options$trajectory
 
@@ -42,10 +42,10 @@ ptd_spcStandard <- function(.data, options = NULL) {
 
   # Set facet/grouping or create pseudo
   # If no facet field specified, bind a pseudo-facet field for grouping/joining purposes
-  if (is.null(facetField)) {
+  if (is.null(facet_field)) {
     .data$facet <- "no facet"
   } else {
-    .data$facet <- .data[[facetField]]
+    .data$facet <- .data[[facet_field]]
   }
 
   # Set rebase field or create pseudo
@@ -62,8 +62,8 @@ ptd_spcStandard <- function(.data, options = NULL) {
   # Restructure starting data frame
   .data <- .data %>%
     select(
-      y = .data[[valueField]],
-      x = .data[[dateField]],
+      y = .data[[value_field]],
+      x = .data[[date_field]],
       f = .data$facet,
       rebase = .data$rebase,
       trajectory = .data$trajectory,
@@ -74,10 +74,10 @@ ptd_spcStandard <- function(.data, options = NULL) {
     # Order data frame by facet, and x axis variable
     arrange(.data$f, .data$x) %>%
     # convert rebase 0/1's to group indices
-    mutate(rebaseGroup = cumsum(.data$rebase)) %>%
-    group_by(.data$rebaseGroup, .add = TRUE) %>%
+    mutate(rebase_group = cumsum(.data$rebase)) %>%
+    group_by(.data$rebase_group, .add = TRUE) %>%
     mutate(
-      fixY = ifelse(row_number() <= (fixAfterNPoints %||% Inf), .data$y, NA),
+      fixY = ifelse(row_number() <= (fix_after_n_points %||% Inf), .data$y, NA),
       mean = mean(.data$fixY, na.rm = TRUE),
       amr = mean(abs(diff(.data$fixY)), na.rm = TRUE),
       # identify lower/upper process limits

@@ -3,6 +3,6 @@ ptd_capitalise <- function(x) {
   x
 }
 
-ptd_titleCase <- function(x) {
+ptd_title_case <- function(x) {
   ptd_capitalise(gsub("_(.)", " \\U\\1", x, perl = TRUE))
 }

@@ -6,12 +6,12 @@
 \usage{
 ptd_spc(
   .data,
-  valueField,
-  dateField,
-  facetField = NULL,
+  value_field,
+  date_field,
+  facet_field = NULL,
   rebase = NULL,
-  fixAfterNPoints = NULL,
-  improvementDirection = "increase",
+  fix_after_n_points = NULL,
+  improvement_direction = "increase",
   target = NULL,
   trajectory = NULL
 )
@@ -21,13 +21,13 @@ ptd_spc(
 and a category field (if for faceting). There should be no gaps in the time series
 for each category.}
 
-\item{valueField}{Specify the field name which contains the value data, to be plotted on y axis.
+\item{value_field}{Specify the field name which contains the value data, to be plotted on y axis.
 Field name can be specified using non-standard evaluation (i.e. no quotation marks).}
 
-\item{dateField}{Specify the field name which contains the date data, to be plotted on x axis.
+\item{date_field}{Specify the field name which contains the date data, to be plotted on x axis.
 Field name can be specified using non-standard evaluation (i.e. no quotation marks).}
 
-\item{facetField}{Optional: Specify field name which contains a grouping/faceting variable. SPC logic will be applied
+\item{facet_field}{Optional: Specify field name which contains a grouping/faceting variable. SPC logic will be applied
 to each group separately, with outputs combined. Currently accepts 1 variable only.
 Field name can be specified using non-standard evaluation (i.e. no quotation marks).}
 
@@ -36,9 +36,9 @@ This field should contain integer values 0 and 1, and any date value where the r
 trigger a recalculation of the control limits.
 Field name can be specified using non-standard evaluation (i.e. no quotation marks).}
 
-\item{fixAfterNPoints}{Specify a number points after which to fix SPC calculations.}
+\item{fix_after_n_points}{Specify a number points after which to fix SPC calculations.}
 
-\item{improvementDirection}{Specify whether an increase or decrease in measured variable signifies
+\item{improvement_direction}{Specify whether an increase or decrease in measured variable signifies
 process improvement. Accepted values are 'increase' for increase as improvement or 'decrease' for
 decrease as improvement. Defaults to 'increase'.}
 
@@ -69,8 +69,9 @@ trust1 <- subset(ae_attendances, org_code == "RJZ" & type == 1)
 
 # Basic chart with improvement direction decreasing
 ptd_spc(trust1,
-    valueField = "breaches", dateField = "period",
-    improvementDirection = "decrease")
+  value_field = "breaches", date_field = "period",
+  improvement_direction = "decrease"
+)
 
 # Pick a few trust, and plot individually using facet
 # Also set the x-axis scale to vary for each and date groups to 3 months
@@ -78,14 +79,16 @@ orgs <- ae_attendances$org_code \%in\% c("RAS", "RJZ", "RR1", "RJC", "RQ1")
 trusts4 <- subset(ae_attendances, orgs & type == 1)
 
 s <- ptd_spc(trusts4,
-         valueField = "breaches", dateField = "period", facetField = "org_code",
-         improvementDirection = "decrease")
-plot(s, fixedYAxisMultiple = FALSE, xAxisBreaks = "3 months")
+  value_field = "breaches", date_field = "period", facet_field = "org_code",
+  improvement_direction = "decrease"
+)
+plot(s, fixed_y_axis_multiple = FALSE, x_axis_breaks = "3 months")
 
 # Save the first chart as an object this time then alter the ggplot theme
 my_spc <- ptd_spc(trust1,
-              valueField = "breaches", dateField = "period",
-              improvementDirection = "decrease")
+  value_field = "breaches", date_field = "period",
+  improvement_direction = "decrease"
+)
 
 plot(my_spc) + ggplot2::theme_classic()
 }

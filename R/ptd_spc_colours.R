@@ -12,7 +12,7 @@
 #' @return a list of colours
 #'
 #' @export
-ptd_spcColours <- function( # Begin Exclude Linting
+ptd_spc_colours <- function( # Begin Exclude Linting
                            common_cause = "#7B7D7D",
                            special_cause_improvement = "#289de0",
                            special_cause_concern = "#fab428",
@@ -36,6 +36,6 @@ ptd_spcColours <- function( # Begin Exclude Linting
       target                    = target,
       trajectory                = trajectory
     ),
-    class = "ptd_spc_colours"
+    class = "ptd_spc_colours_class"
   )
 }

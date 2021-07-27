@@ -31,7 +31,7 @@ Please be aware that this package is in the early stages of development, and fea
 
 As the package develops there will be a full release to CRAN if possible, but until that time you can install from [GitHub](https://github.com/) using the `remotes` package  with:
 
-```r
+```{r. eval=FALSE}
 # install.packages("remotes")
 remotes::install_github("https://github.com/nhs-r-community/NHSRplotthedots")
 ```
@@ -56,6 +56,16 @@ spc(sub_set, valueField = "breaches", dateField = "period"
     , options = spcOptions(improvementDirection = "decrease"
                            , yAxisLabel = "4-hour wait breaches"
                            , mainTitle = "SPC of A&E waiting time breaches for RQM"))
+
+```
+
+
+To view the vignette, use:
+
+```{r eval=FALSE}
+vignette("intro",package =  "NHSRplotthedots")
+
+vignette(package =  "NHSRplotthedots")
 
 ```
 

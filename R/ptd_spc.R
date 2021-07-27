@@ -10,19 +10,19 @@
 #' @param .data A data frame containing a value field, a date field,
 #' and a category field (if for faceting). There should be no gaps in the time series
 #' for each category.
-#' @param valueField Specify the field name which contains the value data, to be plotted on y axis.
+#' @param value_field Specify the field name which contains the value data, to be plotted on y axis.
 #' Field name can be specified using non-standard evaluation (i.e. no quotation marks).
-#' @param dateField Specify the field name which contains the date data, to be plotted on x axis.
+#' @param date_field Specify the field name which contains the date data, to be plotted on x axis.
 #' Field name can be specified using non-standard evaluation (i.e. no quotation marks).
-#' @param facetField Optional: Specify field name which contains a grouping/faceting variable. SPC logic will be applied
+#' @param facet_field Optional: Specify field name which contains a grouping/faceting variable. SPC logic will be applied
 #'     to each group separately, with outputs combined. Currently accepts 1 variable only.
 #'     Field name can be specified using non-standard evaluation (i.e. no quotation marks).
 #' @param rebase Specify a field name which contains a control limit rebasing flag.
 #'     This field should contain integer values 0 and 1, and any date value where the rebase field is 1 will
 #'     trigger a recalculation of the control limits.
 #'     Field name can be specified using non-standard evaluation (i.e. no quotation marks).
-#' @param fixAfterNPoints Specify a number points after which to fix SPC calculations.
-#' @param improvementDirection Specify whether an increase or decrease in measured variable signifies
+#' @param fix_after_n_points Specify a number points after which to fix SPC calculations.
+#' @param improvement_direction Specify whether an increase or decrease in measured variable signifies
 #'     process improvement. Accepted values are 'increase' for increase as improvement or 'decrease' for
 #'     decrease as improvement. Defaults to 'increase'.
 #' @param target Specify a field name which contains a target value.
@@ -48,8 +48,8 @@
 #'
 #' # Basic chart with improvement direction decreasing
 #' ptd_spc(trust1,
-#'   valueField = "breaches", dateField = "period",
-#'   improvementDirection = "decrease"
+#'   value_field = "breaches", date_field = "period",
+#'   improvement_direction = "decrease"
 #' )
 #'
 #' # Pick a few trust, and plot individually using facet
@@ -58,25 +58,25 @@
 #' trusts4 <- subset(ae_attendances, orgs & type == 1)
 #'
 #' s <- ptd_spc(trusts4,
-#'   valueField = "breaches", dateField = "period", facetField = "org_code",
-#'   improvementDirection = "decrease"
+#'   value_field = "breaches", date_field = "period", facet_field = "org_code",
+#'   improvement_direction = "decrease"
 #' )
-#' plot(s, fixedYAxisMultiple = FALSE, xAxisBreaks = "3 months")
+#' plot(s, fixed_y_axis_multiple = FALSE, x_axis_breaks = "3 months")
 #'
 #' # Save the first chart as an object this time then alter the ggplot theme
 #' my_spc <- ptd_spc(trust1,
-#'   valueField = "breaches", dateField = "period",
-#'   improvementDirection = "decrease"
+#'   value_field = "breaches", date_field = "period",
+#'   improvement_direction = "decrease"
 #' )
 #'
 #' plot(my_spc) + ggplot2::theme_classic()
 ptd_spc <- function(.data,
-                    valueField,
-                    dateField,
-                    facetField = NULL,
+                    value_field,
+                    date_field,
+                    facet_field = NULL,
                     rebase = NULL,
-                    fixAfterNPoints = NULL,
-                    improvementDirection = "increase",
+                    fix_after_n_points = NULL,
+                    improvement_direction = "increase",
                     target = NULL,
                     trajectory = NULL) {
   assertthat::assert_that(
@@ -85,21 +85,21 @@ ptd_spc <- function(.data,
   )
 
   # validate all inputs.  Validation problems will generate an error and stop code execution.
-  options <- ptd_spcOptions(
-    valueField, dateField, facetField, rebase, fixAfterNPoints, improvementDirection, target,
+  options <- ptd_spc_options(
+    value_field, date_field, facet_field, rebase, fix_after_n_points, improvement_direction, target,
     trajectory
   )
 
-  ptd_validateSpcOptions(options, .data)
+  ptd_validate_spc_options(options, .data)
 
-  .data[[dateField]] <- as.POSIXct(.data[[dateField]], tz = "utc")
+  .data[[date_field]] <- as.POSIXct(.data[[date_field]], tz = "utc")
 
   # Declare improvement direction as integer
-  improvementDirection <- ifelse(options$improvementDirection == "increase", 1, -1)
+  improvement_direction <- ifelse(options$improvement_direction == "increase", 1, -1)
 
   df <- .data %>%
-    ptd_spcStandard(options) %>%
-    ptd_calculatePointHighlighting(improvementDirection)
+    ptd_spc_standard(options) %>%
+    ptd_calculate_point_highlighting(improvement_direction)
 
   class(df) <- c("ptd_spc_df", class(df))
   attr(df, "options") <- options
@@ -119,21 +119,21 @@ summary.ptd_spc_df <- function(object, ...) {
   print(options)
 
   s <- object %>%
-    group_by(.data$f, .data$rebaseGroup) %>%
+    group_by(.data$f, .data$rebase_group) %>%
     summarise(across(c(.data$mean, .data$lpl, .data$upl), first),
       n = n(),
-      common_cause = n - sum(.data$specialCauseFlag),
-      special_cause_improvement = sum(.data$pointType == "special_cause_improvement"),
-      special_cause_concern = sum(.data$pointType == "special_cause_concern"),
+      common_cause = n - sum(.data$special_cause_flag),
+      special_cause_improvement = sum(.data$point_type == "special_cause_improvement"),
+      special_cause_concern = sum(.data$point_type == "special_cause_concern"),
       .groups = "drop"
     )
 
-  if (is.null(options$facetField)) {
+  if (is.null(options$facet_field)) {
     s <- select(s, -.data$f)
   }
 
   if (is.null(options$rebase)) {
-    s <- select(s, -.data$rebaseGroup)
+    s <- select(s, -.data$rebase_group)
   }
 
   s
