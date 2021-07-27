@@ -5,5 +5,5 @@ test_that("capitalize correctly capitalises strings", {
 })
 
 test_that("titleCase correctly converts a string to title case", {
-  expect_equal(ptd_titleCase("hello_world"), "Hello World")
+  expect_equal(ptd_title_case("hello_world"), "Hello World")
 })

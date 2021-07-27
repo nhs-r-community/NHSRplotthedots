@@ -59,7 +59,7 @@ stable_set <-
   ae_attendances %>% 
   filter(org_code == 'RRK' & type ==1 & period < as.Date('2018-04-01'))
 
-ptd_spc(stable_set, valueField = "breaches", dateField = "period", improvementDirection = "decrease")
+ptd_spc(stable_set, value_field = "breaches", date_field = "period", improvement_direction = "decrease")
 
 ```
 
@@ -76,7 +76,7 @@ change_set <-
   filter(org_code == 'RRK' & type ==1) %>% 
   mutate(rebased = ifelse(period == as.Date("2018-07-01"), 1 , 0))
 
-ptd_spc(change_set, valueField = "breaches", dateField = "period", improvementDirection = "decrease", rebase = "rebased")
+ptd_spc(change_set, value_field = "breaches", date_field = "period", improvement_direction = "decrease", rebase = "rebased")
 ```
 
 You can see that our limit calculation has now shifted at the rebase point.
@@ -96,9 +96,9 @@ facet_set <-
          period < as.Date('2018-04-01'))
 
 
-ptd_spc(facet_set, valueField = "breaches", dateField = "period", facetField = "org_code",
-    improvementDirection = "decrease") %>%
-  plot(fixedYAxisMultiple = FALSE, xAxisBreaks = "3 months")
+ptd_spc(facet_set, value_field = "breaches", date_field = "period", facet_field = "org_code",
+    improvement_direction = "decrease") %>%
+  plot(fixed_y_axis_multiple = FALSE, x_axis_breaks = "3 months")
 
 ```
 

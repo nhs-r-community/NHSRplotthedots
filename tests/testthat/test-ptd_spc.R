@@ -8,12 +8,12 @@ data <- data.frame(
 )
 
 options <- list(
-  valueField = "a",
-  dateField = "b",
-  facetField = "c",
+  value_field = "a",
+  date_field = "b",
+  facet_field = "c",
   rebase = "d",
-  fixAfterNPoints = "e",
-  improvementDirection = "f",
+  fix_after_n_points = "e",
+  improvement_direction = "f",
   target = "g",
   trajectory = "h"
 )
@@ -39,10 +39,10 @@ test_that("it returns a ptd_spc_df object", {
 test_that("it has options as an attribute, created by spcOptions", {
   m <- mock(options)
 
-  stub(ptd_spc, "ptd_spcOptions", m)
-  stub(ptd_spc, "ptd_validateSpcOptions", TRUE)
-  stub(ptd_spc, "ptd_spcStandard", function(x, ...) x)
-  stub(ptd_spc, "ptd_calculatePointHighlighting", function(x, ...) x)
+  stub(ptd_spc, "ptd_spc_options", m)
+  stub(ptd_spc, "ptd_validate_spc_options", TRUE)
+  stub(ptd_spc, "ptd_spc_standard", function(x, ...) x)
+  stub(ptd_spc, "ptd_calculate_point_highlighting", function(x, ...) x)
   stub(ptd_spc, "as.POSIXct", function(x, ...) x)
 
   s <- ptd_spc(data, "a", "b", "c", "d", "e", "f", "g", "h")
@@ -56,10 +56,10 @@ test_that("it has options as an attribute, created by spcOptions", {
 test_that("it validates the options", {
   m <- mock(TRUE)
 
-  stub(ptd_spc, "ptd_spcOptions", options)
-  stub(ptd_spc, "ptd_validateSpcOptions", m)
-  stub(ptd_spc, "ptd_spcStandard", function(x, ...) x)
-  stub(ptd_spc, "ptd_calculatePointHighlighting", function(x, ...) x)
+  stub(ptd_spc, "ptd_spc_options", options)
+  stub(ptd_spc, "ptd_validate_spc_options", m)
+  stub(ptd_spc, "ptd_spc_standard", function(x, ...) x)
+  stub(ptd_spc, "ptd_calculate_point_highlighting", function(x, ...) x)
   stub(ptd_spc, "as.POSIXct", function(x, ...) x)
   stub(ptd_spc, "as.POSIXct", function(x, ...) x)
 
@@ -72,10 +72,10 @@ test_that("it validates the options", {
 test_that("it calls spcStandard", {
   m <- mock("spcStandard")
 
-  stub(ptd_spc, "ptd_spcOptions", options)
-  stub(ptd_spc, "ptd_validateSpcOptions", TRUE)
-  stub(ptd_spc, "ptd_spcStandard", m)
-  stub(ptd_spc, "ptd_calculatePointHighlighting", function(x, ...) x)
+  stub(ptd_spc, "ptd_spc_options", options)
+  stub(ptd_spc, "ptd_validate_spc_options", TRUE)
+  stub(ptd_spc, "ptd_spc_standard", m)
+  stub(ptd_spc, "ptd_calculate_point_highlighting", function(x, ...) x)
   stub(ptd_spc, "as.POSIXct", function(x, ...) x)
 
   s <- ptd_spc(data, "y", "x")
@@ -87,11 +87,11 @@ test_that("it calls spcStandard", {
 test_that("it calls calculatePointHighlighting (increase)", {
   m <- mock("calculatePointHighlighting")
 
-  options$improvementDirection <- "increase"
-  stub(ptd_spc, "ptd_spcOptions", options)
-  stub(ptd_spc, "ptd_validateSpcOptions", TRUE)
-  stub(ptd_spc, "ptd_spcStandard", function(x, ...) x)
-  stub(ptd_spc, "ptd_calculatePointHighlighting", m)
+  options$improvement_direction <- "increase"
+  stub(ptd_spc, "ptd_spc_options", options)
+  stub(ptd_spc, "ptd_validate_spc_options", TRUE)
+  stub(ptd_spc, "ptd_spc_standard", function(x, ...) x)
+  stub(ptd_spc, "ptd_calculate_point_highlighting", m)
   stub(ptd_spc, "as.POSIXct", function(x, ...) x)
 
   ptd_spc(data, "y", "x")
@@ -103,11 +103,11 @@ test_that("it calls calculatePointHighlighting (increase)", {
 test_that("it calls calculatePointHighlighting (decrease)", {
   m <- mock("calculatePointHighlighting")
 
-  options$improvementDirection <- "decrease"
-  stub(ptd_spc, "ptd_spcOptions", options)
-  stub(ptd_spc, "ptd_validateSpcOptions", TRUE)
-  stub(ptd_spc, "ptd_spcStandard", function(x, ...) x)
-  stub(ptd_spc, "ptd_calculatePointHighlighting", m)
+  options$improvement_direction <- "decrease"
+  stub(ptd_spc, "ptd_spc_options", options)
+  stub(ptd_spc, "ptd_validate_spc_options", TRUE)
+  stub(ptd_spc, "ptd_spc_standard", function(x, ...) x)
+  stub(ptd_spc, "ptd_calculate_point_highlighting", m)
   stub(ptd_spc, "as.POSIXct", function(x, ...) x)
 
   ptd_spc(data, "y", "x")
@@ -116,14 +116,14 @@ test_that("it calls calculatePointHighlighting (decrease)", {
   expect_args(m, 1, data, -1)
 })
 
-test_that("it converts dateField to POSIXct", {
+test_that("it converts date_field to POSIXct", {
   m <- mock("as.POSIXct")
 
-  options$improvementDirection <- "decrease"
-  stub(ptd_spc, "ptd_spcOptions", options)
-  stub(ptd_spc, "ptd_validateSpcOptions", TRUE)
-  stub(ptd_spc, "ptd_spcStandard", function(x, ...) x)
-  stub(ptd_spc, "ptd_calculatePointHighlighting", function(x, ...) x)
+  options$improvement_direction <- "decrease"
+  stub(ptd_spc, "ptd_spc_options", options)
+  stub(ptd_spc, "ptd_validate_spc_options", TRUE)
+  stub(ptd_spc, "ptd_spc_standard", function(x, ...) x)
+  stub(ptd_spc, "ptd_calculate_point_highlighting", function(x, ...) x)
   stub(ptd_spc, "as.POSIXct", m)
 
   ptd_spc(data, "y", "x")
@@ -175,9 +175,9 @@ test_that("it outputs expected content", {
   s2 <- ptd_spc(d, "y", "x", rebase = "rebase")
   expect_snapshot_output(summary(s2))
 
-  s3 <- ptd_spc(d, "y", "x", facetField = "facet")
+  s3 <- ptd_spc(d, "y", "x", facet_field = "facet")
   expect_snapshot_output(summary(s3))
 
-  s4 <- ptd_spc(d, "y", "x", rebase = "rebase", facetField = "facet")
+  s4 <- ptd_spc(d, "y", "x", rebase = "rebase", facet_field = "facet")
   expect_snapshot_output(summary(s4))
 })
