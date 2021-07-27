@@ -10,3 +10,5 @@
 
 ^_pkgdown.yml$
 ^pkgdown/
+^doc$
+^Meta$
