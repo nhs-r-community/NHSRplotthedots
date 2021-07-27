@@ -2,9 +2,9 @@
 #'
 #' `ptd_spc_options` returns a list object containing properties which adjust the output of the `ptd_spc` function.
 #'
-#' This function is designed to allow greater control over SPC charts created using this package.  `ptd_spc_options` is a list
-#' with named slots for known parameters within the `ptd_spc` function. It should be supplied to the options argument within
-#' the `ptd_spc` function, with the options listed within `ptd_spc_options`.  See examples below.
+#' This function is designed to allow greater control over SPC charts created using this package.  `ptd_spc_options` is
+#' a list with named slots for known parameters within the `ptd_spc` function. It should be supplied to the options
+#' argument within the `ptd_spc` function, with the options listed within `ptd_spc_options`.  See examples below.
 #'
 #' @inheritParams spc
 #'
@@ -89,13 +89,13 @@ ptd_spc_options <- function(value_field,
       target = target,
       trajectory = trajectory
     ),
-    class = "ptd_spc_options_class"
+    class = "ptd_spc_options"
   )
 }
 
 ptd_validate_spc_options <- function(options, .data) {
   assertthat::assert_that(
-    inherits(options, "ptd_spc_options_class"),
+    inherits(options, "ptd_spc_options"),
     msg = "options must be created by ptd_spc_options()"
   )
   assertthat::assert_that(
@@ -152,7 +152,7 @@ ptd_validate_spc_options <- function(options, .data) {
 }
 
 #' @export
-print.ptd_spc_options_class <- function(x, ...) {
+print.ptd_spc_options <- function(x, ...) {
   f <- function(s, surround = "'") {
     a <- crayon::bold(s, ":", sep = "")
     p <- paste(rep(" ", 21 - nchar(s)), collapse = "")

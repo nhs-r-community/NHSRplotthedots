@@ -44,12 +44,12 @@ Accepted values are TRUE for fixed y axes or FALSE for individual y axes.}
 \item{x_axis_date_format}{Specify how dates on the x axis should be displayed. Format should be provided
 as a character string using 'd m Y' etc syntax.}
 
-\item{x_axis_breaks}{Specify an interval value for breaks on the x axis. Value should be a character string expressing
-interval length and type, e.g. "3 months", "7 days".}
+\item{x_axis_breaks}{Specify an interval value for breaks on the x axis. Value should be a character string
+expressing interval length and type, e.g. "3 months", "7 days".}
 
-\item{y_axis_breaks}{Specify an interval value for breaks on the y axis. Value should be a numeric vector of length 1,
-either an integer for integer scales or a decimal value for percentage scales. This option is ignored if faceting
-is in use.}
+\item{y_axis_breaks}{Specify an interval value for breaks on the y axis. Value should be a numeric vector of length
+1, either an integer for integer scales or a decimal value for percentage scales. This option is ignored if
+faceting is in use.}
 
 \item{colours}{Specify the colours to use in the plot, use the \code{\link[=ptd_spc_colours]{ptd_spc_colours()}} function to change defaults.}
 
