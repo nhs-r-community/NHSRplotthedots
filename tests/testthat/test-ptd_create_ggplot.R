@@ -17,13 +17,13 @@ test_that("it calls ptd_validate_plot_options", {
   try(
     ptd_create_ggplot(
       ptd_spc(data.frame(x = Sys.Date() + 1:12, y = rnorm(12)), "y", "x"),
-      1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12
+      1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13
     ),
     silent = TRUE
   )
 
   expect_called(m, 1)
-  expect_args(m, 1, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12)
+  expect_args(m, 1, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13)
 })
 
 test_that("it returns a ggplot object", {
@@ -241,6 +241,45 @@ test_that("a plot with short rebase group has a warning caption", {
   )
 })
 
+test_that("it adds assurance points only when a target is set", {
+  set.seed(123)
+  d <- data.frame(x = as.Date("2020-01-01") + 1:20,
+                  y = rnorm(20))
+  s1 <- ptd_spc(d, "y", "x")
+  p1 <- plot(s1)
+
+  s2 <- ptd_spc(d, "y", "x", target = 0.5)
+  p2 <- plot(s2)
+
+  expect_length(p1$layers, 7)
+  expect_length(p2$layers, 9)
+})
+
+test_that("it doesn't add assurance points if show_assurance is FALSE", {
+  set.seed(123)
+  d <- data.frame(x = as.Date("2020-01-01") + 1:20,
+                  y = rnorm(20))
+
+  s1 <- ptd_spc(d, "y", "x", target = 0.5)
+  p1 <- plot(s1, show_assurance = FALSE)
+
+  expect_length(p1$layers, 7)
+})
+
+test_that("it changes position of labels if you set fixed_y_axis_multiple in a facet", {
+  set.seed(123)
+  d <- data.frame(x = as.Date("2020-01-01") + 1:24,
+                  y = rnorm(24),
+                  f = rep(c(0, 1), each = 12))
+
+  s1 <- ptd_spc(d, "y", "x", target = 0.5, facet = "f")
+  p1 <- plot(s1)
+  p2 <- plot(s1, fixed_y_axis_multiple = FALSE)
+
+  expect_true(p1$layers[[8]]$data$y[[1]] == p1$layers[[8]]$data$y[[2]])
+  expect_true(p2$layers[[8]]$data$y[[1]] != p2$layers[[8]]$data$y[[2]])
+})
+
 # plot() ----
 test_that("it calls ptd_create_ggplot()", {
   set.seed(123)
@@ -259,17 +298,18 @@ test_that("it calls ptd_create_ggplot()", {
 
   expect_called(m, 1)
   expect_args(m, 1, s,
-    point_size = 4,
-    percentage_y_axis = FALSE,
-    main_title = NULL,
-    x_axis_label = NULL,
-    y_axis_label = NULL,
-    fixed_x_axis_multiple = TRUE,
-    fixed_y_axis_multiple = TRUE,
-    x_axis_date_format = "%d/%m/%y",
-    x_axis_breaks = NULL,
-    y_axis_breaks = NULL,
-    colours = "colours",
-    theme_override = NULL
+              point_size = 4,
+              percentage_y_axis = FALSE,
+              main_title = NULL,
+              x_axis_label = NULL,
+              y_axis_label = NULL,
+              fixed_x_axis_multiple = TRUE,
+              fixed_y_axis_multiple = TRUE,
+              x_axis_date_format = "%d/%m/%y",
+              x_axis_breaks = NULL,
+              y_axis_breaks = NULL,
+              show_assurance = TRUE,
+              colours = "colours",
+              theme_override = NULL
   )
 })

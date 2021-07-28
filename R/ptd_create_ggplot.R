@@ -20,6 +20,7 @@
 #' @param y_axis_breaks Specify an interval value for breaks on the y axis. Value should be a numeric vector of length
 #'     1, either an integer for integer scales or a decimal value for percentage scales. This option is ignored if
 #'     faceting is in use.
+#' @param show_assurance Whether to show assurance icons, defaults to `TRUE`
 #' @param colours Specify the colours to use in the plot, use the [ptd_spc_colours()] function to change defaults.
 #' @param theme_override Specify a list containing ggplot theme elements which can be used to override the default
 #'     appearance of the plot.
@@ -37,6 +38,7 @@ ptd_create_ggplot <- function(x,
                               x_axis_date_format = "%d/%m/%y",
                               x_axis_breaks = NULL,
                               y_axis_breaks = NULL,
+                              show_assurance = TRUE,
                               colours = ptd_spc_colours(),
                               theme_override = NULL,
                               ...) {
@@ -59,6 +61,7 @@ ptd_create_ggplot <- function(x,
     x_axis_date_format,
     x_axis_breaks,
     y_axis_breaks,
+    show_assurance,
     colours,
     theme_override
   )
@@ -162,7 +165,7 @@ ptd_create_ggplot <- function(x,
     plot <- plot +
       scale_y_continuous(labels = scales::label_percent(y_axis_breaks))
   } else if (!is.null(y_axis_breaks)) {
-    yaxis <- c(.data[["y"]], .data[["upl"]], .data[["lpl"]])
+    yaxis <- c(.data[["y"]], .data[["upl"]], .data[["lpl"]], .data[["target"]])
     start <- floor(min(yaxis, na.rm = TRUE) / y_axis_breaks) * y_axis_breaks
     end <- max(yaxis, na.rm = TRUE)
 
@@ -170,6 +173,37 @@ ptd_create_ggplot <- function(x,
 
     plot <- plot +
       scale_y_continuous(breaks = y_axis_labels, labels = y_axis_labels)
+  }
+
+  if (!is.null(options$target) && show_assurance) {
+    a <- .data %>%
+      group_by(.data$f) %>%
+      summarise(across(.data$x, max),
+                across(.data$y, max) * 1.01,
+                .groups = "drop") %>%
+      inner_join(ptd_calculate_assurance_type(.data), by = "f") %>%
+      mutate(text = gsub("(.)[a-z]*(_|$)", "\\1", .data$assurance_type),
+             colour = case_when(
+               .data$assurance_type == "consistent_pass" ~ "special_cause_improvement",
+               .data$assurance_type == "consistent_fail" ~ "special_cause_concern",
+               TRUE ~ "common_cause"
+             ))
+
+    if (fixed_y_axis_multiple) {
+      a <- mutate(a, across(.data$y, max))
+    }
+
+    plot <- plot +
+      geom_point(data = a,
+                 aes(colour = .data$colour),
+                 fill = "white",
+                 shape = "circle filled",
+                 size = 8,
+                 stroke = 1.5,
+                 show.legend = FALSE) +
+      geom_text(data = a,
+                aes(colour = .data$colour, label = .data$text),
+                fontface = "bold")
   }
 
   plot
@@ -189,6 +223,7 @@ plot.ptd_spc_df <- function(x,
                             x_axis_date_format = "%d/%m/%y",
                             x_axis_breaks = NULL,
                             y_axis_breaks = NULL,
+                            show_assurance = TRUE,
                             colours = ptd_spc_colours(),
                             theme_override = NULL,
                             ...) {
@@ -204,6 +239,7 @@ plot.ptd_spc_df <- function(x,
     x_axis_date_format,
     x_axis_breaks,
     y_axis_breaks,
+    show_assurance,
     colours,
     theme_override,
     ...

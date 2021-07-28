@@ -124,6 +124,17 @@ test_that("it handles y_axis_breaks correctly", {
   expect_error(ptd_validate_plot_options(y_axis_breaks = c(1, 2)), em)
 })
 
+test_that("it handles show_assurance correctly", {
+  # these should run fine
+  ptd_validate_plot_options(show_assurance = TRUE)
+  ptd_validate_plot_options(show_assurance = FALSE)
+
+  # these will error
+  em <- "show_assurance argument must be a logical of length 1."
+  expect_error(ptd_validate_plot_options(show_assurance = "a"), em)
+  expect_error(ptd_validate_plot_options(show_assurance = c(TRUE, FALSE)), em)
+})
+
 test_that("it handles colours correctly", {
   # these should run fine
   ptd_validate_plot_options(colours = ptd_spc_colours())
