@@ -65,7 +65,7 @@ ptd_create_ggplot <- function(x,
 
   options <- attr(.data, "options")
 
-  in_title <- if (is.null(main_title)) {
+  if (is.null(main_title)) {
     main_title <- paste0(
       "SPC Chart of ",
       ptd_capitalise(options$value_field),
