@@ -8,7 +8,7 @@ ptd_validate_plot_options <- function(point_size = NULL,
                                       x_axis_date_format = NULL,
                                       x_axis_breaks = NULL,
                                       y_axis_breaks = NULL,
-                                      show_assurance = NULL,
+                                      show_icons = NULL,
                                       colours = NULL,
                                       theme_override = NULL) {
   if (!is.null(point_size)) {
@@ -97,11 +97,11 @@ ptd_validate_plot_options <- function(point_size = NULL,
     )
   }
 
-  if (!is.null(show_assurance)) {
+  if (!is.null(show_icons)) {
     assertthat::assert_that(
-      is.logical(show_assurance),
-      assertthat::is.scalar(show_assurance),
-      msg = "show_assurance argument must be a logical of length 1."
+      is.logical(show_icons),
+      assertthat::is.scalar(show_icons),
+      msg = "show_icons argument must be a logical of length 1."
     )
   }
 

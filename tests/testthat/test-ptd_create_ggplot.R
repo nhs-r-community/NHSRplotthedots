@@ -33,7 +33,7 @@ test_that("it returns a ggplot object", {
   p <- ptd_create_ggplot(s)
 
   expect_s3_class(p, c("gg", "ggplot"))
-  expect_length(p$layers, 7)
+  expect_length(p$layers, 9)
   expect_equal(
     p$labels,
     list(
@@ -41,7 +41,8 @@ test_that("it returns a ggplot object", {
       y = "Y",
       title = "SPC Chart of Y, starting 02/01/2020",
       caption = NULL,
-      colour = "point_type"
+      colour = "point_type",
+      label = "text"
     )
   )
 })
@@ -251,22 +252,22 @@ test_that("it adds assurance points only when a target is set", {
   s2 <- ptd_spc(d, "y", "x", target = 0.5)
   p2 <- plot(s2)
 
-  expect_length(p1$layers, 7)
-  expect_length(p2$layers, 9)
+  expect_equal(nrow(p1$layers[[8]]$data), 1)
+  expect_equal(nrow(p2$layers[[9]]$data), 2)
 })
 
-test_that("it doesn't add assurance points if show_assurance is FALSE", {
+test_that("it doesn't add icons if show_icons is FALSE", {
   set.seed(123)
   d <- data.frame(x = as.Date("2020-01-01") + 1:20,
                   y = rnorm(20))
 
   s1 <- ptd_spc(d, "y", "x", target = 0.5)
-  p1 <- plot(s1, show_assurance = FALSE)
+  p1 <- plot(s1, show_icons = FALSE)
 
   expect_length(p1$layers, 7)
 })
 
-test_that("it changes position of labels if you set fixed_y_axis_multiple in a facet", {
+test_that("it changes position of icons if you set fixed_y_axis_multiple in a facet", {
   set.seed(123)
   d <- data.frame(x = as.Date("2020-01-01") + 1:24,
                   y = rnorm(24),
@@ -276,8 +277,8 @@ test_that("it changes position of labels if you set fixed_y_axis_multiple in a f
   p1 <- plot(s1)
   p2 <- plot(s1, fixed_y_axis_multiple = FALSE)
 
-  expect_true(p1$layers[[8]]$data$y[[1]] == p1$layers[[8]]$data$y[[2]])
-  expect_true(p2$layers[[8]]$data$y[[1]] != p2$layers[[8]]$data$y[[2]])
+  expect_true(all(p1$layers[[8]]$data$y[[1]] == p1$layers[[8]]$data$y))
+  expect_false(all(p2$layers[[8]]$data$y == p2$layers[[8]]$data$y[[4]]))
 })
 
 # plot() ----
@@ -308,7 +309,7 @@ test_that("it calls ptd_create_ggplot()", {
               x_axis_date_format = "%d/%m/%y",
               x_axis_breaks = NULL,
               y_axis_breaks = NULL,
-              show_assurance = TRUE,
+              show_icons = TRUE,
               colours = "colours",
               theme_override = NULL
   )
