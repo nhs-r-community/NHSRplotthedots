@@ -73,12 +73,12 @@ test_that("date_field must be either a Date or POSIXt vector", {
   ptd_validate_spc_options(o, data.frame(a = Sys.time(), b = 1))
 
   expect_error(ptd_validate_spc_options(o, data.frame(a = 1, b = 1)),
-               "date_field must be a Date or POSIXt vector ('a' is a 'numeric').",
-               fixed = TRUE
+    "date_field must be a Date or POSIXt vector ('a' is a 'numeric').",
+    fixed = TRUE
   )
   expect_error(ptd_validate_spc_options(o, data.frame(a = "a", b = 1)),
-               "date_field must be a Date or POSIXt vector ('a' is a 'character').",
-               fixed = TRUE
+    "date_field must be a Date or POSIXt vector ('a' is a 'character').",
+    fixed = TRUE
   )
 })
 
@@ -87,7 +87,7 @@ test_that("value_field must be a numeric", {
   ptd_validate_spc_options(o, data.frame(a = Sys.Date(), b = 1))
 
   expect_error(ptd_validate_spc_options(o, data.frame(a = Sys.Date(), b = "a")),
-               "value_field must be a numeric vector ('b' is a 'character').",
-               fixed = TRUE
+    "value_field must be a numeric vector ('b' is a 'character').",
+    fixed = TRUE
   )
 })

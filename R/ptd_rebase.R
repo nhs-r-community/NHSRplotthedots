@@ -24,8 +24,10 @@
 #' # chart with facets "a", "b", and "c", and you wanted to rebase "a" on the 1^st^ January 2020,
 #' # and "b" on the 22^nd^ March 2020:
 #'
-#' ptd_rebase("a" = as.Date("2020-01-01"),
-#'            "b" = as.Date("2020-03-22"))
+#' ptd_rebase(
+#'   "a" = as.Date("2020-01-01"),
+#'   "b" = as.Date("2020-03-22")
+#' )
 ptd_rebase <- function(...) {
   rebase <- list(...)
 
