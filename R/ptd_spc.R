@@ -18,7 +18,7 @@
 #'     applied to each group separately, with outputs combined. Currently accepts 1 variable only.
 #'     Field name can be specified using non-standard evaluation (i.e. no quotation marks).
 #' @param rebase Specify a date vector of dates when to rebase, or, if facet_field is set, a named list of date vectors
-#'     of when to rebase. Each item in the list should be named after the facet you wish to rebase.
+#'     of when to rebase. Each item in the list should be named after the facet you wish to rebase. See [ptd_rebase()].
 #' @param fix_after_n_points Specify a number points after which to fix SPC calculations.
 #' @param improvement_direction Specify whether an increase or decrease in measured variable signifies
 #'     process improvement. Accepted values are 'increase' for increase as improvement or 'decrease' for
@@ -72,7 +72,7 @@ ptd_spc <- function(.data,
                     value_field,
                     date_field,
                     facet_field = NULL,
-                    rebase = NULL,
+                    rebase = ptd_rebase(),
                     fix_after_n_points = NULL,
                     improvement_direction = "increase",
                     target = NULL,
