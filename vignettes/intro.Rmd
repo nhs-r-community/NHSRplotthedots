@@ -37,15 +37,14 @@ library(scales)
 data("ae_attendances")
 
 ae_attendances %>% 
-  filter(org_code == 'RRK' & type ==1) %>% 
-  ggplot(aes(x=period, y= breaches))+
-  geom_point()+
-  geom_line()+
-  scale_y_continuous("4-hour target breaches", labels=comma)+
-  scale_x_date("Date")+
-  labs(title="Example plot of A&E breaches for organsiation: 'RRK'")+
+  filter(org_code == "RRK" & type == 1) %>% 
+  ggplot(aes(x = period, y = breaches)) +
+  geom_point() +
+  geom_line() +
+  scale_y_continuous("4-hour target breaches", labels = comma) +
+  scale_x_date("Date") +
+  labs(title = "Example plot of A&E breaches for organsiation: 'RRK'") +
   theme_minimal()
-
 ```
 
 This minimal plot shows the changes over time, and we will look at it in two ways.  The first, we'll look at 2016/17 & 2017/18, which is apparently stable and, during 2018, the trust merged with another large 3-hospital provider trust, so the numbers through A&E shot up dramatically when combined under one trust code.  We can use a change point in our plots to consider this.
@@ -55,12 +54,12 @@ Let's now use the `ptd_spc` function to draw our plot.  We need to provide it wi
 ## Stable period
 
 ```{r stableperiod}
-stable_set <- 
-  ae_attendances %>% 
-  filter(org_code == 'RRK' & type ==1 & period < as.Date('2018-04-01'))
+stable_set <- ae_attendances %>% 
+  filter(org_code == "RRK",
+         type ==1,
+         period < as.Date("2018-04-01"))
 
 ptd_spc(stable_set, value_field = "breaches", date_field = "period", improvement_direction = "decrease")
-
 ```
 
 From the chart above, we can see the centre line (mean) and the control limits calculated according the the XmR chart rules.  Our points that are between the control limits are within control and showing 'common-cause' or 'natural' variation.  We can see 8 sequential points coloured in yellow.  This is triggered by a rule that looks for >=7 points on one side of the mean.  This could be viewed as a period where fewer breaches than average were detected, which may hold some learning value for the organisation.
@@ -68,16 +67,17 @@ From the chart above, we can see the centre line (mean) and the control limits c
 
 ## Change point
 
-From the first plot above, we can see that the change is noticed at 01/07/2019.  We understand the reason for the change (the merging of two trusts), and believe this will be the new normal range for the process, so it would be valid to rebase at this point. To rebase (change the modelling period for control limits), we need to set a binary flag here in our data (achieved with the `mutate` statement below).  We've now got an extra column, all set to 0, except 01/07/2019, which is set to 1 to trigger the rebase here.  This is then passed to the `rebase` argument.
+From the first plot above, we can see that the change is noticed at 01/07/2019.  We understand the reason for the change (the merging of two trusts), and believe this will be the new normal range for the process, so it would be valid to rebase at this point. To rebase (change the modelling period for control limits), we can pass a vector of dates at the point we wish to rebase.
 
 ```{r changepoint}
-change_set <- 
-  ae_attendances %>% 
-  filter(org_code == 'RRK' & type ==1) %>% 
-  mutate(rebased = ifelse(period == as.Date("2018-07-01"), 1 , 0))
+change_set <- ae_attendances %>% 
+  filter(org_code == "RRK", type == 1)
 
-ptd_spc(change_set, value_field = "breaches", date_field = "period"
-        , improvement_direction = "decrease", rebase = "rebased")
+ptd_spc(change_set,
+        value_field = "breaches",
+        date_field = "period",
+        improvement_direction = "decrease",
+        rebase = as.Date("2018-07-01"))
 ```
 
 You can see that our limit calculation has now shifted at the rebase point.
@@ -92,53 +92,58 @@ We'll also combine this with a couple more options that are specific to the plot
 ```{r facetvignette}
 facet_set <- 
   ae_attendances %>% 
-  filter(org_code %in% c('RRK', 'RJC', 'RJ7', 'R1K', 'R1H', 'RQM'),
+  filter(org_code %in% c("RRK", "RJC", "RJ7", "R1K", "R1H", "RQM"),
          type == 1,
-         period < as.Date('2018-04-01'))
+         period < as.Date("2018-04-01"))
 
-
-ptd_spc(facet_set, value_field = "breaches", date_field = "period", facet_field = "org_code",
-    improvement_direction = "decrease") %>%
+ptd_spc(facet_set,
+        value_field = "breaches",
+        date_field = "period",
+        facet_field = "org_code",
+        improvement_direction = "decrease") %>%
   plot(fixed_y_axis_multiple = FALSE, x_axis_breaks = "3 months")
 
 ```
 From this, the point-size seems too big, and it would be worth replacing the y-axis title with something better.  Again, this is done with the `plot` function arguments:
 
 ```{r facetvignette2}
-facet_set <- 
-  ae_attendances %>% 
-  filter(org_code %in% c('RRK', 'RJC', 'RJ7', 'R1K', 'R1H', 'RQM'),
+facet_set <- ae_attendances %>% 
+  filter(org_code %in% c("RRK", "RJC", "RJ7", "R1K", "R1H", "RQM"),
          type == 1,
-         period < as.Date('2018-04-01'))
+         period < as.Date("2018-04-01"))
 
 
-ptd_spc(facet_set, value_field = "breaches", date_field = "period", facet_field = "org_code",
-    improvement_direction = "decrease") %>%
-  plot(fixed_y_axis_multiple = FALSE, x_axis_breaks = "3 months"
-       , point_size=2, y_axis_label = "Number of 4-hour A&E target breaches")
-
+ptd_spc(facet_set,
+        value_field = "breaches",
+        date_field = "period",
+        facet_field = "org_code", 
+        improvement_direction = "decrease") %>%
+  plot(fixed_y_axis_multiple = FALSE,
+       x_axis_breaks = "3 months",
+       point_size = 2,
+       y_axis_label = "Number of 4-hour A&E target breaches")
 ```
 
 As the plots are based on `ggplot2` you can override elements of the styling and theme as additional arguments using `theme`, or by using `theme_override` with your new theme elements in a `list`.
 
 ```{r facetvignette3}
-facet_set <- 
-  ae_attendances %>% 
-  filter(org_code %in% c('RRK', 'RJC', 'RJ7', 'R1K', 'R1H', 'RQM'),
+facet_set <- ae_attendances %>% 
+  filter(org_code %in% c("RRK", "RJC", "RJ7", "R1K", "R1H", "RQM"),
          type == 1,
-         period < as.Date('2018-04-01'))
+         period < as.Date("2018-04-01"))
 
-
-a <-ptd_spc(facet_set, value_field = "breaches", date_field = "period", facet_field = "org_code",
-    improvement_direction = "decrease") %>%
-  plot(fixed_y_axis_multiple = FALSE, x_axis_breaks = "3 months"
-       , point_size=2, y_axis_label = "Number of 4-hour A&E target breaches"
-       )
-
+a <- ptd_spc(facet_set,
+             value_field = "breaches",
+             date_field = "period",
+             facet_field = "org_code",
+             improvement_direction = "decrease") %>%
+  plot(fixed_y_axis_multiple = FALSE,
+       x_axis_breaks = "3 months",
+       point_size = 2,
+       y_axis_label = "Number of 4-hour A&E target breaches")
 
 a + theme(axis.text.x = element_text(size=6, angle=45))
 ```
-
 
 ## Come and join us!
 

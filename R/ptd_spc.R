@@ -17,10 +17,8 @@
 #' @param facet_field Optional: Specify field name which contains a grouping/faceting variable. SPC logic will be
 #'     applied to each group separately, with outputs combined. Currently accepts 1 variable only.
 #'     Field name can be specified using non-standard evaluation (i.e. no quotation marks).
-#' @param rebase Specify a field name which contains a control limit rebasing flag.
-#'     This field should contain integer values 0 and 1, and any date value where the rebase field is 1 will
-#'     trigger a recalculation of the control limits.
-#'     Field name can be specified using non-standard evaluation (i.e. no quotation marks).
+#' @param rebase Specify a date vector of dates when to rebase, or, if facet_field is set, a named list of date vectors
+#'     of when to rebase. Each item in the list should be named after the facet you wish to rebase.
 #' @param fix_after_n_points Specify a number points after which to fix SPC calculations.
 #' @param improvement_direction Specify whether an increase or decrease in measured variable signifies
 #'     process improvement. Accepted values are 'increase' for increase as improvement or 'decrease' for
@@ -93,6 +91,9 @@ ptd_spc <- function(.data,
   ptd_validate_spc_options(options, .data)
 
   .data[[date_field]] <- as.POSIXct(.data[[date_field]], tz = "utc")
+
+  # add rebase
+  .data <- ptd_add_rebase_column(.data, date_field, facet_field, rebase)
 
   # Declare improvement direction as integer
   improvement_direction <- ifelse(options$improvement_direction == "increase", 1, -1)

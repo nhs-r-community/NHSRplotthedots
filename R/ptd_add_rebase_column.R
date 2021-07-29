@@ -1,0 +1,21 @@
+ptd_add_rebase_column <- function(.data, date_field, facet_field, rebase) {
+  if (is.list(rebase)) {
+    rebase_table <- bind_rows(
+      lapply(seq_along(rebase), function(i) {
+        data.frame(d = as.POSIXct(rebase[[i]], tz = "utc"), f = names(rebase)[[i]], rebase = 1)
+      })
+    )
+    colnames(rebase_table) <- c(date_field, facet_field, "rebase")
+
+    .data <- .data %>%
+      left_join(rebase_table, by = c(date_field, facet_field)) %>%
+      mutate(across(rebase, ~ifelse(is.na(.x), 0, 1)))
+  } else if (!is.null(rebase)) {
+    # in with NULL returns FALSE, so this is suitable even if rebase isn't provided
+    .data$rebase <- as.numeric(.data[[date_field]] %in% as.POSIXct(rebase, tz = "utc"))
+  } else {
+    .data$rebase <- 0
+  }
+
+  .data
+}

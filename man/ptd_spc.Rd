@@ -31,10 +31,8 @@ Field name can be specified using non-standard evaluation (i.e. no quotation mar
 applied to each group separately, with outputs combined. Currently accepts 1 variable only.
 Field name can be specified using non-standard evaluation (i.e. no quotation marks).}
 
-\item{rebase}{Specify a field name which contains a control limit rebasing flag.
-This field should contain integer values 0 and 1, and any date value where the rebase field is 1 will
-trigger a recalculation of the control limits.
-Field name can be specified using non-standard evaluation (i.e. no quotation marks).}
+\item{rebase}{Specify a date vector of dates when to rebase, or, if facet_field is set, a named list of date vectors
+of when to rebase. Each item in the list should be named after the facet you wish to rebase.}
 
 \item{fix_after_n_points}{Specify a number points after which to fix SPC calculations.}
 
