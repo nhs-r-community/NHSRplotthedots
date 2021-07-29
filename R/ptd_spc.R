@@ -90,7 +90,7 @@ ptd_spc <- function(.data,
 
   ptd_validate_spc_options(options, .data)
 
-  .data[[date_field]] <- as.POSIXct(.data[[date_field]], tz = "utc")
+  .data[[date_field]] <- to_datetime(.data[[date_field]])
 
   # add rebase
   .data <- ptd_add_rebase_column(.data, date_field, facet_field, rebase)

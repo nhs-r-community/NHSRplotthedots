@@ -2,7 +2,7 @@ library(testthat)
 library(mockery)
 
 set.seed(123)
-data <- data.frame(x = as.POSIXct(as.Date("2020-01-01", tz = "UTC") + rep(1:10, 2)),
+data <- data.frame(x = to_datetime(as.Date("2020-01-01") + rep(1:10, 2)),
                    f = rep(c("a", "b"), each = 10))
 
 test_that("it adds a column of zeros if no rebase is provided", {
