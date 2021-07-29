@@ -9,6 +9,8 @@
 #'
 #' @return a list
 #'
+#' @export
+#'
 #' @examples
 #' # if you aren't using a facetted chart, or you want to rebase each facet at the same dates, then you can simply call
 #' # this method with a vector of dates. For example, to rebase on the 1^st^ January 2020 and 22^nd^ March 2020:
