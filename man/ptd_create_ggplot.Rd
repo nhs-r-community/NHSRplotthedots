@@ -16,7 +16,7 @@ ptd_create_ggplot(
   x_axis_date_format = "\%d/\%m/\%y",
   x_axis_breaks = NULL,
   y_axis_breaks = NULL,
-  show_assurance = TRUE,
+  show_icons = TRUE,
   colours = ptd_spc_colours(),
   theme_override = NULL,
   ...
@@ -52,7 +52,7 @@ expressing interval length and type, e.g. "3 months", "7 days".}
 1, either an integer for integer scales or a decimal value for percentage scales. This option is ignored if
 faceting is in use.}
 
-\item{show_assurance}{Whether to show assurance icons, defaults to \code{TRUE}}
+\item{show_icons}{Whether to show variation and assurance icons, defaults to \code{TRUE}}
 
 \item{colours}{Specify the colours to use in the plot, use the \code{\link[=ptd_spc_colours]{ptd_spc_colours()}} function to change defaults.}
 
