@@ -295,6 +295,10 @@ test_that("it outputs expected content", {
 
   d$facet <- rep(c(0, 1), each = 10)
 
+  d$target <- 1
+
+  stub(ptd_spc, "ptd_assurance_type", "assurance_type")
+
   s1 <- ptd_spc(d, "y", "x")
   expect_snapshot_output(summary(s1))
 
@@ -310,4 +314,7 @@ test_that("it outputs expected content", {
     s4 <- ptd_spc(d, "y", "x", rebase = as.Date("2020-01-01"), facet_field = "facet")
   )
   expect_snapshot_output(summary(s4))
+
+  s5 <- ptd_spc(d, "y", "x", target = "target")
+  expect_snapshot_output(summary(s5))
 })
