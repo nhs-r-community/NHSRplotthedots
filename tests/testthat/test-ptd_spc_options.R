@@ -6,7 +6,7 @@ test_that("it returns correct data", {
     value_field = "value_field",
     date_field = "date_field",
     facet_field = "facet_field",
-    rebase = "rebase",
+    rebase = as.Date("2020-01-01"),
     fix_after_n_points = NULL,
     improvement_direction = "increase",
     target = "target",
@@ -16,7 +16,7 @@ test_that("it returns correct data", {
   expect_equal(r$value_field, "value_field")
   expect_equal(r$date_field, "date_field")
   expect_equal(r$facet_field, "facet_field")
-  expect_equal(r$rebase, "rebase")
+  expect_equal(r$rebase, as.Date("2020-01-01"))
   expect_equal(r$fix_after_n_points, NULL)
   expect_equal(r$improvement_direction, "increase")
   expect_equal(r$target, "target")
@@ -52,11 +52,23 @@ test_that("facet_field is either null, or a scalar character", {
   )
 })
 
-test_that("rebase is either null, or a scalar character", {
+test_that("rebase is either null, a date, or a named list of dates", {
   # this should run without an error
   ptd_spc_options("a", "b", rebase = NULL)
-  expect_error(ptd_spc_options("a", "b", rebase = 1), "rebase argument must be a 'character' of length 1.")
-  expect_error(ptd_spc_options("a", "b", rebase = c("a", "b")), "rebase argument must be a 'character' of length 1.")
+  ptd_spc_options("a", "b", rebase = as.Date("2020-01-01"))
+  ptd_spc_options("a", "b", rebase = list("a" = as.Date("2020-01-01")), facet_field = "a")
+
+  # these will cause an error
+  em <- "rebase argument must be a date vector, or a named list of date vectors."
+  expect_error(ptd_spc_options("a", "b", rebase = 1), em)
+  expect_error(ptd_spc_options("a", "b", rebase = c("a", "b")), em)
+  expect_error(ptd_spc_options("a", "b", rebase = list("a" = as.Date("2020-01-01"), b = "a")), em)
+  expect_error(ptd_spc_options("a", "b", rebase = list(as.Date("2020-01-01"))), em)
+})
+
+test_that("rebase must be a date vector if facet_field is not set", {
+  em <- "rebase must be a date vector if facet_field is not set"
+  expect_error(ptd_spc_options("a", "b", rebase = list("a" = Sys.Date())), em)
 })
 
 test_that("fix_after_n_points must be a single numeric that is greater than or equal to 12.", {
@@ -112,7 +124,7 @@ test_that("trajectory is either null, or a scalar character", {
 
 test_that("you cannot rebase and fix_after_n_points", {
   expect_error(
-    ptd_spc_options("b", "a", rebase = "c", fix_after_n_points = 12),
+    ptd_spc_options("b", "a", rebase = as.Date("2020-04-01"), fix_after_n_points = 12),
     "cannot rebase and fix_after_n_points"
   )
 })
@@ -132,108 +144,4 @@ test_that("printing output", {
   expect_output(print(r), "target:.*not set")
   expect_output(print(r), "trajectory:.*not set")
   expect_output(print(r), "--------------------------------")
-})
-
-# ptd_validate_spc_options() ----
-
-test_that("options must be created by ptd_spc_options()", {
-  expect_error(ptd_validate_spc_options(list(), NULL), "options must be created by ptd_spc_options()")
-})
-
-test_that(".data must be a data.frame", {
-  d <- data.frame(a = Sys.Date(), b = 2)
-  o <- ptd_spc_options("b", "a")
-
-  expect_error(ptd_validate_spc_options(o, NULL), ".data must be a data.frame")
-  expect_error(ptd_validate_spc_options(o, 1), ".data must be a data.frame")
-  expect_error(ptd_validate_spc_options(o, "a"), ".data must be a data.frame")
-  ptd_validate_spc_options(o, d)
-})
-
-test_that("it returns an error if value_field does not exist in .data", {
-  d <- data.frame(a = Sys.Date(), b = 2)
-  o <- ptd_spc_options("x", "b")
-  expect_error(ptd_validate_spc_options(o, d), "value_field: 'x' must be a valid column name in the data frame.")
-})
-
-test_that("it returns an error if date_field does not exist in .data", {
-  d <- data.frame(a = Sys.Date(), b = 2)
-  o <- ptd_spc_options("b", "x")
-  expect_error(ptd_validate_spc_options(o, d), "date_field: 'x' must be a valid column name in the data frame.")
-})
-
-test_that("it returns an error if facet_field does not exist in .data", {
-  d <- data.frame(a = Sys.Date(), b = 2)
-  o <- ptd_spc_options("b", "a", facet_field = "c")
-  expect_error(ptd_validate_spc_options(o, d), "facet_field: 'c' must be a valid column name in the data frame.")
-})
-
-test_that("it returns an error if rebase does not exist in .data", {
-  d <- data.frame(a = Sys.Date(), b = 2)
-  o <- ptd_spc_options("b", "a", rebase = "c")
-  expect_error(ptd_validate_spc_options(o, d), "rebase: 'c' must be a valid column name in the data frame.")
-})
-
-test_that("it returns an error if target does not exist in .data", {
-  d <- data.frame(a = Sys.Date(), b = 2)
-  o <- ptd_spc_options("b", "a", target = "c")
-  expect_error(ptd_validate_spc_options(o, d), "target: 'c' must be a valid column name in the data frame.")
-})
-
-test_that("it returns an error if trajectory does not exist in .data", {
-  d <- data.frame(a = Sys.Date(), b = 2)
-  o <- ptd_spc_options("b", "a", trajectory = "c")
-  expect_error(ptd_validate_spc_options(o, d), "trajectory: 'c' must be a valid column name in the data frame.")
-})
-
-test_that("date_field can only appear once per facet", {
-  d <- data.frame(a = rep(Sys.Date(), 2), b = 1:2, g = 1:2)
-
-  o1 <- ptd_spc_options("b", "a")
-  expect_error(ptd_validate_spc_options(o1, d), "duplicate rows found in 'a'")
-
-  o2 <- ptd_spc_options("b", "a", facet_field = "g")
-  expect_true(ptd_validate_spc_options(o2, d))
-})
-
-test_that("date_field must be either a Date or POSIXt vector", {
-  o <- ptd_spc_options("b", "a")
-  ptd_validate_spc_options(o, data.frame(a = Sys.Date(), b = 1))
-  ptd_validate_spc_options(o, data.frame(a = Sys.time(), b = 1))
-
-  expect_error(ptd_validate_spc_options(o, data.frame(a = 1, b = 1)),
-    "date_field must be a Date or POSIXt vector ('a' is a 'numeric').",
-    fixed = TRUE
-  )
-  expect_error(ptd_validate_spc_options(o, data.frame(a = "a", b = 1)),
-    "date_field must be a Date or POSIXt vector ('a' is a 'character').",
-    fixed = TRUE
-  )
-})
-
-test_that("value_field must be a numeric", {
-  o <- ptd_spc_options("b", "a")
-  ptd_validate_spc_options(o, data.frame(a = Sys.Date(), b = 1))
-
-  expect_error(ptd_validate_spc_options(o, data.frame(a = Sys.Date(), b = "a")),
-    "value_field must be a numeric vector ('b' is a 'character').",
-    fixed = TRUE
-  )
-})
-
-test_that("rebase values must be either 0 or 1", {
-  # this should work
-  o <- ptd_spc_options("b", "a", rebase = "r")
-  ptd_validate_spc_options(o, data.frame(a = Sys.Date() + 1:2, b = 1:2, r = c(0, 1)))
-  ptd_validate_spc_options(o, data.frame(a = Sys.Date() + 1:2, b = 1:2, r = c(TRUE, FALSE)))
-
-  # this should error
-  expect_error(
-    ptd_validate_spc_options(o, data.frame(a = Sys.Date() + 1:2, b = 1:2, r = c("a", "b"))),
-    "values in the rebase column must either be 0 or 1."
-  )
-  expect_error(
-    ptd_validate_spc_options(o, data.frame(a = Sys.Date() + 1:2, b = 1:2, r = c(2, 3))),
-    "values in the rebase column must either be 0 or 1."
-  )
 })

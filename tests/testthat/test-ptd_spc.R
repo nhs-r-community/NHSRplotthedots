@@ -7,7 +7,7 @@ data <- data.frame(
   y = rnorm(20)
 )
 
-options <- list(
+spc_options <- list(
   value_field = "a",
   date_field = "b",
   facet_field = "c",
@@ -25,30 +25,38 @@ test_that("it throws an error if .data is not a data.frame", {
 })
 
 test_that("it returns a ptd_spc_df object", {
-  stub(ptd_spc, "spcOptions", options)
-  stub(ptd_spc, "validateSpcOptions", TRUE)
-  stub(ptd_spc, "spcStandard", function(x, ...) x)
-  stub(ptd_spc, "calculatePointHighlighting", function(x, ...) x)
-  stub(ptd_spc, "as.POSIXct", function(x, ...) x)
+  stub(ptd_spc, "ptd_spc_options", spc_options)
+  stub(ptd_spc, "ptd_validate_spc_options", TRUE)
+  stub(ptd_spc, "ptd_spc_standard", function(x, ...) x)
+  stub(ptd_spc, "ptd_calculate_point_type", function(x, ...) x)
+  stub(ptd_spc, "to_datetime", function(x, ...) x)
+  stub(ptd_spc, "ptd_add_rebase_column", function(x, ...) {
+    x$rebase <- 0
+    x
+  })
 
   s <- ptd_spc(data, "y", "x")
 
   expect_s3_class(s, c("ptd_spc_df", "data.frame"))
 })
 
-test_that("it has options as an attribute, created by spcOptions", {
-  m <- mock(options)
+test_that("it has options as an attribute, created by ptd_spc_options", {
+  m <- mock(spc_options)
 
   stub(ptd_spc, "ptd_spc_options", m)
   stub(ptd_spc, "ptd_validate_spc_options", TRUE)
   stub(ptd_spc, "ptd_spc_standard", function(x, ...) x)
   stub(ptd_spc, "ptd_calculate_point_type", function(x, ...) x)
-  stub(ptd_spc, "as.POSIXct", function(x, ...) x)
+  stub(ptd_spc, "to_datetime", function(x, ...) x)
+  stub(ptd_spc, "ptd_add_rebase_column", function(x, ...) {
+    x$rebase <- 0
+    x
+  })
 
   s <- ptd_spc(data, "a", "b", "c", "d", "e", "f", "g", "h")
   options <- attr(s, "options")
 
-  expect_equal(options, options)
+  expect_equal(options, spc_options)
   expect_called(m, 1)
   expect_args(m, 1, "a", "b", "c", "d", "e", "f", "g", "h")
 })
@@ -56,80 +64,114 @@ test_that("it has options as an attribute, created by spcOptions", {
 test_that("it validates the options", {
   m <- mock(TRUE)
 
-  stub(ptd_spc, "ptd_spc_options", options)
+  stub(ptd_spc, "ptd_spc_options", spc_options)
   stub(ptd_spc, "ptd_validate_spc_options", m)
   stub(ptd_spc, "ptd_spc_standard", function(x, ...) x)
   stub(ptd_spc, "ptd_calculate_point_type", function(x, ...) x)
-  stub(ptd_spc, "as.POSIXct", function(x, ...) x)
-  stub(ptd_spc, "as.POSIXct", function(x, ...) x)
+  stub(ptd_spc, "to_datetime", function(x, ...) x)
+  stub(ptd_spc, "ptd_add_rebase_column", function(x, ...) {
+    x$rebase <- 0
+    x
+  })
 
   s <- ptd_spc(data, "y", "x")
 
   expect_called(m, 1)
-  expect_args(m, 1, options, data)
+  expect_args(m, 1, spc_options, data)
 })
 
-test_that("it calls spcStandard", {
-  m <- mock("spcStandard")
+test_that("it calls ptd_spc_standard", {
+  m <- mock("ptd_spc_standard")
 
-  stub(ptd_spc, "ptd_spc_options", options)
+  stub(ptd_spc, "ptd_spc_options", spc_options)
   stub(ptd_spc, "ptd_validate_spc_options", TRUE)
   stub(ptd_spc, "ptd_spc_standard", m)
   stub(ptd_spc, "ptd_calculate_point_type", function(x, ...) x)
-  stub(ptd_spc, "as.POSIXct", function(x, ...) x)
+  stub(ptd_spc, "to_datetime", function(x, ...) x)
+  stub(ptd_spc, "ptd_add_rebase_column", function(x, ...) {
+    x$rebase <- 0
+    x
+  })
 
   s <- ptd_spc(data, "y", "x")
 
   expect_called(m, 1)
-  expect_args(m, 1, data, options)
+  expect_args(m, 1, mutate(data, rebase = 0), spc_options)
 })
 
-test_that("it calls calculatePointHighlighting (increase)", {
-  m <- mock("calculatePointHighlighting")
+test_that("it calls ptd_calculate_point_type (increase)", {
+  m <- mock("ptd_calculate_point_type")
 
-  options$improvement_direction <- "increase"
-  stub(ptd_spc, "ptd_spc_options", options)
+  spc_options$improvement_direction <- "increase"
+  stub(ptd_spc, "ptd_spc_options", spc_options)
   stub(ptd_spc, "ptd_validate_spc_options", TRUE)
   stub(ptd_spc, "ptd_spc_standard", function(x, ...) x)
   stub(ptd_spc, "ptd_calculate_point_type", m)
-  stub(ptd_spc, "as.POSIXct", function(x, ...) x)
+  stub(ptd_spc, "to_datetime", function(x, ...) x)
+  stub(ptd_spc, "ptd_add_rebase_column", function(x, ...) {
+    x$rebase <- 0
+    x
+  })
 
   ptd_spc(data, "y", "x")
 
   expect_called(m, 1)
-  expect_args(m, 1, data, 1)
+  expect_args(m, 1, mutate(data, rebase = 0), 1)
 })
 
-test_that("it calls calculatePointHighlighting (decrease)", {
-  m <- mock("calculatePointHighlighting")
+test_that("it calls ptd_calculate_point_type (decrease)", {
+  m <- mock("ptd_calculate_point_type")
 
-  options$improvement_direction <- "decrease"
-  stub(ptd_spc, "ptd_spc_options", options)
+  spc_options$improvement_direction <- "decrease"
+  stub(ptd_spc, "ptd_spc_options", spc_options)
   stub(ptd_spc, "ptd_validate_spc_options", TRUE)
   stub(ptd_spc, "ptd_spc_standard", function(x, ...) x)
   stub(ptd_spc, "ptd_calculate_point_type", m)
-  stub(ptd_spc, "as.POSIXct", function(x, ...) x)
+  stub(ptd_spc, "to_datetime", function(x, ...) x)
+  stub(ptd_spc, "ptd_add_rebase_column", function(x, ...) {
+    x$rebase <- 0
+    x
+  })
 
   ptd_spc(data, "y", "x")
 
   expect_called(m, 1)
-  expect_args(m, 1, data, -1)
+  expect_args(m, 1, mutate(data, rebase = 0), -1)
 })
 
 test_that("it converts date_field to POSIXct", {
-  m <- mock("as.POSIXct")
+  m <- mock("to_datetime")
 
-  options$improvement_direction <- "decrease"
-  stub(ptd_spc, "ptd_spc_options", options)
+  stub(ptd_spc, "ptd_spc_options", spc_options)
   stub(ptd_spc, "ptd_validate_spc_options", TRUE)
   stub(ptd_spc, "ptd_spc_standard", function(x, ...) x)
   stub(ptd_spc, "ptd_calculate_point_type", function(x, ...) x)
-  stub(ptd_spc, "as.POSIXct", m)
+  stub(ptd_spc, "to_datetime", m)
+  stub(ptd_spc, "ptd_add_rebase_column", function(x, ...) {
+    x$rebase <- 0
+    x
+  })
 
   ptd_spc(data, "y", "x")
 
   expect_called(m, 1)
-  expect_args(m, 1, data$x, tz = "utc")
+  expect_args(m, 1, data$x)
+})
+
+test_that("it calls ptd_add_rebase_column", {
+  m <- mock("ptd_add_rebase_column")
+
+  stub(ptd_spc, "ptd_spc_options", spc_options)
+  stub(ptd_spc, "ptd_validate_spc_options", TRUE)
+  stub(ptd_spc, "ptd_spc_standard", function(x, ...) x)
+  stub(ptd_spc, "ptd_calculate_point_type", function(x, ...) x)
+  stub(ptd_spc, "to_datetime", function(x, ...) x)
+  stub(ptd_spc, "ptd_add_rebase_column", m)
+
+  ptd_spc(data, "y", "x", facet_field = "f", rebase = "r")
+
+  expect_called(m, 1)
+  expect_args(m, 1, data, "x", "f", "r")
 })
 
 # print() ----
@@ -164,20 +206,17 @@ test_that("it calls print", {
 test_that("it outputs expected content", {
   d <- data
 
-  d$rebase <- 0
-  d$rebase[10] <- 1
-
   d$facet <- rep(c(0, 1), each = 10)
 
   s1 <- ptd_spc(d, "y", "x")
   expect_snapshot_output(summary(s1))
 
-  s2 <- ptd_spc(d, "y", "x", rebase = "rebase")
+  s2 <- ptd_spc(d, "y", "x", rebase = as.Date("2020-01-01"))
   expect_snapshot_output(summary(s2))
 
   s3 <- ptd_spc(d, "y", "x", facet_field = "facet")
   expect_snapshot_output(summary(s3))
 
-  s4 <- ptd_spc(d, "y", "x", rebase = "rebase", facet_field = "facet")
+  s4 <- ptd_spc(d, "y", "x", rebase = as.Date("2020-01-01"), facet_field = "facet")
   expect_snapshot_output(summary(s4))
 })

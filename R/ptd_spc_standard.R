@@ -21,7 +21,6 @@ ptd_spc_standard <- function(.data, options = NULL) {
   value_field <- options$value_field
   date_field <- options$date_field
   facet_field <- options$facet_field
-  rebase_field <- options$rebase
   fix_after_n_points <- options$fix_after_n_points
   target_field <- options$target
   trajectory_field <- options$trajectory
@@ -46,13 +45,6 @@ ptd_spc_standard <- function(.data, options = NULL) {
     .data$facet <- "no facet"
   } else {
     .data$facet <- .data[[facet_field]]
-  }
-
-  # Set rebase field or create pseudo
-  if (!(is.null(rebase_field))) {
-    .data$rebase <- .data[[rebase_field]]
-  } else {
-    .data$rebase <- rep(0, nrow(.data)) # If no rebase field supplied, create an empty rebase field (all NAs)
   }
 
   # Constants

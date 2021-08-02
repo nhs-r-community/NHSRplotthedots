@@ -39,9 +39,17 @@ ptd_spc_options <- function(value_field,
 
   if (!is.null(rebase)) {
     assertthat::assert_that(
-      is.character(rebase),
-      assertthat::is.scalar(rebase),
-      msg = "rebase argument must be a 'character' of length 1."
+      (
+        is_date(rebase) || (
+          all(vapply(rebase, is_date, logical(1))) && !is.null(names(rebase))
+        )
+      ),
+      msg = "rebase argument must be a date vector, or a named list of date vectors."
+    )
+
+    assertthat::assert_that(
+      !(is.list(rebase) && is.null(facet_field)),
+      msg = "rebase must be a date vector if facet_field is not set"
     )
   }
 
@@ -91,64 +99,6 @@ ptd_spc_options <- function(value_field,
     ),
     class = "ptd_spc_options"
   )
-}
-
-ptd_validate_spc_options <- function(options, .data) {
-  assertthat::assert_that(
-    inherits(options, "ptd_spc_options"),
-    msg = "options must be created by ptd_spc_options()"
-  )
-  assertthat::assert_that(
-    inherits(.data, "data.frame"),
-    msg = ".data must be a data.frame"
-  )
-
-  check <- function(op) {
-    if (is.null(options[[op]])) {
-      return(TRUE)
-    }
-    if (options[[op]] %in% colnames(.data)) {
-      return(TRUE)
-    }
-    stop(op, ": '", options[[op]], "' must be a valid column name in the data frame.")
-  }
-  check("value_field")
-  check("date_field")
-  check("facet_field")
-  check("rebase")
-  check("target")
-  check("trajectory")
-
-  assertthat::assert_that(
-    all(count(group_by_at(.data, all_of(c(options[["date_field"]], options[["facet_field"]]))))$n == 1),
-    msg = paste0("duplicate rows found in '", options[["date_field"]], "'")
-  )
-
-  assertthat::assert_that(
-    inherits(.data[[options[["date_field"]]]], c("Date", "POSIXt")),
-    msg = paste0(
-      "date_field must be a Date or POSIXt vector ('",
-      options["date_field"], "' is a '", class(.data[[options[["date_field"]]]]), "')."
-    )
-  )
-
-  assertthat::assert_that(
-    is.numeric(.data[[options[["value_field"]]]]),
-    msg = paste0(
-      "value_field must be a numeric vector ('",
-      options["value_field"], "' is a '", class(.data[[options[["value_field"]]]]), "')."
-    )
-  )
-
-  if (!is.null(options[["rebase"]])) {
-    assertthat::assert_that(
-      (is.numeric(.data[[options[["rebase"]]]]) || is.logical(.data[[options[["rebase"]]]])),
-      all(.data[[options[["rebase"]]]] %in% c(0, 1)),
-      msg = "values in the rebase column must either be 0 or 1."
-    )
-  }
-
-  invisible(TRUE)
 }
 
 #' @export
