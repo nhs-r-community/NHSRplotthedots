@@ -8,12 +8,12 @@ ptd_spc(
   .data,
   value_field,
   date_field,
-  facet_field = NULL,
+  facet_field,
   rebase = ptd_rebase(),
   fix_after_n_points = NULL,
   improvement_direction = "increase",
-  target = NULL,
-  trajectory = NULL
+  target,
+  trajectory
 )
 }
 \arguments{

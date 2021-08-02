@@ -71,16 +71,22 @@
 ptd_spc <- function(.data,
                     value_field,
                     date_field,
-                    facet_field = NULL,
+                    facet_field,
                     rebase = ptd_rebase(),
                     fix_after_n_points = NULL,
                     improvement_direction = "increase",
-                    target = NULL,
-                    trajectory = NULL) {
+                    target,
+                    trajectory) {
   assertthat::assert_that(
     inherits(.data, "data.frame"),
     msg = "ptd_spc: .data must be a data.frame"
   )
+
+  value_field <- quo_name(enquo(value_field))
+  date_field <- quo_name(enquo(date_field))
+  facet_field <- if (!missing(facet_field)) quo_name(enquo(facet_field))
+  target <- if (!missing(target)) quo_name(enquo(target))
+  trajectory <- if (!missing(trajectory)) quo_name(enquo(trajectory))
 
   # validate all inputs.  Validation problems will generate an error and stop code execution.
   options <- ptd_spc_options(
