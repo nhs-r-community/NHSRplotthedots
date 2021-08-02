@@ -54,9 +54,9 @@ test_that("it has options as an attribute, created by ptd_spc_options", {
   })
 
   s <- ptd_spc(data, "a", "b", "c", "d", "e", "f", "g", "h")
-  options <- attr(s, "options")
+  o <- attr(s, "options")
 
-  expect_equal(options, spc_options)
+  expect_equal(o, spc_options)
   expect_called(m, 1)
   expect_args(m, 1, "a", "b", "c", "d", "e", "f", "g", "h")
 })
@@ -172,6 +172,24 @@ test_that("it calls ptd_add_rebase_column", {
 
   expect_called(m, 1)
   expect_args(m, 1, data, "x", "f", "r")
+})
+
+test_that("it accepts nse arguments as well as string", {
+  m <- mock(spc_options, spc_options)
+
+  stub(ptd_spc, "ptd_spc_options", m)
+  stub(ptd_spc, "ptd_validate_spc_options", TRUE)
+  stub(ptd_spc, "ptd_spc_standard", function(x, ...) x)
+  stub(ptd_spc, "ptd_calculate_point_type", function(x, ...) x)
+  stub(ptd_spc, "to_datetime", function(x, ...) x)
+
+  s1 <- ptd_spc(data, vf, df)
+  s2 <- ptd_spc(data, value_field = vf, date_field = df, facet_field = ff, rebase = ptd_rebase(), target = ta,
+                trajectory = tr)
+
+  expect_called(m, 2)
+  expect_args(m, 1, "vf", "df", NULL, NULL, NULL, "increase", NULL, NULL)
+  expect_args(m, 2, "vf", "df", "ff", ptd_rebase(), NULL, "increase", "ta", "tr")
 })
 
 # print() ----
