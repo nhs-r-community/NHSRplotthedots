@@ -53,12 +53,12 @@ test_that("it has options as an attribute, created by ptd_spc_options", {
     x
   })
 
-  s <- ptd_spc(data, "a", "b", "c", "d", "e", "f", "g", "h")
+  s <- ptd_spc(data, "a", "b", "c", "d", "e", "f", "g", "h", "i")
   options <- attr(s, "options")
 
   expect_equal(options, spc_options)
   expect_called(m, 1)
-  expect_args(m, 1, "a", "b", "c", "d", "e", "f", "g", "h")
+  expect_args(m, 1, "a", "b", "c", "d", "e", "f", "g", "h", "i")
 })
 
 test_that("it validates the options", {

@@ -27,6 +27,8 @@
 #'     Field name can be specified using non-standard evaluation (i.e. no quotation marks).
 #' @param trajectory Specify a field name which contains a trajectory value.
 #'     Field name can be specified using non-standard evaluation (i.e. no quotation marks).
+#' @param screen_outliers Whether we should screen for outliers or not when calculating the control limits. Defaults to
+#'     `TRUE`.
 #'
 #' @export ptd_spc
 #'
@@ -76,7 +78,8 @@ ptd_spc <- function(.data,
                     fix_after_n_points = NULL,
                     improvement_direction = "increase",
                     target = NULL,
-                    trajectory = NULL) {
+                    trajectory = NULL,
+                    screen_outliers = TRUE) {
   assertthat::assert_that(
     inherits(.data, "data.frame"),
     msg = "ptd_spc: .data must be a data.frame"
@@ -85,7 +88,7 @@ ptd_spc <- function(.data,
   # validate all inputs.  Validation problems will generate an error and stop code execution.
   options <- ptd_spc_options(
     value_field, date_field, facet_field, rebase, fix_after_n_points, improvement_direction, target,
-    trajectory
+    trajectory, screen_outliers
   )
 
   ptd_validate_spc_options(options, .data)

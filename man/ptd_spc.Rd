@@ -13,7 +13,8 @@ ptd_spc(
   fix_after_n_points = NULL,
   improvement_direction = "increase",
   target = NULL,
-  trajectory = NULL
+  trajectory = NULL,
+  screen_outliers = TRUE
 )
 }
 \arguments{
@@ -45,6 +46,9 @@ Field name can be specified using non-standard evaluation (i.e. no quotation mar
 
 \item{trajectory}{Specify a field name which contains a trajectory value.
 Field name can be specified using non-standard evaluation (i.e. no quotation marks).}
+
+\item{screen_outliers}{Whether we should screen for outliers or not when calculating the control limits. Defaults to
+\code{TRUE}.}
 }
 \value{
 A ggplot2 object of the spc charts.  This will automatically print the plot, but can also be saved as an

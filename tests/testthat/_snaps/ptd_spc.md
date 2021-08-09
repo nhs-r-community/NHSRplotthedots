@@ -10,6 +10,7 @@
     improvement_direction:'increase'
     target:               not set
     trajectory:           not set
+    screen_outliers:      'TRUE'
     --------------------------------
     # A tibble: 1 x 7
        mean   lpl   upl     n common_cause special_cause_improve~ special_cause_con~
@@ -28,6 +29,7 @@
     improvement_direction:'increase'
     target:               not set
     trajectory:           not set
+    screen_outliers:      'TRUE'
     --------------------------------
     # A tibble: 1 x 8
       rebase_group  mean   lpl   upl     n common_cause special_cause_improvement
@@ -47,6 +49,7 @@
     improvement_direction:'increase'
     target:               not set
     trajectory:           not set
+    screen_outliers:      'TRUE'
     --------------------------------
     # A tibble: 2 x 8
           f   mean   lpl   upl     n common_cause special_cause_im~ special_cause_c~
@@ -66,6 +69,7 @@
     improvement_direction:'increase'
     target:               not set
     trajectory:           not set
+    screen_outliers:      'TRUE'
     --------------------------------
     # A tibble: 2 x 9
           f rebase_group   mean   lpl   upl     n common_cause special_cause_improv~
