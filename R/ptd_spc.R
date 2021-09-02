@@ -39,6 +39,7 @@
 #' @importFrom rlang .data
 #' @examples
 #' library(NHSRdatasets)
+#' library(dplyr)
 #' data("ae_attendances")
 #'
 #' # Pick a trust at random to look at their data for two years
@@ -46,17 +47,17 @@
 #'
 #' # Basic chart with improvement direction decreasing
 #' ptd_spc(trust1,
-#'   value_field = "breaches", date_field = "period",
+#'   value_field = breaches, date_field = period,
 #'   improvement_direction = "decrease"
 #' )
 #'
 #' # Pick a few trust, and plot individually using facet
 #' # Also set the x-axis scale to vary for each and date groups to 3 months
-#' orgs <- ae_attendances$org_code %in% c("RAS", "RJZ", "RR1", "RJC", "RQ1")
-#' trusts4 <- subset(ae_attendances, orgs & type == 1)
+#' orgs <- c("RAS", "RJZ", "RR1", "RJC", "RQ1")
+#' trusts4 <- filter(ae_attendances, org_code %in% orgs, type == 1)
 #'
 #' s <- ptd_spc(trusts4,
-#'   value_field = "breaches", date_field = "period", facet_field = "org_code",
+#'   value_field = breaches, date_field = period, facet_field = org_code,
 #'   improvement_direction = "decrease"
 #' )
 #' plot(s, fixed_y_axis_multiple = FALSE, x_axis_breaks = "3 months")
@@ -71,16 +72,22 @@
 ptd_spc <- function(.data,
                     value_field,
                     date_field,
-                    facet_field = NULL,
+                    facet_field,
                     rebase = ptd_rebase(),
                     fix_after_n_points = NULL,
                     improvement_direction = "increase",
-                    target = NULL,
-                    trajectory = NULL) {
+                    target,
+                    trajectory) {
   assertthat::assert_that(
     inherits(.data, "data.frame"),
     msg = "ptd_spc: .data must be a data.frame"
   )
+
+  value_field <- quo_name(enquo(value_field))
+  date_field <- quo_name(enquo(date_field))
+  facet_field <- if (!missing(facet_field)) quo_name(enquo(facet_field))
+  target <- if (!missing(target)) quo_name(enquo(target))
+  trajectory <- if (!missing(trajectory)) quo_name(enquo(trajectory))
 
   # validate all inputs.  Validation problems will generate an error and stop code execution.
   options <- ptd_spc_options(
