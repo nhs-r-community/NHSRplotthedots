@@ -39,7 +39,7 @@
 #' @importFrom rlang .data
 #' @examples
 #' library(NHSRdatasets)
-#' library(tidyverse)
+#' library(dplyr)
 #' data("ae_attendances")
 #'
 #' # Pick a trust at random to look at their data for two years
