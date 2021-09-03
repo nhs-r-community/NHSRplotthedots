@@ -35,10 +35,10 @@ remotes::install_github("https://github.com/nhs-r-community/NHSRplotthedots", bu
 
 # Overview
 
-Welcome to the NHS-R community’s collaborative package for building a
-specific type of statistical process control (SPC) chart, the XmR chart.
-We are aiming to support the NHS England and NHS Improvement’s ‘Making
-Data Count’ programme, please see
+Welcome to the NHS-R community’s package for building a specific type of
+statistical process control (SPC) chart, the XmR chart. We are aiming to
+support the NHS England and NHS Improvement’s ‘Making Data Count’
+programme, please see
 <a href="https://www.england.nhs.uk/a-focus-on-staff-health-and-wellbeing/publications-and-resources/making-data-count/">
 here </a> for more details. The programme encourages boards, managers,
 and analyst teams to present data in ways that show change over time,
@@ -56,12 +56,11 @@ library(NHSRplotthedots)
 library(NHSRdatasets)
 library(tidyverse)
 
-sub_set <- 
-  ae_attendances %>% 
-  filter(org_code == 'RQM' & type ==1 & period < as.Date('2018-04-01'))
+sub_set <- ae_attendances %>% 
+  filter(org_code == "RQM", type == 1, period < as.Date("2018-04-01"))
 
-ptd_spc(sub_set, value_field = "breaches", date_field = "period",
-        improvement_direction = "decrease")
+sub_set %>%
+  ptd_spc(value_field = breaches, date_field = period, improvement_direction = "decrease")
 ```
 
 <img src="man/figures/README-example-1.png" width="100%" />
@@ -71,26 +70,26 @@ when we pass it on, using the `dplyr` pipe function below: `%>%` to the
 plot argument.
 
 ``` r
-ptd_spc(sub_set, value_field = "breaches", date_field = "period",
-      improvement_direction = "decrease") %>% 
-  plot(y_axis_label = "4-hour wait breaches"
-       , main_title = "SPC of A&E waiting time breaches for RQM")
+sub_set %>%
+  ptd_spc(value_field = breaches, date_field = period, improvement_direction = "decrease") %>% 
+  plot(y_axis_label = "4-hour wait breaches",
+       main_title = "SPC of A&E waiting time breaches for RQM")
 ```
 
 <img src="man/figures/README-unnamed-chunk-3-1.png" width="100%" />
 
-or alternatively:
+or, equivalently:
 
 ``` r
-ptd_spc(sub_set, value_field = "breaches", date_field = "period",
-      improvement_direction = "decrease") %>% 
-  ptd_create_ggplot(y_axis_label = "4-hour wait breaches"
-       , main_title = "SPC of A&E waiting time breaches for RQM")
+sub_set %>%
+  ptd_spc(value_field = breaches, date_field = period, improvement_direction = "decrease") %>% 
+  ptd_create_ggplot(y_axis_label = "4-hour wait breaches",
+                    main_title = "SPC of A&E waiting time breaches for RQM")
 ```
 
 ## Getting help:
 
-To find out more about the ptd\_spc function, you can view the help
+To find out more about the `ptd_spc()` function, you can view the help
 with:
 
 ``` r
@@ -106,9 +105,9 @@ Details on the extra plot controls can be found using:
 To view the vignette (worked example), use:
 
 ``` r
-vignette("intro",package =  "NHSRplotthedots")
+vignette("intro", package = "NHSRplotthedots")
 
-vignette(package =  "NHSRplotthedots")
+vignette(package = "NHSRplotthedots")
 ```
 
 # Contribution
@@ -116,5 +115,5 @@ vignette(package =  "NHSRplotthedots")
 This is an NHS-R Community project that is open for anyone to contribute
 to in any way that they are able. If you want to learn more about this
 please join the discussion at [the NHS-R Community Slack
-group](https://nhsrcommunity.slack.com/) and the specific channel \#
-proj-shiny-spc.
+group](https://nhsrcommunity.slack.com/) and the specific channel
+\#proj-shiny-spc.
