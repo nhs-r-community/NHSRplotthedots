@@ -67,9 +67,19 @@ ptd_spc_options <- function(value_field,
 
   if (!is.null(target)) {
     assertthat::assert_that(
-      is.character(target),
-      assertthat::is.scalar(target),
-      msg = "target argument must be a 'character' of length 1."
+      (
+        (is.numeric(target) && assertthat::is.scalar(target)) || (
+          all(vapply(target, is.numeric, logical(1))) &&
+            all(vapply(target, assertthat::is.scalar, logical(1))) &&
+            !is.null(names(target))
+        )
+      ),
+      msg = "target argument must be a single numeric, or a named list of numerics."
+    )
+
+    assertthat::assert_that(
+      !(is.list(target) && is.null(target)),
+      msg = "target must be a single numeric if facet_field is not set"
     )
   }
 

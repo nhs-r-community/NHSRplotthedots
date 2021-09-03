@@ -6,7 +6,7 @@ data <- data.frame(
   x = as.Date("2020-01-01") + 1:20,
   y = rnorm(20),
   rebase = 0,
-  t = 1:20
+  target = as.double(NA)
 )
 spc_options <- list(value_field = "y", date_field = "x", screen_outliers = TRUE)
 
@@ -47,27 +47,21 @@ test_that("it returns expected values", {
 test_that("it sets the trajectory field", {
   o <- spc_options
   o$trajectory <- "t"
+
+  # when trajectory is set, but the column doesn't exist
+  msg = paste0("Trajectory column (", o$trajectory, ") does not exist in .data")
+  expect_error(ptd_spc_standard(data, o), msg, fixed = TRUE)
+
   # when options$trajectory is set
-  r1 <- ptd_spc_standard(data, o)
+  d <- data
+  d$t <- 1:20
+  r1 <- ptd_spc_standard(d, o)
   expect_equal(r1$trajectory, 1:20)
 
   # when options$trajectory is not set
   o$trajectory <- NULL
   r2 <- ptd_spc_standard(data, o)
   expect_equal(r2$trajectory, rep(as.double(NA), 20))
-})
-
-test_that("it sets the target field", {
-  o <- spc_options
-  o$target <- "t"
-  # when options$target is set
-  r1 <- ptd_spc_standard(data, o)
-  expect_equal(r1$target, 1:20)
-
-  # when options$target is not set
-  o$target <- NULL
-  r2 <- ptd_spc_standard(data, o)
-  expect_equal(r2$target, rep(as.double(NA), 20))
 })
 
 test_that("it creates the pseudo facet column if no facet_field is set", {

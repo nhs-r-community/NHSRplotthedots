@@ -20,7 +20,6 @@ ptd_validate_spc_options <- function(options, .data) {
   check("value_field")
   check("date_field")
   check("facet_field")
-  check("target")
   check("trajectory")
 
   assertthat::assert_that(
@@ -49,6 +48,14 @@ ptd_validate_spc_options <- function(options, .data) {
     assertthat::assert_that(
       all(names(options[["rebase"]]) %in% unique(.data[[options[["facet_field"]]]])),
       msg = "options provided to rebase are not in the facet_field column."
+    )
+  }
+
+  if (!is.null(options[["target"]]) && !is.numeric(options[["target"]])) {
+    # if target is a numeric vector, no need to do anything
+    assertthat::assert_that(
+      all(names(options[["target"]]) %in% unique(.data[[options[["facet_field"]]]])),
+      msg = "options provided to target are not in the facet_field column."
     )
   }
 
