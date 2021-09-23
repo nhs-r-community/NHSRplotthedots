@@ -188,8 +188,8 @@ test_that("it accepts nse arguments as well as string", {
                 trajectory = tr)
 
   expect_called(m, 2)
-  expect_args(m, 1, "vf", "df", NULL, NULL, NULL, "increase", NULL, NULL)
-  expect_args(m, 2, "vf", "df", "ff", ptd_rebase(), NULL, "increase", "ta", "tr")
+  expect_args(m, 1, "vf", "df", NULL, NULL, NULL, "increase", NULL, NULL, TRUE)
+  expect_args(m, 2, "vf", "df", "ff", ptd_rebase(), NULL, "increase", "ta", "tr", TRUE)
 })
 
 # print() ----

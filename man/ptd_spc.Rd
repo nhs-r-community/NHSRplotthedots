@@ -13,7 +13,7 @@ ptd_spc(
   fix_after_n_points = NULL,
   improvement_direction = "increase",
   target,
-  trajectory = NULL,
+  trajectory,
   screen_outliers = TRUE
 )
 }
