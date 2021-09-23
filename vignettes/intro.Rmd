@@ -37,7 +37,7 @@ library(scales)
 data("ae_attendances")
 
 ae_attendances %>% 
-  filter(org_code == "RRK" & type == 1) %>% 
+  filter(org_code == "RRK", type == 1) %>% 
   ggplot(aes(x = period, y = breaches)) +
   geom_point() +
   geom_line() +
@@ -59,7 +59,7 @@ stable_set <- ae_attendances %>%
          type ==1,
          period < as.Date("2018-04-01"))
 
-ptd_spc(stable_set, value_field = "breaches", date_field = "period", improvement_direction = "decrease")
+ptd_spc(stable_set, value_field = breaches, date_field = period, improvement_direction = "decrease")
 ```
 
 From the chart above, we can see the centre line (mean) and the control limits calculated according the the XmR chart rules.  Our points that are between the control limits are within control and showing 'common-cause' or 'natural' variation.  We can see 8 sequential points coloured in yellow.  This is triggered by a rule that looks for >=7 points on one side of the mean.  This could be viewed as a period where fewer breaches than average were detected, which may hold some learning value for the organisation.
@@ -74,8 +74,8 @@ change_set <- ae_attendances %>%
   filter(org_code == "RRK", type == 1)
 
 ptd_spc(change_set,
-        value_field = "breaches",
-        date_field = "period",
+        value_field = breaches,
+        date_field = period,
         improvement_direction = "decrease",
         rebase = ptd_rebase(as.Date("2018-07-01")))
 ```
@@ -97,9 +97,9 @@ facet_set <-
          period < as.Date("2018-04-01"))
 
 ptd_spc(facet_set,
-        value_field = "breaches",
-        date_field = "period",
-        facet_field = "org_code",
+        value_field = breaches,
+        date_field = period,
+        facet_field = org_code,
         improvement_direction = "decrease") %>%
   plot(fixed_y_axis_multiple = FALSE, x_axis_breaks = "3 months")
 
@@ -112,11 +112,10 @@ facet_set <- ae_attendances %>%
          type == 1,
          period < as.Date("2018-04-01"))
 
-
 ptd_spc(facet_set,
-        value_field = "breaches",
-        date_field = "period",
-        facet_field = "org_code", 
+        value_field = breaches,
+        date_field = period,
+        facet_field = org_code, 
         improvement_direction = "decrease") %>%
   plot(fixed_y_axis_multiple = FALSE,
        x_axis_breaks = "3 months",
@@ -133,9 +132,9 @@ facet_set <- ae_attendances %>%
          period < as.Date("2018-04-01"))
 
 a <- ptd_spc(facet_set,
-             value_field = "breaches",
-             date_field = "period",
-             facet_field = "org_code",
+             value_field = breaches,
+             date_field = period,
+             facet_field = org_code,
              improvement_direction = "decrease") %>%
   plot(fixed_y_axis_multiple = FALSE,
        x_axis_breaks = "3 months",

@@ -8,11 +8,11 @@ ptd_spc(
   .data,
   value_field,
   date_field,
-  facet_field = NULL,
+  facet_field,
   rebase = ptd_rebase(),
   fix_after_n_points = NULL,
   improvement_direction = "increase",
-  target = NULL,
+  target,
   trajectory = NULL,
   screen_outliers = TRUE
 )
@@ -64,6 +64,7 @@ logic produced by NHSI. The function can return either a plot or data frame.
 }
 \examples{
 library(NHSRdatasets)
+library(dplyr)
 data("ae_attendances")
 
 # Pick a trust at random to look at their data for two years
@@ -71,17 +72,17 @@ trust1 <- subset(ae_attendances, org_code == "RJZ" & type == 1)
 
 # Basic chart with improvement direction decreasing
 ptd_spc(trust1,
-  value_field = "breaches", date_field = "period",
+  value_field = breaches, date_field = period,
   improvement_direction = "decrease"
 )
 
 # Pick a few trust, and plot individually using facet
 # Also set the x-axis scale to vary for each and date groups to 3 months
-orgs <- ae_attendances$org_code \%in\% c("RAS", "RJZ", "RR1", "RJC", "RQ1")
-trusts4 <- subset(ae_attendances, orgs & type == 1)
+orgs <- c("RAS", "RJZ", "RR1", "RJC", "RQ1")
+trusts4 <- filter(ae_attendances, org_code \%in\% orgs, type == 1)
 
 s <- ptd_spc(trusts4,
-  value_field = "breaches", date_field = "period", facet_field = "org_code",
+  value_field = breaches, date_field = period, facet_field = org_code,
   improvement_direction = "decrease"
 )
 plot(s, fixed_y_axis_multiple = FALSE, x_axis_breaks = "3 months")
