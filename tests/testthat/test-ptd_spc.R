@@ -224,7 +224,15 @@ test_that("it accepts nse arguments as well as string", {
   t <- ptd_target()
 
   s1 <- ptd_spc(data, vf, df)
-  s2 <- ptd_spc(data, value_field = vf, date_field = df, facet_field = ff, rebase = r, target = t, trajectory = tr)
+  s2 <- ptd_spc(
+    data,
+    value_field = vf,
+    date_field = df,
+    facet_field = ff,
+    rebase = r,
+    target = t,
+    trajectory = tr
+  )
 
   expect_called(m, 2)
   expect_args(m, 1, "vf", "df", NULL, NULL, NULL, "increase", NULL, NULL, TRUE)
