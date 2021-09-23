@@ -92,13 +92,14 @@ test_that("improvement_direction defaults to increase", {
   expect_equal(o$improvement_direction, "increase")
 })
 
-test_that("improvement_direction must be one of increase or decrease", {
+test_that("improvement_direction must be one of increase, neutral, or decrease", {
   ptd_spc_options("a", "b", improvement_direction = "increase")
+  ptd_spc_options("a", "b", improvement_direction = "neutral")
   ptd_spc_options("a", "b", improvement_direction = "decrease")
 
   expect_error(
     ptd_spc_options("a", "b", improvement_direction = "a"),
-    "'arg' should be one of \"increase\", \"decrease\""
+    "'arg' should be one of \"increase\", \"neutral\", \"decrease\""
   )
 })
 

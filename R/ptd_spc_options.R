@@ -14,7 +14,7 @@ ptd_spc_options <- function(value_field,
                             facet_field = NULL,
                             rebase = NULL,
                             fix_after_n_points = NULL,
-                            improvement_direction = c("increase", "decrease"),
+                            improvement_direction = c("increase", "neutral", "decrease"),
                             target = NULL,
                             trajectory = NULL) {
   assertthat::assert_that(

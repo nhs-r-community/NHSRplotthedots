@@ -183,9 +183,10 @@ test_that("it sets the colour of the points based on the type", {
   p <- ptd_create_ggplot(s)
 
   colours <- list(
-    common_cause              = "#7B7D7D",
-    special_cause_improvement = "#289de0",
-    special_cause_concern     = "#fab428"
+    common_cause              = "#7B7D7D", # grey
+    special_cause_improvement = "#289de0", # blue
+    special_cause_neutral     = "#361475", # purple
+    special_cause_concern     = "#fab428" # orange
   )
 
   expect_called(m, 1)
