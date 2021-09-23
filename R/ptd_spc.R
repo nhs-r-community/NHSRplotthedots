@@ -103,8 +103,7 @@ ptd_spc <- function(.data,
   .data <- ptd_add_rebase_column(.data, date_field, facet_field, rebase)
 
   # Declare improvement direction as integer
-  improvement_direction <- switch(
-    options$improvement_direction,
+  improvement_direction <- switch(options$improvement_direction,
     "increase" = 1,
     "neutral" = 0,
     "decrease" = -1

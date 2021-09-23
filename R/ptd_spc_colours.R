@@ -24,16 +24,16 @@ ptd_spc_colours <- function(common_cause = "#7B7D7D",
                             trajectory = "#de1b1b") {
   structure(
     list(
-      common_cause              = common_cause,
+      common_cause = common_cause,
       special_cause_improvement = special_cause_improvement,
       special_cause_neutral = special_cause_neutral,
-      special_cause_concern     = special_cause_concern,
-      value_line                = value_line,
-      mean_line                 = mean_line,
-      lpl                       = lpl,
-      upl                       = upl,
-      target                    = target,
-      trajectory                = trajectory
+      special_cause_concern = special_cause_concern,
+      value_line = value_line,
+      mean_line = mean_line,
+      lpl = lpl,
+      upl = upl,
+      target = target,
+      trajectory = trajectory
     ),
     class = "ptd_spc_colours_class"
   )
