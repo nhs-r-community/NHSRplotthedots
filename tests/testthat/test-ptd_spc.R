@@ -184,8 +184,13 @@ test_that("it accepts nse arguments as well as string", {
   stub(ptd_spc, "to_datetime", function(x, ...) x)
 
   s1 <- ptd_spc(data, vf, df)
-  s2 <- ptd_spc(data,
-    value_field = vf, date_field = df, facet_field = ff, rebase = ptd_rebase(), target = ta,
+  s2 <- ptd_spc(
+    data,
+    value_field = vf, 
+    date_field = df, 
+    facet_field = ff, 
+    rebase = ptd_rebase(), 
+    target = ta,
     trajectory = tr
   )
 
