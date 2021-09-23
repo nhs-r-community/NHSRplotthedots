@@ -78,6 +78,7 @@ ptd_spc <- function(.data,
                     rebase = ptd_rebase(),
                     fix_after_n_points = NULL,
                     improvement_direction = "increase",
+                    target,
                     trajectory,
                     screen_outliers = TRUE) {
   assertthat::assert_that(
