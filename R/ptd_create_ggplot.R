@@ -98,6 +98,7 @@ ptd_create_ggplot <- function(x,
       values = colours[c(
         "common_cause",
         "special_cause_improvement",
+        "special_cause_neutral",
         "special_cause_concern"
       )],
       labels = ptd_title_case

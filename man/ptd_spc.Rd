@@ -36,9 +36,9 @@ of when to rebase. Each item in the list should be named after the facet you wis
 
 \item{fix_after_n_points}{Specify a number points after which to fix SPC calculations.}
 
-\item{improvement_direction}{Specify whether an increase or decrease in measured variable signifies
-process improvement. Accepted values are 'increase' for increase as improvement or 'decrease' for
-decrease as improvement. Defaults to 'increase'.}
+\item{improvement_direction}{Specify whether process improvement is represented by an increase or decrease in
+measured variable, or is neutral.  Accepted values are 'increase' for increase as improvement, 'decrease' for
+decrease as improvement, and 'neutral' where neither direction represents an improvement. Defaults to 'increase'.}
 
 \item{target}{Specify a field name which contains a target value.
 Field name can be specified using non-standard evaluation (i.e. no quotation marks).}
