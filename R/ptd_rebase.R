@@ -35,6 +35,10 @@ ptd_rebase <- function(...) {
     return(NULL)
   }
 
+  if (length(rebase) == 1 && is.null(rebase[[1]])) {
+    return(NULL)
+  }
+
   if (length(rebase) == 1 && is.null(names(rebase))) {
     assertthat::assert_that(
       is_date(rebase[[1]]),

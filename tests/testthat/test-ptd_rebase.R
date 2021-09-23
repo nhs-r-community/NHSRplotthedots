@@ -5,6 +5,10 @@ test_that("it returns NULL if no arguments are passed", {
   expect_null(ptd_rebase())
 })
 
+test_that("it returns NULL if NULL is passed in", {
+  expect_null(ptd_rebase(NULL))
+})
+
 test_that("it returns an error if a single vector is passed which is not a date vector", {
   em <- "ptd_rebase(): all items must be date vectors."
   expect_error(ptd_rebase("a"), em, fixed = TRUE)
