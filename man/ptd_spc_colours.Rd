@@ -12,8 +12,8 @@ ptd_spc_colours(
   mean_line = "#000000",
   lpl = "#7B7D7D",
   upl = "#7B7D7D",
-  target = "#361475",
-  trajectory = "#de1b1b"
+  target = "#de1b1b",
+  trajectory = "#361475"
 )
 }
 \arguments{
