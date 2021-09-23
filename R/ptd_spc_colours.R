@@ -2,7 +2,7 @@
 #'
 #' Produces a list of colours that controls the geoms in the plot
 #'
-#' @param common_cause,special_cause_improvement,special_cause_concern the colour of the points
+#' @param common_cause,special_cause_improvement,special_cause_neutral,special_cause_concern the colour of the points
 #' @param value_line the colour of the line joining the points
 #' @param mean_line the colour of the "mean" (average) line
 #' @param lpl,upl the colour the the lower and upper process limit lines

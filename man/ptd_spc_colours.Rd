@@ -18,7 +18,7 @@ ptd_spc_colours(
 )
 }
 \arguments{
-\item{common_cause, special_cause_improvement, special_cause_concern}{the colour of the points}
+\item{common_cause, special_cause_improvement, special_cause_neutral, special_cause_concern}{the colour of the points}
 
 \item{value_line}{the colour of the line joining the points}
 
