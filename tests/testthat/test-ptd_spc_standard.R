@@ -19,17 +19,17 @@ test_that("it returns a data frame", {
 test_that("it returns expected values", {
   r1 <- ptd_spc_standard(data, spc_options)
 
-  expect_snapshot(r1)
+  expect_snapshot(dplyr::glimpse(r1))
 
   # testing the screen_outliers
   o <- spc_options
   data$y[15] <- 10
   r2 <- ptd_spc_standard(data, o)
-  expect_snapshot(r2)
+  expect_snapshot(dplyr::glimpse(r2))
 
   o$screen_outliers <- FALSE
   r3 <- ptd_spc_standard(data, o)
-  expect_snapshot(r3)
+  expect_snapshot(dplyr::glimpse(r3))
 
   # check that we have different limits for all of the results
   expect_true(r1$lpl[[1]] != r2$lpl[[1]])
