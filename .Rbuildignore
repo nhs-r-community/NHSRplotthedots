@@ -12,3 +12,6 @@
 ^pkgdown/
 ^doc$
 ^Meta$
+^NHSRplotthedots\.Rcheck$
+^NHSRplotthedots.*\.tar\.gz$
+^NHSRplotthedots.*\.tgz$

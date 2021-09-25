@@ -5,3 +5,6 @@
 inst/doc
 /doc/
 /Meta/
+NHSRplotthedots.Rcheck/
+NHSRplotthedots*.tar.gz
+NHSRplotthedots*.tgz
