@@ -10,7 +10,8 @@ test_that("it returns correct data", {
     fix_after_n_points = NULL,
     improvement_direction = "increase",
     target = "target",
-    trajectory = "trajectory"
+    trajectory = "trajectory",
+    screen_outliers = TRUE
   )
 
   expect_equal(r$value_field, "value_field")
@@ -21,6 +22,7 @@ test_that("it returns correct data", {
   expect_equal(r$improvement_direction, "increase")
   expect_equal(r$target, "target")
   expect_equal(r$trajectory, "trajectory")
+  expect_equal(r$screen_outliers, TRUE)
 
   expect_s3_class(r, "ptd_spc_options")
 })
@@ -123,6 +125,23 @@ test_that("trajectory is either null, or a scalar character", {
   )
 })
 
+test_that("screen_outliers must be a scalar logical", {
+  # this should run without an error
+  ptd_spc_options("a", "b", screen_outliers = TRUE)
+  ptd_spc_options("a", "b", screen_outliers = FALSE)
+
+  # this should error
+  em <- "screen_outliers must either `TRUE` or `FALSE`."
+  expect_error(
+    ptd_spc_options("a", "b", screen_outliers = c(TRUE, FALSE)),
+    em
+  )
+  expect_error(
+    ptd_spc_options("a", "b", screen_outliers = "TRUE"),
+    em
+  )
+})
+
 test_that("you cannot rebase and fix_after_n_points", {
   expect_error(
     ptd_spc_options("b", "a", rebase = as.Date("2020-04-01"), fix_after_n_points = 12),
@@ -144,5 +163,6 @@ test_that("printing output", {
   expect_output(print(r), "improvement_direction:.*not set")
   expect_output(print(r), "target:.*not set")
   expect_output(print(r), "trajectory:.*not set")
+  expect_output(print(r), "screen_outliers:.*'TRUE'")
   expect_output(print(r), "--------------------------------")
 })

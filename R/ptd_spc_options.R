@@ -16,7 +16,8 @@ ptd_spc_options <- function(value_field,
                             fix_after_n_points = NULL,
                             improvement_direction = c("increase", "neutral", "decrease"),
                             target = NULL,
-                            trajectory = NULL) {
+                            trajectory = NULL,
+                            screen_outliers = TRUE) {
   assertthat::assert_that(
     is.character(value_field),
     assertthat::is.scalar(value_field),
@@ -80,6 +81,12 @@ ptd_spc_options <- function(value_field,
     )
   }
 
+  assertthat::assert_that(
+    is.logical(screen_outliers),
+    assertthat::is.scalar(screen_outliers),
+    msg = "screen_outliers must either `TRUE` or `FALSE`."
+  )
+
   # TODO: check that this is correct
   assertthat::assert_that(
     is.null(fix_after_n_points) || is.null(rebase),
@@ -95,7 +102,8 @@ ptd_spc_options <- function(value_field,
       fix_after_n_points = fix_after_n_points,
       improvement_direction = improvement_direction,
       target = target,
-      trajectory = trajectory
+      trajectory = trajectory,
+      screen_outliers = screen_outliers
     ),
     class = "ptd_spc_options"
   )
@@ -129,6 +137,7 @@ print.ptd_spc_options <- function(x, ...) {
     f("improvement_direction"),
     f("target"),
     f("trajectory"),
+    f("screen_outliers"),
     paste(rep("-", l), collapse = "")
   )
 

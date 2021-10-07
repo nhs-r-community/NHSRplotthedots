@@ -71,7 +71,17 @@ ptd_spc_standard <- function(.data, options = NULL) {
     mutate(
       fix_y = ifelse(row_number() <= (fix_after_n_points %||% Inf), .data$y, NA),
       mean = mean(.data$fix_y, na.rm = TRUE),
-      amr = mean(abs(diff(.data$fix_y)), na.rm = TRUE),
+      mr = c(NA, abs(diff(.data$fix_y))),
+      amr = mean(.data$mr, na.rm = TRUE),
+
+      # screen for outliers
+      mr = case_when(
+        !options$screen_outliers     ~ .data$mr,
+        .data$mr < 3.267 * .data$amr ~ .data$mr,
+        TRUE                         ~ as.numeric(NA)
+      ),
+      amr = mean(.data$mr, na.rm = TRUE),
+
       # identify lower/upper process limits
       lpl = .data$mean - (limit * .data$amr),
       upl = .data$mean + (limit * .data$amr),
@@ -88,6 +98,6 @@ ptd_spc_standard <- function(.data, options = NULL) {
       close_to_limits = !.data$outside_limits & (.data$y < .data$nlpl | .data$y > .data$nupl)
     ) %>%
     # clean up by removing columns that no longer serve a purpose and ungrouping data
-    select(-.data$nlpl, -.data$nupl, -.data$amr, -.data$rebase) %>%
+    select(-.data$mr, -.data$nlpl, -.data$nupl, -.data$amr, -.data$rebase) %>%
     ungroup()
 }
