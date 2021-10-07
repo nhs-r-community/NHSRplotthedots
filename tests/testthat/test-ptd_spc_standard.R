@@ -49,7 +49,7 @@ test_that("it sets the trajectory field", {
   o$trajectory <- "t"
 
   # when trajectory is set, but the column doesn't exist
-  msg = paste0("Trajectory column (", o$trajectory, ") does not exist in .data")
+  msg <- paste0("Trajectory column (", o$trajectory, ") does not exist in .data")
   expect_error(ptd_spc_standard(data, o), msg, fixed = TRUE)
 
   # when options$trajectory is set
