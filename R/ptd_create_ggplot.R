@@ -116,7 +116,7 @@ ptd_create_ggplot <- function(x,
 
   line_size <- point_size / 3
 
-  plot <- ggplot(.data, aes(x = .data$x, y = .data$y, group = if(break_lines) .data$rebase_group else 0)) +
+  plot <- ggplot(.data, aes(x = .data$x, y = .data$y, group = if (break_lines) .data$rebase_group else 0)) +
     geom_line(aes(y = .data$upl),
       linetype = "dashed", size = line_size, colour = colours$upl
     ) +
