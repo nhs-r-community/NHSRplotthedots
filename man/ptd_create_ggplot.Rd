@@ -20,6 +20,7 @@ ptd_create_ggplot(
   icons_position = c("top right", "bottom right", "bottom left", "top left", "none"),
   colours = ptd_spc_colours(),
   theme_override = NULL,
+  break_lines = TRUE,
   ...
 )
 }
@@ -62,6 +63,8 @@ faceting is in use.}
 
 \item{theme_override}{Specify a list containing ggplot theme elements which can be used to override the default
 appearance of the plot.}
+
+\item{break_lines}{whether to break lines when a rebase happens. Defaults to TRUE.}
 
 \item{...}{currently ignored}
 }
