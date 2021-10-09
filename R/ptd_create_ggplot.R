@@ -148,7 +148,7 @@ ptd_create_ggplot <- function(x,
 
   if (percentage_y_axis %||% FALSE) {
     plot <- plot +
-      scale_y_continuous(labels = scales::percent_format(y_axis_breaks %||% 0.1))
+      scale_y_continuous(labels = scales::label_percent(y_axis_breaks))
   } else if (!is.null(y_axis_breaks)) {
     yaxis <- c(.data[["y"]], .data[["upl"]], .data[["lpl"]])
     start <- floor(min(yaxis, na.rm = TRUE) / y_axis_breaks) * y_axis_breaks
