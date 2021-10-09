@@ -73,9 +73,9 @@ ptd_spc_standard <- function(.data, options = NULL) {
 
       # screen for outliers
       mr = case_when(
-        !options$screen_outliers     ~ .data$mr,
+        !options$screen_outliers ~ .data$mr,
         .data$mr < 3.267 * .data$amr ~ .data$mr,
-        TRUE                         ~ as.numeric(NA)
+        TRUE ~ as.numeric(NA)
       ),
       amr = mean(.data$mr, na.rm = TRUE),
 
