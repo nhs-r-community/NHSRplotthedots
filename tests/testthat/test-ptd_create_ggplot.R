@@ -134,7 +134,7 @@ test_that("it sets the y-axis to percentages if percentage_y_axis is TRUE", {
   set.seed(123)
 
   m <- mock()
-  stub(ptd_create_ggplot, "scales::percent_format", m)
+  stub(ptd_create_ggplot, "scales::label_percent", m)
 
   d <- data.frame(x = as.Date("2020-01-01") + 1:20, y = rnorm(20))
   s <- ptd_spc(d, "y", "x")
