@@ -34,6 +34,10 @@ test_that("it returns a ptd_spc_df object", {
     x$rebase <- 0
     x
   })
+  stub(ptd_spc, "ptd_add_short_group_warnings", function(x, ...) {
+    x$short_group_warning <- FALSE
+    x
+  })
 
   s <- ptd_spc(data, "y", "x")
 
@@ -52,7 +56,11 @@ test_that("it has options as an attribute, created by ptd_spc_options", {
     x$rebase <- 0
     x
   })
-
+  stub(ptd_spc, "ptd_add_short_group_warnings", function(x, ...) {
+    x$short_group_warning <- FALSE
+    x
+  })
+  
   s <- ptd_spc(data, "a", "b", "c", "d", "e", "f", "g", "h", "i")
   o <- attr(s, "options")
 
@@ -73,6 +81,10 @@ test_that("it validates the options", {
     x$rebase <- 0
     x
   })
+  stub(ptd_spc, "ptd_add_short_group_warnings", function(x, ...) {
+    x$short_group_warning <- FALSE
+    x
+  })
 
   s <- ptd_spc(data, "y", "x")
 
@@ -90,6 +102,10 @@ test_that("it calls ptd_spc_standard", {
   stub(ptd_spc, "to_datetime", function(x, ...) x)
   stub(ptd_spc, "ptd_add_rebase_column", function(x, ...) {
     x$rebase <- 0
+    x
+  })
+  stub(ptd_spc, "ptd_add_short_group_warnings", function(x, ...) {
+    x$short_group_warning <- FALSE
     x
   })
 
@@ -112,6 +128,10 @@ test_that("it calls ptd_calculate_point_type (increase)", {
     x$rebase <- 0
     x
   })
+  stub(ptd_spc, "ptd_add_short_group_warnings", function(x, ...) {
+    x$short_group_warning <- FALSE
+    x
+  })
 
   ptd_spc(data, "y", "x")
 
@@ -130,6 +150,10 @@ test_that("it calls ptd_calculate_point_type (decrease)", {
   stub(ptd_spc, "to_datetime", function(x, ...) x)
   stub(ptd_spc, "ptd_add_rebase_column", function(x, ...) {
     x$rebase <- 0
+    x
+  })
+  stub(ptd_spc, "ptd_add_short_group_warnings", function(x, ...) {
+    x$short_group_warning <- FALSE
     x
   })
 
@@ -151,6 +175,10 @@ test_that("it converts date_field to POSIXct", {
     x$rebase <- 0
     x
   })
+  stub(ptd_spc, "ptd_add_short_group_warnings", function(x, ...) {
+    x$short_group_warning <- FALSE
+    x
+  })
 
   ptd_spc(data, "y", "x")
 
@@ -167,6 +195,10 @@ test_that("it calls ptd_add_rebase_column", {
   stub(ptd_spc, "ptd_calculate_point_type", function(x, ...) x)
   stub(ptd_spc, "to_datetime", function(x, ...) x)
   stub(ptd_spc, "ptd_add_rebase_column", m)
+  stub(ptd_spc, "ptd_add_short_group_warnings", function(x, ...) {
+    x$short_group_warning <- FALSE
+    x
+  })
 
   ptd_spc(data, "y", "x", facet_field = "f", rebase = "r")
 
@@ -182,6 +214,10 @@ test_that("it accepts nse arguments as well as string", {
   stub(ptd_spc, "ptd_spc_standard", function(x, ...) x)
   stub(ptd_spc, "ptd_calculate_point_type", function(x, ...) x)
   stub(ptd_spc, "to_datetime", function(x, ...) x)
+  stub(ptd_spc, "ptd_add_short_group_warnings", function(x, ...) {
+    x$short_group_warning <- FALSE
+    x
+  })
 
   s1 <- ptd_spc(data, vf, df)
   s2 <- ptd_spc(
