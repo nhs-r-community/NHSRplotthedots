@@ -231,8 +231,6 @@ test_that("it accepts nse arguments as well as string", {
     facet_field = ff,
     rebase = r,
     target = t,
-    rebase = ptd_rebase(),
-    target = ta,
     trajectory = tr
   )
 
