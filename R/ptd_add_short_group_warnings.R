@@ -24,7 +24,7 @@ ptd_add_short_group_warnings <- function(.data, warning_threshold = 12){
       TRUE ~ FALSE
     )
     ) %>%
-    relocate(short_group_warning, .after = rebase_group) %>%
+    relocate(.data$short_group_warning, .after = .data$rebase_group) %>%
     ungroup()
 
 }
