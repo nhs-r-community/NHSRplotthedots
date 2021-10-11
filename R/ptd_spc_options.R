@@ -87,12 +87,6 @@ ptd_spc_options <- function(value_field,
     msg = "screen_outliers must either `TRUE` or `FALSE`."
   )
 
-  # TODO: check that this is correct
-  assertthat::assert_that(
-    is.null(fix_after_n_points) || is.null(rebase),
-    msg = "cannot rebase and fix_after_n_points"
-  )
-
   structure(
     list(
       value_field = value_field,

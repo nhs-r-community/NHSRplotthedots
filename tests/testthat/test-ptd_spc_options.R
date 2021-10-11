@@ -142,13 +142,6 @@ test_that("screen_outliers must be a scalar logical", {
   )
 })
 
-test_that("you cannot rebase and fix_after_n_points", {
-  expect_error(
-    ptd_spc_options("b", "a", rebase = as.Date("2020-04-01"), fix_after_n_points = 12),
-    "cannot rebase and fix_after_n_points"
-  )
-})
-
 # print() ----
 
 test_that("printing output", {
