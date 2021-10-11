@@ -15,7 +15,7 @@
 #'
 #' @noRd
 #'
-ptd_add_short_group_warnings <- function(.data, warning_threshold = 12){
+ptd_add_short_group_warnings <- function(.data, warning_threshold = 12) {
   .data %>%
     group_by(across(c(.data$f, .data$rebase_group))) %>%
     mutate(short_group_warning = n() < warning_threshold, .after = .data$rebase_group) %>%

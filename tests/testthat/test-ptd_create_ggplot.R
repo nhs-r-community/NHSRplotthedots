@@ -236,4 +236,3 @@ test_that("it calls ptd_create_ggplot()", {
     theme_override = NULL
   )
 })
-
