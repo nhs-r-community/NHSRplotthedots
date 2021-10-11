@@ -39,12 +39,12 @@ test_that("it handles facets and rebase groups - no warnings", {
 
 test_that("it handles facets and rebase groups - warning on one facet", {
   data <- data.frame(
-  f = rep(c("a", "b"), each = 40), # facets
-  rebase_group = rep(c(0, 1, 2, 3), times = c(35, 5, 20, 20)) # facet a has a short group of 5 points
-)
+    f = rep(c("a", "b"), each = 40), # facets
+    rebase_group = rep(c(0, 1, 2, 3), times = c(35, 5, 20, 20)) # facet a has a short group of 5 points
+  )
   o <- ptd_add_short_group_warnings(data, warning_threshold)
   expect_equal(
-      o$short_group_warning,
-      rep(c(FALSE, TRUE, FALSE, FALSE), times = c(35, 5, 20, 20))
-    )
+    o$short_group_warning,
+    rep(c(FALSE, TRUE, FALSE, FALSE), times = c(35, 5, 20, 20))
+  )
 })
