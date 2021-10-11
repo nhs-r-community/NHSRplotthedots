@@ -60,7 +60,7 @@ test_that("it has options as an attribute, created by ptd_spc_options", {
     x$short_group_warning <- FALSE
     x
   })
-  
+
   s <- ptd_spc(data, "a", "b", "c", "d", "e", "f", "g", "h", "i")
   o <- attr(s, "options")
 
@@ -100,19 +100,13 @@ test_that("it calls ptd_spc_standard", {
   stub(ptd_spc, "ptd_spc_standard", m)
   stub(ptd_spc, "ptd_calculate_point_type", function(x, ...) x)
   stub(ptd_spc, "to_datetime", function(x, ...) x)
-  stub(ptd_spc, "ptd_add_rebase_column", function(x, ...) {
-    x$rebase <- 0
-    x
-  })
-  stub(ptd_spc, "ptd_add_short_group_warnings", function(x, ...) {
-    x$short_group_warning <- FALSE
-    x
-  })
+  stub(ptd_spc, "ptd_add_rebase_column", function(x, ...) x)
+  stub(ptd_spc, "ptd_add_short_group_warnings", function(x, ...) x)
 
   s <- ptd_spc(data, "y", "x")
 
   expect_called(m, 1)
-  expect_args(m, 1, mutate(data, rebase = 0), spc_options)
+  expect_args(m, 1, data, spc_options)
 })
 
 test_that("it calls ptd_calculate_point_type (increase)", {
@@ -124,19 +118,13 @@ test_that("it calls ptd_calculate_point_type (increase)", {
   stub(ptd_spc, "ptd_spc_standard", function(x, ...) x)
   stub(ptd_spc, "ptd_calculate_point_type", m)
   stub(ptd_spc, "to_datetime", function(x, ...) x)
-  stub(ptd_spc, "ptd_add_rebase_column", function(x, ...) {
-    x$rebase <- 0
-    x
-  })
-  stub(ptd_spc, "ptd_add_short_group_warnings", function(x, ...) {
-    x$short_group_warning <- FALSE
-    x
-  })
+  stub(ptd_spc, "ptd_add_rebase_column", function(x, ...) x)
+  stub(ptd_spc, "ptd_add_short_group_warnings", function(x, ...) x)
 
   ptd_spc(data, "y", "x")
 
   expect_called(m, 1)
-  expect_args(m, 1, mutate(data, rebase = 0), 1)
+  expect_args(m, 1, data, 1)
 })
 
 test_that("it calls ptd_calculate_point_type (decrease)", {
@@ -148,19 +136,13 @@ test_that("it calls ptd_calculate_point_type (decrease)", {
   stub(ptd_spc, "ptd_spc_standard", function(x, ...) x)
   stub(ptd_spc, "ptd_calculate_point_type", m)
   stub(ptd_spc, "to_datetime", function(x, ...) x)
-  stub(ptd_spc, "ptd_add_rebase_column", function(x, ...) {
-    x$rebase <- 0
-    x
-  })
-  stub(ptd_spc, "ptd_add_short_group_warnings", function(x, ...) {
-    x$short_group_warning <- FALSE
-    x
-  })
+  stub(ptd_spc, "ptd_add_rebase_column", function(x, ...) x)
+  stub(ptd_spc, "ptd_add_short_group_warnings", function(x, ...) x)
 
   ptd_spc(data, "y", "x")
 
   expect_called(m, 1)
-  expect_args(m, 1, mutate(data, rebase = 0), -1)
+  expect_args(m, 1, data, -1)
 })
 
 test_that("it converts date_field to POSIXct", {
@@ -171,14 +153,8 @@ test_that("it converts date_field to POSIXct", {
   stub(ptd_spc, "ptd_spc_standard", function(x, ...) x)
   stub(ptd_spc, "ptd_calculate_point_type", function(x, ...) x)
   stub(ptd_spc, "to_datetime", m)
-  stub(ptd_spc, "ptd_add_rebase_column", function(x, ...) {
-    x$rebase <- 0
-    x
-  })
-  stub(ptd_spc, "ptd_add_short_group_warnings", function(x, ...) {
-    x$short_group_warning <- FALSE
-    x
-  })
+  stub(ptd_spc, "ptd_add_rebase_column", function(x, ...) x)
+  stub(ptd_spc, "ptd_add_short_group_warnings", function(x, ...) x)
 
   ptd_spc(data, "y", "x")
 
@@ -195,15 +171,35 @@ test_that("it calls ptd_add_rebase_column", {
   stub(ptd_spc, "ptd_calculate_point_type", function(x, ...) x)
   stub(ptd_spc, "to_datetime", function(x, ...) x)
   stub(ptd_spc, "ptd_add_rebase_column", m)
-  stub(ptd_spc, "ptd_add_short_group_warnings", function(x, ...) {
-    x$short_group_warning <- FALSE
-    x
-  })
+  stub(ptd_spc, "ptd_add_short_group_warnings", function(x, ...) x)
 
   ptd_spc(data, "y", "x", facet_field = "f", rebase = "r")
 
   expect_called(m, 1)
   expect_args(m, 1, data, "x", "f", "r")
+})
+
+test_that("it calls ptd_add_short_group_warnings", {
+  m <- mock("ptd_ass_short_group_warnings")
+
+  stub(ptd_spc, "ptd_spc_options", spc_options)
+  stub(ptd_spc, "ptd_validate_spc_options", TRUE)
+  stub(ptd_spc, "ptd_spc_standard", function(x, ...) x)
+  stub(ptd_spc, "ptd_calculate_point_type", function(x, ...) x)
+  stub(ptd_spc, "to_datetime", function(x, ...) x)
+  stub(ptd_spc, "ptd_add_rebase_column", function(x, ...) {
+    x$rebase <- 0
+    x
+  })
+  stub(ptd_spc, "ptd_add_short_group_warnings", m)
+
+  ptd_spc(data, "y", "x")
+
+  d <- data
+  d$rebase <- 0
+
+  expect_called(m, 1)
+  expect_args(m, 1, d, 12)
 })
 
 test_that("it accepts nse arguments as well as string", {
