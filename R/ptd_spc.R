@@ -115,7 +115,7 @@ ptd_spc <- function(.data,
   df <- .data %>%
     ptd_spc_standard(options) %>%
     ptd_calculate_point_type(improvement_direction) %>%
-    ptd_add_short_group_warnings(warning_threshold = 12)
+    ptd_add_short_group_warnings()
 
   class(df) <- c("ptd_spc_df", class(df))
   attr(df, "options") <- options
