@@ -1,3 +1,6 @@
+library(testthat)
+library(mockery)
+
 warning_threshold <- 12
 
 test_that("it adds a column called short_group_warning", {
@@ -7,7 +10,7 @@ test_that("it adds a column called short_group_warning", {
     # other columns not needed by this function
   )
   o <- ptd_add_short_group_warnings(data, warning_threshold)
-  expect_equal("short_group_warning" %in% colnames(o), TRUE)
+  expect_false(is.null(o$short_group_warning))
 })
 
 test_that("it warns when a group is shorter than the warning_threshold", {
@@ -15,7 +18,11 @@ test_that("it warns when a group is shorter than the warning_threshold", {
     f = rep("no facet", times = 11), # no facets
     rebase_group = 0 # no rebase
   )
-  o <- ptd_add_short_group_warnings(data, warning_threshold)
+  expect_warning(
+    o <- ptd_add_short_group_warnings(data, warning_threshold),
+    "Some groups have groups with less than 12 observations. This may lead to invalid conclusions.",
+    fixed = TRUE
+  )
   expect_equal(o$short_group_warning, rep(TRUE, 11))
 })
 
@@ -42,7 +49,11 @@ test_that("it handles facets and rebase groups - warning on one facet", {
     f = rep(c("a", "b"), each = 40), # facets
     rebase_group = rep(c(0, 1, 2, 3), times = c(35, 5, 20, 20)) # facet a has a short group of 5 points
   )
-  o <- ptd_add_short_group_warnings(data, warning_threshold)
+  expect_warning(
+    o <- ptd_add_short_group_warnings(data, warning_threshold),
+    "Some groups have groups with less than 12 observations. This may lead to invalid conclusions.",
+    fixed = TRUE
+  )
   expect_equal(
     o$short_group_warning,
     rep(c(FALSE, TRUE, FALSE, FALSE), times = c(35, 5, 20, 20))

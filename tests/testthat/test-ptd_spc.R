@@ -271,9 +271,13 @@ test_that("it outputs expected content", {
   s2 <- ptd_spc(d, "y", "x", rebase = as.Date("2020-01-01"))
   expect_snapshot_output(summary(s2))
 
-  s3 <- ptd_spc(d, "y", "x", facet_field = "facet")
+  suppressWarnings(
+    s3 <- ptd_spc(d, "y", "x", facet_field = "facet")
+  )
   expect_snapshot_output(summary(s3))
 
-  s4 <- ptd_spc(d, "y", "x", rebase = as.Date("2020-01-01"), facet_field = "facet")
+  suppressWarnings(
+    s4 <- ptd_spc(d, "y", "x", rebase = as.Date("2020-01-01"), facet_field = "facet")
+  )
   expect_snapshot_output(summary(s4))
 })

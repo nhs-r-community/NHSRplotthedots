@@ -16,8 +16,17 @@
 #' @noRd
 #'
 ptd_add_short_group_warnings <- function(.data, warning_threshold = 12) {
-  .data %>%
+  .data <- .data %>%
     group_by(across(c(.data$f, .data$rebase_group))) %>%
     mutate(short_group_warning = n() < warning_threshold, .after = .data$rebase_group) %>%
     ungroup()
+
+  if (any(.data$short_group_warning)) {
+    warning(
+      "Some groups have groups with less than 12 observations. ",
+      "This may lead to invalid conclusions."
+    )
+  }
+
+  .data
 }
