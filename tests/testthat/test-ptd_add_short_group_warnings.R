@@ -2,6 +2,46 @@ library(testthat)
 library(mockery)
 
 warning_threshold <- 12
+warning_message <- "Some groups have groups with less than 12 observations. This may lead to invalid conclusions."
+
+test_that("it chooses warning_threshold from options if no value provided", {
+  m <- mock(10, 12)
+  stub(ptd_add_short_group_warnings, "getOption", m)
+
+  data <- data.frame(
+    f = rep("no facet", times = 10), # no facets
+    rebase_group = 0 # no rebase
+    # other columns not needed by this function
+  )
+  o1 <- ptd_add_short_group_warnings(data)
+  expect_warning(
+    o2 <- ptd_add_short_group_warnings(data),
+    warning_message,
+    fixed = TRUE
+  )
+
+  expect_called(m, 2)
+})
+
+test_that("it groups, then ungroups data", {
+  m1 <- mock()
+  m2 <- mock()
+
+  stub(ptd_add_short_group_warnings, "group_by", m1)
+  stub(ptd_add_short_group_warnings, "across", function(x, ...) x)
+  stub(ptd_add_short_group_warnings, "mutate", function(x, ...) x)
+  stub(ptd_add_short_group_warnings, "ungroup", m2)
+  stub(ptd_add_short_group_warnings, "if", function(x, ...) x)
+
+  ptd_add_short_group_warnings(data.frame(), warning_threshold)
+
+  expect_called(m1, 1)
+  expect_call(m1, 1, group_by(., across(c(.data$f, .data$rebase_group))))
+
+  expect_called(m2, 1)
+  expect_call(m2, 1, ungroup(.))
+
+})
 
 test_that("it adds a column called short_group_warning", {
   data <- data.frame(
@@ -20,7 +60,7 @@ test_that("it warns when a group is shorter than the warning_threshold", {
   )
   expect_warning(
     o <- ptd_add_short_group_warnings(data, warning_threshold),
-    "Some groups have groups with less than 12 observations. This may lead to invalid conclusions.",
+    warning_message,
     fixed = TRUE
   )
   expect_equal(o$short_group_warning, rep(TRUE, 11))
@@ -51,7 +91,7 @@ test_that("it handles facets and rebase groups - warning on one facet", {
   )
   expect_warning(
     o <- ptd_add_short_group_warnings(data, warning_threshold),
-    "Some groups have groups with less than 12 observations. This may lead to invalid conclusions.",
+    warning_message,
     fixed = TRUE
   )
   expect_equal(
