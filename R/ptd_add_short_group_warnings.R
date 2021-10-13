@@ -13,9 +13,11 @@
 #' trigger a warning.
 #' @return The original data frame with added column
 #'
+#' @details to override the `warning_threshold` you can set the option `ptd_spc.warning_threshold`, e.g.
+#' `options(ptd_spc.warning_threshold = 10)`. The default, if the option is not set, is 12.
 #' @noRd
 #'
-ptd_add_short_group_warnings <- function(.data, warning_threshold = 12) {
+ptd_add_short_group_warnings <- function(.data, warning_threshold = getOption("ptd_spc.warning_threshold", 12)) {
   .data <- .data %>%
     group_by(across(c(.data$f, .data$rebase_group))) %>%
     mutate(short_group_warning = n() < warning_threshold, .after = .data$rebase_group) %>%
