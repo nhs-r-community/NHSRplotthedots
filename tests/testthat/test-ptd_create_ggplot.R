@@ -13,9 +13,10 @@ test_that("it calls ptd_validate_plot_options", {
   m <- mock(stop())
   stub(ptd_create_ggplot, "ptd_validate_plot_options", m)
 
+  set.seed(1231)
   try(
     ptd_create_ggplot(
-      ptd_spc(data.frame(x = Sys.Date(), y = 1), "y", "x"),
+      ptd_spc(data.frame(x = Sys.Date() + 1:12, y = rnorm(12)), "y", "x"),
       1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12
     ),
     silent = TRUE
@@ -48,13 +49,15 @@ test_that("it facet's the plot if facet_field is set", {
   set.seed(123)
   d <- data.frame(x = as.Date("2020-01-01") + 1:20, y = rnorm(20), g = rep(c(1, 2), each = 10))
 
-  s1 <- ptd_spc(d, "y", "x")
-  p1 <- ptd_create_ggplot(s1)
-  expect_equal(p1$facet$vars(), character())
+  withr::with_options(list(ptd_spc.warning_threshold = 10), {
+    s1 <- ptd_spc(d, "y", "x")
+    p1 <- ptd_create_ggplot(s1)
+    expect_equal(p1$facet$vars(), character())
 
-  s2 <- ptd_spc(d, "y", "x", facet_field = "g")
-  p2 <- ptd_create_ggplot(s2)
-  expect_equal(p2$facet$vars(), "f")
+    s2 <- ptd_spc(d, "y", "x", facet_field = "g")
+    p2 <- ptd_create_ggplot(s2)
+    expect_equal(p2$facet$vars(), "f")
+  })
 })
 
 test_that("it sets the x_axis_breaks correctly", {
@@ -107,7 +110,10 @@ test_that("it sets y_axis_label correctly", {
 test_that("it sets scales correctly in a faceted plot", {
   set.seed(123)
   d <- data.frame(x = as.Date("2020-01-01") + 1:20, y = rnorm(20), g = rep(c(1, 2), each = 10))
-  s <- ptd_spc(d, "y", "x", facet_field = "g")
+
+  withr::with_options(list(ptd_spc.warning_threshold = 10), {
+    s <- ptd_spc(d, "y", "x", facet_field = "g")
+  })
 
   p1 <- ptd_create_ggplot(s)
   expect_false(p1$facet$params$free$x)

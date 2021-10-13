@@ -199,7 +199,7 @@ test_that("it calls ptd_add_short_group_warnings", {
   d$rebase <- 0
 
   expect_called(m, 1)
-  expect_args(m, 1, d, 12)
+  expect_args(m, 1, d)
 })
 
 test_that("it accepts nse arguments as well as string", {
