@@ -36,6 +36,7 @@ Suggests:
     rmarkdown,
     knitr,
     NHSRdatasets,
-    mockery
+    mockery,
+    withr
 VignetteBuilder: knitr
 Config/testthat/edition: 3
