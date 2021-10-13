@@ -25,13 +25,12 @@ test_that("it chooses warning_threshold from options if no value provided", {
 
 test_that("it groups, then ungroups data", {
   m1 <- mock()
-  m2 <- mock()
+  m2 <- mock(data.frame(short_group_warning = FALSE))
 
   stub(ptd_add_short_group_warnings, "group_by", m1)
   stub(ptd_add_short_group_warnings, "across", function(x, ...) x)
   stub(ptd_add_short_group_warnings, "mutate", function(x, ...) x)
   stub(ptd_add_short_group_warnings, "ungroup", m2)
-  stub(ptd_add_short_group_warnings, "if", function(x, ...) x)
 
   ptd_add_short_group_warnings(data.frame(), warning_threshold)
 
