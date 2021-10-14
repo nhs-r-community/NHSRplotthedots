@@ -28,13 +28,23 @@
 #' # if you are using a facetted chart, and wish to use a different target for each facet, then you
 #' # can call this method, naming each value with the name of the facet. Any facet that isn't listed
 #' # will not have a target applied to it.
-#' #
+#'
 #' # For example, to apply a target of 25 to the "a" facet and 10 to the "b" facet:
 #'
 #' ptd_target(
 #'   "a" = 25,
 #'   "b" = 10
 #' )
+#'
+#' # If you already have your data in a list, you do not need to use ptd_target(). But, if you
+#' # wanted to check that your values are valid, you could call it like so:
+#'
+#' my_targets <- list("a" = 25, "b" = 10)
+#' do.call(ptd_target, my_targets)
+#'
+#' # or, if your targets are in a numeric vector
+#' my_targets <- c("a" = 25, "b" = 10)
+#' do.call(ptd_target, as.list(my_targets))
 ptd_target <- function(...) {
   target <- list(...)
 
