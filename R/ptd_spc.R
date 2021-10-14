@@ -78,7 +78,7 @@ ptd_spc <- function(.data,
                     rebase = ptd_rebase(),
                     fix_after_n_points = NULL,
                     improvement_direction = "increase",
-                    target,
+                    target = ptd_target(),
                     trajectory,
                     screen_outliers = TRUE) {
   assertthat::assert_that(
@@ -89,7 +89,6 @@ ptd_spc <- function(.data,
   value_field <- quo_name(enquo(value_field))
   date_field <- quo_name(enquo(date_field))
   facet_field <- if (!missing(facet_field)) quo_name(enquo(facet_field))
-  target <- if (!missing(target)) quo_name(enquo(target))
   trajectory <- if (!missing(trajectory)) quo_name(enquo(trajectory))
 
   # validate all inputs.  Validation problems will generate an error and stop code execution.
@@ -102,7 +101,7 @@ ptd_spc <- function(.data,
 
   .data[[date_field]] <- to_datetime(.data[[date_field]])
 
-  # add rebase
+  # add rebase column
   .data <- ptd_add_rebase_column(.data, date_field, facet_field, rebase)
 
   # Declare improvement direction as integer
@@ -115,7 +114,9 @@ ptd_spc <- function(.data,
   df <- .data %>%
     ptd_spc_standard(options) %>%
     ptd_calculate_point_type(improvement_direction) %>%
-    ptd_add_short_group_warnings(warning_threshold = 12)
+    ptd_add_short_group_warnings() %>%
+    # add target column: we need to have called ptd_spc_standard to add the facet field
+    ptd_add_target_column(target)
 
   class(df) <- c("ptd_spc_df", class(df))
   attr(df, "options") <- options

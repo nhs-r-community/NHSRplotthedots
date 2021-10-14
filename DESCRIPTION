@@ -28,6 +28,7 @@ Imports:
     rlang,
     crayon,
     utils,
+    NHSRdatasets,
     assertthat
 Suggests: 
     covr,
@@ -35,7 +36,7 @@ Suggests:
     testthat (>= 3.0.0),
     rmarkdown,
     knitr,
-    NHSRdatasets,
-    mockery
+    mockery,
+    withr
 VignetteBuilder: knitr
 Config/testthat/edition: 3
