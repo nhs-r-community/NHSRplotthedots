@@ -14,7 +14,7 @@
 ptd_calculate_point_type <- function(.data, improvement_direction) {
   # Begin plot the dots logical tests
   .data %>%
-    group_by(.data$f) %>%
+    group_by(.data$f, .data$rebase_group) %>%
     mutate(
       special_cause_flag = ptd_special_cause_flag(
         .data$y,
