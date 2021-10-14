@@ -12,7 +12,7 @@ ptd_spc(
   rebase = ptd_rebase(),
   fix_after_n_points = NULL,
   improvement_direction = "increase",
-  target,
+  target = ptd_target(),
   trajectory,
   screen_outliers = TRUE
 )

@@ -34,6 +34,10 @@ test_that("it returns a ptd_spc_df object", {
     x$rebase <- 0
     x
   })
+  stub(ptd_spc, "ptd_add_target_column", function(x, ...) {
+    x$target <- as.double(NA)
+    x
+  })
 
   s <- ptd_spc(data, "y", "x")
 
@@ -50,6 +54,10 @@ test_that("it has options as an attribute, created by ptd_spc_options", {
   stub(ptd_spc, "to_datetime", function(x, ...) x)
   stub(ptd_spc, "ptd_add_rebase_column", function(x, ...) {
     x$rebase <- 0
+    x
+  })
+  stub(ptd_spc, "ptd_add_target_column", function(x, ...) {
+    x$target <- as.double(NA)
     x
   })
 
@@ -73,6 +81,10 @@ test_that("it validates the options", {
     x$rebase <- 0
     x
   })
+  stub(ptd_spc, "ptd_add_target_column", function(x, ...) {
+    x$target <- as.double(NA)
+    x
+  })
 
   s <- ptd_spc(data, "y", "x")
 
@@ -92,6 +104,7 @@ test_that("it calls ptd_spc_standard", {
     x$rebase <- 0
     x
   })
+  stub(ptd_spc, "ptd_add_target_column", function(x, ...) x)
 
   s <- ptd_spc(data, "y", "x")
 
@@ -112,6 +125,7 @@ test_that("it calls ptd_calculate_point_type (increase)", {
     x$rebase <- 0
     x
   })
+  stub(ptd_spc, "ptd_add_target_column", function(x, ...) x)
 
   ptd_spc(data, "y", "x")
 
@@ -132,6 +146,7 @@ test_that("it calls ptd_calculate_point_type (decrease)", {
     x$rebase <- 0
     x
   })
+  stub(ptd_spc, "ptd_add_target_column", function(x, ...) x)
 
   ptd_spc(data, "y", "x")
 
@@ -151,6 +166,10 @@ test_that("it converts date_field to POSIXct", {
     x$rebase <- 0
     x
   })
+  stub(ptd_spc, "ptd_add_target_column", function(x, ...) {
+    x$target <- as.double(NA)
+    x
+  })
 
   ptd_spc(data, "y", "x")
 
@@ -167,11 +186,29 @@ test_that("it calls ptd_add_rebase_column", {
   stub(ptd_spc, "ptd_calculate_point_type", function(x, ...) x)
   stub(ptd_spc, "to_datetime", function(x, ...) x)
   stub(ptd_spc, "ptd_add_rebase_column", m)
+  stub(ptd_spc, "ptd_add_target_column", function(x, ...) x)
 
   ptd_spc(data, "y", "x", facet_field = "f", rebase = "r")
 
   expect_called(m, 1)
   expect_args(m, 1, data, "x", "f", "r")
+})
+
+test_that("it calls ptd_add_target_column", {
+  m <- mock("ptd_add_target_column")
+
+  stub(ptd_spc, "ptd_spc_options", spc_options)
+  stub(ptd_spc, "ptd_validate_spc_options", TRUE)
+  stub(ptd_spc, "ptd_spc_standard", function(x, ...) x)
+  stub(ptd_spc, "ptd_calculate_point_type", function(x, ...) x)
+  stub(ptd_spc, "to_datetime", function(x, ...) x)
+  stub(ptd_spc, "ptd_add_rebase_column", function(x, ...) x)
+  stub(ptd_spc, "ptd_add_target_column", m)
+
+  ptd_spc(data, "y", "x", facet_field = "f", target = "t")
+
+  expect_called(m, 1)
+  expect_args(m, 1, data, "t")
 })
 
 test_that("it accepts nse arguments as well as string", {
@@ -183,20 +220,23 @@ test_that("it accepts nse arguments as well as string", {
   stub(ptd_spc, "ptd_calculate_point_type", function(x, ...) x)
   stub(ptd_spc, "to_datetime", function(x, ...) x)
 
+  r <- ptd_rebase()
+  t <- ptd_target()
+
   s1 <- ptd_spc(data, vf, df)
   s2 <- ptd_spc(
     data,
     value_field = vf,
     date_field = df,
     facet_field = ff,
-    rebase = ptd_rebase(),
-    target = ta,
+    rebase = r,
+    target = t,
     trajectory = tr
   )
 
   expect_called(m, 2)
   expect_args(m, 1, "vf", "df", NULL, NULL, NULL, "increase", NULL, NULL, TRUE)
-  expect_args(m, 2, "vf", "df", "ff", ptd_rebase(), NULL, "increase", "ta", "tr", TRUE)
+  expect_args(m, 2, "vf", "df", "ff", r, NULL, "increase", t, "tr", TRUE)
 })
 
 # print() ----

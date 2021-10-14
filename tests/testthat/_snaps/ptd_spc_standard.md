@@ -4,12 +4,11 @@
       dplyr::glimpse(r1)
     Output
       Rows: 20
-      Columns: 13
+      Columns: 12
       $ y                <dbl> -0.56047565, -0.23017749, 1.55870831, 0.07050839, 0.1~
       $ x                <date> 2020-01-02, 2020-01-03, 2020-01-04, 2020-01-05, 2020~
       $ f                <chr> "no facet", "no facet", "no facet", "no facet", "no f~
       $ trajectory       <dbl> NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, N~
-      $ target           <dbl> NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, N~
       $ rebase_group     <dbl> 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,~
       $ fix_y            <dbl> -0.56047565, -0.23017749, 1.55870831, 0.07050839, 0.1~
       $ mean             <dbl> 0.1416238, 0.1416238, 0.1416238, 0.1416238, 0.1416238~
@@ -25,12 +24,11 @@
       dplyr::glimpse(r2)
     Output
       Rows: 20
-      Columns: 13
+      Columns: 12
       $ y                <dbl> -0.56047565, -0.23017749, 1.55870831, 0.07050839, 0.1~
       $ x                <date> 2020-01-02, 2020-01-03, 2020-01-04, 2020-01-05, 2020~
       $ f                <chr> "no facet", "no facet", "no facet", "no facet", "no f~
       $ trajectory       <dbl> NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, N~
-      $ target           <dbl> NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, N~
       $ rebase_group     <dbl> 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,~
       $ fix_y            <dbl> -0.56047565, -0.23017749, 1.55870831, 0.07050839, 0.1~
       $ mean             <dbl> 0.6694159, 0.6694159, 0.6694159, 0.6694159, 0.6694159~
@@ -46,12 +44,11 @@
       dplyr::glimpse(r3)
     Output
       Rows: 20
-      Columns: 13
+      Columns: 12
       $ y                <dbl> -0.56047565, -0.23017749, 1.55870831, 0.07050839, 0.1~
       $ x                <date> 2020-01-02, 2020-01-03, 2020-01-04, 2020-01-05, 2020~
       $ f                <chr> "no facet", "no facet", "no facet", "no facet", "no f~
       $ trajectory       <dbl> NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, N~
-      $ target           <dbl> NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, N~
       $ rebase_group     <dbl> 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,~
       $ fix_y            <dbl> -0.56047565, -0.23017749, 1.55870831, 0.07050839, 0.1~
       $ mean             <dbl> 0.6694159, 0.6694159, 0.6694159, 0.6694159, 0.6694159~
