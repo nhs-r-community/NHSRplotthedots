@@ -4,7 +4,8 @@ library(mockery)
 # ptd_calculate_point_type() ----
 test_that("it calls functions as expected (no facet groups)", {
   a <- data.frame(
-    f = rep(1, 1),
+    f = rep(1, 4),
+    rebase_group = rep(0, 4),
     relative_to_mean = rep(1, 4),
     close_to_limits = rep(2, 4),
     y = rep(3, 4),
@@ -34,6 +35,7 @@ test_that("it calls functions as expected (no facet groups)", {
 test_that("it calls functions as expected (with facet groups)", {
   a <- data.frame(
     f = 1:4,
+    rebase_group = rep(0, 4),
     relative_to_mean = rep(1, 4),
     close_to_limits = rep(2, 4),
     y = rep(3, 4),
@@ -63,14 +65,14 @@ test_that("it returns the mutated data", {
 })
 
 test_that("it groups and ungroups the data", {
-  d <- data.frame(f = 1)
+  d <- data.frame(f = 1, rebase_group = 0)
 
   stub(ptd_calculate_point_type, "mutate", function(x, ...) x)
   stub(ptd_calculate_point_type, "ungroup", identity)
 
   a <- ptd_calculate_point_type(d, 1)
 
-  expect_equal(groups(a), list(as.symbol("f")))
+  expect_equal(groups(a), list(as.symbol("f"), as.symbol("rebase_group")))
 })
 
 # ptd_seven_point_one_side_mean() ----
