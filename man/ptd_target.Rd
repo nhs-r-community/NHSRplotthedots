@@ -43,7 +43,7 @@ ptd_target(0.9)
 #
 # For example, to apply a target of 25 to the "a" facet and 10 to the "b" facet:
 
-ptd_rebase(
+ptd_target(
   "a" = 25,
   "b" = 10
 )
