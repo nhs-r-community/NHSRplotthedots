@@ -22,21 +22,19 @@ ptd_spc_standard <- function(.data, options = NULL) {
   date_field <- options$date_field
   facet_field <- options$facet_field
   fix_after_n_points <- options$fix_after_n_points
-  target_field <- options$target
   trajectory_field <- options$trajectory
 
   # set trajectory field
   if (is.null(trajectory_field)) {
     .data$trajectory <- rep(as.numeric(NA), nrow(.data))
   } else {
+    assertthat::assert_that(
+      !is.null(.data[[trajectory_field]]),
+      msg = paste0("Trajectory column (",
+                   trajectory_field,
+                   ") does not exist in .data")
+    )
     .data$trajectory <- .data[[trajectory_field]]
-  }
-
-  # Set target field or create pseudo
-  if (is.null(target_field)) {
-    .data$target <- rep(as.numeric(NA), nrow(.data))
-  } else {
-    .data$target <- .data[[target_field]]
   }
 
   # Set facet/grouping or create pseudo
@@ -59,7 +57,6 @@ ptd_spc_standard <- function(.data, options = NULL) {
       f = .data$facet,
       rebase = .data$rebase,
       trajectory = .data$trajectory,
-      target = .data$target
     ) %>%
     # Group data frame by facet
     group_by(.data$f) %>%

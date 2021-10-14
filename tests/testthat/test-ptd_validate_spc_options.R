@@ -45,10 +45,14 @@ test_that("it returns an error if rebase is a named list, and the names don't ap
   expect_error(ptd_validate_spc_options(o2, d), "options provided to rebase are not in the facet_field column.")
 })
 
-test_that("it returns an error if target does not exist in .data", {
-  d <- data.frame(a = Sys.Date(), b = 2)
-  o <- ptd_spc_options("b", "a", target = "c")
-  expect_error(ptd_validate_spc_options(o, d), "target: 'c' must be a valid column name in the data frame.")
+test_that("it returns an error if target is a named list, and the names don't appear in the facet column", {
+  d <- data.frame(a = Sys.Date() + 1:4, b = 1:4, f = c("a", "b", "c", "d"))
+
+  o1 <- ptd_spc_options("b", "a", facet_field = "f", target = list("a" = 1))
+  ptd_validate_spc_options(o1, d)
+
+  o2 <- ptd_spc_options("b", "a", facet_field = "f", target = list("A" = 1))
+  expect_error(ptd_validate_spc_options(o2, d), "options provided to target are not in the facet_field column.")
 })
 
 test_that("it returns an error if trajectory does not exist in .data", {
@@ -73,12 +77,12 @@ test_that("date_field must be either a Date or POSIXt vector", {
   ptd_validate_spc_options(o, data.frame(a = Sys.time(), b = 1))
 
   expect_error(ptd_validate_spc_options(o, data.frame(a = 1, b = 1)),
-    "date_field must be a Date or POSIXt vector ('a' is a 'numeric').",
-    fixed = TRUE
+               "date_field must be a Date or POSIXt vector ('a' is a 'numeric').",
+               fixed = TRUE
   )
   expect_error(ptd_validate_spc_options(o, data.frame(a = "a", b = 1)),
-    "date_field must be a Date or POSIXt vector ('a' is a 'character').",
-    fixed = TRUE
+               "date_field must be a Date or POSIXt vector ('a' is a 'character').",
+               fixed = TRUE
   )
 })
 
@@ -87,7 +91,7 @@ test_that("value_field must be a numeric", {
   ptd_validate_spc_options(o, data.frame(a = Sys.Date(), b = 1))
 
   expect_error(ptd_validate_spc_options(o, data.frame(a = Sys.Date(), b = "a")),
-    "value_field must be a numeric vector ('b' is a 'character').",
-    fixed = TRUE
+               "value_field must be a numeric vector ('b' is a 'character').",
+               fixed = TRUE
   )
 })

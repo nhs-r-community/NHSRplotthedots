@@ -9,7 +9,7 @@ test_that("it returns correct data", {
     rebase = as.Date("2020-01-01"),
     fix_after_n_points = NULL,
     improvement_direction = "increase",
-    target = "target",
+    target = 1,
     trajectory = "trajectory",
     screen_outliers = TRUE
   )
@@ -20,7 +20,7 @@ test_that("it returns correct data", {
   expect_equal(r$rebase, as.Date("2020-01-01"))
   expect_equal(r$fix_after_n_points, NULL)
   expect_equal(r$improvement_direction, "increase")
-  expect_equal(r$target, "target")
+  expect_equal(r$target, 1)
   expect_equal(r$trajectory, "trajectory")
   expect_equal(r$screen_outliers, TRUE)
 
@@ -105,11 +105,15 @@ test_that("improvement_direction must be one of increase, neutral, or decrease",
   )
 })
 
-test_that("target is either null, or a scalar character", {
+test_that("target is either null, a scalar numeric, or a named list of numerics", {
   # this should run without an error
   ptd_spc_options("a", "b", target = NULL)
-  expect_error(ptd_spc_options("a", "b", target = 1), "target argument must be a 'character' of length 1.")
-  expect_error(ptd_spc_options("a", "b", target = c("a", "b")), "target argument must be a 'character' of length 1.")
+  ptd_spc_options("a", "b", target = 1)
+  ptd_spc_options("a", "b", target = list("a" = 1))
+
+  em <- "target argument must be a single numeric, or a named list of numerics."
+  expect_error(ptd_spc_options("a", "b", target = "a"), em, fixed = TRUE)
+  expect_error(ptd_spc_options("a", "b", target = c(0, 1)), em, fixed = TRUE)
 })
 
 test_that("trajectory is either null, or a scalar character", {
