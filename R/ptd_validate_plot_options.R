@@ -132,8 +132,8 @@ ptd_validate_plot_options <- function(point_size = NULL,
   if (!is.null(break_lines)) {
     assertthat::assert_that(
       assertthat::is.scalar(break_lines),
-      break_lines %in% c("both", "limit", "process", "none"),
-      msg = "break_lines must be one of 'both', 'limit', 'process', or 'none'."
+      break_lines %in% c("both", "limits", "process", "none"),
+      msg = "break_lines must be one of 'both', 'limits', 'process', or 'none'."
     )
   }
 

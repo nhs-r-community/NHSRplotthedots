@@ -239,7 +239,7 @@ test_that("it breaks lines", {
   expect_equal(rlang::eval_tidy(p1$layers[[5]]$mapping$group), rep(0:1, each = 10))
   expect_equal(rlang::eval_tidy(p1$layers[[6]]$mapping$group), rep(0:1, each = 10))
 
-  p2 <- ptd_create_ggplot(s, break_lines = "limit")
+  p2 <- ptd_create_ggplot(s, break_lines = "limits")
   expect_equal(rlang::eval_tidy(p2$layers[[1]]$mapping$group), rep(0:1, each = 10))
   expect_equal(rlang::eval_tidy(p2$layers[[2]]$mapping$group), rep(0:1, each = 10))
   expect_equal(rlang::eval_tidy(p2$layers[[5]]$mapping$group), rep(0:1, each = 10))

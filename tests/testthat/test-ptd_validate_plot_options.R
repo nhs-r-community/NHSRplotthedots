@@ -170,14 +170,13 @@ test_that("it handles theme_override correctly", {
 test_that("it handles break_lines correctly", {
   # these should run fine
   ptd_validate_plot_options(break_lines = "both")
-  ptd_validate_plot_options(break_lines = "limit")
+  ptd_validate_plot_options(break_lines = "limits")
   ptd_validate_plot_options(break_lines = "process")
   ptd_validate_plot_options(break_lines = "none")
 
   # these will error
-  em <- "break_lines must be one of 'both', 'limit', 'process', or 'none'."
+  em <- "break_lines must be one of 'both', 'limits', 'process', or 'none'."
   expect_error(ptd_validate_plot_options(break_lines = list()), em)
   expect_error(ptd_validate_plot_options(break_lines = 1), em)
-  expect_error(ptd_validate_plot_options(break_lines = c("both", "limit")), em)
+  expect_error(ptd_validate_plot_options(break_lines = c("both", "limits")), em)
 })
-
