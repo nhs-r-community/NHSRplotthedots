@@ -8,7 +8,14 @@
 #'
 #' @param ... either a single values, or, named values of targets. See examples.
 #'
-#' @return a list
+#' @return returns either:
+#'   * a single numeric value, in this case all facets in the plot will use this target value
+#'   * a named list of single numeric values, where each item is named as for one of the facet's in the plot. If a facet
+#'   isn't specified then it will not have a target
+#'
+#' @details This function is a helper to provide data in the correct format for use with `ptd_spc()`. See **Value**
+#' section for details of return type. If you are trying to do something like `ptd_spc(list_of_values)` then you can
+#' skip using the function and just use `list_of_values`, so long as the list meets the requirements as listed above.
 #'
 #' @export
 #'
@@ -19,8 +26,8 @@
 #' ptd_target(0.9)
 #'
 #' # if you are using a facetted chart, and wish to use a different target for each facet, then you can call this
-#' method, naming each value with the name of the facet. Any facet that isn't listed will not have a target applied to
-#' it. For example, to apply a target of 25 to the "a" facet and 10 to the "b" facet:
+#' # method, naming each value with the name of the facet. Any facet that isn't listed will not have a target applied to
+#' # it. For example, to apply a target of 25 to the "a" facet and 10 to the "b" facet:
 #'
 #' ptd_rebase(
 #'   "a" = 25,
