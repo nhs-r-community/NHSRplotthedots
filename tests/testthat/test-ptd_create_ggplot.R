@@ -81,6 +81,7 @@ test_that("it returns a ggplot object", {
     list(
       x = "X",
       y = "Y",
+      group = NULL,
       title = "SPC Chart of Y, starting 02/01/2020",
       caption = NULL,
       group = "if (break_lines) rebase_group else 0",
@@ -232,12 +233,29 @@ test_that("it breaks lines", {
   })
 
   p1 <- ptd_create_ggplot(s)
-  expect_equal(rlang::eval_tidy(p1$mapping$group), rep(0:1, each = 10))
-  expect_equal(p1$layers[[3]]$mapping$group, 1)
+  expect_null(p1$mapping$group)
+  expect_equal(rlang::eval_tidy(p1$layers[[1]]$mapping$group), rep(0:1, each = 10))
+  expect_equal(rlang::eval_tidy(p1$layers[[2]]$mapping$group), rep(0:1, each = 10))
+  expect_equal(rlang::eval_tidy(p1$layers[[5]]$mapping$group), rep(0:1, each = 10))
+  expect_equal(rlang::eval_tidy(p1$layers[[6]]$mapping$group), rep(0:1, each = 10))
 
-  p2 <- ptd_create_ggplot(s, break_lines = FALSE)
-  expect_equal(rlang::eval_tidy(p2$mapping$group), 0)
-  expect_equal(p2$layers[[3]]$mapping$group, 1)
+  p2 <- ptd_create_ggplot(s, break_lines = "limit")
+  expect_equal(rlang::eval_tidy(p2$layers[[1]]$mapping$group), rep(0:1, each = 10))
+  expect_equal(rlang::eval_tidy(p2$layers[[2]]$mapping$group), rep(0:1, each = 10))
+  expect_equal(rlang::eval_tidy(p2$layers[[5]]$mapping$group), rep(0:1, each = 10))
+  expect_equal(rlang::eval_tidy(p2$layers[[6]]$mapping$group), 0)
+
+  p3 <- ptd_create_ggplot(s, break_lines = "process")
+  expect_equal(rlang::eval_tidy(p3$layers[[1]]$mapping$group), 0)
+  expect_equal(rlang::eval_tidy(p3$layers[[2]]$mapping$group), 0)
+  expect_equal(rlang::eval_tidy(p3$layers[[5]]$mapping$group), 0)
+  expect_equal(rlang::eval_tidy(p3$layers[[6]]$mapping$group), rep(0:1, each = 10))
+
+  p4 <- ptd_create_ggplot(s, break_lines = "none")
+  expect_equal(rlang::eval_tidy(p4$layers[[1]]$mapping$group), 0)
+  expect_equal(rlang::eval_tidy(p4$layers[[2]]$mapping$group), 0)
+  expect_equal(rlang::eval_tidy(p4$layers[[5]]$mapping$group), 0)
+  expect_equal(rlang::eval_tidy(p4$layers[[6]]$mapping$group), 0)
 })
 
 test_that("it sets the colour of the points based on the type", {
@@ -350,6 +368,6 @@ test_that("it calls ptd_create_ggplot()", {
     icons_position = c("top right", "bottom right", "bottom left", "top left", "none"),
     colours = "colours",
     theme_override = NULL,
-    break_lines = TRUE
+    break_lines = "both"
   )
 })

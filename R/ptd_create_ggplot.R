@@ -26,7 +26,8 @@
 #' @param colours Specify the colours to use in the plot, use the [ptd_spc_colours()] function to change defaults.
 #' @param theme_override Specify a list containing ggplot theme elements which can be used to override the default
 #'     appearance of the plot.
-#' @param break_lines whether to break lines when a rebase happens. Defaults to TRUE.
+#' @param break_lines whether to break lines when a rebase happens. Defaults to "both", but can break just "limit"
+#'     lines, "process" lines, or "none".
 #' @param ... currently ignored
 #' @return The ggplot2 object
 #' @export
@@ -45,7 +46,7 @@ ptd_create_ggplot <- function(x,
                               icons_position = c("top right", "bottom right", "bottom left", "top left", "none"),
                               colours = ptd_spc_colours(),
                               theme_override = NULL,
-                              break_lines = TRUE,
+                              break_lines = c("both", "limit", "process", "none"),
                               ...) {
   dots <- list(...)
   if (length(dots) > 0) {
@@ -82,6 +83,7 @@ ptd_create_ggplot <- function(x,
 
   icons_position <- match.arg(icons_position)
 
+  break_lines <- match.arg(break_lines)
   ptd_validate_plot_options(
     point_size,
     percentage_y_axis,
@@ -116,23 +118,27 @@ ptd_create_ggplot <- function(x,
 
   line_size <- point_size / 3
 
-  plot <- ggplot(.data, aes(x = .data$x, y = .data$y, group = if (break_lines) .data$rebase_group else 0)) +
-    geom_line(aes(y = .data$upl),
+  break_limit <- break_lines %in% c("both", "limit")
+  break_process <- break_lines %in% c("both", "process")
+
+  plot <- ggplot(.data, aes(x = .data$x, y = .data$y)) +
+    geom_line(aes(y = .data$upl, group = if (break_limit) .data$rebase_group else 0),
       linetype = "dashed", size = line_size, colour = colours$upl
     ) +
-    geom_line(aes(y = .data$lpl),
+    geom_line(aes(y = .data$lpl, group = if (break_limit) .data$rebase_group else 0),
       linetype = "dashed", size = line_size, colour = colours$lpl
     ) +
-    geom_line(aes(y = .data$target, group = 1),
+    geom_line(aes(y = .data$target),
       linetype = "dashed", size = line_size, colour = colours$target, na.rm = TRUE
     ) +
     geom_line(aes(y = .data$trajectory),
       linetype = "dashed", size = line_size, colour = colours$trajectory, na.rm = TRUE
     ) +
-    geom_line(aes(y = mean),
+    geom_line(aes(y = mean, group = if (break_limit) .data$rebase_group else 0),
       linetype = "solid", colour = colours$mean_line
     ) +
-    geom_line(linetype = "solid", size = line_size, colour = colours$value_line) +
+    geom_line(aes(group = if (break_process) .data$rebase_group else 0),
+              linetype = "solid", size = line_size, colour = colours$value_line) +
     geom_point(aes(colour = .data$point_type), size = point_size) +
     scale_colour_manual(
       values = colours_subset,
@@ -142,7 +148,8 @@ ptd_create_ggplot <- function(x,
       title = main_title,
       x = x_axis_label,
       y = y_axis_label,
-      caption = caption
+      caption = caption,
+      group = NULL
     ) +
     theme_minimal() +
     theme(
@@ -222,8 +229,10 @@ plot.ptd_spc_df <- function(x,
                             icons_position = c("top right", "bottom right", "bottom left", "top left", "none"),
                             colours = ptd_spc_colours(),
                             theme_override = NULL,
-                            break_lines = TRUE,
+                            break_lines = c("both", "limit", "process", "none"),
                             ...) {
+  break_lines <- match.arg(break_lines)
+
   ptd_create_ggplot(
     x,
     point_size,
