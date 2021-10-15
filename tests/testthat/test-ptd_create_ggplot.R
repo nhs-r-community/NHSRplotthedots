@@ -185,19 +185,31 @@ test_that("it sets the colour of the points based on the type", {
 
   set.seed(123)
   d <- data.frame(x = as.Date("2020-01-01") + 1:20, y = rnorm(20))
-  s <- ptd_spc(d, "y", "x")
 
-  p <- ptd_create_ggplot(s)
+  colours_neutal <- list(
+    common_cause              = "#7B7D7D", # grey
+    special_cause_neutral     = "#361475" # purple
+  )
 
-  colours <- list(
+  colours_otherwise <- list(
     common_cause              = "#7B7D7D", # grey
     special_cause_improvement = "#289de0", # blue
-    special_cause_neutral     = "#361475", # purple
     special_cause_concern     = "#fab428" # orange
   )
 
-  expect_called(m, 1)
-  expect_args(m, 1, values = colours, labels = ptd_title_case)
+  # 1: improvement_direction = neutral
+  s1 <- ptd_spc(d, "y", "x", improvement_direction = "neutral")
+  p1 <- ptd_create_ggplot(s1)
+  # 2: improvement_direction = "increase"
+  s2 <- ptd_spc(d, "y", "x", improvement_direction = "increase")
+  p2 <- ptd_create_ggplot(s2)
+  # 3: improvement_direction = "decrease"
+  s3 <- ptd_spc(d, "y", "x", improvement_direction = "decrease")
+  p3 <- ptd_create_ggplot(s3)
+
+  expect_called(m, 3)
+  expect_args(m, 1, values = colours_neutal, labels = ptd_title_case)
+  expect_args(m, 2, values = colours_otherwise, labels = ptd_title_case)
 })
 
 test_that("it sets the main title correctly", {

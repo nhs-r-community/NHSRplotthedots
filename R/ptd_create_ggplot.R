@@ -65,6 +65,12 @@ ptd_create_ggplot <- function(x,
 
   options <- attr(.data, "options")
 
+  colours_subset <- if (options[["improvement_direction"]] == "neutral") {
+    colours[c("common_cause", "special_cause_neutral")]
+  } else {
+    colours[c("common_cause", "special_cause_improvement", "special_cause_concern")]
+  }
+
   if (is.null(main_title)) {
     main_title <- paste0(
       "SPC Chart of ",
@@ -105,12 +111,7 @@ ptd_create_ggplot <- function(x,
     geom_line(linetype = "solid", size = line_size, colour = colours$value_line) +
     geom_point(aes(colour = .data$point_type), size = point_size) +
     scale_colour_manual(
-      values = colours[c(
-        "common_cause",
-        "special_cause_improvement",
-        "special_cause_neutral",
-        "special_cause_concern"
-      )],
+      values = colours_subset,
       labels = ptd_title_case
     ) +
     labs(
