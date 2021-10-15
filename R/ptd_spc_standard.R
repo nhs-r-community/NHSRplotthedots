@@ -30,9 +30,11 @@ ptd_spc_standard <- function(.data, options = NULL) {
   } else {
     assertthat::assert_that(
       !is.null(.data[[trajectory_field]]),
-      msg = paste0("Trajectory column (",
-                   trajectory_field,
-                   ") does not exist in .data")
+      msg = paste0(
+        "Trajectory column (",
+        trajectory_field,
+        ") does not exist in .data"
+      )
     )
     .data$trajectory <- .data[[trajectory_field]]
   }

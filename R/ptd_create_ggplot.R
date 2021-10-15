@@ -138,7 +138,8 @@ ptd_create_ggplot <- function(x,
       linetype = "solid", colour = colours$mean_line
     ) +
     geom_line(aes(group = if (break_process) .data$rebase_group else 0),
-              linetype = "solid", size = line_size, colour = colours$value_line) +
+      linetype = "solid", size = line_size, colour = colours$value_line
+    ) +
     geom_point(aes(colour = .data$point_type), size = point_size) +
     scale_colour_manual(
       values = colours_subset,
