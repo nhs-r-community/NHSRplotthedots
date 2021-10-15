@@ -88,8 +88,9 @@
     rebase:               not set
     fix_after_n_points:   not set
     improvement_direction:'increase'
-    target:               'target'
+    target:               '0.5'
     trajectory:           not set
+    screen_outliers:      'TRUE'
     --------------------------------
     # A tibble: 1 x 8
        mean   lpl   upl     n common_cause special_cause_improve~ special_cause_con~

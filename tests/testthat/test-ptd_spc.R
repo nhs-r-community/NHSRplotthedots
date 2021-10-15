@@ -315,6 +315,6 @@ test_that("it outputs expected content", {
   )
   expect_snapshot_output(summary(s4))
 
-  s5 <- ptd_spc(d, "y", "x", target = "target")
+  s5 <- ptd_spc(d, "y", "x", target = 0.5)
   expect_snapshot_output(summary(s5))
 })
