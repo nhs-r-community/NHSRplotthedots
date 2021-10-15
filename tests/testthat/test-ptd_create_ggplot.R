@@ -84,7 +84,6 @@ test_that("it returns a ggplot object", {
       group = NULL,
       title = "SPC Chart of Y, starting 02/01/2020",
       caption = NULL,
-      group = "if (break_lines) rebase_group else 0",
       colour = "point_type",
       type = "type",
       text = "text"
