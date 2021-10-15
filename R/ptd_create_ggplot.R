@@ -74,6 +74,14 @@ ptd_create_ggplot <- function(x,
     )
   }
 
+  # apply a short groups warning caption if needed
+  caption <- if (TRUE %in% .data$short_group_warning) {
+      paste0("Some trial limits created by groups of fewer than 12 points exist. \n",
+      "These will become more reliable as more data is added.")
+    } else {
+      NULL
+    }
+
   line_size <- point_size / 3
 
   plot <- ggplot(.data, aes(x = .data$x, y = .data$y)) +
@@ -106,7 +114,8 @@ ptd_create_ggplot <- function(x,
     labs(
       title = main_title,
       x = x_axis_label %||% ptd_capitalise(options[["date_field"]]),
-      y = y_axis_label %||% ptd_capitalise(options[["value_field"]])
+      y = y_axis_label %||% ptd_capitalise(options[["value_field"]]),
+      caption = caption
     ) +
     theme_minimal() +
     theme(

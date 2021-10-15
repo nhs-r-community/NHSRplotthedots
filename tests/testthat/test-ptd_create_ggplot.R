@@ -40,6 +40,7 @@ test_that("it returns a ggplot object", {
       x = "X",
       y = "Y",
       title = "SPC Chart of Y, starting 02/01/2020",
+      caption = NULL,
       colour = "point_type"
     )
   )
@@ -208,6 +209,21 @@ test_that("it sets the main title correctly", {
 
   p2 <- ptd_create_ggplot(s, main_title = "Thing")
   expect_equal(p2$labels$title, "Thing")
+})
+
+test_that("a plot with short rebase group has a warning caption", {
+  d <- data.frame(x = as.Date("2020-01-01") + 1:40, y = rnorm(40))
+  s1 <- ptd_spc(d, "y", "x", rebase = as.Date("2020-01-20")) # rebase at midpoint, no short groups
+  s2 <- suppressWarnings(ptd_spc(d, "y", "x", rebase = as.Date("2020-02-02"))) # rebase close to end of points
+
+  p1 <- ptd_create_ggplot(s1)
+  expect_equal(p1$labels$caption, NULL)
+
+  p2 <- ptd_create_ggplot(s2)
+  expect_equal(p2$labels$caption, 
+    paste0("Some trial limits created by groups of fewer than 12 points exist. \n",
+    "These will become more reliable as more data is added.")
+  )
 })
 
 # plot() ----
