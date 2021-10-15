@@ -34,6 +34,10 @@ test_that("it returns a ptd_spc_df object", {
     x$rebase <- 0
     x
   })
+  stub(ptd_spc, "ptd_add_short_group_warnings", function(x, ...) {
+    x$short_group_warning <- FALSE
+    x
+  })
   stub(ptd_spc, "ptd_add_target_column", function(x, ...) {
     x$target <- as.double(NA)
     x
@@ -54,6 +58,10 @@ test_that("it has options as an attribute, created by ptd_spc_options", {
   stub(ptd_spc, "to_datetime", function(x, ...) x)
   stub(ptd_spc, "ptd_add_rebase_column", function(x, ...) {
     x$rebase <- 0
+    x
+  })
+  stub(ptd_spc, "ptd_add_short_group_warnings", function(x, ...) {
+    x$short_group_warning <- FALSE
     x
   })
   stub(ptd_spc, "ptd_add_target_column", function(x, ...) {
@@ -81,6 +89,10 @@ test_that("it validates the options", {
     x$rebase <- 0
     x
   })
+  stub(ptd_spc, "ptd_add_short_group_warnings", function(x, ...) {
+    x$short_group_warning <- FALSE
+    x
+  })
   stub(ptd_spc, "ptd_add_target_column", function(x, ...) {
     x$target <- as.double(NA)
     x
@@ -100,16 +112,14 @@ test_that("it calls ptd_spc_standard", {
   stub(ptd_spc, "ptd_spc_standard", m)
   stub(ptd_spc, "ptd_calculate_point_type", function(x, ...) x)
   stub(ptd_spc, "to_datetime", function(x, ...) x)
-  stub(ptd_spc, "ptd_add_rebase_column", function(x, ...) {
-    x$rebase <- 0
-    x
-  })
+  stub(ptd_spc, "ptd_add_rebase_column", function(x, ...) x)
+  stub(ptd_spc, "ptd_add_short_group_warnings", function(x, ...) x)
   stub(ptd_spc, "ptd_add_target_column", function(x, ...) x)
 
   s <- ptd_spc(data, "y", "x")
 
   expect_called(m, 1)
-  expect_args(m, 1, mutate(data, rebase = 0), spc_options)
+  expect_args(m, 1, data, spc_options)
 })
 
 test_that("it calls ptd_calculate_point_type (increase)", {
@@ -121,16 +131,14 @@ test_that("it calls ptd_calculate_point_type (increase)", {
   stub(ptd_spc, "ptd_spc_standard", function(x, ...) x)
   stub(ptd_spc, "ptd_calculate_point_type", m)
   stub(ptd_spc, "to_datetime", function(x, ...) x)
-  stub(ptd_spc, "ptd_add_rebase_column", function(x, ...) {
-    x$rebase <- 0
-    x
-  })
+  stub(ptd_spc, "ptd_add_rebase_column", function(x, ...) x)
+  stub(ptd_spc, "ptd_add_short_group_warnings", function(x, ...) x)
   stub(ptd_spc, "ptd_add_target_column", function(x, ...) x)
 
   ptd_spc(data, "y", "x")
 
   expect_called(m, 1)
-  expect_args(m, 1, mutate(data, rebase = 0), 1)
+  expect_args(m, 1, data, 1)
 })
 
 test_that("it calls ptd_calculate_point_type (decrease)", {
@@ -142,16 +150,14 @@ test_that("it calls ptd_calculate_point_type (decrease)", {
   stub(ptd_spc, "ptd_spc_standard", function(x, ...) x)
   stub(ptd_spc, "ptd_calculate_point_type", m)
   stub(ptd_spc, "to_datetime", function(x, ...) x)
-  stub(ptd_spc, "ptd_add_rebase_column", function(x, ...) {
-    x$rebase <- 0
-    x
-  })
+  stub(ptd_spc, "ptd_add_rebase_column", function(x, ...) x)
+  stub(ptd_spc, "ptd_add_short_group_warnings", function(x, ...) x)
   stub(ptd_spc, "ptd_add_target_column", function(x, ...) x)
 
   ptd_spc(data, "y", "x")
 
   expect_called(m, 1)
-  expect_args(m, 1, mutate(data, rebase = 0), -1)
+  expect_args(m, 1, data, -1)
 })
 
 test_that("it converts date_field to POSIXct", {
@@ -162,14 +168,9 @@ test_that("it converts date_field to POSIXct", {
   stub(ptd_spc, "ptd_spc_standard", function(x, ...) x)
   stub(ptd_spc, "ptd_calculate_point_type", function(x, ...) x)
   stub(ptd_spc, "to_datetime", m)
-  stub(ptd_spc, "ptd_add_rebase_column", function(x, ...) {
-    x$rebase <- 0
-    x
-  })
-  stub(ptd_spc, "ptd_add_target_column", function(x, ...) {
-    x$target <- as.double(NA)
-    x
-  })
+  stub(ptd_spc, "ptd_add_rebase_column", function(x, ...) x)
+  stub(ptd_spc, "ptd_add_short_group_warnings", function(x, ...) x)
+  stub(ptd_spc, "ptd_add_target_column", function(x, ...) x)
 
   ptd_spc(data, "y", "x")
 
@@ -186,12 +187,31 @@ test_that("it calls ptd_add_rebase_column", {
   stub(ptd_spc, "ptd_calculate_point_type", function(x, ...) x)
   stub(ptd_spc, "to_datetime", function(x, ...) x)
   stub(ptd_spc, "ptd_add_rebase_column", m)
+  stub(ptd_spc, "ptd_add_short_group_warnings", function(x, ...) x)
   stub(ptd_spc, "ptd_add_target_column", function(x, ...) x)
 
   ptd_spc(data, "y", "x", facet_field = "f", rebase = "r")
 
   expect_called(m, 1)
   expect_args(m, 1, data, "x", "f", "r")
+})
+
+test_that("it calls ptd_add_short_group_warnings", {
+  m <- mock("ptd_add_short_group_warnings")
+
+  stub(ptd_spc, "ptd_spc_options", spc_options)
+  stub(ptd_spc, "ptd_validate_spc_options", TRUE)
+  stub(ptd_spc, "ptd_spc_standard", function(x, ...) x)
+  stub(ptd_spc, "ptd_calculate_point_type", function(x, ...) x)
+  stub(ptd_spc, "to_datetime", function(x, ...) x)
+  stub(ptd_spc, "ptd_add_rebase_column", function(x, ...) x)
+  stub(ptd_spc, "ptd_add_short_group_warnings", m)
+  stub(ptd_spc, "ptd_add_target_column", function(x, ...) x)
+
+  ptd_spc(data, "y", "x")
+
+  expect_called(m, 1)
+  expect_args(m, 1, data)
 })
 
 test_that("it calls ptd_add_target_column", {
@@ -203,9 +223,10 @@ test_that("it calls ptd_add_target_column", {
   stub(ptd_spc, "ptd_calculate_point_type", function(x, ...) x)
   stub(ptd_spc, "to_datetime", function(x, ...) x)
   stub(ptd_spc, "ptd_add_rebase_column", function(x, ...) x)
+  stub(ptd_spc, "ptd_add_short_group_warnings", function(x, ...) x)
   stub(ptd_spc, "ptd_add_target_column", m)
 
-  ptd_spc(data, "y", "x", facet_field = "f", target = "t")
+  ptd_spc(data, "y", "x", target = "t")
 
   expect_called(m, 1)
   expect_args(m, 1, data, "t")
@@ -219,6 +240,7 @@ test_that("it accepts nse arguments as well as string", {
   stub(ptd_spc, "ptd_spc_standard", function(x, ...) x)
   stub(ptd_spc, "ptd_calculate_point_type", function(x, ...) x)
   stub(ptd_spc, "to_datetime", function(x, ...) x)
+  stub(ptd_spc, "ptd_add_short_group_warnings", function(x, ...) x)
 
   r <- ptd_rebase()
   t <- ptd_target()
@@ -279,9 +301,13 @@ test_that("it outputs expected content", {
   s2 <- ptd_spc(d, "y", "x", rebase = as.Date("2020-01-01"))
   expect_snapshot_output(summary(s2))
 
-  s3 <- ptd_spc(d, "y", "x", facet_field = "facet")
+  suppressWarnings(
+    s3 <- ptd_spc(d, "y", "x", facet_field = "facet")
+  )
   expect_snapshot_output(summary(s3))
 
-  s4 <- ptd_spc(d, "y", "x", rebase = as.Date("2020-01-01"), facet_field = "facet")
+  suppressWarnings(
+    s4 <- ptd_spc(d, "y", "x", rebase = as.Date("2020-01-01"), facet_field = "facet")
+  )
   expect_snapshot_output(summary(s4))
 })

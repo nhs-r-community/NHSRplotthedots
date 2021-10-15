@@ -13,9 +13,10 @@ test_that("it calls ptd_validate_plot_options", {
   m <- mock(stop())
   stub(ptd_create_ggplot, "ptd_validate_plot_options", m)
 
+  set.seed(1231)
   try(
     ptd_create_ggplot(
-      ptd_spc(data.frame(x = Sys.Date(), y = 1), "y", "x"),
+      ptd_spc(data.frame(x = Sys.Date() + 1:12, y = rnorm(12)), "y", "x"),
       1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12
     ),
     silent = TRUE
@@ -39,6 +40,7 @@ test_that("it returns a ggplot object", {
       x = "X",
       y = "Y",
       title = "SPC Chart of Y, starting 02/01/2020",
+      caption = NULL,
       colour = "point_type"
     )
   )
@@ -48,13 +50,15 @@ test_that("it facet's the plot if facet_field is set", {
   set.seed(123)
   d <- data.frame(x = as.Date("2020-01-01") + 1:20, y = rnorm(20), g = rep(c(1, 2), each = 10))
 
-  s1 <- ptd_spc(d, "y", "x")
-  p1 <- ptd_create_ggplot(s1)
-  expect_equal(p1$facet$vars(), character())
+  withr::with_options(list(ptd_spc.warning_threshold = 10), {
+    s1 <- ptd_spc(d, "y", "x")
+    p1 <- ptd_create_ggplot(s1)
+    expect_equal(p1$facet$vars(), character())
 
-  s2 <- ptd_spc(d, "y", "x", facet_field = "g")
-  p2 <- ptd_create_ggplot(s2)
-  expect_equal(p2$facet$vars(), "f")
+    s2 <- ptd_spc(d, "y", "x", facet_field = "g")
+    p2 <- ptd_create_ggplot(s2)
+    expect_equal(p2$facet$vars(), "f")
+  })
 })
 
 test_that("it sets the x_axis_breaks correctly", {
@@ -107,7 +111,10 @@ test_that("it sets y_axis_label correctly", {
 test_that("it sets scales correctly in a faceted plot", {
   set.seed(123)
   d <- data.frame(x = as.Date("2020-01-01") + 1:20, y = rnorm(20), g = rep(c(1, 2), each = 10))
-  s <- ptd_spc(d, "y", "x", facet_field = "g")
+
+  withr::with_options(list(ptd_spc.warning_threshold = 10), {
+    s <- ptd_spc(d, "y", "x", facet_field = "g")
+  })
 
   p1 <- ptd_create_ggplot(s)
   expect_false(p1$facet$params$free$x)
@@ -204,6 +211,24 @@ test_that("it sets the main title correctly", {
   expect_equal(p2$labels$title, "Thing")
 })
 
+test_that("a plot with short rebase group has a warning caption", {
+  d <- data.frame(x = as.Date("2020-01-01") + 1:40, y = rnorm(40))
+  s1 <- ptd_spc(d, "y", "x", rebase = as.Date("2020-01-20")) # rebase at midpoint, no short groups
+  s2 <- suppressWarnings(ptd_spc(d, "y", "x", rebase = as.Date("2020-02-02"))) # rebase close to end of points
+
+  p1 <- ptd_create_ggplot(s1)
+  expect_equal(p1$labels$caption, NULL)
+
+  p2 <- ptd_create_ggplot(s2)
+  expect_equal(
+    p2$labels$caption,
+    paste0(
+      "Some trial limits created by groups of fewer than 12 points exist. \n",
+      "These will become more reliable as more data is added."
+    )
+  )
+})
+
 # plot() ----
 test_that("it calls ptd_create_ggplot()", {
   set.seed(123)
@@ -235,145 +260,4 @@ test_that("it calls ptd_create_ggplot()", {
     colours = "colours",
     theme_override = NULL
   )
-})
-
-# ptd_validate_plot_options() ----
-test_that("it handles point_size correctly", {
-  # these should run fine
-  ptd_validate_plot_options(point_size = NULL)
-  ptd_validate_plot_options(point_size = 5)
-
-  # these will error
-  em <- "point_size must be a single number greater than 0 and less than or equal to 10."
-  expect_error(ptd_validate_plot_options(point_size = "a"), em)
-  expect_error(ptd_validate_plot_options(point_size = 0), em)
-  expect_error(ptd_validate_plot_options(point_size = 11), em)
-  expect_error(ptd_validate_plot_options(point_size = c(5, 5)), em)
-})
-
-test_that("it handles percentage_y_axis correctly", {
-  # these should run fine
-  ptd_validate_plot_options(percentage_y_axis = NULL)
-  ptd_validate_plot_options(percentage_y_axis = TRUE)
-  ptd_validate_plot_options(percentage_y_axis = FALSE)
-
-  # these will error
-  em <- "percentage_y_axis argument must a single logical."
-  expect_error(ptd_validate_plot_options(percentage_y_axis = "a"), em)
-  expect_error(ptd_validate_plot_options(percentage_y_axis = -1), em)
-  expect_error(ptd_validate_plot_options(percentage_y_axis = 2), em)
-  expect_error(ptd_validate_plot_options(percentage_y_axis = c(TRUE, FALSE)), em)
-})
-
-test_that("it handles main_title correctly", {
-  # these should run fine
-  ptd_validate_plot_options(main_title = NULL)
-  ptd_validate_plot_options(main_title = "title")
-
-  # these will error
-  em <- "main_title argument must be a character of length 1."
-  expect_error(ptd_validate_plot_options(main_title = 1), em)
-  expect_error(ptd_validate_plot_options(main_title = c("a", "b")), em)
-})
-
-test_that("it handles x_axis_label correctly", {
-  # these should run fine
-  ptd_validate_plot_options(x_axis_label = NULL)
-  ptd_validate_plot_options(x_axis_label = "title")
-
-  # these will error
-  em <- "x_axis_label argument must be a character of length 1."
-  expect_error(ptd_validate_plot_options(x_axis_label = 1), em)
-  expect_error(ptd_validate_plot_options(x_axis_label = c("a", "b")), em)
-})
-
-test_that("it handles y_axis_label correctly", {
-  # these should run fine
-  ptd_validate_plot_options(y_axis_label = NULL)
-  ptd_validate_plot_options(y_axis_label = "title")
-
-  # these will error
-  em <- "y_axis_label argument must be a character of length 1."
-  expect_error(ptd_validate_plot_options(y_axis_label = 1), em)
-  expect_error(ptd_validate_plot_options(y_axis_label = c("a", "b")), em)
-})
-
-test_that("it handles fixed_x_axis_multiple correctly", {
-  # these should run fine
-  ptd_validate_plot_options(fixed_x_axis_multiple = NULL)
-  ptd_validate_plot_options(fixed_x_axis_multiple = TRUE)
-
-  # these will error
-  em <- "fixed_x_axis_multiple argument must be a logical of length 1."
-  expect_error(ptd_validate_plot_options(fixed_x_axis_multiple = 1), em)
-  expect_error(ptd_validate_plot_options(fixed_x_axis_multiple = c(TRUE, FALSE)), em)
-})
-
-test_that("it handles fixed_y_axis_multiple correctly", {
-  # these should run fine
-  ptd_validate_plot_options(fixed_y_axis_multiple = NULL)
-  ptd_validate_plot_options(fixed_y_axis_multiple = TRUE)
-
-  # these will error
-  em <- "fixed_y_axis_multiple argument must be a logical of length 1."
-  expect_error(ptd_validate_plot_options(fixed_y_axis_multiple = 1), em)
-  expect_error(ptd_validate_plot_options(fixed_y_axis_multiple = c(TRUE, FALSE)), em)
-})
-
-test_that("it handles x_axis_date_format correctly", {
-  # these should run fine
-  ptd_validate_plot_options(x_axis_date_format = NULL)
-  ptd_validate_plot_options(x_axis_date_format = "a")
-
-  # these will error
-  em <- "x_axis_date_format argument must be a character of length 1."
-  expect_error(ptd_validate_plot_options(x_axis_date_format = 1), em)
-  expect_error(ptd_validate_plot_options(x_axis_date_format = c("a", "b")), em)
-})
-
-test_that("it handles x_axis_breaks correctly", {
-  # these should run fine
-  ptd_validate_plot_options(x_axis_breaks = NULL)
-  ptd_validate_plot_options(x_axis_breaks = "1 day")
-  ptd_validate_plot_options(x_axis_breaks = "2 days")
-  ptd_validate_plot_options(x_axis_breaks = "12 days")
-  ptd_validate_plot_options(x_axis_breaks = "1 week")
-  ptd_validate_plot_options(x_axis_breaks = "1 month")
-  ptd_validate_plot_options(x_axis_breaks = "1 quarter")
-  ptd_validate_plot_options(x_axis_breaks = "1 year")
-
-  # these will error
-  em <- "x_axis_breaks argument must be a character of length 1."
-  expect_error(ptd_validate_plot_options(x_axis_breaks = 1), em)
-  expect_error(ptd_validate_plot_options(x_axis_breaks = c("1 week", "2 weeks")), em)
-  expect_error(ptd_validate_plot_options(x_axis_breaks = "week"), em)
-})
-
-test_that("it handles y_axis_breaks correctly", {
-  # these should run fine
-  ptd_validate_plot_options(y_axis_breaks = NULL)
-  ptd_validate_plot_options(y_axis_breaks = 1)
-
-  # these will error
-  em <- "y_axis_breaks argument must be a numeric of length 1."
-  expect_error(ptd_validate_plot_options(y_axis_breaks = "a"), em)
-  expect_error(ptd_validate_plot_options(y_axis_breaks = c(1, 2)), em)
-})
-
-test_that("it handles colours correctly", {
-  # these should run fine
-  ptd_validate_plot_options(colours = ptd_spc_colours())
-
-  # these will error
-  em <- "colours must be an object created by ptd_spc_colours()."
-  expect_error(ptd_validate_plot_options(colours = list()), em)
-})
-
-test_that("it handles theme_override correctly", {
-  # these should run fine
-  ptd_validate_plot_options(theme_override = theme())
-
-  # these will error
-  em <- "theme_override must be an object created by theme()."
-  expect_error(ptd_validate_plot_options(theme_override = list()), em)
 })

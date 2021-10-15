@@ -36,6 +36,7 @@ Suggests:
     testthat (>= 3.0.0),
     rmarkdown,
     knitr,
-    mockery
+    mockery,
+    withr
 VignetteBuilder: knitr
 Config/testthat/edition: 3

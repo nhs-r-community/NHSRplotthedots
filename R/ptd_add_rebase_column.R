@@ -1,3 +1,7 @@
+# adds a column named rebase
+# with 1's in any row corresponding to a rebase date
+# and 0's everywhere else
+
 ptd_add_rebase_column <- function(.data, date_field, facet_field, rebase) {
   if (is.list(rebase)) {
     rebase_table <- bind_rows(

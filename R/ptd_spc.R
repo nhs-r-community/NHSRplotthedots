@@ -114,6 +114,7 @@ ptd_spc <- function(.data,
   df <- .data %>%
     ptd_spc_standard(options) %>%
     ptd_calculate_point_type(improvement_direction) %>%
+    ptd_add_short_group_warnings() %>%
     # add target column: we need to have called ptd_spc_standard to add the facet field
     ptd_add_target_column(target)
 
