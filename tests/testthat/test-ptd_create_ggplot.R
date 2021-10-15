@@ -220,9 +220,12 @@ test_that("a plot with short rebase group has a warning caption", {
   expect_equal(p1$labels$caption, NULL)
 
   p2 <- ptd_create_ggplot(s2)
-  expect_equal(p2$labels$caption,
-    paste0("Some trial limits created by groups of fewer than 12 points exist. \n",
-    "These will become more reliable as more data is added.")
+  expect_equal(
+    p2$labels$caption,
+    paste0(
+      "Some trial limits created by groups of fewer than 12 points exist. \n",
+      "These will become more reliable as more data is added."
+    )
   )
 })
 

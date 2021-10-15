@@ -76,11 +76,13 @@ ptd_create_ggplot <- function(x,
 
   # apply a short groups warning caption if needed
   caption <- if (TRUE %in% .data$short_group_warning) {
-      paste0("Some trial limits created by groups of fewer than 12 points exist. \n",
-      "These will become more reliable as more data is added.")
-    } else {
-      NULL
-    }
+    paste0(
+      "Some trial limits created by groups of fewer than 12 points exist. \n",
+      "These will become more reliable as more data is added."
+    )
+  } else {
+    NULL
+  }
 
   line_size <- point_size / 3
 
