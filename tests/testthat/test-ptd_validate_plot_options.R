@@ -166,3 +166,15 @@ test_that("it handles theme_override correctly", {
   em <- "theme_override must be an object created by theme()."
   expect_error(ptd_validate_plot_options(theme_override = list()), em)
 })
+
+test_that("it handles break_lines correctly", {
+  # these should run fine
+  ptd_validate_plot_options(break_lines = TRUE)
+  ptd_validate_plot_options(break_lines = FALSE)
+
+  # these will error
+  em <- "break_lines must be either a single TRUE or FALSE"
+  expect_error(ptd_validate_plot_options(break_lines = list()), em)
+  expect_error(ptd_validate_plot_options(break_lines = 1), em)
+  expect_error(ptd_validate_plot_options(break_lines = c(TRUE, FALSE)), em)
+})

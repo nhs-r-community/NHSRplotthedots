@@ -11,7 +11,8 @@ ptd_validate_plot_options <- function(point_size = NULL,
                                       icons_size = NULL,
                                       icons_position = NULL,
                                       colours = NULL,
-                                      theme_override = NULL) {
+                                      theme_override = NULL,
+                                      break_lines = NULL) {
   if (!is.null(point_size)) {
     assertthat::assert_that(
       is.numeric(point_size),
@@ -125,6 +126,14 @@ ptd_validate_plot_options <- function(point_size = NULL,
     assertthat::assert_that(
       inherits(theme_override, c("theme", "gg")),
       msg = "theme_override must be an object created by theme()."
+    )
+  }
+
+  if (!is.null(break_lines)) {
+    assertthat::assert_that(
+      is.logical(break_lines),
+      assertthat::is.scalar(break_lines),
+      msg = "break_lines must be either a single TRUE or FALSE"
     )
   }
 

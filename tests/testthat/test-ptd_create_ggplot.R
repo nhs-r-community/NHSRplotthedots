@@ -25,7 +25,6 @@ test_that("it calls ptd_validate_plot_options", {
   stub(ptd_create_ggplot, "ptd_validate_plot_options", m)
   stub(ptd_create_ggplot, "match.arg", identity)
 
-  set.seed(1231)
   try(
     ptd_create_ggplot(
       ptd_spc(data.frame(x = Sys.Date() + 1:12, y = rnorm(12)), "y", "x"),
@@ -42,7 +41,8 @@ test_that("it calls ptd_validate_plot_options", {
       "icons_size",
       "icons_position",
       "colours",
-      "theme_override"
+      "theme_override",
+      "break_lines"
     ),
     silent = TRUE
   )
@@ -63,7 +63,8 @@ test_that("it calls ptd_validate_plot_options", {
     "icons_size",
     "icons_position",
     "colours",
-    "theme_override"
+    "theme_override",
+    "break_lines"
   )
 })
 
@@ -82,6 +83,7 @@ test_that("it returns a ggplot object", {
       y = "Y",
       title = "SPC Chart of Y, starting 02/01/2020",
       caption = NULL,
+      group = "if (break_lines) rebase_group else 0",
       colour = "point_type",
       type = "type",
       text = "text"
@@ -221,6 +223,23 @@ test_that("it adds theme_override to the plot", {
   expect_equal(p2$theme$panel.background$fill, "black")
 })
 
+test_that("it breaks lines", {
+  set.seed(123)
+
+  d <- data.frame(x = as.Date("2020-01-01") + 1:20, y = rnorm(20))
+  withr::with_options(list(ptd_spc.warning_threshold = 10), {
+    s <- ptd_spc(d, "y", "x", rebase = as.Date("2020-01-01") + 11)
+  })
+
+  p1 <- ptd_create_ggplot(s)
+  expect_equal(rlang::eval_tidy(p1$mapping$group), rep(0:1, each = 10))
+  expect_equal(p1$layers[[3]]$mapping$group, 1)
+
+  p2 <- ptd_create_ggplot(s, break_lines = FALSE)
+  expect_equal(rlang::eval_tidy(p2$mapping$group), 0)
+  expect_equal(p2$layers[[3]]$mapping$group, 1)
+})
+
 test_that("it sets the colour of the points based on the type", {
   m <- mock()
 
@@ -330,6 +349,7 @@ test_that("it calls ptd_create_ggplot()", {
     icons_size = 8L,
     icons_position = c("top right", "bottom right", "bottom left", "top left", "none"),
     colours = "colours",
-    theme_override = NULL
+    theme_override = NULL,
+    break_lines = TRUE
   )
 })
