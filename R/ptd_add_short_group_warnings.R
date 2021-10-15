@@ -25,8 +25,9 @@ ptd_add_short_group_warnings <- function(.data, warning_threshold = getOption("p
 
   if (any(.data$short_group_warning)) {
     warning(
-      "Some groups have groups with less than 12 observations. ",
-      "This may lead to invalid conclusions."
+      "Some groups have 'n < 12' observations. ",
+      "These have trial limits, which will be revised with each additional observation ",
+      "until 'n = fix_after_n_points' has been reached."
     )
   }
 
