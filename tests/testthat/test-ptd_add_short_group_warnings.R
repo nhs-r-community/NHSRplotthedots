@@ -2,7 +2,9 @@ library(testthat)
 library(mockery)
 
 warning_threshold <- 12
-warning_message <- "Some groups have 'n < 12' observations. These have trial limits, which will be revised with each additional observation until 'n = fix_after_n_points' has been reached."
+warning_message <- paste0("Some groups have 'n < 12' observations. ",
+"These have trial limits, which will be revised with each additional observation ",
+"until 'n = fix_after_n_points' has been reached.")
 
 test_that("it chooses warning_threshold from options if no value provided", {
   m <- mock(10, 12)
