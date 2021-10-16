@@ -1,0 +1,74 @@
+---
+title: "Number of points required"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Number of points required}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+### How many points are required for robust control limits?
+
+Ask 3 different analysts how many points they use when calculating limits on a control chart, and there is every chance you will get 3 different answers.
+
+Why? Let's pick 3 well known sources of information relating to Statistical Process Control, particularly the Individual / X chart, and see what they say:
+
+**The Health Care Data Guide** (p155) :
+
+"To develop an I chart, the most recent 20 to 30 measurements should be used. More than any other chart, this minimum number of subgroups is important since each subgroup has only one data value".
+
+**Understanding Variation - The Key to Managing Chaos** (p60):
+
+"Useful limits may be constructed with as few as five or six values"
+
+
+**Data Sanity** (First Edition p150): 
+
+Presents a table for runs analysis, starting with 10 data points (and the corresponding lower and upper limit for expected number of runs)
+
+
+Let's throw in one more reference :
+
+**Practical Performance Measurement** (p258)
+
+"We still need a minimum of five consecutive values of a measure just to get started establishing a baseline to represent the current performance level...we might even need more than five to establish that baseline....And once we have our baseline, we need at least another three measure values, and often more than eight, before we can be sure whether performance has changed or not"
+
+### Why does this matter?
+
+Remember, we are calculating our initial control limits over a defined period of time. 
+We don't use a 'rolling average' - where each month we add a new point to the end of our limits and lose one from the start, causing the calculations to subtly adjust over time ('moving the goalposts').
+Instead we 'lock' the initial period over which the limits are calculated. We use this to determine our initial limits and this remains the case until a long run signal occurs. 
+
+We need to ensure we have enough data to inform these 'locked' limits - two or three point comparisons are of no practical use (given two different numbers, one will always be higher than the other). 
+
+### What does this tool require?
+
+The tool defaults to calculating control limits over the first 12  points for each area or group. 
+
+
+### What if we have less than 12 data points?
+
+There are alternatives:
+
+- run charts
+- cumulative sum charts
+
+However, the individuals chart is also advised as the go to solution when less than 12 data points are available. The package provides a warning for any groups with less than 12 data points, advising that trial limits are in place. 
+
+
+### What is meant by 'trial limits'?
+
+Just that, we do not have enough data for robust limits, so these are as good as they can be, for the time being. With each new data point, the limits will be revised. Once we have enough (ie. >=12 data points) the calculations will be locked, until such time as a long run signal occurs, triggering a change in limits. 
+Again, each time the limits are revised, the new limits are 'trial limits' until a further 12 (or more) points are collected, at which point they can be 'locked'
+
+
+```{r setup}
+library(NHSRplotthedots)
+```
