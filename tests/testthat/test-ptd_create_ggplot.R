@@ -244,14 +244,18 @@ test_that("a plot with short rebase group has a warning caption", {
 })
 
 test_that("it doesn't add icons if show_icons is FALSE", {
+  m <- mock()
+  stub(ptd_create_ggplot, "geom_ptd_icon", m)
+
   set.seed(123)
   d <- data.frame(x = as.Date("2020-01-01") + 1:20,
                   y = rnorm(20))
 
   s1 <- ptd_spc(d, "y", "x", target = 0.5)
-  p1 <- plot(s1, show_icons = FALSE)
+  p1 <- ptd_create_ggplot(s1, show_icons = FALSE)
+  p2 <- ptd_create_ggplot(s1, show_icons = TRUE)
 
-  expect_length(p1$layers, 7)
+  expect_called(m, 1)
 })
 
 # plot() ----
