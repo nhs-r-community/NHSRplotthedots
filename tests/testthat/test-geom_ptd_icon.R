@@ -17,6 +17,12 @@ test_that("it set's up the geom correctly", {
   expect_equal(g$stat_params, list(na.rm = FALSE))
 })
 
+test_that("it set's up GeomPTDIcon correctly", {
+  expect_equal(unclass(GeomPTDIcon$default_aes), setNames(list(), character()))
+  expect_equal(GeomPTDIcon$required_aes, c("type", "colour", "text"))
+  expect_s3_class(GeomPTDIcon, c("GeomPTDIcon", "Geom", "ggproto", "gg"))
+})
+
 test_that("it transforms the data correctly", {
   g <- geom_ptd_icon()
 
@@ -67,6 +73,22 @@ test_that("it transforms the data correctly", {
       type = rep(c("variation", "assurance"), each = 2),
       colour = rep("common_cause", 4),
       text = rep(c("cc", "i"), each = 2)
+    )
+  )
+})
+
+test_that("GeomPTDIcon draw panel works as expected", {
+  # note: grid creates grob's and numbers them... this test could break if other grob's happen to be created before
+  # this test is run. run testthat::accept_snapshot() in those cases
+  expect_snapshot(
+    GeomPTDIcon$draw_panel(
+      data = data.frame(
+        type = c("variation", "assurance"),
+        colour = c("red", "green"),
+        text = c("a", "b")
+      ),
+      panel_params = list(),
+      coord = list(transform = function(x, ...) x)
     )
   )
 })
