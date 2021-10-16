@@ -43,11 +43,13 @@ geom_ptd_icon <- function(...) {
         group_by(f) %>%
         arrange(x) %>%
         slice_tail(n = 1) %>%
+        ungroup() %>%
         transmute(f, type = "variation", colour = point_type),
       .x %>%
         ptd_calculate_assurance_type() %>%
         transmute(f, type = "assurance", colour = assurance_type)
     ) %>%
+      filter(!is.na(colour)) %>%
       mutate(
         text = gsub("(.)[a-z]*(_|$)", "\\1", .data$colour),
         colour = case_when(
