@@ -176,51 +176,7 @@ ptd_create_ggplot <- function(x,
   }
 
   if (show_icons) {
-    icons <- .data %>%
-      group_by(.data$f) %>%
-      summarise(across(.data$point_type, last),
-                across(.data$x, max),
-                across(.data$y, max) * 1.01,
-                .groups = "drop") %>%
-      mutate(text = gsub("(.)[a-z]*(_|$)", "\\1", .data$point_type)) %>%
-      rename(colour = .data$point_type)
-
-    if (!is.null(options$target) && show_icons) {
-      # assume that the difference in x points is consistent
-      xdiff <- .data$x[[2]] - .data$x[[1]]
-
-      icons <- bind_rows(
-        icons,
-        icons %>%
-          inner_join(ptd_calculate_assurance_type(.data), by = "f") %>%
-          mutate(text = gsub("(.)[a-z]*(_|$)", "\\1", .data$assurance_type),
-                 colour = case_when(
-                   .data$assurance_type == "consistent_pass" ~ "special_cause_improvement",
-                   .data$assurance_type == "consistent_fail" ~ "special_cause_concern",
-                   TRUE ~ "common_cause"
-                 ),
-                 x = .data$x - xdiff * 2,
-                 assurance_type = NULL)
-      )
-    }
-
-    if (fixed_y_axis_multiple) {
-      icons <- icons %>%
-        mutate(across(.data$y, max))
-    }
-
-    plot <- plot +
-      geom_point(data = icons,
-                 aes(colour = .data$colour),
-                 fill = "white",
-                 shape = "circle filled",
-                 size = 8,
-                 stroke = 1.5,
-                 show.legend = FALSE) +
-      geom_text(data = icons,
-                aes(colour = .data$colour, label = .data$text),
-                show.legend = FALSE,
-                fontface = "bold")
+    plot <- plot + geom_ptd_icon()
   }
 
   plot
