@@ -5,15 +5,15 @@ GeomPTDIcon <- ggproto(
   default_aes = aes(),
   draw_key = draw_key_point,
   draw_panel = function(data, panel_params, coord) {
-    radius <- 0.3
+    radius <- 0.25
 
     d <- coord$transform(data, panel_params) %>%
-      mutate(x = ifelse(.data$type == "variation", radius, 4 * radius),
-             y = radius)
+      mutate(x = ifelse(.data$type == "variation", radius, 3.5 * radius),
+             y = radius / 2)
 
     v <- grid::viewport(
       x = grid::unit(1, "npc"), y = grid::unit(1, "npc"),
-      width = grid::unit(6 * radius, "cm"), height = grid::unit(3 * radius, "cm"),
+      width = grid::unit(5 * radius, "cm"), height = grid::unit(2 * radius, "cm"),
       just = c("right", "top"),
       gp = grid::gpar(col = "black")
     )
