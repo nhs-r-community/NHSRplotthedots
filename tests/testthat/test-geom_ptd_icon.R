@@ -39,7 +39,7 @@ test_that("it transforms the data correctly", {
       f = "no facet",
       type = "variation",
       colour = "common_cause",
-      text = "cc"
+      text = "C"
     )
   )
 
@@ -50,7 +50,7 @@ test_that("it transforms the data correctly", {
       f = c("no facet", "no facet"),
       type = c("variation", "assurance"),
       colour = c("common_cause", "common_cause"),
-      text = c("cc", "i")
+      text = c("C", "?")
     )
   )
 
@@ -61,7 +61,7 @@ test_that("it transforms the data correctly", {
       f = c(0, 1),
       type = c("variation", "variation"),
       colour = c("common_cause", "common_cause"),
-      text = c("cc", "cc")
+      text = c("C", "C")
     )
   )
 
@@ -72,7 +72,7 @@ test_that("it transforms the data correctly", {
       f = c(0, 1, 0, 1),
       type = rep(c("variation", "assurance"), each = 2),
       colour = rep("common_cause", 4),
-      text = rep(c("cc", "i"), each = 2)
+      text = rep(c("C", "?"), each = 2)
     )
   )
 })

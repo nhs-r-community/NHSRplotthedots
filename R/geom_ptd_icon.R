@@ -38,27 +38,48 @@ GeomPTDIcon <- ggproto(
 
 geom_ptd_icon <- function(...) {
   data_transformer <- function(.x) {
-    bind_rows(
-      .x %>%
-        group_by(f) %>%
-        arrange(x) %>%
-        slice_tail(n = 1) %>%
-        ungroup() %>%
-        transmute(f, type = "variation", colour = point_type),
+    options <- attr(.x, "options")
+    improvement_direction <- options$improvement_direction
+    id_text <- c(
+      common_cause = "C",
+      special_cause_neutral = "N",
+      special_cause_concern = if (improvement_direction == "increase") "L" else "H",
+      special_cause_improvement = if (improvement_direction == "increase") "H" else "L",
+      consistent_fail = "F",
+      consistent_pass = "P",
+      inconsistent = "?"
+    )
+
+    variation <- .x %>%
+      group_by(f) %>%
+      filter(x == max(x)) %>%
+      ungroup() %>%
+      transmute(
+        .data$f,
+        type = "variation",
+        colour = .data$point_type,
+        text = unname(id_text[.data$point_type])
+      )
+
+    assurance <- if (!is.null(options$target)) {
       .x %>%
         ptd_calculate_assurance_type() %>%
-        transmute(f, type = "assurance", colour = assurance_type)
-    ) %>%
-      filter(!is.na(colour)) %>%
-      mutate(
-        text = gsub("(.)[a-z]*(_|$)", "\\1", .data$colour),
-        colour = case_when(
-          .data$type == "variation" ~ .data$colour,
-          .data$colour == "consistent_pass" ~ "special_cause_improvement",
-          .data$colour == "consistent_fail" ~ "special_cause_concern",
-          TRUE ~ "common_cause"
+        transmute(
+          .data$f,
+          type = "assurance",
+          colour = case_when(
+            .data$assurance_type == "consistent_pass" ~ "special_cause_improvement",
+            .data$assurance_type == "consistent_fail" ~ "special_cause_concern",
+            .data$assurance_type == "inconsistent" ~ "common_cause"
+          ),
+          text = unname(id_text[.data$assurance_type])
         )
-      )
+    }
+
+    bind_rows(
+      variation,
+      assurance
+    )
   }
 
   layer(
