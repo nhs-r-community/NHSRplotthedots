@@ -61,20 +61,19 @@ geom_ptd_icon <- function(...) {
         text = unname(id_text[.data$point_type])
       )
 
-    assurance <- if (!is.null(options$target)) {
-      .x %>%
-        ptd_calculate_assurance_type() %>%
-        transmute(
-          .data$f,
-          type = "assurance",
-          colour = case_when(
-            .data$assurance_type == "consistent_pass" ~ "special_cause_improvement",
-            .data$assurance_type == "consistent_fail" ~ "special_cause_concern",
-            .data$assurance_type == "inconsistent" ~ "common_cause"
-          ),
-          text = unname(id_text[.data$assurance_type])
-        )
-    }
+    assurance <- .x %>%
+      ptd_calculate_assurance_type() %>%
+      filter(!is.na(.data$assurance_type)) %>%
+      transmute(
+        .data$f,
+        type = "assurance",
+        colour = case_when(
+          .data$assurance_type == "consistent_pass" ~ "special_cause_improvement",
+          .data$assurance_type == "consistent_fail" ~ "special_cause_concern",
+          .data$assurance_type == "inconsistent" ~ "common_cause"
+        ),
+        text = unname(id_text[.data$assurance_type])
+      )
 
     bind_rows(
       variation,

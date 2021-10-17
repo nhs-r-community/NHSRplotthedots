@@ -75,6 +75,63 @@ test_that("it transforms the data correctly", {
       text = rep(c("C", "?"), each = 2)
     )
   )
+
+  d$y[d$f == 1] <- rnorm(12, 5)
+  s5 <- ptd_spc(d, "y", "x", target = -3)
+  expect_equal(
+    g$data(s5),
+    tibble(
+      f = rep("no facet", 2),
+      type = c("variation", "assurance"),
+      colour = rep("special_cause_improvement", 2),
+      text = c("H", "P")
+    )
+  )
+
+  s6 <- ptd_spc(d, "y", "x", target = -3, improvement_direction = "decrease")
+  expect_equal(
+    g$data(s6),
+    tibble(
+      f = rep("no facet", 2),
+      type = c("variation", "assurance"),
+      colour = rep("special_cause_concern", 2),
+      text = c("H", "F")
+    )
+  )
+
+  d$y[d$f == 1] <- rnorm(12, -5)
+  s7 <- ptd_spc(d, "y", "x", target = 3)
+  expect_equal(
+    g$data(s7),
+    tibble(
+      f = rep("no facet", 2),
+      type = c("variation", "assurance"),
+      colour = rep("special_cause_concern", 2),
+      text = c("L", "F")
+    )
+  )
+
+  s8 <- ptd_spc(d, "y", "x", target = 3, improvement_direction = "decrease")
+  expect_equal(
+    g$data(s8),
+    tibble(
+      f = rep("no facet", 2),
+      type = c("variation", "assurance"),
+      colour = rep("special_cause_improvement", 2),
+      text = c("L", "P")
+    )
+  )
+
+  s9 <- ptd_spc(d, "y", "x", target = 3, improvement_direction = "neutral")
+  expect_equal(
+    g$data(s9),
+    tibble(
+      f = "no facet",
+      type = "variation",
+      colour = "special_cause_neutral",
+      text = "N"
+    )
+  )
 })
 
 test_that("GeomPTDIcon draw panel works as expected", {
