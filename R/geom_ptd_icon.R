@@ -1,4 +1,4 @@
-GeomPTDIcon <- ggproto(
+GeomPTDIcon <- ggproto( # Exclude Linting
   "GeomPTDIcon",
   Geom,
   required_aes = c("type", "colour", "text"),
@@ -51,8 +51,8 @@ geom_ptd_icon <- function(...) {
     )
 
     variation <- .x %>%
-      group_by(f) %>%
-      filter(x == max(x)) %>%
+      group_by(.data$f) %>%
+      filter(.data$x == max(.data$x)) %>%
       ungroup() %>%
       transmute(
         .data$f,
@@ -83,7 +83,7 @@ geom_ptd_icon <- function(...) {
 
   layer(
     geom = GeomPTDIcon,
-    mapping = aes(type = type, colour = colour, text = text),
+    mapping = aes(type = .data$type, colour = .data$colour, text = .data$text),
     data = data_transformer,
     stat = "identity",
     position = "identity",
