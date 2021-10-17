@@ -15,7 +15,7 @@ ptd_calculate_assurance_type <- function(.data) {
 
   options <- attr(.data, "options")
 
-  if (is.null(options$target)) {
+  if (is.null(options$target) || options$improvement_direction == "neutral") {
     return(summarise(d, assurance_type = as.character(NA), .groups = "drop"))
   }
 

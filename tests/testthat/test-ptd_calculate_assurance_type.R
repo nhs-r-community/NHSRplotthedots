@@ -45,6 +45,22 @@ test_that("it returns correct values for assurance when improvement_direction is
   expect_equal(r$assurance_type, c("consistent_pass", "consistent_fail", "inconsistent"))
 })
 
+test_that("it returns correct values for assurance when improvement_direction is neutral", {
+  s <- data.frame(f = c("a", "b", "c"),
+                  lpl    = c(1, 5, 1),
+                  mean   = c(2, 6, 4),
+                  upl    = c(3, 7, 5),
+                  target = 4)
+  attr(s, "options") <- list(
+    target = "target",
+    improvement_direction = "neutral"
+  )
+
+  r <- ptd_calculate_assurance_type(s)
+
+  expect_equal(r$assurance_type, as.character(rep(NA, 3)))
+})
+
 test_that("it returns correct values for assurance when rebase", {
   s <- data.frame(f = "a",
                   rebase = c(1, 2, 3),
