@@ -18,10 +18,9 @@ knitr::opts_chunk$set(
 # NHSRplotthedots <a alt="NHS-R Community's logo" href='https://nhsrcommunity.com/'><img src='man/figures/logo.png' align="right" height="80" /></a>
 
 <!-- badges: start -->
-[![Lifecycle: experimental](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](https://www.tidyverse.org/lifecycle/#experimental)
-[![Codecov test coverage](https://codecov.io/gh/nhs-r-community/NHSRplotthedots/branch/main/graph/badge.svg)](https://codecov.io/gh/nhs-r-community/NHSRplotthedots?branch=main)
-[![R-CMD-check](https://github.com/nhs-r-community/NHSRplotthedots/workflows/R-CMD-check/badge.svg)](https://github.com/nhs-r-community/NHSRplotthedots/actions)
 [![Lifecycle: stable](https://img.shields.io/badge/lifecycle-stable-brightgreen.svg)](https://lifecycle.r-lib.org/articles/stages.html#stable)
+[![R-CMD-check](https://github.com/nhs-r-community/NHSRplotthedots/workflows/R-CMD-check/badge.svg)](https://github.com/nhs-r-community/NHSRplotthedots/actions)
+[![Codecov test coverage](https://codecov.io/gh/nhs-r-community/NHSRplotthedots/branch/main/graph/badge.svg)](https://app.codecov.io/gh/nhs-r-community/NHSRplotthedots?branch=main)
 <!-- badges: end -->
 
 This package is built by the [NHS-R community][nhsr] to provide tools for drawing statistical process control (SPC) charts. This package supports the NHSE/I programme ['Making Data Count'][mdc], and allows users to draw XmR charts, use change points, and apply rules with summary indicators for when rules are breached.
@@ -101,6 +100,6 @@ vignette(package = "NHSRplotthedots")
 This is an NHS-R Community project that is open for anyone to contribute to in any way that they are able. If you want to learn more about this please join the discussion at [the NHS-R Community Slack group][nhsr-slack] and the specific channel [#proj-shiny-spc][#proj-shiny-spc]. 
 
 [nhsr]: https://nhsrcommunity.com
-[mdc]: https://www.england.nhs.uk/a-focus-on-staff-health-and-wellbeing/publications-and-resources/making-data-count/
+[mdc]: https://www.england.nhs.uk/publication/making-data-count/
 [nhsr-slack]: https://nhsrcommunity.slack.com/
 [#proj-shiny-spc]: https://nhsrcommunity.slack.com/archives/CSVD4SYF3
