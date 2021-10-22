@@ -16,9 +16,13 @@ knitr::opts_chunk$set(
 
 ### How many points are required for robust control limits?
 
-Ask 3 different analysts how many points they use when calculating limits on a control chart, and there is every chance you will get 3 different answers.
+The I-Chart / XMR chart is often suggested as the best chart to use if you have fewer than 12 data points. 
 
-Why? Let's pick 3 well known sources of information relating to Statistical Process Control, particularly the Individual / X chart, and see what they say:
+**There is no agreement as to how many points you need**
+
+Even for the I chart, the experts do not reach a consensus:
+
+3 well known sources of information relating to Statistical Process Control, particularly the Individual / X chart:
 
 **The Health Care Data Guide** (p155) :
 
@@ -40,35 +44,31 @@ Let's throw in one more reference :
 
 "We still need a minimum of five consecutive values of a measure just to get started establishing a baseline to represent the current performance level...we might even need more than five to establish that baseline....And once we have our baseline, we need at least another three measure values, and often more than eight, before we can be sure whether performance has changed or not"
 
-### Why does this matter?
+### I have less than 12 points. What should I do?
 
-Remember, we are calculating our initial control limits over a defined period of time. 
-We don't use a 'rolling average' - where each month we add a new point to the end of our limits and lose one from the start, causing the calculations to subtly adjust over time ('moving the goalposts').
-Instead we 'lock' the initial period over which the limits are calculated. We use this to determine our initial limits and this remains the case until a long run signal occurs. 
+If Wheeler say 5 or 6 are good enough, then, as long as you have 5 or 6 points, you can begin to use these charts. However the limits should be considered _useful_, rather than _robust_.
 
-We need to ensure we have enough data to inform these 'locked' limits - two or three point comparisons are of no practical use (given two different numbers, one will always be higher than the other). 
+We  therefore refer to these as 'trial' limits.
+
+### What is meant by 'trial limits'?
+
+Just that, due to lack of data , these are as good as they can be, for the time being. With each new data point, the limits will be revised. Once we have enough (i.e. >=12 data points) the calculations will be locked, until such time as a signal of special cause variation occurs - for example, a  long run above or below the mean.
+At this point, if we understand the cause of the variation, we might decide to revise the limits from the start of the long run. Each time the limits are revised, the new limits should be considered 'trial limits' until a further 12 (or more) points are collected, at which point they can be 'locked' once more. 
+
 
 ### What does this tool require?
 
 The tool defaults to calculating control limits over the first 12  points for each area or group. 
 
 
-### What if we have less than 12 data points?
+### Are there any other charts we can use if we have less than 12 points?
 
 There are alternatives:
 
 - run charts
-- cumulative sum charts
+- cumulative sum (cusum) charts
 
-However, the individuals chart is also advised as the go to solution when less than 12 data points are available. The package provides a warning for any groups with less than 12 data points, advising that trial limits are in place. 
-
-
-### What is meant by 'trial limits'?
-
-Just that, we do not have enough data for robust limits, so these are as good as they can be, for the time being. With each new data point, the limits will be revised. Once we have enough (ie. >=12 data points) the calculations will be locked, until such time as a long run signal occurs, triggering a change in limits. 
-Again, each time the limits are revised, the new limits are 'trial limits' until a further 12 (or more) points are collected, at which point they can be 'locked'
+However, the individuals chart is _also_ advised as one of the three "go to" charts when less than 12 data points are available. This package provides a warning for any groups with less than 12 data points, advising that trial limits are in place. 
 
 
-```{r setup}
-library(NHSRplotthedots)
-```
+
