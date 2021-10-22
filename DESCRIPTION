@@ -29,7 +29,8 @@ Imports:
     crayon,
     utils,
     NHSRdatasets,
-    assertthat
+    assertthat,
+    grid
 Suggests: 
     covr,
     lintr,

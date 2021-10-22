@@ -124,6 +124,31 @@ test_that("it handles y_axis_breaks correctly", {
   expect_error(ptd_validate_plot_options(y_axis_breaks = c(1, 2)), em)
 })
 
+test_that("it handles icons_size correctly", {
+  # these should run fine
+  ptd_validate_plot_options(icons_size = 8L)
+  ptd_validate_plot_options(icons_size = 5.2)
+
+  # these will error
+  em <- "icons_size must be an integer of length 1."
+  expect_error(ptd_validate_plot_options(icons_size = "a"), em, fixed = TRUE)
+  expect_error(ptd_validate_plot_options(icons_size = c(8, 2)), em, fixed = TRUE)
+})
+
+test_that("it handles icons_position correctly", {
+  # these should run fine
+  ptd_validate_plot_options(icons_position = "top right")
+  ptd_validate_plot_options(icons_position = "bottom right")
+  ptd_validate_plot_options(icons_position = "bottom left")
+  ptd_validate_plot_options(icons_position = "top left")
+  ptd_validate_plot_options(icons_position = "none")
+
+  # these will error
+  em <- "icons_position argument must be one of 'top right', 'bottom right', 'bottom_left', 'top left', or 'none'"
+  expect_error(ptd_validate_plot_options(icons_position = "a"), em, fixed = TRUE)
+  expect_error(ptd_validate_plot_options(icons_position = c("top right", "top left")), em, fixed = TRUE)
+})
+
 test_that("it handles colours correctly", {
   # these should run fine
   ptd_validate_plot_options(colours = ptd_spc_colours())
@@ -140,4 +165,18 @@ test_that("it handles theme_override correctly", {
   # these will error
   em <- "theme_override must be an object created by theme()."
   expect_error(ptd_validate_plot_options(theme_override = list()), em)
+})
+
+test_that("it handles break_lines correctly", {
+  # these should run fine
+  ptd_validate_plot_options(break_lines = "both")
+  ptd_validate_plot_options(break_lines = "limits")
+  ptd_validate_plot_options(break_lines = "process")
+  ptd_validate_plot_options(break_lines = "none")
+
+  # these will error
+  em <- "break_lines must be one of 'both', 'limits', 'process', or 'none'."
+  expect_error(ptd_validate_plot_options(break_lines = list()), em)
+  expect_error(ptd_validate_plot_options(break_lines = 1), em)
+  expect_error(ptd_validate_plot_options(break_lines = c("both", "limits")), em)
 })

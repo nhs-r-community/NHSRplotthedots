@@ -145,6 +145,19 @@ summary.ptd_spc_df <- function(object, ...) {
       .groups = "drop"
     )
 
+
+  if (!is.null(options$target)) {
+    at <- ptd_calculate_assurance_type(object)
+
+    s <- s %>%
+      inner_join(at, by = "f") %>%
+      group_by(.data$f) %>%
+      mutate(assurance_type = ifelse(.data$rebase_group == max(.data$rebase_group),
+                                     .data$assurance_type,
+                                     as.character(NA))) %>%
+      ungroup()
+  }
+
   if (is.null(options$facet_field)) {
     s <- select(s, -.data$f)
   }

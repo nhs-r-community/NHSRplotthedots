@@ -8,8 +8,11 @@ ptd_validate_plot_options <- function(point_size = NULL,
                                       x_axis_date_format = NULL,
                                       x_axis_breaks = NULL,
                                       y_axis_breaks = NULL,
+                                      icons_size = NULL,
+                                      icons_position = NULL,
                                       colours = NULL,
-                                      theme_override = NULL) {
+                                      theme_override = NULL,
+                                      break_lines = NULL) {
   if (!is.null(point_size)) {
     assertthat::assert_that(
       is.numeric(point_size),
@@ -96,6 +99,22 @@ ptd_validate_plot_options <- function(point_size = NULL,
     )
   }
 
+  if (!is.null(icons_size)) {
+    assertthat::assert_that(
+      is.numeric(icons_size),
+      assertthat::is.scalar(icons_size),
+      msg = "icons_size must be an integer of length 1."
+    )
+  }
+
+  if (!is.null(icons_position)) {
+    assertthat::assert_that(
+      all(icons_position %in% c("top right", "bottom right", "bottom left", "top left", "none")),
+      assertthat::is.scalar(icons_position),
+      msg = "icons_position argument must be one of 'top right', 'bottom right', 'bottom_left', 'top left', or 'none'"
+    )
+  }
+
   if (!is.null(colours)) {
     assertthat::assert_that(
       inherits(colours, "ptd_spc_colours_class"),
@@ -107,6 +126,14 @@ ptd_validate_plot_options <- function(point_size = NULL,
     assertthat::assert_that(
       inherits(theme_override, c("theme", "gg")),
       msg = "theme_override must be an object created by theme()."
+    )
+  }
+
+  if (!is.null(break_lines)) {
+    assertthat::assert_that(
+      assertthat::is.scalar(break_lines),
+      break_lines %in% c("both", "limits", "process", "none"),
+      msg = "break_lines must be one of 'both', 'limits', 'process', or 'none'."
     )
   }
 
