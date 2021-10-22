@@ -16,6 +16,8 @@ ptd_create_ggplot(
   x_axis_date_format = "\%d/\%m/\%y",
   x_axis_breaks = NULL,
   y_axis_breaks = NULL,
+  icons_size = 8L,
+  icons_position = c("top right", "bottom right", "bottom left", "top left", "none"),
   colours = ptd_spc_colours(),
   theme_override = NULL,
   ...
@@ -50,6 +52,11 @@ expressing interval length and type, e.g. "3 months", "7 days".}
 \item{y_axis_breaks}{Specify an interval value for breaks on the y axis. Value should be a numeric vector of length
 1, either an integer for integer scales or a decimal value for percentage scales. This option is ignored if
 faceting is in use.}
+
+\item{icons_size}{The size of the icons, defined in terms of font size. Defaults to 8.}
+
+\item{icons_position}{Where to show the icons, either "top right" (default), "bottom right", "bottom left",
+"top left", or "none".}
 
 \item{colours}{Specify the colours to use in the plot, use the \code{\link[=ptd_spc_colours]{ptd_spc_colours()}} function to change defaults.}
 

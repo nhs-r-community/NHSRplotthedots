@@ -12,18 +12,48 @@ test_that("it raises an error is x is not a ptd_spc_df object", {
 test_that("it calls ptd_validate_plot_options", {
   m <- mock(stop())
   stub(ptd_create_ggplot, "ptd_validate_plot_options", m)
+  stub(ptd_create_ggplot, "match.arg", identity)
 
   set.seed(1231)
   try(
     ptd_create_ggplot(
       ptd_spc(data.frame(x = Sys.Date() + 1:12, y = rnorm(12)), "y", "x"),
-      1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12
+      "point_size",
+      "percentage_y_axis",
+      "main_title",
+      "x_axis_label",
+      "y_axis_label",
+      "fixed_x_axis_multiple",
+      "fixed_y_axis_multiple",
+      "x_axis_date_format",
+      "x_axis_breaks",
+      "y_axis_breaks",
+      "icons_size",
+      "icons_position",
+      "colours",
+      "theme_override"
     ),
     silent = TRUE
   )
 
   expect_called(m, 1)
-  expect_args(m, 1, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12)
+  expect_args(
+    m, 1,
+    "point_size",
+    "percentage_y_axis",
+    "main_title",
+    "x_axis_label",
+    "y_axis_label",
+    "fixed_x_axis_multiple",
+    "fixed_y_axis_multiple",
+    "x_axis_date_format",
+    "x_axis_breaks",
+    "y_axis_breaks",
+    "icons_size",
+    "icons_position",
+    "colours",
+    "theme_override"
+  )
 })
 
 test_that("it returns a ggplot object", {
@@ -33,7 +63,7 @@ test_that("it returns a ggplot object", {
   p <- ptd_create_ggplot(s)
 
   expect_s3_class(p, c("gg", "ggplot"))
-  expect_length(p$layers, 7)
+  expect_length(p$layers, 8)
   expect_equal(
     p$labels,
     list(
@@ -41,7 +71,9 @@ test_that("it returns a ggplot object", {
       y = "Y",
       title = "SPC Chart of Y, starting 02/01/2020",
       caption = NULL,
-      colour = "point_type"
+      colour = "point_type",
+      type = "type",
+      text = "text"
     )
   )
 })
@@ -197,13 +229,13 @@ test_that("it sets the colour of the points based on the type", {
     special_cause_concern     = "#fab428" # orange
   )
 
-  # 1: improvement_direction = neutral
+  # case 1: improvement_direction = neutral
   s1 <- ptd_spc(d, "y", "x", improvement_direction = "neutral")
   p1 <- ptd_create_ggplot(s1)
-  # 2: improvement_direction = "increase"
+  # case 2: improvement_direction = "increase"
   s2 <- ptd_spc(d, "y", "x", improvement_direction = "increase")
   p2 <- ptd_create_ggplot(s2)
-  # 3: improvement_direction = "decrease"
+  # case 3: improvement_direction = "decrease"
   s3 <- ptd_spc(d, "y", "x", improvement_direction = "decrease")
   p3 <- ptd_create_ggplot(s3)
 
@@ -241,6 +273,21 @@ test_that("a plot with short rebase group has a warning caption", {
   )
 })
 
+test_that("it doesn't add icons if icons_position is 'none'", {
+  m <- mock()
+  stub(ptd_create_ggplot, "geom_ptd_icon", m)
+
+  set.seed(123)
+  d <- data.frame(x = as.Date("2020-01-01") + 1:20,
+                  y = rnorm(20))
+
+  s1 <- ptd_spc(d, "y", "x", target = 0.5)
+  p1 <- ptd_create_ggplot(s1, icons_position = "top right")
+  p2 <- ptd_create_ggplot(s1, icons_position = "none")
+
+  expect_called(m, 1)
+})
+
 # plot() ----
 test_that("it calls ptd_create_ggplot()", {
   set.seed(123)
@@ -259,17 +306,19 @@ test_that("it calls ptd_create_ggplot()", {
 
   expect_called(m, 1)
   expect_args(m, 1, s,
-    point_size = 4,
-    percentage_y_axis = FALSE,
-    main_title = NULL,
-    x_axis_label = NULL,
-    y_axis_label = NULL,
-    fixed_x_axis_multiple = TRUE,
-    fixed_y_axis_multiple = TRUE,
-    x_axis_date_format = "%d/%m/%y",
-    x_axis_breaks = NULL,
-    y_axis_breaks = NULL,
-    colours = "colours",
-    theme_override = NULL
+              point_size = 4,
+              percentage_y_axis = FALSE,
+              main_title = NULL,
+              x_axis_label = NULL,
+              y_axis_label = NULL,
+              fixed_x_axis_multiple = TRUE,
+              fixed_y_axis_multiple = TRUE,
+              x_axis_date_format = "%d/%m/%y",
+              x_axis_breaks = NULL,
+              y_axis_breaks = NULL,
+              icons_size = 8L,
+              icons_position = c("top right", "bottom right", "bottom left", "top left", "none"),
+              colours = "colours",
+              theme_override = NULL
   )
 })

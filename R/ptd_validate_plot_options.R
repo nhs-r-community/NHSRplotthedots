@@ -8,6 +8,8 @@ ptd_validate_plot_options <- function(point_size = NULL,
                                       x_axis_date_format = NULL,
                                       x_axis_breaks = NULL,
                                       y_axis_breaks = NULL,
+                                      icons_size = NULL,
+                                      icons_position = NULL,
                                       colours = NULL,
                                       theme_override = NULL) {
   if (!is.null(point_size)) {
@@ -93,6 +95,22 @@ ptd_validate_plot_options <- function(point_size = NULL,
       is.numeric(y_axis_breaks),
       assertthat::is.scalar(y_axis_breaks),
       msg = "y_axis_breaks argument must be a numeric of length 1."
+    )
+  }
+
+  if (!is.null(icons_size)) {
+    assertthat::assert_that(
+      is.numeric(icons_size),
+      assertthat::is.scalar(icons_size),
+      msg = "icons_size must be an integer of length 1."
+    )
+  }
+
+  if (!is.null(icons_position)) {
+    assertthat::assert_that(
+      all(icons_position %in% c("top right", "bottom right", "bottom left", "top left", "none")),
+      assertthat::is.scalar(icons_position),
+      msg = "icons_position argument must be one of 'top right', 'bottom right', 'bottom_left', 'top left', or 'none'"
     )
   }
 
