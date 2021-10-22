@@ -32,9 +32,9 @@
 ptd_create_ggplot <- function(x,
                               point_size = 4,
                               percentage_y_axis = FALSE,
-                              main_title = NULL,
-                              x_axis_label = NULL,
-                              y_axis_label = NULL,
+                              main_title,
+                              x_axis_label,
+                              y_axis_label,
                               fixed_x_axis_multiple = TRUE,
                               fixed_y_axis_multiple = TRUE,
                               x_axis_date_format = "%d/%m/%y",
@@ -45,13 +45,38 @@ ptd_create_ggplot <- function(x,
                               colours = ptd_spc_colours(),
                               theme_override = NULL,
                               ...) {
+  dots <- list(...)
+  if (length(dots) > 0) {
+    warning("Unknown arguments provided by plot: ",
+            paste(names(dots), collapse = ", "),
+            "\nCheck for common spelling mistakes in arguments.")
+  }
+
   assertthat::assert_that(
     inherits(x, "ptd_spc_df"),
     msg = "x argument must be an 'ptd_spc_df' object, created by ptd_spc()."
   )
+
   # argument needs to be called x for s3 plot method, but rename it to .data so it's more obvious through the rest of
   # the method
   .data <- x
+  options <- attr(.data, "options")
+
+  if (missing(main_title)) {
+    main_title <- paste0(
+      "SPC Chart of ",
+      ptd_capitalise(options$value_field),
+      ", starting ",
+      format(min(.data[["x"]], na.rm = TRUE), format = "%d/%m/%Y")
+    )
+  }
+
+  if (missing(x_axis_label)) {
+    x_axis_label <- ptd_capitalise(options[["date_field"]])
+  }
+  if (missing(y_axis_label)) {
+    y_axis_label <- ptd_capitalise(options[["value_field"]])
+  }
 
   icons_position <- match.arg(icons_position)
 
@@ -72,21 +97,10 @@ ptd_create_ggplot <- function(x,
     theme_override
   )
 
-  options <- attr(.data, "options")
-
   colours_subset <- if (options[["improvement_direction"]] == "neutral") {
     colours[c("common_cause", "special_cause_neutral")]
   } else {
     colours[c("common_cause", "special_cause_improvement", "special_cause_concern")]
-  }
-
-  if (is.null(main_title)) {
-    main_title <- paste0(
-      "SPC Chart of ",
-      ptd_capitalise(options$value_field),
-      ", starting ",
-      format(min(.data[["x"]], na.rm = TRUE), format = "%d/%m/%Y")
-    )
   }
 
   # apply a short groups warning caption if needed
@@ -125,8 +139,8 @@ ptd_create_ggplot <- function(x,
     ) +
     labs(
       title = main_title,
-      x = x_axis_label %||% ptd_capitalise(options[["date_field"]]),
-      y = y_axis_label %||% ptd_capitalise(options[["value_field"]]),
+      x = x_axis_label,
+      y = y_axis_label,
       caption = caption
     ) +
     theme_minimal() +
@@ -195,9 +209,9 @@ ptd_create_ggplot <- function(x,
 plot.ptd_spc_df <- function(x,
                             point_size = 4,
                             percentage_y_axis = FALSE,
-                            main_title = NULL,
-                            x_axis_label = NULL,
-                            y_axis_label = NULL,
+                            main_title,
+                            x_axis_label,
+                            y_axis_label,
                             fixed_x_axis_multiple = TRUE,
                             fixed_y_axis_multiple = TRUE,
                             x_axis_date_format = "%d/%m/%y",

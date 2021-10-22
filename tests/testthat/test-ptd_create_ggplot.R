@@ -2,6 +2,17 @@ library(testthat)
 library(mockery)
 
 # ptd_create_ggplot() ----
+test_that("it raises an error if unknown arguments are passed", {
+  expect_warning(
+    try(
+      ptd_create_ggplot(NULL, X = 1, Y = 2),
+      silent = TRUE
+    ),
+    "Unknown arguments provided by plot: X, Y\nCheck for common spelling mistakes in arguments.",
+    fixed = TRUE
+  )
+})
+
 test_that("it raises an error is x is not a ptd_spc_df object", {
   expect_error(
     ptd_create_ggplot(data.frame(x = 1, y = 2)),
@@ -302,23 +313,23 @@ test_that("it calls ptd_create_ggplot()", {
   m <- mock()
   stub(plot.ptd_spc_df, "ptd_create_ggplot", m)
   stub(plot.ptd_spc_df, "ptd_spc_colours", "colours")
-  plot(s)
+  plot(s, main_title = "a", x_axis_label = "b", y_axis_label = "c")
 
   expect_called(m, 1)
   expect_args(m, 1, s,
-              point_size = 4,
-              percentage_y_axis = FALSE,
-              main_title = NULL,
-              x_axis_label = NULL,
-              y_axis_label = NULL,
-              fixed_x_axis_multiple = TRUE,
-              fixed_y_axis_multiple = TRUE,
-              x_axis_date_format = "%d/%m/%y",
-              x_axis_breaks = NULL,
-              y_axis_breaks = NULL,
-              icons_size = 8L,
-              icons_position = c("top right", "bottom right", "bottom left", "top left", "none"),
-              colours = "colours",
-              theme_override = NULL
+    point_size = 4,
+    percentage_y_axis = FALSE,
+    main_title = "a",
+    x_axis_label = "b",
+    y_axis_label = "c",
+    fixed_x_axis_multiple = TRUE,
+    fixed_y_axis_multiple = TRUE,
+    x_axis_date_format = "%d/%m/%y",
+    x_axis_breaks = NULL,
+    y_axis_breaks = NULL,
+    icons_size = 8L,
+    icons_position = c("top right", "bottom right", "bottom left", "top left", "none"),
+    colours = "colours",
+    theme_override = NULL
   )
 })
