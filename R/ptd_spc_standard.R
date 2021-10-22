@@ -30,9 +30,11 @@ ptd_spc_standard <- function(.data, options = NULL) {
   } else {
     assertthat::assert_that(
       !is.null(.data[[trajectory_field]]),
-      msg = paste0("Trajectory column (",
-                   trajectory_field,
-                   ") does not exist in .data")
+      msg = paste0(
+        "Trajectory column (",
+        trajectory_field,
+        ") does not exist in .data"
+      )
     )
     .data$trajectory <- .data[[trajectory_field]]
   }
@@ -73,9 +75,9 @@ ptd_spc_standard <- function(.data, options = NULL) {
 
       # screen for outliers
       mr = case_when(
-        !options$screen_outliers     ~ .data$mr,
+        !options$screen_outliers ~ .data$mr,
         .data$mr < 3.267 * .data$amr ~ .data$mr,
-        TRUE                         ~ as.numeric(NA)
+        TRUE ~ as.numeric(NA)
       ),
       amr = mean(.data$mr, na.rm = TRUE),
 

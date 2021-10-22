@@ -20,34 +20,70 @@
 #' @param y_axis_breaks Specify an interval value for breaks on the y axis. Value should be a numeric vector of length
 #'     1, either an integer for integer scales or a decimal value for percentage scales. This option is ignored if
 #'     faceting is in use.
+#' @param icons_size The size of the icons, defined in terms of font size. Defaults to 8.
+#' @param icons_position Where to show the icons, either "top right" (default), "bottom right", "bottom left",
+#'     "top left", or "none".
 #' @param colours Specify the colours to use in the plot, use the [ptd_spc_colours()] function to change defaults.
 #' @param theme_override Specify a list containing ggplot theme elements which can be used to override the default
 #'     appearance of the plot.
+#' @param break_lines whether to break lines when a rebase happens. Defaults to "both", but can break just "limits"
+#'     lines, "process" lines, or "none".
 #' @param ... currently ignored
 #' @return The ggplot2 object
 #' @export
 ptd_create_ggplot <- function(x,
                               point_size = 4,
                               percentage_y_axis = FALSE,
-                              main_title = NULL,
-                              x_axis_label = NULL,
-                              y_axis_label = NULL,
+                              main_title,
+                              x_axis_label,
+                              y_axis_label,
                               fixed_x_axis_multiple = TRUE,
                               fixed_y_axis_multiple = TRUE,
                               x_axis_date_format = "%d/%m/%y",
                               x_axis_breaks = NULL,
                               y_axis_breaks = NULL,
+                              icons_size = 8L,
+                              icons_position = c("top right", "bottom right", "bottom left", "top left", "none"),
                               colours = ptd_spc_colours(),
                               theme_override = NULL,
+                              break_lines = c("both", "limits", "process", "none"),
                               ...) {
+  dots <- list(...)
+  if (length(dots) > 0) {
+    warning("Unknown arguments provided by plot: ",
+            paste(names(dots), collapse = ", "),
+            "\nCheck for common spelling mistakes in arguments.")
+  }
+
   assertthat::assert_that(
     inherits(x, "ptd_spc_df"),
     msg = "x argument must be an 'ptd_spc_df' object, created by ptd_spc()."
   )
+
   # argument needs to be called x for s3 plot method, but rename it to .data so it's more obvious through the rest of
   # the method
   .data <- x
+  options <- attr(.data, "options")
 
+  if (missing(main_title)) {
+    main_title <- paste0(
+      "SPC Chart of ",
+      ptd_capitalise(options$value_field),
+      ", starting ",
+      format(min(.data[["x"]], na.rm = TRUE), format = "%d/%m/%Y")
+    )
+  }
+
+  if (missing(x_axis_label)) {
+    x_axis_label <- ptd_capitalise(options[["date_field"]])
+  }
+  if (missing(y_axis_label)) {
+    y_axis_label <- ptd_capitalise(options[["value_field"]])
+  }
+
+  icons_position <- match.arg(icons_position)
+
+  break_lines <- match.arg(break_lines)
   ptd_validate_plot_options(
     point_size,
     percentage_y_axis,
@@ -59,38 +95,37 @@ ptd_create_ggplot <- function(x,
     x_axis_date_format,
     x_axis_breaks,
     y_axis_breaks,
+    icons_size,
+    icons_position,
     colours,
-    theme_override
+    theme_override,
+    break_lines
   )
 
-  options <- attr(.data, "options")
-
-  if (is.null(main_title)) {
-    main_title <- paste0(
-      "SPC Chart of ",
-      ptd_capitalise(options$value_field),
-      ", starting ",
-      format(min(.data[["x"]], na.rm = TRUE), format = "%d/%m/%Y")
-    )
+  colours_subset <- if (options[["improvement_direction"]] == "neutral") {
+    colours[c("common_cause", "special_cause_neutral")]
+  } else {
+    colours[c("common_cause", "special_cause_improvement", "special_cause_concern")]
   }
 
   # apply a short groups warning caption if needed
-  caption <- if (TRUE %in% .data$short_group_warning) {
+  caption <- if (any(.data$short_group_warning)) {
     paste0(
       "Some trial limits created by groups of fewer than 12 points exist. \n",
       "These will become more reliable as more data is added."
     )
-  } else {
-    NULL
   }
 
   line_size <- point_size / 3
 
+  break_limits <- break_lines %in% c("both", "limits")
+  break_process <- break_lines %in% c("both", "process")
+
   plot <- ggplot(.data, aes(x = .data$x, y = .data$y)) +
-    geom_line(aes(y = .data$upl),
+    geom_line(aes(y = .data$upl, group = if (break_limits) .data$rebase_group else 0),
       linetype = "dashed", size = line_size, colour = colours$upl
     ) +
-    geom_line(aes(y = .data$lpl),
+    geom_line(aes(y = .data$lpl, group = if (break_limits) .data$rebase_group else 0),
       linetype = "dashed", size = line_size, colour = colours$lpl
     ) +
     geom_line(aes(y = .data$target),
@@ -99,25 +134,23 @@ ptd_create_ggplot <- function(x,
     geom_line(aes(y = .data$trajectory),
       linetype = "dashed", size = line_size, colour = colours$trajectory, na.rm = TRUE
     ) +
-    geom_line(aes(y = mean),
+    geom_line(aes(y = mean, group = if (break_limits) .data$rebase_group else 0),
       linetype = "solid", colour = colours$mean_line
     ) +
-    geom_line(linetype = "solid", size = line_size, colour = colours$value_line) +
+    geom_line(aes(group = if (break_process) .data$rebase_group else 0),
+      linetype = "solid", size = line_size, colour = colours$value_line
+    ) +
     geom_point(aes(colour = .data$point_type), size = point_size) +
     scale_colour_manual(
-      values = colours[c(
-        "common_cause",
-        "special_cause_improvement",
-        "special_cause_neutral",
-        "special_cause_concern"
-      )],
+      values = colours_subset,
       labels = ptd_title_case
     ) +
     labs(
       title = main_title,
-      x = x_axis_label %||% ptd_capitalise(options[["date_field"]]),
-      y = y_axis_label %||% ptd_capitalise(options[["value_field"]]),
-      caption = caption
+      x = x_axis_label,
+      y = y_axis_label,
+      caption = caption,
+      group = NULL
     ) +
     theme_minimal() +
     theme(
@@ -161,7 +194,7 @@ ptd_create_ggplot <- function(x,
     plot <- plot +
       scale_y_continuous(labels = scales::label_percent(y_axis_breaks))
   } else if (!is.null(y_axis_breaks)) {
-    yaxis <- c(.data[["y"]], .data[["upl"]], .data[["lpl"]])
+    yaxis <- c(.data[["y"]], .data[["upl"]], .data[["lpl"]], .data[["target"]])
     start <- floor(min(yaxis, na.rm = TRUE) / y_axis_breaks) * y_axis_breaks
     end <- max(yaxis, na.rm = TRUE)
 
@@ -169,6 +202,11 @@ ptd_create_ggplot <- function(x,
 
     plot <- plot +
       scale_y_continuous(breaks = y_axis_labels, labels = y_axis_labels)
+  }
+
+  if (icons_position != "none") {
+    plot <- plot +
+      geom_ptd_icon(icons_size = icons_size, icons_position = icons_position)
   }
 
   plot
@@ -180,17 +218,22 @@ ptd_create_ggplot <- function(x,
 plot.ptd_spc_df <- function(x,
                             point_size = 4,
                             percentage_y_axis = FALSE,
-                            main_title = NULL,
-                            x_axis_label = NULL,
-                            y_axis_label = NULL,
+                            main_title,
+                            x_axis_label,
+                            y_axis_label,
                             fixed_x_axis_multiple = TRUE,
                             fixed_y_axis_multiple = TRUE,
                             x_axis_date_format = "%d/%m/%y",
                             x_axis_breaks = NULL,
                             y_axis_breaks = NULL,
+                            icons_size = 8L,
+                            icons_position = c("top right", "bottom right", "bottom left", "top left", "none"),
                             colours = ptd_spc_colours(),
                             theme_override = NULL,
+                            break_lines = c("both", "limits", "process", "none"),
                             ...) {
+  break_lines <- match.arg(break_lines)
+
   ptd_create_ggplot(
     x,
     point_size,
@@ -203,8 +246,11 @@ plot.ptd_spc_df <- function(x,
     x_axis_date_format,
     x_axis_breaks,
     y_axis_breaks,
+    icons_size,
+    icons_position,
     colours,
     theme_override,
+    break_lines,
     ...
   )
 }
