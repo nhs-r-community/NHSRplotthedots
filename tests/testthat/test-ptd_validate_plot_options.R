@@ -124,15 +124,29 @@ test_that("it handles y_axis_breaks correctly", {
   expect_error(ptd_validate_plot_options(y_axis_breaks = c(1, 2)), em)
 })
 
-test_that("it handles show_icons correctly", {
+test_that("it handles icons_size correctly", {
   # these should run fine
-  ptd_validate_plot_options(show_icons = TRUE)
-  ptd_validate_plot_options(show_icons = FALSE)
+  ptd_validate_plot_options(icons_size = 8L)
+  ptd_validate_plot_options(icons_size = 5.2)
 
   # these will error
-  em <- "show_icons argument must be a logical of length 1."
-  expect_error(ptd_validate_plot_options(show_icons = "a"), em)
-  expect_error(ptd_validate_plot_options(show_icons = c(TRUE, FALSE)), em)
+  em <- "icons_size must be an integer of length 1."
+  expect_error(ptd_validate_plot_options(icons_size = "a"), em, fixed = TRUE)
+  expect_error(ptd_validate_plot_options(icons_size = c(8, 2)), em, fixed = TRUE)
+})
+
+test_that("it handles icons_position correctly", {
+  # these should run fine
+  ptd_validate_plot_options(icons_position = "top right")
+  ptd_validate_plot_options(icons_position = "bottom right")
+  ptd_validate_plot_options(icons_position = "bottom left")
+  ptd_validate_plot_options(icons_position = "top left")
+  ptd_validate_plot_options(icons_position = "none")
+
+  # these will error
+  em <- "icons_position argument must be one of 'top right', 'bottom right', 'bottom_left', 'top left', or 'none'"
+  expect_error(ptd_validate_plot_options(icons_position = "a"), em, fixed = TRUE)
+  expect_error(ptd_validate_plot_options(icons_position = c("top right", "top left")), em, fixed = TRUE)
 })
 
 test_that("it handles colours correctly", {

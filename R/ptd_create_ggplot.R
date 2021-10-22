@@ -20,7 +20,9 @@
 #' @param y_axis_breaks Specify an interval value for breaks on the y axis. Value should be a numeric vector of length
 #'     1, either an integer for integer scales or a decimal value for percentage scales. This option is ignored if
 #'     faceting is in use.
-#' @param show_icons Whether to show variation and assurance icons, defaults to `TRUE`
+#' @param icons_size The size of the icons, defined in terms of font size. Defaults to 8.
+#' @param icons_position Where to show the icons, either "top right" (default), "bottom right", "bottom left",
+#'     "top left", or "none".
 #' @param colours Specify the colours to use in the plot, use the [ptd_spc_colours()] function to change defaults.
 #' @param theme_override Specify a list containing ggplot theme elements which can be used to override the default
 #'     appearance of the plot.
@@ -38,7 +40,8 @@ ptd_create_ggplot <- function(x,
                               x_axis_date_format = "%d/%m/%y",
                               x_axis_breaks = NULL,
                               y_axis_breaks = NULL,
-                              show_icons = TRUE,
+                              icons_size = 8L,
+                              icons_position = c("top right", "bottom right", "bottom left", "top left", "none"),
                               colours = ptd_spc_colours(),
                               theme_override = NULL,
                               ...) {
@@ -49,6 +52,8 @@ ptd_create_ggplot <- function(x,
   # argument needs to be called x for s3 plot method, but rename it to .data so it's more obvious through the rest of
   # the method
   .data <- x
+
+  icons_position <- match.arg(icons_position)
 
   ptd_validate_plot_options(
     point_size,
@@ -61,7 +66,8 @@ ptd_create_ggplot <- function(x,
     x_axis_date_format,
     x_axis_breaks,
     y_axis_breaks,
-    show_icons,
+    icons_size,
+    icons_position,
     colours,
     theme_override
   )
@@ -175,8 +181,9 @@ ptd_create_ggplot <- function(x,
       scale_y_continuous(breaks = y_axis_labels, labels = y_axis_labels)
   }
 
-  if (show_icons) {
-    plot <- plot + geom_ptd_icon()
+  if (icons_position != "none") {
+    plot <- plot +
+      geom_ptd_icon(icons_size = icons_size, icons_position = icons_position)
   }
 
   plot
@@ -196,7 +203,8 @@ plot.ptd_spc_df <- function(x,
                             x_axis_date_format = "%d/%m/%y",
                             x_axis_breaks = NULL,
                             y_axis_breaks = NULL,
-                            show_icons = TRUE,
+                            icons_size = 8L,
+                            icons_position = c("top right", "bottom right", "bottom left", "top left", "none"),
                             colours = ptd_spc_colours(),
                             theme_override = NULL,
                             ...) {
@@ -212,7 +220,8 @@ plot.ptd_spc_df <- function(x,
     x_axis_date_format,
     x_axis_breaks,
     y_axis_breaks,
-    show_icons,
+    icons_size,
+    icons_position,
     colours,
     theme_override,
     ...
