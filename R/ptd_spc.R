@@ -99,6 +99,9 @@ ptd_spc <- function(.data,
 
   ptd_validate_spc_options(options, .data)
 
+  # promote value field to a double (in case it's an integer)
+  .data[[value_field]] <- as.double(.data[[value_field]])
+
   .data[[date_field]] <- to_datetime(.data[[date_field]])
 
   # add rebase column
