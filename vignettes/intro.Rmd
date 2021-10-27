@@ -19,7 +19,7 @@ knitr::opts_chunk$set(
 ___This vignette is a work in progress, feel free to contribute on NHS-R GitHub___
 
 
-Welcome to the NHS-R community's collaborative package for building a specific type of statistical process control (SPC) chart, the XmR chart.  We are aiming to support the NHS England and NHS Improvement's 'Making Data Count' programme, please see <a href="https://www.england.nhs.uk/a-focus-on-staff-health-and-wellbeing/publications-and-resources/making-data-count/"> here </a> for more details.  The programme encourages boards, managers, and analyst teams to present data in ways that show change over time, and drive better understanding of indicators than 'RAG' (red, amber, green) rated board reports often present.
+Welcome to the NHS-R community's collaborative package for building a specific type of statistical process control (SPC) chart, the XmR chart.  We are aiming to support the NHS England and NHS Improvement's 'Making Data Count' programme, please see [here][mdc] for more details.  The programme encourages boards, managers, and analyst teams to present data in ways that show change over time, and drive better understanding of indicators than 'RAG' (red, amber, green) rated board reports often present.
 
 This tutorial is a concise take on applying the function to some Accident and Emergency breach data for some NHS hospitals.  We'll take this from the `NHSRdatasets` package, another of our packages providing example datasets for training in an NHS/healthcare context.
 
@@ -146,4 +146,7 @@ a + theme(axis.text.x = element_text(size=6, angle=45))
 
 ## Come and join us!
 
-This is a collaborative project that is still early in it's life.  All contributors are volunteers, and more volunteers would be very welcome (there's even stuff that doesn't require `R` coding to help with!).  Find out more at: https://github.com/nhs-r-community/NHSRplotthedots
+This is a collaborative project that is still early in it's life.  All contributors are volunteers, and more volunteers would be very welcome (there's even stuff that doesn't require `R` coding to help with!).  Find out more at: [github.com/nhs-r-community/NHSRplotthedots][nhsrptd_gh]
+
+[mdc]: https://www.england.nhs.uk/publication/making-data-count/
+[nhsrptd_gh]: https://github.com/nhs-r-community/NHSRplotthedots

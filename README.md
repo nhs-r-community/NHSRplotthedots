@@ -6,18 +6,19 @@
 <!-- badges: start -->
 
 [![Lifecycle:
-experimental](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](https://www.tidyverse.org/lifecycle/#experimental)
-[![Codecov test
-coverage](https://codecov.io/gh/nhs-r-community/NHSRplotthedots/branch/main/graph/badge.svg)](https://codecov.io/gh/nhs-r-community/NHSRplotthedots?branch=main)
+stable](https://img.shields.io/badge/lifecycle-stable-brightgreen.svg)](https://lifecycle.r-lib.org/articles/stages.html#stable)
 [![R-CMD-check](https://github.com/nhs-r-community/NHSRplotthedots/workflows/R-CMD-check/badge.svg)](https://github.com/nhs-r-community/NHSRplotthedots/actions)
+[![Codecov test
+coverage](https://codecov.io/gh/nhs-r-community/NHSRplotthedots/branch/main/graph/badge.svg)](https://app.codecov.io/gh/nhs-r-community/NHSRplotthedots?branch=main)
 <!-- badges: end -->
 
-This package is built by the NHS-R community to provide tools for
-drawing statistical process control (SPC) charts. This package supports
-the NHSE/I programme [‘Making Data
-Count’](https://www.england.nhs.uk/a-focus-on-staff-health-and-wellbeing/publications-and-resources/making-data-count/),
-and allows users to draw XmR charts, use change points, and apply rules
-with summary indicators for when rules are breached.
+This package is built by the [NHS-R
+community](https://nhsrcommunity.com) to provide tools for drawing
+statistical process control (SPC) charts. This package supports the
+NHSE/I programme [‘Making Data
+Count’](https://www.england.nhs.uk/publication/making-data-count/), and
+allows users to draw XmR charts, use change points, and apply rules with
+summary indicators for when rules are breached.
 
 Please be aware that this package is in the early stages of development,
 and features may change.
@@ -26,7 +27,7 @@ and features may change.
 
 As the package develops there will be a full release to CRAN if
 possible, but until that time you can install from
-[GitHub](https://github.com/) using the `remotes` package with:
+[GitHub](https://github.com/) using the `{remotes}` package with:
 
 ``` r
 # install.packages("remotes")
@@ -39,17 +40,17 @@ Welcome to the NHS-R community’s package for building a specific type of
 statistical process control (SPC) chart, the XmR chart. We are aiming to
 support the NHS England and NHS Improvement’s ‘Making Data Count’
 programme, please see
-<a href="https://www.england.nhs.uk/a-focus-on-staff-health-and-wellbeing/publications-and-resources/making-data-count/">
-here </a> for more details. The programme encourages boards, managers,
-and analyst teams to present data in ways that show change over time,
-and drive better understanding of indicators than ‘RAG’ (red, amber,
-green) rated board reports often present.
+[here](https://www.england.nhs.uk/publication/making-data-count/) for
+more details. The programme encourages boards, managers, and analyst
+teams to present data in ways that show change over time, and drive
+better understanding of indicators than ‘RAG’ (red, amber, green) rated
+board reports often present.
 
 The help-files, and vignette within this package tell you more about the
 possible options for controlling the charts, but below is a simple
 example of the type of chart the package produces. We will use the
-`ae_attendances` dataset from the `NHSRdatasets` package and a bit of
-`tidyverse` `dplyr` code to select some organisations.
+`ae_attendances` dataset from the `{NHSRdatasets}` package and a bit of
+`{dplyr}` code to select some organisations.
 
 ``` r
 library(NHSRplotthedots)
@@ -66,8 +67,8 @@ sub_set %>%
 <img src="man/figures/README-example-1.png" width="100%" />
 
 This plot is ok on it’s own, but we can specify more control options
-when we pass it on, using the `dplyr` pipe function below: `%>%` to the
-plot argument.
+when we pass it on, using the `{dplyr}` pipe function below: `%>%` to
+the plot argument.
 
 ``` r
 sub_set %>%
@@ -116,4 +117,4 @@ This is an NHS-R Community project that is open for anyone to contribute
 to in any way that they are able. If you want to learn more about this
 please join the discussion at [the NHS-R Community Slack
 group](https://nhsrcommunity.slack.com/) and the specific channel
-\#proj-shiny-spc.
+[#proj-shiny-spc](https://nhsrcommunity.slack.com/archives/CSVD4SYF3).
