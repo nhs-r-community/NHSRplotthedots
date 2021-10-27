@@ -9,7 +9,8 @@ Authors@R: c(
           person("Tom", "Jemmett", ,"thomas.jemmett@nhs.net", "aut", comment = c(ORCID="0000-0002-6943-2990")),
           person("Tom", "Smith", ,"thomas.smith5@nuh.nhs.uk", "aut"),
           person("Chris", "Mainey", ,"c.mainey@nhs.net", "aut", comment = c(ORCID ="0000-0002-3018-6171")),
-          person("NHS-R community", role = "cph")
+          person("John", "MacKintosh", ,"john.mackintosh3@nhs.scot", "aut"),
+          person("NHS-R community", email = "nhs.rcommunity@nhs.net", role = "cph")
           )
 Maintainer: Christopher Reading <christopher.reading1@nhs.net>
 Description: Provides tools for drawing Statistical Process Control (SPC) charts. This package supports the NHSE/I
