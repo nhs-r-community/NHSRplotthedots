@@ -2,7 +2,7 @@
 ^\.Rproj\.user$
 ^LICENSE\.md$
 ^README\.Rmd$
-
+^cran-comment.md
 ^.lintr$
 ^\.github$
 ^codecov\.yml$
