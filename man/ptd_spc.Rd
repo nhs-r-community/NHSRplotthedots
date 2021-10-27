@@ -41,8 +41,9 @@ of when to rebase. Each item in the list should be named after the facet you wis
 measured variable, or is neutral.  Accepted values are 'increase' for increase as improvement, 'decrease' for
 decrease as improvement, and 'neutral' where neither direction represents an improvement. Defaults to 'increase'.}
 
-\item{target}{Specify a field name which contains a target value.
-Field name can be specified using non-standard evaluation (i.e. no quotation marks).}
+\item{target}{Specify a single value, which will apply the same target to every facet of an SPC chart,
+or named values of targets, where the names correspond to the names of the facets, in order to
+have different targets for each facet. See \code{\link[=ptd_target]{ptd_target()}}.}
 
 \item{trajectory}{Specify a field name which contains a trajectory value.
 Field name can be specified using non-standard evaluation (i.e. no quotation marks).}

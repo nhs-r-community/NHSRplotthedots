@@ -23,8 +23,9 @@
 #' @param improvement_direction Specify whether process improvement is represented by an increase or decrease in
 #'     measured variable, or is neutral.  Accepted values are 'increase' for increase as improvement, 'decrease' for
 #'     decrease as improvement, and 'neutral' where neither direction represents an improvement. Defaults to 'increase'.
-#' @param target Specify a field name which contains a target value.
-#'     Field name can be specified using non-standard evaluation (i.e. no quotation marks).
+#' @param target Specify a single value, which will apply the same target to every facet of an SPC chart,
+#'     or named values of targets, where the names correspond to the names of the facets, in order to
+#'     have different targets for each facet. See [ptd_target()].
 #' @param trajectory Specify a field name which contains a trajectory value.
 #'     Field name can be specified using non-standard evaluation (i.e. no quotation marks).
 #' @param screen_outliers Whether we should screen for outliers or not when calculating the control limits. Defaults to
