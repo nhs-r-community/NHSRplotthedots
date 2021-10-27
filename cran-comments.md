@@ -16,7 +16,6 @@ This is first release for the NHS-R Community's 'Plot the Dots' package.  This s
 
 * r-hub:
   * Ubuntu Linux 20.04.1 LTS, R-release, GCC
-  * x86_64-pc-linux-gnu
   * Fedora Linux, R-devel, clang, gfortran
   * Windows Server 2008 R2 SP1, R-devel, 32/64 bit
 
