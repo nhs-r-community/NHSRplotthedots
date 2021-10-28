@@ -16,3 +16,5 @@
 ^NHSRplotthedots\.Rcheck$
 ^NHSRplotthedots.*\.tar\.gz$
 ^NHSRplotthedots.*\.tgz$
+
+^.aspell/
