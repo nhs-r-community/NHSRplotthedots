@@ -38,6 +38,8 @@ Suggests:
     rmarkdown,
     knitr,
     mockery,
-    withr
+    withr,
+    spelling
 VignetteBuilder: knitr
 Config/testthat/edition: 3
+Language: en-US
