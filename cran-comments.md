@@ -24,6 +24,12 @@ There were no ERRORs or WARNINGs.
 
 NOTEs for 'possibly invalid URL' have all been checked and are valid.
 
+1 NOTE: "Possibly misspelled words in DESCRIPTION:
+    NHSE (3:51, 17:109)
+    SPC (17:70)
+    XmR (3:26, 18:59)"
+Highlighted words are spelled correctly and note can be ignored.
+
 
 ## Downstream dependencies
 There are currently no downstream dependencies for this package to my knowledge.
