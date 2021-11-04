@@ -21,8 +21,10 @@ GeomPTDIcon <- ggproto( # Exclude Linting
 
     # use the coord transformation for the colours, but then set the x, y coordinates manually (inside the viewport)
     d <- coord$transform(data, panel_params) %>%
-      mutate(x = ifelse(.data$type == "variation", radius, 3.5 * radius),
-             y = radius / 2)
+      mutate(
+        x = ifelse(.data$type == "variation", radius, 3.5 * radius),
+        y = radius / 2
+      )
 
     # create the viewport for the icons
     v <- grid::viewport(

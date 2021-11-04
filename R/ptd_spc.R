@@ -157,8 +157,9 @@ summary.ptd_spc_df <- function(object, ...) {
       inner_join(at, by = "f") %>%
       group_by(.data$f) %>%
       mutate(assurance_type = ifelse(.data$rebase_group == max(.data$rebase_group),
-                                     .data$assurance_type,
-                                     as.character(NA))) %>%
+        .data$assurance_type,
+        as.character(NA)
+      )) %>%
       ungroup()
   }
 

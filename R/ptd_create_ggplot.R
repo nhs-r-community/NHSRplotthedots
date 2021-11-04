@@ -50,9 +50,11 @@ ptd_create_ggplot <- function(x,
                               ...) {
   dots <- list(...)
   if (length(dots) > 0) {
-    warning("Unknown arguments provided by plot: ",
-            paste(names(dots), collapse = ", "),
-            "\nCheck for common spelling mistakes in arguments.")
+    warning(
+      "Unknown arguments provided by plot: ",
+      paste(names(dots), collapse = ", "),
+      "\nCheck for common spelling mistakes in arguments."
+    )
   }
 
   assertthat::assert_that(
