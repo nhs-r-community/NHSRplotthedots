@@ -325,8 +325,10 @@ test_that("it doesn't add icons if icons_position is 'none'", {
   stub(ptd_create_ggplot, "geom_ptd_icon", m)
 
   set.seed(123)
-  d <- data.frame(x = as.Date("2020-01-01") + 1:20,
-                  y = rnorm(20))
+  d <- data.frame(
+    x = as.Date("2020-01-01") + 1:20,
+    y = rnorm(20)
+  )
 
   s1 <- ptd_spc(d, "y", "x", target = 0.5)
   p1 <- ptd_create_ggplot(s1, icons_position = "top right")

@@ -14,11 +14,13 @@ test_that("it returns a column of NA's if there is no target", {
 })
 
 test_that("it returns correct values for assurance when improvement_direction is increase", {
-  s <- data.frame(f = c("a", "b", "c"),
-                  lpl    = c(1, 5, 1),
-                  mean   = c(2, 6, 4),
-                  upl    = c(3, 7, 5),
-                  target = 4)
+  s <- data.frame(
+    f = c("a", "b", "c"),
+    lpl = c(1, 5, 1),
+    mean = c(2, 6, 4),
+    upl = c(3, 7, 5),
+    target = 4
+  )
   attr(s, "options") <- list(
     target = "target",
     improvement_direction = "increase"
@@ -30,11 +32,13 @@ test_that("it returns correct values for assurance when improvement_direction is
 })
 
 test_that("it returns correct values for assurance when improvement_direction is decrease", {
-  s <- data.frame(f = c("a", "b", "c"),
-                  lpl    = c(1, 5, 1),
-                  mean   = c(2, 6, 4),
-                  upl    = c(3, 7, 5),
-                  target = 4)
+  s <- data.frame(
+    f = c("a", "b", "c"),
+    lpl = c(1, 5, 1),
+    mean = c(2, 6, 4),
+    upl = c(3, 7, 5),
+    target = 4
+  )
   attr(s, "options") <- list(
     target = "target",
     improvement_direction = "decrease"
@@ -46,11 +50,13 @@ test_that("it returns correct values for assurance when improvement_direction is
 })
 
 test_that("it returns correct values for assurance when improvement_direction is neutral", {
-  s <- data.frame(f = c("a", "b", "c"),
-                  lpl    = c(1, 5, 1),
-                  mean   = c(2, 6, 4),
-                  upl    = c(3, 7, 5),
-                  target = 4)
+  s <- data.frame(
+    f = c("a", "b", "c"),
+    lpl = c(1, 5, 1),
+    mean = c(2, 6, 4),
+    upl = c(3, 7, 5),
+    target = 4
+  )
   attr(s, "options") <- list(
     target = "target",
     improvement_direction = "neutral"
@@ -62,12 +68,14 @@ test_that("it returns correct values for assurance when improvement_direction is
 })
 
 test_that("it returns correct values for assurance when rebase", {
-  s <- data.frame(f = "a",
-                  rebase = c(1, 2, 3),
-                  lpl    = c(1, 5, 1),
-                  mean   = c(2, 6, 4),
-                  upl    = c(3, 7, 5),
-                  target = 4)
+  s <- data.frame(
+    f = "a",
+    rebase = c(1, 2, 3),
+    lpl = c(1, 5, 1),
+    mean = c(2, 6, 4),
+    upl = c(3, 7, 5),
+    target = 4
+  )
   attr(s, "options") <- list(
     target = "target",
     improvement_direction = "decrease"

@@ -9,8 +9,10 @@ test_that("it set's up the geom correctly", {
   expect_s3_class(g$geom, "GeomPTDIcon")
   expect_equal(g$geom_params, list(icons_size = 8L, icons_position = "top right", na.rm = FALSE))
   expect_false(g$inherit.aes)
-  expect_equal(sapply(g$mapping, quo_name),
-               c(type = "type", colour = "colour", text = "text"))
+  expect_equal(
+    sapply(g$mapping, quo_name),
+    c(type = "type", colour = "colour", text = "text")
+  )
   expect_s3_class(g$position, "PositionIdentity")
   expect_false(g$show.legend)
   expect_s3_class(g$stat, "StatIdentity")
@@ -27,9 +29,11 @@ test_that("it transforms the data correctly", {
   g <- geom_ptd_icon()
 
   set.seed(123)
-  d <- data.frame(x = as.Date("2020-01-01") + 1:24,
-                  y = rnorm(24),
-                  f = rep(0:1, each = 12))
+  d <- data.frame(
+    x = as.Date("2020-01-01") + 1:24,
+    y = rnorm(24),
+    f = rep(0:1, each = 12)
+  )
 
   s1 <- ptd_spc(d, "y", "x")
 
