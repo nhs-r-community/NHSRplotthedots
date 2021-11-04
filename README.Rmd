@@ -21,6 +21,7 @@ knitr::opts_chunk$set(
 [![Lifecycle: stable](https://img.shields.io/badge/lifecycle-stable-brightgreen.svg)](https://lifecycle.r-lib.org/articles/stages.html#stable)
 [![R-CMD-check](https://github.com/nhs-r-community/NHSRplotthedots/workflows/R-CMD-check/badge.svg)](https://github.com/nhs-r-community/NHSRplotthedots/actions)
 [![Codecov test coverage](https://codecov.io/gh/nhs-r-community/NHSRplotthedots/branch/main/graph/badge.svg)](https://app.codecov.io/gh/nhs-r-community/NHSRplotthedots?branch=main)
+[![CRAN status](https://www.r-pkg.org/badges/version/NHSRplotthedots)](https://CRAN.R-project.org/package=NHSRplotthedots)
 <!-- badges: end -->
 
 This package is built by the [NHS-R community][nhsr] to provide tools for drawing statistical process control (SPC) charts. This package supports the NHSE/I programme ['Making Data Count'][mdc], and allows users to draw XmR charts, use change points, and apply rules with summary indicators for when rules are breached.
