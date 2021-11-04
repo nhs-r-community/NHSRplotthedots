@@ -37,7 +37,7 @@ need the outputs to be completely consistent.
 By default, this package will screen outlying points, removing them from the moving range calculation, and hence from 
 the process limits calculation. This is in line with the published paper:
 
-> Nelson, LS, 'Shewhart charts for Individual Measurements" Journal of Quality Technology, 1982, i3, 172-173
+> Nelson, LS, "Control Charts for Individual Measurements", Journal of Quality Technology, 1982, 14(34)
 
 It is discussed further in the book:
 
