@@ -1,7 +1,7 @@
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 
-# NHSRplotthedots <a alt="NHS-R Community's logo" href='https://nhsrcommunity.com/'><img src='man/figures/logo.png' align="right" height="80" /></a>
+# NHSRplotthedots <a alt="NHS-R Community's logo" href='https://nhsrcommunity.com/'><img src='https://nhs-r-community.github.io/assets/logo/nhsr-logo.png' align="right" height="80" /></a>
 
 <!-- badges: start -->
 
@@ -117,4 +117,4 @@ This is an NHS-R Community project that is open for anyone to contribute
 to in any way that they are able. If you want to learn more about this
 please join the discussion at [the NHS-R Community Slack
 group](https://nhsrcommunity.slack.com/) and the specific channel
-[#proj-shiny-spc](https://nhsrcommunity.slack.com/archives/CSVD4SYF3).
+[\#proj-shiny-spc](https://nhsrcommunity.slack.com/archives/CSVD4SYF3).
