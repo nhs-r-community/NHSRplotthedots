@@ -20,12 +20,12 @@ library(NHSRdatasets)
 ```
 
 The overall intent of this package is to mimic as completely as possible the output available from the
-[NHSEI Making Data Count][mdc] excel tools. However, we have identified so far one place where the R implementation 
+[NHSEI Making Data Count][mdc] excel tools. However, we have identified some areas where the R implementation 
 should deviate from the main excel tools. We have done this only after careful consideration, and we believe there is a 
 benefit to deviating.
 
-In the future other small differences may also emerge.  This vignette documents what these differences are, and how to 
-set options to over-ride them, so that the output produced is identical to the excel output. 
+This vignette documents what these differences are, and how to 
+set options to over-ride them, so that if you need to you can completely replicate the output that the excel tools would create.  
 
 You may consider this important if for example you are publishing outputs from both the excel tool and this R tool, and 
 need the outputs to be completely consistent.
