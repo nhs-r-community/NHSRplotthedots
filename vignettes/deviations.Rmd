@@ -133,6 +133,26 @@ plot(spc_data, break_lines = "process")
 plot(spc_data, break_lines = "none")
 ```
 
+### 3. X Axis Text Angle
+
+As can be seen in the plots above, by default this package will print x axis text rotated by 45 degrees for better utilisation of space, and readability.  Excel's behaviour is to print this text at 90 degrees to the axis. 
+
+Text angle can be over-ridden by passing a ggplot `theme()` into the `theme_override` argument of the plot function.  Any of the modifications documented in the [ggplot2 theme documentation](https://ggplot2.tidyverse.org/reference/theme.html) can be made, but in this case we just need to modify `axis.text.x`.
+
+**To re-instate 90 degree axis text:**
+
+```{r}
+ae_attendances %>%
+  group_by(period) %>%
+  summarise(across(attendances, sum)) %>%
+  ptd_spc(attendances, period) %>%
+  plot(
+    theme_override = theme(
+      axis.text.x = element_text(angle = 90)
+    )
+  )
+```
+
 ---
 Find the package code on [GitHub](https://github.com/nhs-r-community/NHSRplotthedots)
 
