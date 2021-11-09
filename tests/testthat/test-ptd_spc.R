@@ -49,7 +49,7 @@ test_that("it returns a ptd_spc_df object", {
 })
 
 test_that("it has options as an attribute, created by ptd_spc_options", {
-  m <- mock(spc_options)
+  m <- mock(spc_options, cycle = TRUE)
 
   stub(ptd_spc, "ptd_spc_options", m)
   stub(ptd_spc, "ptd_validate_spc_options", TRUE)
@@ -69,12 +69,12 @@ test_that("it has options as an attribute, created by ptd_spc_options", {
     x
   })
 
-  s <- ptd_spc(data, "a", "b", "c", "d", "e", "f", "g", "h", "i")
+  s <- ptd_spc(data, "y", "x", "a", "b", "c", "d", "e", "f", "g")
   o <- attr(s, "options")
 
   expect_equal(o, spc_options)
   expect_called(m, 1)
-  expect_args(m, 1, "a", "b", "c", "d", "e", "f", "g", "h", "i")
+  expect_args(m, 1, "y", "x", "a", "b", "c", "d", "e", "f", "g")
 })
 
 test_that("it validates the options", {
@@ -245,11 +245,11 @@ test_that("it accepts nse arguments as well as string", {
   r <- ptd_rebase()
   t <- ptd_target()
 
-  s1 <- ptd_spc(data, vf, df)
+  s1 <- ptd_spc(data, y, x)
   s2 <- ptd_spc(
     data,
-    value_field = vf,
-    date_field = df,
+    value_field = y,
+    date_field = x,
     facet_field = ff,
     rebase = r,
     target = t,
@@ -257,8 +257,8 @@ test_that("it accepts nse arguments as well as string", {
   )
 
   expect_called(m, 2)
-  expect_args(m, 1, "vf", "df", NULL, NULL, NULL, "increase", NULL, NULL, TRUE)
-  expect_args(m, 2, "vf", "df", "ff", r, NULL, "increase", t, "tr", TRUE)
+  expect_args(m, 1, "y", "x", NULL, NULL, NULL, "increase", NULL, NULL, TRUE)
+  expect_args(m, 2, "y", "x", "ff", r, NULL, "increase", t, "tr", TRUE)
 })
 
 # print() ----

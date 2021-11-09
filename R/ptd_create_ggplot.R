@@ -50,9 +50,11 @@ ptd_create_ggplot <- function(x,
                               ...) {
   dots <- list(...)
   if (length(dots) > 0) {
-    warning("Unknown arguments provided by plot: ",
-            paste(names(dots), collapse = ", "),
-            "\nCheck for common spelling mistakes in arguments.")
+    warning(
+      "Unknown arguments provided by plot: ",
+      paste(names(dots), collapse = ", "),
+      "\nCheck for common spelling mistakes in arguments."
+    )
   }
 
   assertthat::assert_that(
@@ -156,7 +158,7 @@ ptd_create_ggplot <- function(x,
     theme(
       plot.background = element_rect(color = "grey", size = 1), # border around whole plot
       plot.margin = unit(c(5, 5, 5, 5), "mm"), # 5mm of white space around plot edge
-      axis.text.x = element_text(angle = 90, hjust = 1),
+      axis.text.x = element_text(angle = 45, hjust = 1),
       panel.grid = element_line(color = "grey70"), # gridline colour
       panel.grid.major.x = element_blank(), # remove major x gridlines
       panel.grid.minor.x = element_blank(), # remove minor x gridlines

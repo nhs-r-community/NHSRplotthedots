@@ -1,7 +1,7 @@
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 
-# NHSRplotthedots <a alt="NHS-R Community's logo" href='https://nhsrcommunity.com/'><img src='man/figures/logo.png' align="right" height="80" /></a>
+# NHSRplotthedots <a alt="NHS-R Community's logo" href='https://nhsrcommunity.com/'><img src='https://nhs-r-community.github.io/assets/logo/nhsr-logo.png' align="right" height="80" /></a>
 
 <!-- badges: start -->
 
@@ -10,7 +10,8 @@ stable](https://img.shields.io/badge/lifecycle-stable-brightgreen.svg)](https://
 [![R-CMD-check](https://github.com/nhs-r-community/NHSRplotthedots/workflows/R-CMD-check/badge.svg)](https://github.com/nhs-r-community/NHSRplotthedots/actions)
 [![Codecov test
 coverage](https://codecov.io/gh/nhs-r-community/NHSRplotthedots/branch/main/graph/badge.svg)](https://app.codecov.io/gh/nhs-r-community/NHSRplotthedots?branch=main)
-[![CRAN](https://www.r-pkg.org/badges/version/NHSRplotthedots)](https://cran.r-project.org/web/packages/NHSRplotthedots/index.html)
+[![CRAN
+status](https://www.r-pkg.org/badges/version/NHSRplotthedots)](https://CRAN.R-project.org/package=NHSRplotthedots)
 [![downloads](https://cranlogs.r-pkg.org/badges/grand-total/NHSRplotthedots)](https://cran.r-project.org/web/packages/NHSRplotthedots/index.html)
 <!-- badges: end -->
 
