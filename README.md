@@ -120,4 +120,4 @@ This is an NHS-R Community project that is open for anyone to contribute
 to in any way that they are able. If you want to learn more about this
 please join the discussion at [the NHS-R Community Slack
 group](https://nhsrcommunity.slack.com/) and the specific channel
-[\#proj-shiny-spc](https://nhsrcommunity.slack.com/archives/CSVD4SYF3).
+[\#nhsr-plot-the-dots](https://nhsrcommunity.slack.com/archives/CSVD4SYF3).
