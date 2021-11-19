@@ -261,6 +261,35 @@ test_that("it accepts nse arguments as well as string", {
   expect_args(m, 2, "y", "x", "ff", r, NULL, "increase", t, "tr", TRUE)
 })
 
+# tests for crosstalk
+
+test_that("it accepts an object of type SharedData", {
+  stub(ptd_spc, "ptd_spc_options", spc_options)
+  stub(ptd_spc, "ptd_validate_spc_options", TRUE)
+  stub(ptd_spc, "ptd_spc_standard", function(x, ...) x)
+  stub(ptd_spc, "ptd_calculate_point_type", function(x, ...) x)
+  stub(ptd_spc, "to_datetime", function(x, ...) x)
+  stub(ptd_spc, "ptd_add_short_group_warnings", function(x, ...) x)
+
+  r <- ptd_rebase()
+  t <- ptd_target()
+
+  sd <- structure(
+    list(
+      origData = function() data,
+      key = function() "key",
+      groupName = function() "set"
+    ),
+    class = "SharedData"
+  )
+
+  s1 <- ptd_spc(sd, y, x)
+
+  expect_s3_class(s1, "ptd_spc_df")
+  expect_equal(s1[[".crossTalkKey"]], rep("key", nrow(data)))
+  expect_equal(attr(s1, "set"), "set")
+})
+
 # print() ----
 
 test_that("it calls plot", {
