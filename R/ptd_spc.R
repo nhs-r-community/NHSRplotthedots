@@ -82,6 +82,13 @@ ptd_spc <- function(.data,
                     target = ptd_target(),
                     trajectory,
                     screen_outliers = TRUE) {
+  # support {crosstalk} part 1
+  if (inherits(.data, "SharedData")) {
+    key <- .data$key()
+    set <- .data$groupName()
+    .data <- .data$origData()
+  }
+
   assertthat::assert_that(
     inherits(.data, "data.frame"),
     msg = "ptd_spc: .data must be a data.frame"
@@ -124,6 +131,12 @@ ptd_spc <- function(.data,
 
   class(df) <- c("ptd_spc_df", class(df))
   attr(df, "options") <- options
+
+  # support {crosstalk} part 2
+  if (exists("key")) {
+    df[[".crossTalkKey"]] <- key
+    attr(df, "set") <- set
+  }
 
   df
 }
