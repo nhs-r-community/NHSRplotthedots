@@ -29,8 +29,8 @@ test_that("it throws an error if .data is not a data.frame or SharedData", {
   local({
     m <- mock()
 
-    ptd_spc.data.frame <- m
-    ptd_spc.SharedData <- m
+    ptd_spc.data.frame <- m # Exclude Linting
+    ptd_spc.SharedData <- m # Exclude Linting
 
     sd <- sd <- structure(
       list(

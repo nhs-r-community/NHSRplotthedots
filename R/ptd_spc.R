@@ -86,7 +86,7 @@ ptd_spc <- function(.data,
 }
 
 #' @export
-ptd_spc.SharedData <- function(.data, ...) {
+ptd_spc.SharedData <- function(.data, ...) { # Exclude Linting
   key <- .data$key()
   set <- .data$groupName()
 
@@ -99,7 +99,7 @@ ptd_spc.SharedData <- function(.data, ...) {
 }
 
 #' @export
-ptd_spc.data.frame <- function(.data,
+ptd_spc.data.frame <- function(.data, # Exclude Linting
                                value_field,
                                date_field,
                                facet_field,
@@ -109,7 +109,6 @@ ptd_spc.data.frame <- function(.data,
                                target = ptd_target(),
                                trajectory,
                                screen_outliers = TRUE) {
-
   value_field <- quo_name(enquo(value_field))
   date_field <- quo_name(enquo(date_field))
   facet_field <- if (!missing(facet_field)) quo_name(enquo(facet_field))
