@@ -31,9 +31,11 @@ Please be aware that this package is in the early stages of development, and fea
 
 ## Installation
 
-As the package develops there will be a full release to CRAN if possible, but until that time you can install from [GitHub](https://github.com/) using the `{remotes}` package  with:
-
 ```{r, eval=FALSE}
+# install from CRAN
+install.packages("NHSRplotthedots")
+
+# Or install the development version from GitHub using {remotes} package:
 # install.packages("remotes")
 remotes::install_github("https://github.com/nhs-r-community/NHSRplotthedots", build_vignettes = TRUE)
 ```
