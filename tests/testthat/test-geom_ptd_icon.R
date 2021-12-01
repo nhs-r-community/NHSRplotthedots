@@ -7,7 +7,7 @@ test_that("it set's up the geom correctly", {
   expect_equal(g$aes_params, setNames(list(), character()))
   expect_s3_class(g$data, "ggproto_method")
   expect_s3_class(g$geom, "GeomPTDIcon")
-  expect_equal(g$geom_params, list(icons_size = 8L, icons_position = "top right", na.rm = FALSE))
+  expect_equal(g$geom_params, list(icons_size = 8L, icons_position = "top right", font_family = "", na.rm = FALSE))
   expect_false(g$inherit.aes)
   expect_equal(
     sapply(g$mapping, quo_name),

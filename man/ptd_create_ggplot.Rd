@@ -21,6 +21,7 @@ ptd_create_ggplot(
   colours = ptd_spc_colours(),
   theme_override = NULL,
   break_lines = c("both", "limits", "process", "none"),
+  font_family = "",
   ...
 )
 }
@@ -66,6 +67,8 @@ appearance of the plot.}
 
 \item{break_lines}{whether to break lines when a rebase happens. Defaults to "both", but can break just "limits"
 lines, "process" lines, or "none".}
+
+\item{font_family}{a name of a font to use. Defaults to "", which will pick the ggplot2 default font.}
 
 \item{...}{currently ignored}
 }

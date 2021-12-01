@@ -3,11 +3,12 @@ GeomPTDIcon <- ggproto( # Exclude Linting
   Geom,
   required_aes = c("type", "colour", "text"),
   default_aes = aes(),
-  extra_params = c("na.rm", "icons_size", "icons_position"),
+  extra_params = c("na.rm", "icons_size", "icons_position", "font_family"),
   draw_key = draw_key_point,
   draw_panel = function(self, data, panel_params, coord,
                         icons_size = 8,
-                        icons_position = c("top right", "bottom right", "bottom left", "top left")) {
+                        icons_position = c("top right", "bottom right", "bottom left", "top left"),
+                        font_family = "") {
     icons_position <- match.arg(icons_position)
     # match the icons_position to x,y coordinates. either {0, 1}, but shift in by 0.01 so icons don't clip
     icons_position_x <- abs(as.numeric(grepl("right$", icons_position)) - 0.01)
@@ -50,7 +51,7 @@ GeomPTDIcon <- ggproto( # Exclude Linting
     # insert the text inside the icons
     text <- grid::textGrob(
       d$text, grid::unit(d$x, "cm"), grid::unit(d$y, "cm"),
-      gp = grid::gpar(fontsize = icons_size),
+      gp = grid::gpar(fontsize = icons_size, fontfamily = font_family),
       vp = v
     )
 
@@ -61,6 +62,7 @@ GeomPTDIcon <- ggproto( # Exclude Linting
 
 geom_ptd_icon <- function(icons_size = 8L,
                           icons_position = c("top right", "bottom right", "bottom left", "top left"),
+                          font_family = "",
                           ...) {
   icons_position <- match.arg(icons_position)
 
@@ -121,6 +123,6 @@ geom_ptd_icon <- function(icons_size = 8L,
     position = "identity",
     show.legend = FALSE,
     inherit.aes = FALSE,
-    params = list(icons_size = icons_size, icons_position = icons_position, ...)
+    params = list(icons_size = icons_size, icons_position = icons_position, font_family = font_family, ...)
   )
 }

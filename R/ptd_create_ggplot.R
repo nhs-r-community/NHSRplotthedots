@@ -28,6 +28,7 @@
 #'     appearance of the plot.
 #' @param break_lines whether to break lines when a rebase happens. Defaults to "both", but can break just "limits"
 #'     lines, "process" lines, or "none".
+#' @param font_family a name of a font to use. Defaults to "", which will pick the ggplot2 default font.
 #' @param ... currently ignored
 #' @return The ggplot2 object
 #' @export
@@ -47,6 +48,7 @@ ptd_create_ggplot <- function(x,
                               colours = ptd_spc_colours(),
                               theme_override = NULL,
                               break_lines = c("both", "limits", "process", "none"),
+                              font_family = "",
                               ...) {
   dots <- list(...)
   if (length(dots) > 0) {
@@ -154,11 +156,11 @@ ptd_create_ggplot <- function(x,
       caption = caption,
       group = NULL
     ) +
-    theme_minimal() +
+    theme_minimal(base_family = font_family) +
     theme(
       plot.background = element_rect(color = "grey", size = 1), # border around whole plot
       plot.margin = unit(c(5, 5, 5, 5), "mm"), # 5mm of white space around plot edge
-      axis.text.x = element_text(angle = 45, hjust = 1),
+      axis.text.x = element_text(font_family, angle = 45, hjust = 1),
       panel.grid = element_line(color = "grey70"), # gridline colour
       panel.grid.major.x = element_blank(), # remove major x gridlines
       panel.grid.minor.x = element_blank(), # remove minor x gridlines
@@ -208,7 +210,7 @@ ptd_create_ggplot <- function(x,
 
   if (icons_position != "none") {
     plot <- plot +
-      geom_ptd_icon(icons_size = icons_size, icons_position = icons_position)
+      geom_ptd_icon(icons_size = icons_size, icons_position = icons_position, font_family = font_family)
   }
 
   plot
