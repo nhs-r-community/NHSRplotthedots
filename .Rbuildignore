@@ -19,3 +19,4 @@
 ^NHSRplotthedots.*\.tgz$
 
 ^.aspell/
+^tests/testthat/_snaps/
