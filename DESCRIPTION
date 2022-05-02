@@ -29,10 +29,7 @@ Imports:
     dplyr,
     rlang,
     crayon,
-    utils,
-    NHSRdatasets,
-    assertthat,
-    grid
+    assertthat
 Suggests: 
     covr,
     lintr,
@@ -41,7 +38,10 @@ Suggests:
     knitr,
     mockery,
     withr,
-    spelling
+    spelling,
+    utils,
+    NHSRdatasets,
+    grid
 VignetteBuilder: knitr
 Config/testthat/edition: 3
 Language: en-US
