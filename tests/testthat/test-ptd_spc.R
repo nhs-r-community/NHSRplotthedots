@@ -366,6 +366,11 @@ test_that("it outputs expected content", {
   )
   expect_snapshot_output(summary(s4))
 
-  s5 <- ptd_spc.data.frame(d, "y", "x", target = 0.5)
+  m <- mock(tibble(f = "no facet", assurance_type = "a"))
+  stub(summary.ptd_spc_df, "ptd_calculate_assurance_type", m)
+
+  s5 <- ptd_spc.data.frame(d, "y", "x")
+  
   expect_snapshot_output(summary(s5))
+  expect_called(m, 1)
 })

@@ -12,7 +12,7 @@ stable](https://img.shields.io/badge/lifecycle-stable-brightgreen.svg)](https://
 coverage](https://codecov.io/gh/nhs-r-community/NHSRplotthedots/branch/main/graph/badge.svg)](https://app.codecov.io/gh/nhs-r-community/NHSRplotthedots?branch=main)
 [![CRAN
 status](https://www.r-pkg.org/badges/version/NHSRplotthedots)](https://CRAN.R-project.org/package=NHSRplotthedots)
-[![downloads](https://cranlogs.r-pkg.org/badges/grand-total/NHSRplotthedots)](https://cran.r-project.org/web/packages/NHSRplotthedots/index.html)
+[![downloads](https://cranlogs.r-pkg.org/badges/grand-total/NHSRplotthedots)](https://cran.r-project.org/package=NHSRplotthedots)
 <!-- badges: end -->
 
 This package is built by the [NHS-R
@@ -28,11 +28,11 @@ and features may change.
 
 ## Installation
 
-As the package develops there will be a full release to CRAN if
-possible, but until that time you can install from
-[GitHub](https://github.com/) using the `{remotes}` package with:
-
 ``` r
+# install from CRAN
+install.packages("NHSRplotthedots")
+
+# Or install the development version from GitHub using {remotes} package:
 # install.packages("remotes")
 remotes::install_github("https://github.com/nhs-r-community/NHSRplotthedots", build_vignettes = TRUE)
 ```
@@ -120,4 +120,4 @@ This is an NHS-R Community project that is open for anyone to contribute
 to in any way that they are able. If you want to learn more about this
 please join the discussion at [the NHS-R Community Slack
 group](https://nhsrcommunity.slack.com/) and the specific channel
-[\#nhsr-plot-the-dots](https://nhsrcommunity.slack.com/archives/CSVD4SYF3).
+[#nhsr-plot-the-dots](https://nhsrcommunity.slack.com/archives/CSVD4SYF3).
