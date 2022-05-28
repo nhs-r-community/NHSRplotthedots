@@ -52,8 +52,9 @@ Field name can be specified using non-standard evaluation (i.e. no quotation mar
 \code{TRUE}.}
 }
 \value{
-A ggplot2 object of the spc charts.  This will automatically print the plot, but can also be saved as an
-object if you want to manipulate it further.
+An object of type ptd_spc_df. This is a data.frame which can be further manipulated like any other
+data.frame. The default print() method for ptd_spc_df is to call \code{\link[=ptd_create_ggplot]{ptd_create_ggplot()}}, displaying the plot. If
+you would like to get the data.frame, call as_tibble() or as.data.frame() on the object.
 }
 \description{
 \code{ptd_spc} returns a plot object or data table with SPC values using NHSI 'plot the dots' logic.
