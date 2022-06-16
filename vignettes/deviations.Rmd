@@ -1,8 +1,8 @@
 ---
-title: "Deviations from excel defaults"
+title: "Deviations from Excel defaults"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{Deviations from excel defaults}
+  %\VignetteIndexEntry{Deviations from Excel defaults}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
@@ -20,14 +20,14 @@ library(NHSRdatasets)
 ```
 
 The overall intent of this package is to mimic as completely as possible the output available from the
-[NHSEI Making Data Count][mdc] excel tools. However, we have identified some areas where the R implementation 
-should deviate from the main excel tools. We have done this only after careful consideration, and we believe there is a 
+[NHSEI Making Data Count][mdc] Excel tools. However, we have identified some areas where the R implementation 
+should deviate from the main Excel tools. We have done this only after careful consideration, and we believe there is a 
 benefit to deviating.
 
 This vignette documents what these differences are, and how to 
-set options to over-ride them, so that if you need to you can completely replicate the output that the excel tools would create.  
+set options to over-ride them, so that if you need to you can completely replicate the output that the Excel tools would create.  
 
-You may consider this important if for example you are publishing outputs from both the excel tool and this R tool, and 
+You may consider this important if for example you are publishing outputs from both the Excel tool and this R tool, and 
 need the outputs to be completely consistent.
 
 ## List of Deviations
@@ -44,15 +44,15 @@ It is discussed further in the book:
 > Lloyd P Provost & Sandra K Murray, The Health Care Data Guide: Learning from Data for Improvement (San Francisco, CA: Jossey-Bass, 2011), p.155 & p.192.
 
 
-The Making Data Count" excel tools do not screen outlying points, and all points are included in the moving range and
-limits calculations. If outlying points exist, the process limits on the excel tools will therefore be wider than if
+The Making Data Count" Excel tools do not screen outlying points, and all points are included in the moving range and
+limits calculations. If outlying points exist, the process limits on the Excel tools will therefore be wider than if
 outlying points were screened from the calculation.
 
 This behaviour is controlled by the `screen_outliers` argument. By default, `screen_outliers = TRUE`.  
 
-To replicate the excel method, set the argument `screen_outliers = FALSE`.
+To replicate the Excel method, set the argument `screen_outliers = FALSE`.
 
-The two charts below demonstrate the default, and how to over-ride to replicate the excel tools.
+The two charts below demonstrate the default, and how to over-ride to replicate the Excel tools.
 
 **R Package Default:**
 
@@ -73,11 +73,11 @@ spc_data %>%
   )
 ```
 
-**Over-riding to replicate "Making Data Count" excel output:**
+**Over-riding to replicate "Making Data Count" Excel output:**
 
 ```{r}
 
-# setting screen_outliers = FALSE produces the same output as excel
+# setting screen_outliers = FALSE produces the same output as Excel
 spc_data <- ptd_spc(df, value_field = data, date_field = date, screen_outliers = FALSE)
 spc_data %>%
   plot() + 
@@ -92,7 +92,7 @@ spc_data %>%
 
 ### 2. Breaking of lines
 
-By default, this package will break process and limit lines when a plot is rebased. The excel tool draws all lines as
+By default, this package will break process and limit lines when a plot is rebased. The Excel tool draws all lines as
 continuous lines. However, rebasing is a change to the process, so by breaking lines it more clearly indicates that a
 change in process has happened.
 
@@ -127,7 +127,7 @@ plot(spc_data, break_lines = "limits")
 plot(spc_data, break_lines = "process")
 ```
 
-**Over-riding to replicate "Making Data Count" excel output:**
+**Over-riding to replicate "Making Data Count" Excel output:**
 
 ```{r}
 plot(spc_data, break_lines = "none")
