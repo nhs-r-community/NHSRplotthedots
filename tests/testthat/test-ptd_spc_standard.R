@@ -98,7 +98,7 @@ test_that("it only reports special cause for 2of3 points close to limits when th
 
   # dataframe of symmetrical data
   dtf <- data.frame(
-    data = c(rep(c(1,-1), times = 8)),
+    data = c(rep(c(1, -1), times = 8)),
     date = as.Date("2020-01-01") + 1:16
   )
 
