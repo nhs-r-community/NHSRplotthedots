@@ -94,7 +94,7 @@ test_that("setting fix_after_n_points changes the calculations", {
   expect_true(s1$upl[[1]] != s0$upl[[1]])
 })
 
-test_that("it only reports special cause for 2 of 3 points close to limits when they are on the same side of the mean", {
+test_that("it only reports special cause for 2of3 points close to limits when they are on the same side of the mean", {
 
   # dataframe of symmetrical data
   dtf <- data.frame(

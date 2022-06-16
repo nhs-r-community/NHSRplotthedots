@@ -77,10 +77,10 @@ ptd_two_in_three <- function(v, rtm) {
   # pad the vectors with two 0 at start, two 0 at end
   vp <- c(0, 0, v, 0, 0)
   rtmp <- c(0, 0, rtm, 0, 0) # relative to mean
-  
+
   vapply(seq_along(v), function(i) {
-    ((sum(vp[i + 0:2]) >= 2) & (abs(sum(rtmp[i + 0:2])) == 3)) || 
-    ((sum(vp[i + 1:3]) >= 2) & (abs(sum(rtmp[i + 1:3])) == 3)) || 
+    ((sum(vp[i + 0:2]) >= 2) & (abs(sum(rtmp[i + 0:2])) == 3)) ||
+    ((sum(vp[i + 1:3]) >= 2) & (abs(sum(rtmp[i + 1:3])) == 3)) ||
     ((sum(vp[i + 2:4]) >= 2) & (abs(sum(rtmp[i + 2:4])) == 3))
   }, numeric(1))
 }
