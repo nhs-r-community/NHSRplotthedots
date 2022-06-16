@@ -169,6 +169,21 @@ test_that("ptd_two_in_three works as expected", {
   expect_equal(h, c(0, 1, 1, 1, 1, 0, 0))
 })
 
+test_that("ptd_two_in_three works as expected when points are on opposite sides of the mean", {
+  d <- ptd_two_in_three(c(1, 0, 1), c(1, -1, 1))
+  e <- ptd_two_in_three(c(0, 1, 1), c(1, -1, 1))
+  f <- ptd_two_in_three(c(1, 1, 0), c(1, -1, 1))
+  expect_equal(d, rep(0, 3))
+  expect_equal(e, rep(0, 3))
+  expect_equal(f, rep(0, 3))
+
+  g <- ptd_two_in_three(c(0, 0, 1, 0, 1, 0, 0), c(1, -1, 1, -1, 1, -1, 1))
+  expect_equal(g, rep(0, 7))
+
+  h <- ptd_two_in_three(c(0, 0, 1, 1, 0, 0, 0), c(-1, 1, -1, 1, -1, 1, -1))
+  expect_equal(h, rep(0, 7))
+})
+
 # ptd_part_of_two_in_three() ----
 test_that("ptd_part_of_two_in_three works as expected", {
   av <- numeric()
