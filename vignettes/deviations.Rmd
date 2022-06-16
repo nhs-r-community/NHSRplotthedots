@@ -9,7 +9,7 @@ vignette: >
 
 ```{r setup, include = FALSE}
 knitr::opts_chunk$set(
-  fig.width=7, fig.height=5,
+  fig.width = 7, fig.height = 5,
   collapse = TRUE,
   comment = "#>"
 )
@@ -64,7 +64,7 @@ df <- tibble(data, date)
 # screen_outliers = TRUE by default
 spc_data <- ptd_spc(df, value_field = data, date_field = date)
 spc_data %>%
-  plot() + 
+  plot() +
   labs(
     caption = paste(
       "UPL = ", round(spc_data$upl[1], 2),
@@ -80,7 +80,7 @@ spc_data %>%
 # setting screen_outliers = FALSE produces the same output as Excel
 spc_data <- ptd_spc(df, value_field = data, date_field = date, screen_outliers = FALSE)
 spc_data %>%
-  plot() + 
+  plot() +
   labs(
     caption = paste(
       "UPL = ", round(spc_data$upl[1], 2),
