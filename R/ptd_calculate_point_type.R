@@ -70,14 +70,18 @@ ptd_seven_point_trend <- function(y) {
   )
 }
 
-ptd_two_in_three <- function(v) {
+ptd_two_in_three <- function(v, rtm) {
   if (length(v) == 0) {
     return(numeric())
   }
-  # pad the vector with two 0 at start, two 0 at end
+  # pad the vectors with two 0 at start, two 0 at end
   vp <- c(0, 0, v, 0, 0)
+  rtmp <- c(0, 0, rtm, 0, 0) # relative to mean
+
   vapply(seq_along(v), function(i) {
-    sum(vp[i + 0:2]) >= 2 || sum(vp[i + 1:3]) >= 2 || sum(vp[i + 2:4]) >= 2
+    ((sum(vp[i + 0:2]) >= 2) & (abs(sum(rtmp[i + 0:2])) == 3)) ||
+      ((sum(vp[i + 1:3]) >= 2) & (abs(sum(rtmp[i + 1:3])) == 3)) ||
+      ((sum(vp[i + 2:4]) >= 2) & (abs(sum(rtmp[i + 2:4])) == 3))
   }, numeric(1))
 }
 
@@ -88,7 +92,7 @@ ptd_part_of_two_in_three <- function(v, x) {
 ptd_special_cause_flag <- function(y, relative_to_mean, close_to_limits, outside_limits) {
   part_seven_point_one_side_mean <- ptd_part_of_seven_trend(ptd_seven_point_one_side_mean(relative_to_mean))
   part_seven_point_trend <- ptd_part_of_seven_trend(ptd_seven_point_trend(y))
-  part_two_in_three <- ptd_part_of_two_in_three(ptd_two_in_three(close_to_limits), close_to_limits)
+  part_two_in_three <- ptd_part_of_two_in_three(ptd_two_in_three(close_to_limits, relative_to_mean), close_to_limits)
 
   as.numeric(
     abs(outside_limits) == 1 |

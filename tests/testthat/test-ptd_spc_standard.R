@@ -93,3 +93,23 @@ test_that("setting fix_after_n_points changes the calculations", {
   expect_true(s1$lpl[[1]] != s0$lpl[[1]])
   expect_true(s1$upl[[1]] != s0$upl[[1]])
 })
+
+test_that("it only reports special cause for 2of3 points close to limits when they are on the same side of the mean", {
+
+  # dataframe of symmetrical data
+  dtf <- data.frame(
+    data = c(rep(c(1, -1), times = 8)),
+    date = as.Date("2020-01-01") + 1:16
+  )
+
+  # create 2 successive points close to the limits on opposite sides of the mean
+  dtf$data[15] <- 5.5
+  dtf$data[16] <- -5.5
+
+  s <- ptd_spc(dtf, value_field = data, date_field = date)
+
+  expect_equal(
+    tail(s, 2)$point_type,
+    c("common_cause", "common_cause")
+  )
+})

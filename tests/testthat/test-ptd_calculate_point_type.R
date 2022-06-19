@@ -152,67 +152,91 @@ test_that("ptd_two_in_three works as expected", {
   a <- ptd_two_in_three(numeric())
   expect_equal(a, numeric())
 
-  b <- ptd_two_in_three(numeric(3))
+  b <- ptd_two_in_three(numeric(3), numeric(1))
   expect_equal(b, numeric(3))
 
-  d <- ptd_two_in_three(c(1, 0, 1))
-  e <- ptd_two_in_three(c(0, 1, 1))
-  f <- ptd_two_in_three(c(1, 1, 0))
+  d <- ptd_two_in_three(c(1, 0, 1), c(1, 1, 1))
+  e <- ptd_two_in_three(c(0, 1, 1), c(1, 1, 1))
+  f <- ptd_two_in_three(c(1, 1, 0), c(1, 1, 1))
   expect_equal(d, e)
   expect_equal(d, f)
   expect_equal(d, rep(1, 3))
 
-  g <- ptd_two_in_three(c(0, 0, 1, 0, 1, 0, 0))
+  g <- ptd_two_in_three(c(0, 0, 1, 0, 1, 0, 0), c(1, 1, 1, 1, 1, 1, 1))
   expect_equal(g, c(0, 0, 1, 1, 1, 0, 0))
 
-  h <- ptd_two_in_three(c(0, 0, 1, 1, 0, 0, 0))
+  h <- ptd_two_in_three(c(0, 0, 1, 1, 0, 0, 0), c(1, 1, 1, 1, 1, 1, 1))
   expect_equal(h, c(0, 1, 1, 1, 1, 0, 0))
+})
+
+test_that("ptd_two_in_three works as expected when points are on opposite sides of the mean", {
+  d <- ptd_two_in_three(c(1, 0, 1), c(1, -1, 1))
+  e <- ptd_two_in_three(c(0, 1, 1), c(1, -1, 1))
+  f <- ptd_two_in_three(c(1, 1, 0), c(1, -1, 1))
+  expect_equal(d, rep(0, 3))
+  expect_equal(e, rep(0, 3))
+  expect_equal(f, rep(0, 3))
+
+  g <- ptd_two_in_three(c(0, 0, 1, 0, 1, 0, 0), c(1, -1, 1, -1, 1, -1, 1))
+  expect_equal(g, rep(0, 7))
+
+  h <- ptd_two_in_three(c(0, 0, 1, 1, 0, 0, 0), c(-1, 1, -1, 1, -1, 1, -1))
+  expect_equal(h, rep(0, 7))
 })
 
 # ptd_part_of_two_in_three() ----
 test_that("ptd_part_of_two_in_three works as expected", {
   av <- numeric()
-  at <- ptd_two_in_three(av)
+  artm <- numeric() # relative to mean column
+  at <- ptd_two_in_three(av, artm)
   aa <- ptd_part_of_two_in_three(at, av)
   expect_equal(aa, av)
 
   bv <- numeric(3)
-  bt <- ptd_two_in_three(bv)
+  brtm <- numeric(1) # relative to mean column
+  bt <- ptd_two_in_three(bv, brtm)
   ba <- ptd_part_of_two_in_three(bv, bt)
   expect_equal(ba, bv)
 
   cv <- c(1, 0, 1)
-  ct <- ptd_two_in_three(cv)
+  crtm <- c(1, 1, 1) # relative to mean column
+  ct <- ptd_two_in_three(cv, crtm)
   ca <- ptd_part_of_two_in_three(ct, cv)
   expect_equal(ca, cv)
 
   dv <- c(0, 1, 1)
-  dt <- ptd_two_in_three(dv)
+  drtm <- c(1, 1, 1) # relative to mean column
+  dt <- ptd_two_in_three(dv, drtm)
   da <- ptd_part_of_two_in_three(dt, dv)
   expect_equal(da, dv)
 
   ev <- c(1, 1, 0)
-  et <- ptd_two_in_three(ev)
+  ertm <- c(1, 1, 1) # relative to mean column
+  et <- ptd_two_in_three(ev, ertm)
   ea <- ptd_part_of_two_in_three(et, ev)
   expect_equal(ea, ev)
 
   fv <- c(0, 0, 1, 0, 1, 0, 0)
-  ft <- ptd_two_in_three(fv)
+  frtm <- c(1, 1, 1, 1, 1, 1, 1) # relative to mean column
+  ft <- ptd_two_in_three(fv, frtm)
   fa <- ptd_part_of_two_in_three(ft, fv)
   expect_equal(fa, fv)
 
   gv <- c(0, 0, 1, 1, 0, 0, 0)
-  gt <- ptd_two_in_three(gv)
+  grtm <- c(1, 1, 1, 1, 1, 1, 1) # relative to mean column
+  gt <- ptd_two_in_three(gv, grtm)
   ga <- ptd_part_of_two_in_three(gv, gv)
   expect_equal(ga, gv)
 
   hv <- c(1, 0, 0, 1)
-  ht <- ptd_two_in_three(hv)
+  hrtm <- c(1, 1, 1, 1) # relative to mean column
+  ht <- ptd_two_in_three(hv, hrtm)
   ha <- ptd_part_of_two_in_three(ht, hv)
   expect_equal(ha, c(0, 0, 0, 0))
 
   iv <- c(1, 0, 0, 1, 1)
-  it <- ptd_two_in_three(iv)
+  irtm <- c(1, 1, 1, 1, 1) # relative to mean column
+  it <- ptd_two_in_three(iv, irtm)
   ia <- ptd_part_of_two_in_three(it, iv)
   expect_equal(ia, c(0, 0, 0, 1, 1))
 })
