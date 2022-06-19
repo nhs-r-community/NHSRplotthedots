@@ -83,11 +83,33 @@ ptd_spc <- function(.data,
                     target = ptd_target(),
                     trajectory,
                     screen_outliers = TRUE) {
-  assertthat::assert_that(
-    inherits(.data, "data.frame"),
-    msg = "ptd_spc: .data must be a data.frame"
-  )
+  UseMethod("ptd_spc")
+}
 
+#' @export
+ptd_spc.SharedData <- function(.data, ...) { # Exclude Linting
+  key <- .data$key()
+  set <- .data$groupName()
+
+  # call the main data frame method
+  .data <- ptd_spc.data.frame(.data$origData(), ...)
+
+  # now update the returned data for {crosstalk}
+  .data[[".crossTalkKey"]] <- key
+  structure(.data, set = set)
+}
+
+#' @export
+ptd_spc.data.frame <- function(.data, # Exclude Linting
+                               value_field,
+                               date_field,
+                               facet_field,
+                               rebase = ptd_rebase(),
+                               fix_after_n_points = NULL,
+                               improvement_direction = "increase",
+                               target = ptd_target(),
+                               trajectory,
+                               screen_outliers = TRUE) {
   value_field <- quo_name(enquo(value_field))
   date_field <- quo_name(enquo(date_field))
   facet_field <- if (!missing(facet_field)) quo_name(enquo(facet_field))
@@ -123,10 +145,11 @@ ptd_spc <- function(.data,
     # add target column: we need to have called ptd_spc_standard to add the facet field
     ptd_add_target_column(target)
 
-  class(df) <- c("ptd_spc_df", class(df))
-  attr(df, "options") <- options
-
-  df
+  structure(
+    df,
+    class = c("ptd_spc_df", class(df)),
+    options = options
+  )
 }
 
 #' @export
