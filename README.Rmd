@@ -101,7 +101,11 @@ vignette(package = "NHSRplotthedots")
 
 # Contribution
 
-This is an NHS-R Community project that is open for anyone to contribute to in any way that they are able. If you want to learn more about this please join the discussion at [the NHS-R Community Slack group][nhsr-slack] and the specific channel [#nhsr-plot-the-dots][#nhsr-plot-the-dots]. 
+This is an NHS-R Community project that is open for anyone to contribute to in any way that they are able. The [Contributor Covenant Code of Conduct](CODE_OF_CONDUCT.md) contains our pledge and standards for community interaction.
+
+If you want to learn more about this project, please join the discussion at [the NHS-R Community Slack group][nhsr-slack] and the specific channel [#nhsr-plot-the-dots][#nhsr-plot-the-dots]. 
+
+The simplest way to contribute is to raise an issue detailing the feature or functionality you would like to see added, or any unexpected behaiour or bugs you have experienced.  
 
 [nhsr]: https://nhsrcommunity.com
 [mdc]: https://www.england.nhs.uk/publication/making-data-count/
