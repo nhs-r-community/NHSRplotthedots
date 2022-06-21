@@ -117,9 +117,10 @@ vignette(package = "NHSRplotthedots")
 # Contribution
 
 This is an NHS-R Community project that is open for anyone to contribute
-to in any way that they are able. The [Contributor Covenant Code of
-Conduct](CODE_OF_CONDUCT.md) contains our pledge and standards for
-community interaction.
+to in any way that they are able. The project is released with a
+[Contributor Code of
+Conduct](https://contributor-covenant.org/version/2/1/CODE_OF_CONDUCT.html).
+By contributing to this project, you agree to abide by its terms.
 
 If you want to learn more about this project, please join the discussion
 at [the NHS-R Community Slack group](https://nhsrcommunity.slack.com/)
