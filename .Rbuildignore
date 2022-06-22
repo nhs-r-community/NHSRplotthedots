@@ -19,3 +19,4 @@
 ^NHSRplotthedots.*\.tgz$
 
 ^.aspell/
+^CODE_OF_CONDUCT\.md$

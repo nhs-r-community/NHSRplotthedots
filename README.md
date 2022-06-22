@@ -12,7 +12,7 @@ stable](https://img.shields.io/badge/lifecycle-stable-brightgreen.svg)](https://
 coverage](https://codecov.io/gh/nhs-r-community/NHSRplotthedots/branch/main/graph/badge.svg)](https://app.codecov.io/gh/nhs-r-community/NHSRplotthedots?branch=main)
 [![CRAN
 status](https://www.r-pkg.org/badges/version/NHSRplotthedots)](https://CRAN.R-project.org/package=NHSRplotthedots)
-[![downloads](https://cranlogs.r-pkg.org/badges/grand-total/NHSRplotthedots)](https://cran.r-project.org/package=NHSRplotthedots)
+[![downloads](https://cranlogs.r-pkg.org/badges/grand-total/NHSRplotthedots)](https://CRAN.R-project.org/package=NHSRplotthedots)
 <!-- badges: end -->
 
 This package is built by the [NHS-R
@@ -117,7 +117,16 @@ vignette(package = "NHSRplotthedots")
 # Contribution
 
 This is an NHS-R Community project that is open for anyone to contribute
-to in any way that they are able. If you want to learn more about this
-please join the discussion at [the NHS-R Community Slack
-group](https://nhsrcommunity.slack.com/) and the specific channel
-[#nhsr-plot-the-dots](https://nhsrcommunity.slack.com/archives/CSVD4SYF3).
+to in any way that they are able. The project is released with a
+[Contributor Code of
+Conduct](https://contributor-covenant.org/version/2/1/CODE_OF_CONDUCT.html).
+By contributing to this project, you agree to abide by its terms.
+
+If you want to learn more about this project, please join the discussion
+at [the NHS-R Community Slack group](https://nhsrcommunity.slack.com/)
+and the specific channel
+[\#proj-nhsr-plot-the-dots](https://nhsrcommunity.slack.com/archives/CSVD4SYF3).
+
+The simplest way to contribute is to raise an issue detailing the
+feature or functionality you would like to see added, or any unexpected
+behaiour or bugs you have experienced.
