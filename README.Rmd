@@ -42,7 +42,7 @@ remotes::install_github("https://github.com/nhs-r-community/NHSRplotthedots", bu
 
 # Overview
 
-Welcome to the NHS-R community's package for building a specific type of statistical process control (SPC) chart, the XmR chart.  We are aiming to support the NHS England and NHS Improvement's 'Making Data Count' programme, please see [here][mdc] for more details. The programme encourages boards, managers, and analyst teams to present data in ways that show change over time, and drive better understanding of indicators than 'RAG' (red, amber, green) rated board reports often present.
+Welcome to the NHS-R community's package for building a specific type of statistical process control (SPC) chart, the XmR chart.  We are aiming to support the NHS England and NHS Improvement's 'Making Data Count' programme, please see ['Making Data Count' programme][mdc] for more details. The programme encourages boards, managers, and analyst teams to present data in ways that show change over time, and drive better understanding of indicators than 'RAG' (red, amber, green) rated board reports often present.
 
 The help-files, and vignette within this package tell you more about the possible options for controlling the charts, but below is a simple example of the type of chart the package produces.  We will use the `ae_attendances` dataset from the `{NHSRdatasets}` package and a bit of  `{dplyr}` code to select some organisations.
 
