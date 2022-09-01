@@ -86,7 +86,7 @@ test_that("it returns a ggplot object", {
       caption = NULL,
       colour = "point_type",
       type = "type",
-      text = "text"
+      icon = "icon"
     )
   )
 })

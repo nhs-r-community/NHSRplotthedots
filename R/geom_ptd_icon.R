@@ -1,7 +1,8 @@
+#' @export
 GeomPTDIcon <- ggproto( # Exclude Linting
   "GeomPTDIcon",
   Geom,
-  required_aes = c("type", "colour", "text"),
+  required_aes = c("type", "icon"),
   default_aes = aes(),
   extra_params = c("na.rm", "icons_size", "icons_position"),
   draw_key = draw_key_point,
@@ -17,49 +18,48 @@ GeomPTDIcon <- ggproto( # Exclude Linting
     just <- rev(strsplit(icons_position, " ")[[1]])
 
     # icons_size defines the font size, radius needs to be smaller than that
-    radius <- icons_size / 32
+    radius <- icons_size / 16
 
     # use the coord transformation for the colours, but then set the x, y coordinates manually (inside the viewport)
     d <- coord$transform(data, panel_params) %>%
       mutate(
-        x = ifelse(.data$type == "variation", radius, 3.5 * radius),
+        x = ifelse(.data$type == "variation", 3.5 * radius, radius),
         y = radius / 2
       )
+
+    sz <- grid::unit(2 * radius, "cm")
 
     # create the viewport for the icons
     v <- grid::viewport(
       x = grid::unit(icons_position_x, "npc"),
       y = grid::unit(icons_position_y, "npc"),
-      width = grid::unit(5 * radius, "cm"),
-      height = grid::unit(2 * radius, "cm"),
+      width = 2.5 * sz,
+      height = sz,
       just = just,
       gp = grid::gpar(col = "black")
     )
 
-    # create the circles for the icons
-    circles <- apply(d, 1, function(x) {
-      grid::circleGrob(
+    # create the icons
+    icons <- apply(d, 1, function(x) {
+      grid::rasterGrob(
+        png::readPNG(x[["icon"]]),
         x = grid::unit(x[["x"]], "cm"),
         y = grid::unit(x[["y"]], "cm"),
-        r = grid::unit(radius, "cm"),
-        gp = grid::gpar(col = "black", fill = x[["colour"]]),
+        height = sz,
+        width = sz,
+        just = c("center", "center"),
         vp = v
       )
     })
 
-    # insert the text inside the icons
-    text <- grid::textGrob(
-      d$text, grid::unit(d$x, "cm"), grid::unit(d$y, "cm"),
-      gp = grid::gpar(fontsize = icons_size),
-      vp = v
-    )
-
     # finally insert the icons into a gList
-    do.call(grid::gList, c(circles, list(text)))
+    do.call(grid::gList, c(icons))
   }
 )
 
-geom_ptd_icon <- function(icons_size = 8L,
+#' @export
+geom_ptd_icon <- function(data = NULL,
+                          icons_size = 8L,
                           icons_position = c("top right", "bottom right", "bottom left", "top left"),
                           ...) {
   icons_position <- match.arg(icons_position)
@@ -68,17 +68,40 @@ geom_ptd_icon <- function(icons_size = 8L,
   #  - one row for the variation icon
   #  - one row for the assurance icon (if applicable)
   data_transformer <- function(.x) {
-    options <- attr(.x, "options")
-    improvement_direction <- options$improvement_direction
-    id_text <- c(
-      common_cause = "C",
-      special_cause_neutral = "N",
-      special_cause_concern = if (improvement_direction == "increase") "L" else "H",
-      special_cause_improvement = if (improvement_direction == "increase") "H" else "L",
-      consistent_fail = "F",
-      consistent_pass = "P",
-      inconsistent = "?"
+    stopifnot(
+      "Can only be used with objects reated with `ptd_spc()`" = inherits(.x, "ptd_spc_df")
     )
+
+    options <- attr(.x, "options")
+    improvement_direction <- options$improvement_direction # Exclude Linting
+
+    variation_icon_file <- function(.x) {
+      icon <- case_when(
+        .x == "common_cause" ~ "common_cause.png",
+        .x == "special_cause_neutral_high" ~ "neutral_high.png",
+        .x == "special_cause_neutral_low" ~ "neutral_low.png",
+        .x == "special_cause_concern" ~ paste0(
+          "improvement_",
+          if (improvement_direction == "increase") "low" else "high",
+          ".png"
+        ),
+        .x == "special_cause_improvement" ~ paste0(
+          "improvement_",
+          if (improvement_direction == "increase") "high" else "low",
+          ".png"
+        )
+      )
+      system.file("icons", "variation", icon, package = "NHSRplotthedots")
+    }
+
+    assurance_icon_file <- function(.x) {
+      icon <- case_when(
+        .x == "consistent_fail" ~ "fail.png",
+        .x == "consistent_pass" ~ "pass.png",
+        .x == "inconsistent" ~ "inconsistent.png"
+      )
+      system.file("icons", "assurance", icon, package = "NHSRplotthedots")
+    }
 
     variation <- .x %>%
       group_by(.data$f) %>%
@@ -87,9 +110,12 @@ geom_ptd_icon <- function(icons_size = 8L,
       transmute(
         .data$f,
         type = "variation",
-        colour = .data$point_type,
-        text = unname(id_text[.data$point_type])
+        icon = variation_icon_file(.data$point_type)
       )
+
+    if (is.null(options$target)) {
+      return(variation)
+    }
 
     assurance <- .x %>%
       ptd_calculate_assurance_type() %>%
@@ -97,12 +123,7 @@ geom_ptd_icon <- function(icons_size = 8L,
       transmute(
         .data$f,
         type = "assurance",
-        colour = case_when(
-          .data$assurance_type == "consistent_pass" ~ "special_cause_improvement",
-          .data$assurance_type == "consistent_fail" ~ "special_cause_concern",
-          .data$assurance_type == "inconsistent" ~ "common_cause"
-        ),
-        text = unname(id_text[.data$assurance_type])
+        icon = assurance_icon_file(.data$assurance_type)
       )
 
     bind_rows(
@@ -115,8 +136,8 @@ geom_ptd_icon <- function(icons_size = 8L,
   # not-exported it's not intended to be used in any other way
   layer(
     geom = GeomPTDIcon,
-    mapping = aes(type = .data$type, colour = .data$colour, text = .data$text),
-    data = data_transformer,
+    mapping = aes(type = .data$type, icon = .data$icon),
+    data = if (is.null(data)) data_transformer else data_transformer(data),
     stat = "identity",
     position = "identity",
     show.legend = FALSE,

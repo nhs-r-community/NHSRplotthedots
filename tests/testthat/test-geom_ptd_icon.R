@@ -11,7 +11,7 @@ test_that("it set's up the geom correctly", {
   expect_false(g$inherit.aes)
   expect_equal(
     sapply(g$mapping, quo_name),
-    c(type = "type", colour = "colour", text = "text")
+    c(type = "type", icon = "icon")
   )
   expect_s3_class(g$position, "PositionIdentity")
   expect_false(g$show.legend)
@@ -21,11 +21,12 @@ test_that("it set's up the geom correctly", {
 
 test_that("it set's up GeomPTDIcon correctly", {
   expect_equal(unclass(GeomPTDIcon$default_aes), setNames(list(), character()))
-  expect_equal(GeomPTDIcon$required_aes, c("type", "colour", "text"))
+  expect_equal(GeomPTDIcon$required_aes, c("type", "icon"))
   expect_s3_class(GeomPTDIcon, c("GeomPTDIcon", "Geom", "ggproto", "gg"))
 })
 
 test_that("it transforms the data correctly", {
+  stub(geom_ptd_icon, "system.file", \(..., package = "") paste(package, ..., sep = "/"))
   g <- geom_ptd_icon()
 
   set.seed(123)
@@ -42,8 +43,7 @@ test_that("it transforms the data correctly", {
     tibble(
       f = "no facet",
       type = "variation",
-      colour = "common_cause",
-      text = "C"
+      icon = "NHSRplotthedots/icons/variation/common_cause.png"
     )
   )
 
@@ -53,8 +53,7 @@ test_that("it transforms the data correctly", {
     tibble(
       f = c("no facet", "no facet"),
       type = c("variation", "assurance"),
-      colour = c("common_cause", "common_cause"),
-      text = c("C", "?")
+      icon = paste("NHSRplotthedots/icons", c("variation/common_cause.png", "assurance/inconsistent.png"), sep = "/")
     )
   )
 
@@ -64,8 +63,7 @@ test_that("it transforms the data correctly", {
     tibble(
       f = c(0, 1),
       type = c("variation", "variation"),
-      colour = c("common_cause", "common_cause"),
-      text = c("C", "C")
+      icon = rep("NHSRplotthedots/icons/variation/common_cause.png", 2)
     )
   )
 
@@ -75,8 +73,10 @@ test_that("it transforms the data correctly", {
     tibble(
       f = c(0, 1, 0, 1),
       type = rep(c("variation", "assurance"), each = 2),
-      colour = rep("common_cause", 4),
-      text = rep(c("C", "?"), each = 2)
+      icon = rep(
+        paste("NHSRplotthedots/icons", c("variation/common_cause.png", "assurance/inconsistent.png"), sep = "/"),
+        each = 2
+      )
     )
   )
 
@@ -87,8 +87,7 @@ test_that("it transforms the data correctly", {
     tibble(
       f = rep("no facet", 2),
       type = c("variation", "assurance"),
-      colour = rep("special_cause_improvement", 2),
-      text = c("H", "P")
+      icon = paste("NHSRplotthedots/icons", c("variation/improvement_high.png", "assurance/pass.png"), sep = "/")
     )
   )
 
@@ -98,8 +97,7 @@ test_that("it transforms the data correctly", {
     tibble(
       f = rep("no facet", 2),
       type = c("variation", "assurance"),
-      colour = rep("special_cause_concern", 2),
-      text = c("H", "F")
+      icon = paste("NHSRplotthedots/icons", c("variation/improvement_high.png", "assurance/fail.png"), sep = "/")
     )
   )
 
@@ -110,8 +108,7 @@ test_that("it transforms the data correctly", {
     tibble(
       f = rep("no facet", 2),
       type = c("variation", "assurance"),
-      colour = rep("special_cause_concern", 2),
-      text = c("L", "F")
+      icon = paste("NHSRplotthedots/icons", c("variation/improvement_low.png", "assurance/fail.png"), sep = "/")
     )
   )
 
@@ -121,8 +118,7 @@ test_that("it transforms the data correctly", {
     tibble(
       f = rep("no facet", 2),
       type = c("variation", "assurance"),
-      colour = rep("special_cause_improvement", 2),
-      text = c("L", "P")
+      icon = paste("NHSRplotthedots/icons", c("variation/improvement_low.png", "assurance/pass.png"), sep = "/")
     )
   )
 
@@ -132,8 +128,7 @@ test_that("it transforms the data correctly", {
     tibble(
       f = "no facet",
       type = "variation",
-      colour = "special_cause_neutral",
-      text = "N"
+      icon = "NHSRplotthedots/icons/variation/neutral_high.png"
     )
   )
 })
@@ -145,8 +140,10 @@ test_that("GeomPTDIcon draw panel works as expected", {
     GeomPTDIcon$draw_panel(
       data = data.frame(
         type = c("variation", "assurance"),
-        colour = c("red", "green"),
-        text = c("a", "b")
+        icon = c(
+          system.file("icons", "variation", "improvement_low.png", package = "NHSRplotthedots"),
+          system.file("icons", "assurance", "pass.png", package = "NHSRplotthedots")
+        )
       ),
       panel_params = list(),
       coord = list(transform = function(x, ...) x),

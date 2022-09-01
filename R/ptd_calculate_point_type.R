@@ -24,7 +24,7 @@ ptd_calculate_point_type <- function(.data, improvement_direction) {
       ),
       point_type = case_when(
         !special_cause_flag ~ "common_cause",
-        improvement_direction == 0 ~ "special_cause_neutral",
+        improvement_direction == 0 ~ paste0("special_cause_neutral_", ifelse(relative_to_mean, "high", "low")),
         relative_to_mean == improvement_direction ~ "special_cause_improvement",
         TRUE ~ "special_cause_concern"
       )
