@@ -42,9 +42,9 @@ remotes::install_github("https://github.com/nhs-r-community/NHSRplotthedots", bu
 Welcome to the NHS-R community’s package for building a specific type of
 statistical process control (SPC) chart, the XmR chart. We are aiming to
 support the NHS England and NHS Improvement’s ‘Making Data Count’
-programme, please see
-[here](https://www.england.nhs.uk/publication/making-data-count/) for
-more details. The programme encourages boards, managers, and analyst
+programme, please see [‘Making Data Count’
+programme](https://www.england.nhs.uk/publication/making-data-count/)
+for more details. The programme encourages boards, managers, and analyst
 teams to present data in ways that show change over time, and drive
 better understanding of indicators than ‘RAG’ (red, amber, green) rated
 board reports often present.
@@ -60,7 +60,7 @@ library(NHSRplotthedots)
 library(NHSRdatasets)
 library(tidyverse)
 
-sub_set <- ae_attendances %>% 
+sub_set <- ae_attendances %>%
   filter(org_code == "RQM", type == 1, period < as.Date("2018-04-01"))
 
 sub_set %>%
@@ -75,9 +75,11 @@ the plot argument.
 
 ``` r
 sub_set %>%
-  ptd_spc(value_field = breaches, date_field = period, improvement_direction = "decrease") %>% 
-  plot(y_axis_label = "4-hour wait breaches",
-       main_title = "SPC of A&E waiting time breaches for RQM")
+  ptd_spc(value_field = breaches, date_field = period, improvement_direction = "decrease") %>%
+  plot(
+    y_axis_label = "4-hour wait breaches",
+    main_title = "SPC of A&E waiting time breaches for RQM"
+  )
 ```
 
 <img src="man/figures/README-unnamed-chunk-3-1.png" width="100%" />
@@ -86,9 +88,11 @@ or, equivalently:
 
 ``` r
 sub_set %>%
-  ptd_spc(value_field = breaches, date_field = period, improvement_direction = "decrease") %>% 
-  ptd_create_ggplot(y_axis_label = "4-hour wait breaches",
-                    main_title = "SPC of A&E waiting time breaches for RQM")
+  ptd_spc(value_field = breaches, date_field = period, improvement_direction = "decrease") %>%
+  ptd_create_ggplot(
+    y_axis_label = "4-hour wait breaches",
+    main_title = "SPC of A&E waiting time breaches for RQM"
+  )
 ```
 
 ## Getting help:
@@ -129,4 +133,4 @@ and the specific channel
 
 The simplest way to contribute is to raise an issue detailing the
 feature or functionality you would like to see added, or any unexpected
-behaiour or bugs you have experienced.
+behaviour or bugs you have experienced.

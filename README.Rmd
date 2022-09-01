@@ -11,7 +11,7 @@ knitr::opts_chunk$set(
   fig.path = "man/figures/README-",
   out.width = "100%",
   dev.args = list(png = list(type = "cairo")),
-  fig.retina=3
+  fig.retina = 3
 )
 ```
 
@@ -51,7 +51,7 @@ library(NHSRplotthedots)
 library(NHSRdatasets)
 library(tidyverse)
 
-sub_set <- ae_attendances %>% 
+sub_set <- ae_attendances %>%
   filter(org_code == "RQM", type == 1, period < as.Date("2018-04-01"))
 
 sub_set %>%
@@ -62,18 +62,22 @@ This plot is ok on it's own, but we can specify more control options when we pas
 
 ```{r}
 sub_set %>%
-  ptd_spc(value_field = breaches, date_field = period, improvement_direction = "decrease") %>% 
-  plot(y_axis_label = "4-hour wait breaches",
-       main_title = "SPC of A&E waiting time breaches for RQM")
+  ptd_spc(value_field = breaches, date_field = period, improvement_direction = "decrease") %>%
+  plot(
+    y_axis_label = "4-hour wait breaches",
+    main_title = "SPC of A&E waiting time breaches for RQM"
+  )
 ```
 
 or, equivalently:
 
 ```{r, eval=FALSE}
 sub_set %>%
-  ptd_spc(value_field = breaches, date_field = period, improvement_direction = "decrease") %>% 
-  ptd_create_ggplot(y_axis_label = "4-hour wait breaches",
-                    main_title = "SPC of A&E waiting time breaches for RQM")
+  ptd_spc(value_field = breaches, date_field = period, improvement_direction = "decrease") %>%
+  ptd_create_ggplot(
+    y_axis_label = "4-hour wait breaches",
+    main_title = "SPC of A&E waiting time breaches for RQM"
+  )
 ```
 
 ## Getting help:
@@ -96,7 +100,6 @@ To view the vignette (worked example), use:
 vignette("intro", package = "NHSRplotthedots")
 
 vignette(package = "NHSRplotthedots")
-
 ```
 
 # Contribution
@@ -105,7 +108,7 @@ This is an NHS-R Community project that is open for anyone to contribute to in a
 
 If you want to learn more about this project, please join the discussion at [the NHS-R Community Slack group][nhsr-slack] and the specific channel [#proj-nhsr-plot-the-dots][#proj-nhsr-plot-the-dots]. 
 
-The simplest way to contribute is to raise an issue detailing the feature or functionality you would like to see added, or any unexpected behaiour or bugs you have experienced.  
+The simplest way to contribute is to raise an issue detailing the feature or functionality you would like to see added, or any unexpected behaviour or bugs you have experienced.  
 
 [nhsr]: https://nhsrcommunity.com
 [mdc]: https://www.england.nhs.uk/publication/making-data-count/
