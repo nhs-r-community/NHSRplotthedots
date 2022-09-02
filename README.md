@@ -69,7 +69,7 @@ sub_set %>%
 
 <img src="man/figures/README-example-1.png" width="100%" />
 
-This plot is ok on it’s own, but we can specify more control options
+This plot is ok on its own, but we can specify more control options
 when we pass it on, using the `{dplyr}` pipe function below: `%>%` to
 the plot argument.
 
