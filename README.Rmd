@@ -58,7 +58,7 @@ sub_set %>%
   ptd_spc(value_field = breaches, date_field = period, improvement_direction = "decrease")
 ```  
 
-This plot is ok on it's own, but we can specify more control options when we pass it on, using the `{dplyr}` pipe function below: `%>%` to the plot argument.
+This plot is ok on its own, but we can specify more control options when we pass it on, using the `{dplyr}` pipe function below: `%>%` to the plot argument.
 
 ```{r}
 sub_set %>%
