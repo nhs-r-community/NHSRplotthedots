@@ -84,7 +84,7 @@ test_that("it returns a ggplot object", {
       group = NULL,
       title = "SPC Chart of Y, starting 02/01/2020",
       caption = NULL,
-      colour = "point_type",
+      colour = "point_colour",
       type = "type",
       icon = "icon"
     )

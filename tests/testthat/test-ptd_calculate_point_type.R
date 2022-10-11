@@ -26,7 +26,7 @@ test_that("it calls functions as expected (no facet groups)", {
   expect_args(m1, 1, a$y, a$relative_to_mean, a$close_to_limits, a$outside_limits)
   expect_call(m2, 1, case_when(
     !special_cause_flag ~ "common_cause",
-    improvement_direction == 0 ~ "special_cause_neutral",
+    improvement_direction == 0 ~ paste0("special_cause_neutral_", ifelse(relative_to_mean, "high", "low")),
     relative_to_mean == improvement_direction ~ "special_cause_improvement",
     TRUE ~ "special_cause_concern"
   ))
