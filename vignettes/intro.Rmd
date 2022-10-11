@@ -124,7 +124,10 @@ a <- ptd_spc(facet_set,
   )
 a + theme(axis.text.x = element_text(size = 6, angle = 45))
 ```
+
 ## Come and join us!
-This is a collaborative project that is still early in it's life.  All contributors are volunteers, and more volunteers would be very welcome (there's even stuff that doesn't require `R` coding to help with!).  Find out more at: [github.com/nhs-r-community/NHSRplotthedots][nhsrptd_gh]
+
+This is a collaborative project that is still early in it's life.  All contributors are volunteers, and more volunteers would be very welcome (there's even stuff that doesn't require `R` coding to help with!). Find out more at: [github.com/nhs-r-community/NHSRplotthedots][nhsrptd_gh]
+
 [mdc]: https://www.england.nhs.uk/publication/making-data-count/
 [nhsrptd_gh]: https://github.com/nhs-r-community/NHSRplotthedots
