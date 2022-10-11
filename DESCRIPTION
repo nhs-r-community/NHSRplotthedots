@@ -30,7 +30,8 @@ Imports:
     rlang,
     crayon,
     stringr,
-    assertthat
+    assertthat,
+    png
 Suggests: 
     covr,
     lintr,
