@@ -1,3 +1,7 @@
+#' GeomPTDIcon
+#'
+#' The Geom for the PTD icons. See `geom_ptd_icon()`.
+#'
 #' @export
 GeomPTDIcon <- ggproto( # Exclude Linting
   "GeomPTDIcon",
@@ -57,6 +61,16 @@ GeomPTDIcon <- ggproto( # Exclude Linting
   }
 )
 
+#' PTD Icons
+#'
+#' Inserts the Making Data Count icons for variation/assurance to a plot
+#'
+#' @param data the dataframe to plot. Must be of type ptd_spc_df
+#'
+#' @param icons_size the size of the icons
+#' @param icons_position the position of the icons in the plot
+#' @param ... currently unused
+#'
 #' @export
 geom_ptd_icon <- function(data = NULL,
                           icons_size = 8L,
