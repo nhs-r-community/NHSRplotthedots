@@ -29,6 +29,7 @@ Imports:
     dplyr,
     rlang,
     crayon,
+    stringr,
     assertthat
 Suggests: 
     covr,
