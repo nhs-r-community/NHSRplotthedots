@@ -1,6 +1,6 @@
 geom_ptd_icon_draw_panel <- function(self, data, panel_params, coord,
-         icons_size = 8,
-         icons_position = c("top right", "bottom right", "bottom left", "top left")) {
+                                     icons_size = 8,
+                                     icons_position = c("top right", "bottom right", "bottom left", "top left")) {
   icons_position <- match.arg(icons_position)
   # match the icons_position to x,y coordinates. either {0, 1}, but shift in by 0.01 so icons don't clip
   icons_position_x <- abs(as.numeric(grepl("right$", icons_position)) - 0.01)
