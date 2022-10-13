@@ -34,7 +34,7 @@ Imports:
     png
 Suggests: 
     covr,
-    lintr,
+    lintr (>= 3.0.0),
     testthat (>= 3.0.0),
     rmarkdown,
     knitr,
