@@ -1,3 +1,6 @@
+#' @importFrom tidyselect any_of
+NULL
+
 #' null replacement
 #'
 #' if `a` is null, choose `b`.

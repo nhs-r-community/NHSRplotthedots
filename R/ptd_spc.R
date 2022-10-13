@@ -165,7 +165,7 @@ summary.ptd_spc_df <- function(object, ...) {
 
   s <- object %>%
     group_by(.data$f, .data$rebase_group) %>%
-    summarise(across(c(.data$mean, .data$lpl, .data$upl), first),
+    summarise(across(c("mean", "lpl", "upl"), first),
       n = n(),
       common_cause = n - sum(.data$special_cause_flag),
       special_cause_improvement = sum(.data$point_type == "special_cause_improvement"),
@@ -188,11 +188,11 @@ summary.ptd_spc_df <- function(object, ...) {
   }
 
   if (is.null(options$facet_field)) {
-    s <- select(s, -.data$f)
+    s <- select(s, -"f")
   }
 
   if (is.null(options$rebase)) {
-    s <- select(s, -.data$rebase_group)
+    s <- select(s, -"rebase_group")
   }
 
   s

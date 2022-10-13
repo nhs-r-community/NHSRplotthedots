@@ -39,7 +39,7 @@ test_that("it groups, then ungroups data", {
   ptd_add_short_group_warnings(data.frame(), warning_threshold)
 
   expect_called(m1, 1)
-  expect_call(m1, 1, group_by(., across(c(.data$f, .data$rebase_group))))
+  expect_call(m1, 1, group_by(., across(c("f", "rebase_group"))))
 
   expect_called(m2, 1)
   expect_call(m2, 1, ungroup(.))

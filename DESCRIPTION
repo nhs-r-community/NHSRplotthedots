@@ -31,7 +31,8 @@ Imports:
     crayon,
     stringr,
     assertthat,
-    png
+    png,
+    tidyselect (>= 1.2.0)
 Suggests: 
     covr,
     lintr (>= 3.0.0),

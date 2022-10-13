@@ -26,6 +26,7 @@ test_that("it set's up GeomPTDIcon correctly", {
 })
 
 test_that("it transforms the data correctly", {
+  withr::local_options(ptd_spc.warning_threshold = 0)
   stub(geom_ptd_icon, "system.file", \(..., package = "") paste(package, ..., sep = "/"))
   g <- geom_ptd_icon()
 
