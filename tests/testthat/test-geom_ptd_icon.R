@@ -129,7 +129,7 @@ test_that("it transforms the data correctly", {
     tibble(
       f = "no facet",
       type = "variation",
-      icon = "NHSRplotthedots/icons/variation/neutral_high.png"
+      icon = "NHSRplotthedots/icons/variation/neutral_low.png"
     )
   )
 })
