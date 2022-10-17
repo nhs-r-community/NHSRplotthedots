@@ -44,7 +44,7 @@ test_that("it transforms the data correctly", {
     tibble(
       f = "no facet",
       type = "variation",
-      icon = "NHSRplotthedots/icons/variation/common_cause.png"
+      icon = "NHSRplotthedots/icons/variation/common_cause.svg"
     )
   )
 
@@ -54,7 +54,7 @@ test_that("it transforms the data correctly", {
     tibble(
       f = c("no facet", "no facet"),
       type = c("variation", "assurance"),
-      icon = paste("NHSRplotthedots/icons", c("variation/common_cause.png", "assurance/inconsistent.png"), sep = "/")
+      icon = paste("NHSRplotthedots/icons", c("variation/common_cause.svg", "assurance/inconsistent.svg"), sep = "/")
     )
   )
 
@@ -64,7 +64,7 @@ test_that("it transforms the data correctly", {
     tibble(
       f = c(0, 1),
       type = c("variation", "variation"),
-      icon = rep("NHSRplotthedots/icons/variation/common_cause.png", 2)
+      icon = rep("NHSRplotthedots/icons/variation/common_cause.svg", 2)
     )
   )
 
@@ -75,7 +75,7 @@ test_that("it transforms the data correctly", {
       f = c(0, 1, 0, 1),
       type = rep(c("variation", "assurance"), each = 2),
       icon = rep(
-        paste("NHSRplotthedots/icons", c("variation/common_cause.png", "assurance/inconsistent.png"), sep = "/"),
+        paste("NHSRplotthedots/icons", c("variation/common_cause.svg", "assurance/inconsistent.svg"), sep = "/"),
         each = 2
       )
     )
@@ -88,7 +88,7 @@ test_that("it transforms the data correctly", {
     tibble(
       f = rep("no facet", 2),
       type = c("variation", "assurance"),
-      icon = paste("NHSRplotthedots/icons", c("variation/improvement_high.png", "assurance/pass.png"), sep = "/")
+      icon = paste("NHSRplotthedots/icons", c("variation/improvement_high.svg", "assurance/pass.svg"), sep = "/")
     )
   )
 
@@ -98,7 +98,7 @@ test_that("it transforms the data correctly", {
     tibble(
       f = rep("no facet", 2),
       type = c("variation", "assurance"),
-      icon = paste("NHSRplotthedots/icons", c("variation/improvement_high.png", "assurance/fail.png"), sep = "/")
+      icon = paste("NHSRplotthedots/icons", c("variation/concern_high.svg", "assurance/fail.svg"), sep = "/")
     )
   )
 
@@ -109,7 +109,7 @@ test_that("it transforms the data correctly", {
     tibble(
       f = rep("no facet", 2),
       type = c("variation", "assurance"),
-      icon = paste("NHSRplotthedots/icons", c("variation/improvement_low.png", "assurance/fail.png"), sep = "/")
+      icon = paste("NHSRplotthedots/icons", c("variation/concern_low.svg", "assurance/fail.svg"), sep = "/")
     )
   )
 
@@ -119,7 +119,7 @@ test_that("it transforms the data correctly", {
     tibble(
       f = rep("no facet", 2),
       type = c("variation", "assurance"),
-      icon = paste("NHSRplotthedots/icons", c("variation/improvement_low.png", "assurance/pass.png"), sep = "/")
+      icon = paste("NHSRplotthedots/icons", c("variation/improvement_low.svg", "assurance/pass.svg"), sep = "/")
     )
   )
 
@@ -129,7 +129,7 @@ test_that("it transforms the data correctly", {
     tibble(
       f = "no facet",
       type = "variation",
-      icon = "NHSRplotthedots/icons/variation/neutral_low.png"
+      icon = "NHSRplotthedots/icons/variation/neutral_low.svg"
     )
   )
 })
@@ -142,8 +142,8 @@ test_that("GeomPTDIcon draw panel works as expected", {
       data = data.frame(
         type = c("variation", "assurance"),
         icon = c(
-          system.file("icons", "variation", "improvement_low.png", package = "NHSRplotthedots"),
-          system.file("icons", "assurance", "pass.png", package = "NHSRplotthedots")
+          system.file("icons", "variation", "improvement_low.svg", package = "NHSRplotthedots"),
+          system.file("icons", "assurance", "pass.svg", package = "NHSRplotthedots")
         )
       ),
       panel_params = list(),

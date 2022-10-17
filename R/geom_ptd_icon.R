@@ -34,7 +34,7 @@ geom_ptd_icon_draw_panel <- function(self, data, panel_params, coord,
   # create the icons
   icons <- apply(d, 1, function(x) {
     grid::rasterGrob(
-      png::readPNG(x[["icon"]]),
+      rsvg::rsvg_nativeraster(x[["icon"]], 100),
       x = grid::unit(x[["x"]], "cm"),
       y = grid::unit(x[["y"]], "cm"),
       height = sz,
@@ -93,18 +93,18 @@ geom_ptd_icon <- function(data = NULL,
 
     variation_icon_file <- function(.x) {
       icon <- case_when(
-        .x == "common_cause" ~ "common_cause.png",
-        .x == "special_cause_neutral_high" ~ "neutral_high.png",
-        .x == "special_cause_neutral_low" ~ "neutral_low.png",
+        .x == "common_cause" ~ "common_cause.svg",
+        .x == "special_cause_neutral_high" ~ "neutral_high.svg",
+        .x == "special_cause_neutral_low" ~ "neutral_low.svg",
         .x == "special_cause_concern" ~ paste0(
-          "improvement_",
+          "concern_",
           if (improvement_direction == "increase") "low" else "high",
-          ".png"
+          ".svg"
         ),
         .x == "special_cause_improvement" ~ paste0(
           "improvement_",
           if (improvement_direction == "increase") "high" else "low",
-          ".png"
+          ".svg"
         )
       )
       system.file("icons", "variation", icon, package = "NHSRplotthedots")
@@ -112,9 +112,9 @@ geom_ptd_icon <- function(data = NULL,
 
     assurance_icon_file <- function(.x) {
       icon <- case_when(
-        .x == "consistent_fail" ~ "fail.png",
-        .x == "consistent_pass" ~ "pass.png",
-        .x == "inconsistent" ~ "inconsistent.png"
+        .x == "consistent_fail" ~ "fail.svg",
+        .x == "consistent_pass" ~ "pass.svg",
+        .x == "inconsistent" ~ "inconsistent.svg"
       )
       system.file("icons", "assurance", icon, package = "NHSRplotthedots")
     }
