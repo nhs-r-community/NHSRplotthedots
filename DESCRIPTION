@@ -21,7 +21,7 @@ URL: https://nhs-r-community.github.io/NHSRplotthedots,
 BugReports: https://nhs-r-community.github.io/NHSRplotthedots/issues
 License: MIT + file LICENSE
 Encoding: UTF-8
-RoxygenNote: 7.1.2
+RoxygenNote: 7.2.1
 Roxygen: list(markdown = TRUE)
 Imports: 
     ggplot2,
@@ -29,10 +29,13 @@ Imports:
     dplyr,
     rlang,
     crayon,
-    assertthat
+    stringr,
+    assertthat,
+    rsvg,
+    tidyselect (>= 1.2.0)
 Suggests: 
     covr,
-    lintr,
+    lintr (>= 3.0.0),
     testthat (>= 3.0.0),
     rmarkdown,
     knitr,

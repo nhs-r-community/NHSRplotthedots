@@ -17,10 +17,10 @@
 #' `options(ptd_spc.warning_threshold = 10)`. The default, if the option is not set, is 12.
 #' @noRd
 #'
-ptd_add_short_group_warnings <- function(.data, warning_threshold = getOption("ptd_spc.warning_threshold", 12)) {
+ptd_add_short_group_warnings <- function(.data, warning_threshold = getOption("ptd_spc.warning_threshold", 13)) {
   .data <- .data %>%
-    group_by(across(c(.data$f, .data$rebase_group))) %>%
-    mutate(short_group_warning = n() < warning_threshold, .after = .data$rebase_group) %>%
+    group_by(across(c("f", "rebase_group"))) %>%
+    mutate(short_group_warning = n() < warning_threshold, .after = "rebase_group") %>%
     ungroup()
 
   if (any(.data$short_group_warning)) {

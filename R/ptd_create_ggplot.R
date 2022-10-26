@@ -104,6 +104,12 @@ ptd_create_ggplot <- function(x,
     break_lines
   )
 
+  # fix for the special cause colours
+  .data <- dplyr::mutate(
+    .data,
+    point_colour = stringr::str_remove(.data$point_type, "(?<=^special_cause_neutral)_.*$")
+  )
+
   colours_subset <- if (options[["improvement_direction"]] == "neutral") {
     colours[c("common_cause", "special_cause_neutral")]
   } else {
@@ -142,7 +148,7 @@ ptd_create_ggplot <- function(x,
     geom_line(aes(group = if (break_process) .data$rebase_group else 0),
       linetype = "solid", size = line_size, colour = colours$value_line
     ) +
-    geom_point(aes(colour = .data$point_type), size = point_size) +
+    geom_point(aes(colour = .data$point_colour), size = point_size) +
     scale_colour_manual(
       values = colours_subset,
       labels = ptd_title_case

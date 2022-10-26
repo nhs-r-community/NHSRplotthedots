@@ -54,11 +54,11 @@ ptd_spc_standard <- function(.data, options = NULL) {
   # Restructure starting data frame
   .data <- .data %>%
     select(
-      y = .data[[value_field]],
-      x = .data[[date_field]],
-      f = .data$facet,
-      rebase = .data$rebase,
-      trajectory = .data$trajectory,
+      y = any_of(value_field),
+      x = any_of(date_field),
+      f = any_of("facet"),
+      rebase = any_of("rebase"),
+      trajectory = any_of("trajectory"),
     ) %>%
     # Group data frame by facet
     group_by(.data$f) %>%
@@ -97,6 +97,6 @@ ptd_spc_standard <- function(.data, options = NULL) {
       close_to_limits = !.data$outside_limits & (.data$y < .data$nlpl | .data$y > .data$nupl)
     ) %>%
     # clean up by removing columns that no longer serve a purpose and ungrouping data
-    select(-.data$mr, -.data$nlpl, -.data$nupl, -.data$amr, -.data$rebase) %>%
+    select(-any_of(c("mr", "nlpl", "nupl", "amr", "rebase"))) %>%
     ungroup()
 }

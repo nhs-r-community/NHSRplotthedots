@@ -27,7 +27,7 @@ test_that("it calls ptd_validate_plot_options", {
 
   try(
     ptd_create_ggplot(
-      ptd_spc(data.frame(x = Sys.Date() + 1:12, y = rnorm(12)), "y", "x"),
+      ptd_spc(data.frame(x = Sys.Date() + 1:20, y = rnorm(20)), "y", "x"),
       "point_size",
       "percentage_y_axis",
       "main_title",
@@ -84,9 +84,9 @@ test_that("it returns a ggplot object", {
       group = NULL,
       title = "SPC Chart of Y, starting 02/01/2020",
       caption = NULL,
-      colour = "point_type",
+      colour = "point_colour",
       type = "type",
-      text = "text"
+      icon = "icon"
     )
   )
 })
