@@ -1,12 +1,15 @@
 #' Generate hexagonal logo for the package
 #'
+#' @param subplot subplot (main image/plot)
 #' @param seed numeric value for reproducibility
 #' @param n_points numeric value with the number of points to generate
 #' @param fill_palette vector of colours to fill the points
 #' @param fill_palette_breaks numeric vector with the breaking points (to change
 #'     the colours of the points)
 #' @param line_size numeric value with the line size/thickness
+#' @param line_colour string with the colour for the line
 #' @param point_size numeric value with the size of the points
+#' @param point_colour string with the colour for the contour of the points
 #' @param point_shape numeric value with the shape of the points
 #' @param point_stroke numeric value with the size of the stroke for the points
 #' @param package string with the package name
@@ -69,7 +72,8 @@
 #'   ) %>%
 #'   purrr::pmap(hex_logo)
 #' }
-hex_logo <- function(seed = 123,
+hex_logo <- function(subplot = NULL,
+                     seed = 123,
                      n_points = 10,
                      fill_palette =
                        c(
@@ -81,10 +85,12 @@ hex_logo <- function(seed = 123,
                        ),
                      fill_palette_breaks =
                        seq(.2, .8,
-                         length.out = length(fill_palette) - 1
+                           length.out = length(fill_palette) - 1
                        ) * n_points,
                      line_size = 0.5,
+                     line_colour = "#000000",
                      point_size = 2.9,
+                     point_colour = line_colour,
                      point_shape = 21,
                      point_stroke = line_size,
                      package = "NHSRplotthedots",
@@ -107,32 +113,19 @@ hex_logo <- function(seed = 123,
                      u_size = 4.85,
                      dpi = 500,
                      out_filename = "inst/images/logo.png") {
-  # local bindings
-  x <- y <- fill <- NULL
-  set.seed(seed) # set seed for reproducibility
-  # generate sample data
-  x <- seq_len(n_points)
-  y <- sample(x, n_points)
-  demo_data_tb <- data.frame(
-    x = x,
-    y = y,
-    fill = cut(y, breaks = c(-Inf, fill_palette_breaks, Inf))
-  )
-  # create the subplot: points and line
-  subplot <- demo_data_tb %>%
-    ggplot2::ggplot(ggplot2::aes(x, y)) +
-    ggplot2::geom_line(size = line_size) +
-    ggplot2::geom_point(ggplot2::aes(fill = fill),
-      size = point_size,
-      shape = point_shape,
-      stroke = point_stroke
-    ) +
-    ggplot2::scale_fill_manual(values = fill_palette) +
-    ggplot2::theme_void() + # remove all the features, except the main plot
-    ggplot2::theme( # remove the legend
-      legend.position = "none"
-    ) +
-    hexSticker::theme_transparent() # make background of the plot transparent
+  # check if the subplot was provided
+  if (missing(subplot)) {
+    subplot <- simple_pointplot(seed = seed,
+                                n_points = n_points,
+                                fill_palette = fill_palette,
+                                fill_palette_breaks = fill_palette_breaks,
+                                line_size = line_size,
+                                line_colour = line_colour,
+                                point_size = point_size,
+                                point_colour = point_colour,
+                                point_shape = point_shape,
+                                point_stroke = point_stroke)
+  }
 
   # generate and save sticker
   hexSticker::sticker(
@@ -160,4 +153,70 @@ hex_logo <- function(seed = 123,
     u_y = u_y,
     filename = out_filename
   )
+}
+
+#' Create a simple point plot
+#'
+#' @param seed numeric value for reproducibility
+#' @param n_points numeric value with the number of points to generate
+#' @param fill_palette vector of colours to fill the points
+#' @param fill_palette_breaks numeric vector with the breaking points (to change
+#'     the colours of the points)
+#' @param line_size numeric value with the line size/thickness
+#' @param line_colour string with the colour for the line
+#' @param point_size numeric value with the size of the points
+#' @param point_colour string with the colour for the contour of the points
+#' @param point_shape numeric value with the shape of the points
+#' @param point_stroke numeric value with the size of the stroke for the points
+#'
+#' @return ggplot2 object
+simple_pointplot <- function(seed = 123,
+                             n_points = 10,
+                             fill_palette =
+                               c(
+                                 "#ED6571",
+                                 "#F69489",
+                                 "#FFCF86",
+                                 "#91CBD7",
+                                 "#4E9BB9"
+                               ),
+                             fill_palette_breaks =
+                               seq(.2, .8,
+                                   length.out = length(fill_palette) - 1
+                               ) * n_points,
+                             line_size = 0.5,
+                             line_colour = "#000000",
+                             point_size = 2.9,
+                             point_colour = line_colour,
+                             point_shape = 21,
+                             point_stroke = line_size) {
+  # local bindings
+  x <- y <- fill <- NULL
+  set.seed(seed) # set seed for reproducibility
+  # generate sample data
+  x <- seq_len(n_points)
+  y <- sample(x, n_points)
+  demo_data_tb <- data.frame(
+    x = x,
+    y = y,
+    fill = cut(y, breaks = c(-Inf, fill_palette_breaks, Inf))
+  )
+  # create the subplot: points and line
+  subplot <- demo_data_tb %>%
+    ggplot2::ggplot(ggplot2::aes(x, y)) +
+    ggplot2::geom_line(size = line_size,
+                       colour = line_colour) +
+    ggplot2::geom_point(ggplot2::aes(fill = fill),
+                        size = point_size,
+                        colour = point_colour,
+                        shape = point_shape,
+                        stroke = point_stroke
+    ) +
+    ggplot2::scale_fill_manual(values = fill_palette) +
+    ggplot2::theme_void() + # remove all the features, except the main plot
+    ggplot2::theme( # remove the legend
+      legend.position = "none"
+    ) +
+    hexSticker::theme_transparent() # make background of the plot transparent
+  subplot
 }
