@@ -94,11 +94,15 @@ hex_logo <- function(seed = 123,
                      dpi = 500,
                      out_filename = "inst/images/logo.png"
                      ) {
+  # local bindings
+  x <- y <- fill <- NULL
   set.seed(seed) # set seed for reproducibility
   # generate sample data
-  demo_data_tb <- tibble::tibble(
-    x = seq_len(n_points),
-    y = sample(x, n_points),
+  x <- seq_len(n_points)
+  y <- sample(x, n_points)
+  demo_data_tb <- data.frame(
+    x = x,
+    y = y,
     fill = cut(y, breaks = c(-Inf, fill_palette_breaks, Inf))
   )
   # create the subplot: points and line
