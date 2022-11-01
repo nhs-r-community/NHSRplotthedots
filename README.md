@@ -1,8 +1,9 @@
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 
-# NHSRplotthedots <a alt="NHS-R Community's logo" href='https://nhsrcommunity.com/'><img src='https://nhs-r-community.github.io/assets/logo/nhsr-logo.png' align="right" height="80" /></a>
+# NHSRplotthedots <img src='inst/images/logo.png' align='right' height='200' />
 
+<!-- <a alt="NHS-R Community's logo" href='https://nhsrcommunity.com/'><img src='https://nhs-r-community.github.io/assets/logo/nhsr-logo.png' align="right" height="80" /></a> -->
 <!-- badges: start -->
 
 [![Lifecycle:
@@ -69,9 +70,9 @@ sub_set %>%
 
 <img src="man/figures/README-example-1.png" width="100%" />
 
-This plot is ok on it’s own, but we can specify more control options
-when we pass it on, using the `{dplyr}` pipe function below: `%>%` to
-the plot argument.
+This plot is ok on its own, but we can specify more control options when
+we pass it on, using the `{dplyr}` pipe function below: `%>%` to the
+plot argument.
 
 ``` r
 sub_set %>%
