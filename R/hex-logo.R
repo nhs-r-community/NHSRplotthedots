@@ -69,8 +69,18 @@
 #' }
 hex_logo <- function(seed = 123,
                      n_points = 10,
-                     fill_palette = c("#ED6571", "#F69489", "#FFCF86", "#91CBD7", "#4E9BB9"),
-                     fill_palette_breaks = seq(.2, .8, length.out = length(fill_palette) - 1) * n_points,
+                     fill_palette =
+                       c(
+                         "#ED6571",
+                         "#F69489",
+                         "#FFCF86",
+                         "#91CBD7",
+                         "#4E9BB9"
+                       ),
+                     fill_palette_breaks =
+                       seq(.2, .8,
+                         length.out = length(fill_palette) - 1
+                       ) * n_points,
                      line_size = 0.5,
                      point_size = 2.9,
                      point_shape = 21,
@@ -92,8 +102,7 @@ hex_logo <- function(seed = 123,
                      u_y = 0.08,
                      u_size = 4.85,
                      dpi = 500,
-                     out_filename = "inst/images/logo.png"
-                     ) {
+                     out_filename = "inst/images/logo.png") {
   # local bindings
   x <- y <- fill <- NULL
   set.seed(seed) # set seed for reproducibility
@@ -110,36 +119,39 @@ hex_logo <- function(seed = 123,
     ggplot2::ggplot(ggplot2::aes(x, y)) +
     ggplot2::geom_line(size = line_size) +
     ggplot2::geom_point(ggplot2::aes(fill = fill),
-                        size = point_size,
-                        shape = point_shape,
-                        stroke = point_stroke) +
+      size = point_size,
+      shape = point_shape,
+      stroke = point_stroke
+    ) +
     ggplot2::scale_fill_manual(values = fill_palette) +
-    ggplot2::theme_void() +         # remove all the features, except the main plot
-    ggplot2::theme(                 # remove the legend
+    ggplot2::theme_void() + # remove all the features, except the main plot
+    ggplot2::theme( # remove the legend
       legend.position = "none"
     ) +
     hexSticker::theme_transparent() # make background of the plot transparent
 
   # generate and save sticker
-  hexSticker::sticker(subplot = subplot,
-                      package = package,
-                      h_color = main_colour,
-                      h_fill = background_colour,
-                      dpi = dpi,
-                      s_x = s_x,
-                      s_y = s_y,
-                      s_height = s_height,
-                      s_width = s_width,
-                      asp = asp,
-                      p_x = p_x,
-                      p_y = p_y,
-                      p_size = ,
-                      p_color = main_colour,
-                      url = url,
-                      u_angle = u_angle,
-                      u_color = main_colour,
-                      u_size = u_size,
-                      u_x = u_x,
-                      u_y = u_y,
-                      filename = out_filename)
+  hexSticker::sticker(
+    subplot = subplot,
+    package = package,
+    h_color = main_colour,
+    h_fill = background_colour,
+    dpi = dpi,
+    s_x = s_x,
+    s_y = s_y,
+    s_height = s_height,
+    s_width = s_width,
+    asp = asp,
+    p_x = p_x,
+    p_y = p_y,
+    p_size = ,
+    p_color = main_colour,
+    url = url,
+    u_angle = u_angle,
+    u_color = main_colour,
+    u_size = u_size,
+    u_x = u_x,
+    u_y = u_y,
+    filename = out_filename
+  )
 }
