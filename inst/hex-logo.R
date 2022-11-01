@@ -15,6 +15,8 @@
 #' @param p_x x position for the package name
 #' @param p_y y position for the package name
 #' @param p_size font size for package name
+#' @param p_family font family for package name
+#' @param p_fontface font face for package name
 #' @param s_x x position for subplot
 #' @param s_y y position for subplot
 #' @param s_height height for subplot
@@ -91,6 +93,8 @@ hex_logo <- function(seed = 123,
                      p_x = 1.0,
                      p_y = 1.62,
                      p_size = 16,
+                     p_family = "Aller_Rg",
+                     p_fontface = "plain",
                      s_x = 1.0,
                      s_y = 0.98,
                      s_height = 1.17,
@@ -144,11 +148,13 @@ hex_logo <- function(seed = 123,
     asp = asp,
     p_x = p_x,
     p_y = p_y,
-    p_size = ,
+    p_size = p_size,
     p_color = main_colour,
+    p_family = p_family,
     url = url,
     u_angle = u_angle,
     u_color = main_colour,
+    u_family = p_family,
     u_size = u_size,
     u_x = u_x,
     u_y = u_y,
