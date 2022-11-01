@@ -44,7 +44,8 @@ Suggests:
     spelling,
     utils,
     NHSRdatasets,
-    grid
+    grid,
+    hexSticker
 VignetteBuilder: knitr
 Config/testthat/edition: 3
 Language: en-US
