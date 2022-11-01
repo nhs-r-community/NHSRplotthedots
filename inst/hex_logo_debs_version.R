@@ -1,0 +1,60 @@
+# Based on the design provided by an user on Twitter, this is an "approximated"
+# version created with R
+# generate sample data
+fill_palette <-
+  c("#EB7F3C", # orange
+    "#7F7F7F", # gray
+    "#005EB8") # NHS blue
+fill_palette_breaks <-
+  seq(.2, .8, length.out = length(fill_palette) - 1) * 6
+line_size <- 0.5
+line_colour <- "#7F7F7F"
+point_size <- 2.9
+point_shape <- 21
+point_stroke <- 0
+y <- c(1, 3, 4, 6, 4, 3)
+demo_data_tb <- data.frame(
+  x = 1:6,
+  y = y,
+  fill = cut(y, breaks = c(-Inf, fill_palette_breaks, Inf))
+)
+# create the subplot: points and line
+subplot <- demo_data_tb %>%
+  ggplot2::ggplot(ggplot2::aes(x, y)) +
+  ggplot2::geom_line(size = line_size,
+                     colour = line_colour) +
+  ggplot2::geom_point(ggplot2::aes(fill = fill),
+                      size = point_size,
+                      shape = point_shape,
+                      stroke = point_stroke
+  ) +
+  ggplot2::annotate(geom = "text",
+                    x = -0.5,
+                    y = 4,
+                    label = "making\ndata\ncount\nin\nthe",
+                    colour = line_colour,
+                    size = 12,
+                    fontface = "bold",
+                    lineheight = .2,
+                    hjust = 0) +
+  ggplot2::annotate(geom = "label",
+                    x = -0.5,
+                    y = 2.2,
+                    label = "NHS   ",
+                    size = 12,
+                    fontface = "bold.italic",
+                    label.padding = ggplot2::unit(0.1, "lines"),
+                    label.r = ggplot2::unit(0, "lines"), # no round corners
+                    colour = "#FFFFFF",
+                    fill = "#005EB8",
+                    hjust = 0) +
+  ggplot2::scale_fill_manual(values = fill_palette) +
+  ggplot2::theme_void() + # remove all the features, except the main plot
+  ggplot2::theme( # remove the legend
+    legend.position = "none"
+  ) +
+  hexSticker::theme_transparent() # make background of the plot transparent
+hex_logo(subplot,
+         main_colour = line_colour,
+         out_filename = "inst/images/logo_debs_version.png")
+
