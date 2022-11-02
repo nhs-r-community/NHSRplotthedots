@@ -18,6 +18,7 @@ demo_data_tb <- data.frame(
   y = y,
   fill = cut(y, breaks = c(-Inf, fill_palette_breaks, Inf))
 )
+`%>%` <- magrittr::`%>%`
 # create the subplot: points and line
 subplot <- demo_data_tb %>%
   ggplot2::ggplot(ggplot2::aes(x, y)) +
@@ -33,17 +34,17 @@ subplot <- demo_data_tb %>%
                     y = 4,
                     label = "making\ndata\ncount\nin\nthe",
                     colour = line_colour,
-                    size = 12,
+                    size = 13,
                     fontface = "bold",
                     lineheight = .2,
                     hjust = 0) +
   ggplot2::annotate(geom = "label",
                     x = -0.5,
                     y = 2.2,
-                    label = "NHS   ",
-                    size = 12,
+                    label = "NHS",
+                    size = 13,
                     fontface = "bold.italic",
-                    label.padding = ggplot2::unit(0.1, "lines"),
+                    label.padding = ggplot2::unit(.5, "mm"),
                     label.r = ggplot2::unit(0, "lines"), # no round corners
                     colour = "#FFFFFF",
                     fill = "#005EB8",
