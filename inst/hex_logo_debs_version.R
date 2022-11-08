@@ -3,12 +3,12 @@
 # generate sample data
 fill_palette <-
   c("#EB7F3C", # orange
-    "#7F7F7F", # gray
+    "#425563", # gray
     "#005EB8") # NHS blue
 fill_palette_breaks <-
   seq(.2, .8, length.out = length(fill_palette) - 1) * 6
 line_size <- .75
-line_colour <- "#7F7F7F"
+line_colour <- "#425563"
 point_size <- 3.5
 point_shape <- 21
 point_stroke <- 0
@@ -47,7 +47,7 @@ subplot <- demo_data_tb %>%
                     y = 2.2,
                     label = "NHS",
                     colour = "#005EB8", # NHS Blue
-                    size = 13,
+                    size = 16,
                     fontface = "bold",
                     lineheight = .2,
                     # family = font_family_bold,
