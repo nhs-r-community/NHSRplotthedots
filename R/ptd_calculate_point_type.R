@@ -45,7 +45,7 @@ ptd_part_of_seven_trend <- function(v) {
   vp <- c(v, rep(0, 6))
   # either, this value is already part of 7, or one of the following 6 points is
   vapply(seq_along(v), function(i) {
-    any(vp[i + 0:6] == 1)
+    any(abs(vp[i + 0:6]) == 1)
   }, numeric(1))
 }
 

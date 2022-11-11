@@ -104,22 +104,24 @@ test_that("ptd_part_of_seven_trend works as expected", {
     c(0, 0, 0, 0, 0, 0)
   )
 
-  a <- ptd_seven_point_one_side_mean(c(rep(1, 6), -1))
   expect_equal(
-    a,
-    c(0, 0, 0, 0, 0, 0, 0)
+    ptd_part_of_seven_trend(c(rep(0, 6), 1, 0)),
+    c(rep(1, 7), 0)
   )
 
-  b <- ptd_seven_point_one_side_mean(c(-1, rep(1, 8), -1))
   expect_equal(
-    b,
-    c(0, 0, 0, 0, 0, 0, 0, 1, 1, 0)
+    ptd_part_of_seven_trend(c(rep(0, 7), 1, 0)),
+    c(0, rep(1, 7), 0)
   )
 
-  d <- ptd_seven_point_one_side_mean(c(1, rep(-1, 8), 1))
   expect_equal(
-    d,
-    c(0, 0, 0, 0, 0, 0, 0, 1, 1, 0)
+    ptd_part_of_seven_trend(c(rep(0, 6), -1, 0)),
+    c(rep(1, 7), 0)
+  )
+
+  expect_equal(
+    ptd_part_of_seven_trend(c(rep(0, 7), -1, 0)),
+    c(0, rep(1, 7), 0)
   )
 })
 
