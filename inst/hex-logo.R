@@ -220,3 +220,71 @@ simple_pointplot <- function(seed = 123,
     hexSticker::theme_transparent() # make background of the plot transparent
   subplot
 }
+
+# Community designed logo ----
+# Based on the design provided by an user on Twitter, this is an "approximated"
+# version created with R
+`%>%` <- magrittr::`%>%`
+fill_palette <-
+  c(orange = "#EB7F3C", # orange
+    nhs_dark_grey = "#425563", # NHS Dark grey
+    nhs_dark_blue = "#005EB8") # NHS blue
+fill_palette_breaks <-
+  seq(.2, .8, length.out = length(fill_palette) - 1) * 6
+line_size <- .75
+line_colour <- fill_palette["nhs_dark_grey"]
+point_size <- 3.5
+point_shape <- 21
+point_stroke <- 0
+font_family <- "Arial"
+font_family_bold <- "Arial"
+font_family_bold_italic <- "Arial"
+y <- c(1, 3, 4, 6, 4, 3)
+# generate sample data
+demo_data_tb <- data.frame(
+  x = 1:6,
+  y = y,
+  fill = cut(y, breaks = c(-Inf, fill_palette_breaks, Inf))
+)
+
+# create the subplot: points and line
+subplot <- demo_data_tb %>%
+  ggplot2::ggplot(ggplot2::aes(x, y)) +
+  ggplot2::geom_line(size = line_size,
+                     colour = line_colour) +
+  ggplot2::geom_point(ggplot2::aes(fill = fill),
+                      size = point_size,
+                      shape = point_shape,
+                      stroke = point_stroke) +
+  ggplot2::annotate(geom = "text",
+                    x = -0.5,
+                    y = 4,
+                    label = "making\ndata\ncount\nin\nthe",
+                    colour = line_colour,
+                    size = 13,
+                    fontface = "bold",
+                    lineheight = .2,
+                    hjust = 0) +
+  ggplot2::annotate(geom = "text",
+                    x = -0.5,
+                    y = 2.2,
+                    label = "NHS",
+                    colour = fill_palette["nhs_dark_blue"], # NHS Blue
+                    size = 16,
+                    fontface = "bold",
+                    lineheight = .2,
+                    hjust = 0) +
+  ggplot2::scale_fill_manual(values = unname(fill_palette)) +
+  ggplot2::theme_void() + # remove all the features, except the main plot
+  ggplot2::theme( # remove the legend
+    legend.position = "none",
+    text = ggplot2::element_text(family = font_family)
+  ) +
+  hexSticker::theme_transparent() # make background of the plot transparent
+
+hex_logo(subplot,
+         main_colour = line_colour,
+         # url = "",
+         p_family = font_family,
+         out_filename = "inst/images/logo.png")
+
