@@ -284,7 +284,7 @@ subplot <- demo_data_tb %>%
 
 hex_logo(subplot,
          main_colour = line_colour,
-         # url = "",
+         url = "",
          p_family = font_family,
          out_filename = "inst/images/logo.png")
 
