@@ -90,12 +90,29 @@ if (!is.null(target)) {
   
 }
 
+variation_type <- ptd_object %>% 
+  tail(1) %>% 
+  select(point_type) %>% 
+  pull()
 
-variation_type <- ptd_calculate_assurance_type(ptd_object) %>% select(assurance_type) %>% pull()
+improvement_direction <- dataset %>% 
+  tail(1) %>% 
+  select(improvement_direction) %>% 
+  distinct() %>% 
+  pull()
 
-if(variation_type == "inconsistent") assurance_image <- "https://raw.githubusercontent.com/Bergam0t/nhs_ptd_power_bi/main/inst/icons/assurance/inconsistent.svg"
-if(variation_type =="consistent_pass") assurance_image <- "https://raw.githubusercontent.com/Bergam0t/nhs_ptd_power_bi/main/inst/icons/assurance/pass.svg"
-if(variation_type == "consistent_fail") assurance_image <- "https://raw.githubusercontent.com/Bergam0t/nhs_ptd_power_bi/main/inst/icons/assurance/fail.svg"
+if(variation_type == "Special Cause - Concern" & improvement_direction == "decrease") variation_image <- "https://raw.githubusercontent.com/Bergam0t/nhs_ptd_power_bi/main/inst/icons/variation/concern_high.svg"
+if(variation_type == "Special Cause - Concern" & improvement_direction == "increase") variation_image <- "https://raw.githubusercontent.com/Bergam0t/nhs_ptd_power_bi/main/inst/icons/variation/concern_low.svg"
+if(variation_type == "Special Cause - Improvement" & improvement_direction == "decrease") variation_image <- "https://raw.githubusercontent.com/Bergam0t/nhs_ptd_power_bi/main/inst/icons/variation/improvement_low.svg"
+if(variation_type == "Special Cause - Improvement" & improvement_direction == "increase") variation_image <- "https://raw.githubusercontent.com/Bergam0t/nhs_ptd_power_bi/main/inst/icons/variation/improvement_high.svg"
+if(variation_type == "Common Cause") variation_image <- "https://raw.githubusercontent.com/Bergam0t/nhs_ptd_power_bi/main/inst/icons/variation/common_cause.svg"
+
+
+assurance_type <- ptd_calculate_assurance_type(ptd_object) %>% select(assurance_type) %>% pull()
+
+if(assurance_type == "inconsistent") assurance_image <- "https://raw.githubusercontent.com/Bergam0t/nhs_ptd_power_bi/main/inst/icons/assurance/inconsistent.svg"
+if(assurance_type =="consistent_pass") assurance_image <- "https://raw.githubusercontent.com/Bergam0t/nhs_ptd_power_bi/main/inst/icons/assurance/pass.svg"
+if(assurance_type == "consistent_fail") assurance_image <- "https://raw.githubusercontent.com/Bergam0t/nhs_ptd_power_bi/main/inst/icons/assurance/fail.svg"
 
 #if (!is.null(variation_image)) {
   fig <- fig %>% 
@@ -113,6 +130,30 @@ if(variation_type == "consistent_fail") assurance_image <- "https://raw.githubus
           
           yref="paper", 
           
+          x=0.22, 
+          
+          y=1, 
+          
+         xanchor="right", 
+          
+         yanchor="top",
+          
+         sizex=0.1, 
+          
+         sizey=0.1
+          
+        ) ,
+
+         list(  
+          
+          # sources of images
+          
+          source =  variation_image,
+          
+          xref="paper", 
+          
+          yref="paper", 
+          
           x=0.1, 
           
           y=1, 
@@ -125,7 +166,7 @@ if(variation_type == "consistent_fail") assurance_image <- "https://raw.githubus
           
          sizey=0.1
           
-        )  
+        )   
         
       )) 
   
