@@ -1,5 +1,5 @@
 {
-    "version": "0.0.3",
+    "version": "0.1.0",
     "author": {"name":"Sammi Rosser/NHS R Community","email":"sammi.j.rosser@gmail.com"},
     "resources": [
         {
@@ -8,7 +8,7 @@
             "file": "resources/xmrspcplotthedots2FD6DE3F139F480F8B0CFC006078D180.pbiviz.json"
         }
     ],
-    "visual": {"name":"xmrspcplotthedots","displayName":"xmr_spc_plot_the_dots","guid":"xmrspcplotthedots2FD6DE3F139F480F8B0CFC006078D180","visualClassName":"Visual","version":"0.0.3","description":"Making Data Count Plot the Dots - Power BI","supportUrl":"https://bergam0t.github.io/","gitHubUrl":"https://github.com/Bergam0t/nhs_ptd_power_bi"},
+    "visual": {"name":"xmrspcplotthedots","displayName":"xmr_spc_plot_the_dots","guid":"xmrspcplotthedots2FD6DE3F139F480F8B0CFC006078D180","visualClassName":"Visual","version":"0.1.0","description":"Making Data Count Plot the Dots - Power BI","supportUrl":"https://bergam0t.github.io/","gitHubUrl":"https://github.com/Bergam0t/nhs_ptd_power_bi"},
     "metadata": {
         "pbivizjson": {
             "resourceId": "rId0"
