@@ -1,0 +1,113 @@
+{
+  "dataRoles": [
+    {
+      "displayName": "Values",
+      "kind": "GroupingOrMeasure",
+      "name": "Values"
+    }
+  ],
+  "dataViewMappings": [
+    {
+      "scriptResult": {
+        "dataInput": {
+          "table": {
+            "rows": {
+              "select": [
+                {
+                  "for": {
+                    "in": "Values"
+                  }
+                }
+              ],
+              "dataReductionAlgorithm": {
+                "top": {}
+              }
+            }
+          }
+        },
+        "script": {
+          "scriptProviderDefault": "R",
+          "scriptOutputType": "html",
+          "source": {
+            "objectName": "rcv_script",
+            "propertyName": "source"
+          },
+          "provider": {
+            "objectName": "rcv_script",
+            "propertyName": "provider"
+          }
+        }
+      }
+    }
+  ],
+  "objects": {
+    "titlesettings": {
+      "displayName": "Title Settings",
+      "description": "Title and Title Size",
+      "properties": {
+        "ChartTitle": {
+          "displayName": "Chart Title",
+          "description": "Set chart title",
+          "type": {
+            "text": true
+          }
+        },
+        "TitleSize": {
+          "displayName": "Title Font Size",
+          "description": "Set size of font",
+          "type": {
+            "numeric": true
+          }
+        }
+      }
+    },
+
+    "xaxissettings": {
+      "displayName": "X Axis Settings",
+      "description": "X Axis theme and title",
+      "properties": {
+        "XAxisTitle": {
+          "displayName": "X Axis Title",
+          "description": "Set X Axis Title",
+          "type": {
+            "text": true
+          }
+        }
+    }
+  },
+
+  "yaxissettings": {
+    "displayName": "Y Axis Settings",
+    "description": "Y Axis theme and title",
+    "properties": {
+      "YAxisTitle": {
+        "displayName": "Y Axis Title",
+        "description": "Set Y Axis Title",
+        "type": {
+          "text": true
+        }
+      }
+  }
+},
+
+
+
+    "rcv_script": {
+      "properties": {
+        "provider": {
+          "type": {
+            "text": true
+          }
+        },
+        "source": {
+          "type": {
+            "scripting": {
+              "source": true
+            }
+          }
+        }
+      }
+    }
+  },
+  "suppressDefaultTitle": true
+}

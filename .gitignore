@@ -10,3 +10,5 @@ NHSRplotthedots.Rcheck/
 NHSRplotthedots*.tar.gz
 NHSRplotthedots*.tgz
 .Renviron
+/.tmp/
+/node_modules/
