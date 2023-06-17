@@ -51,11 +51,14 @@ improvement_direction <- dataset %>%
   tail(1) %>% 
   select(improvement_direction) %>% 
   distinct() %>% 
-  pull()
+  pull() %>% 
+  # Force as character to appease the PBI service
+  as.character()
 
 
 # Generate NHS R making data count object
-ptd_object <- ptd_spc(dataset, value_field = "value",
+ptd_object <- ptd_spc(dataset, 
+        value_field = "value",
         date_field="date", 
         improvement_direction = improvement_direction,
         fix_after_n_points = baseline,

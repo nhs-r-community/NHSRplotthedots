@@ -13,7 +13,8 @@ ptd_add_rebase_column <- function(.data, date_field, facet_field, rebase) {
 
     .data <- .data %>%
       left_join(rebase_table, by = c(date_field, facet_field)) %>%
-      mutate(across(rebase, ~ ifelse(is.na(.x), 0, 1)))
+      #mutate(across(rebase, ~ ifelse(is.na(.x), 0, 1)))
+      mutate_at(rebase, ~ ifelse(is.na(.x), 0, 1))
   } else if (!is.null(rebase)) {
     # in with NULL returns FALSE, so this is suitable even if rebase isn't provided
     .data$rebase <- as.numeric(.data[[date_field]] %in% to_datetime(rebase))
