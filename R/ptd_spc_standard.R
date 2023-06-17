@@ -47,23 +47,27 @@ ptd_spc_standard <- function(.data, options = NULL) {
     .data$facet <- .data[[facet_field]]
   }
 
+  
+  .data$y <- .data[[value_field]]
+  .data$x <- .data[[date_field]]
+  
   # Constants
   limit <- 2.66
   limitclose <- 2 * (limit / 3)
 
   # Restructure starting data frame
-  .data <- .data %>%
+  temp <- .data %>%
     select(
       # y = any_of(value_field),
       # x = any_of(date_field),
       # f = any_of("facet"),
       # rebase = any_of("rebase"),
       # trajectory = any_of("trajectory"),
-      y = value_field,
-      x = date_field,
-      f = "facet",
-      rebase = "rebase",
-      trajectory = "trajectory",
+      y,
+      x,
+      f = facet,
+      rebase = rebase,
+      trajectory = trajectory,
     ) %>%
     # Group data frame by facet
     group_by(.data$f) %>%
