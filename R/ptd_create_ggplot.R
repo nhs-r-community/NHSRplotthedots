@@ -42,7 +42,7 @@ ptd_create_ggplot <- function(x,
                               x_axis_date_format = "%d/%m/%y",
                               x_axis_breaks = NULL,
                               y_axis_breaks = NULL,
-                              icons_size = 0.15,
+                              icons_size = 8L,
                               icons_position = c("top right", "bottom right", "bottom left", "top left", "none"),
                               colours = ptd_spc_colours(),
                               theme_override = NULL,
@@ -212,103 +212,12 @@ ptd_create_ggplot <- function(x,
       scale_y_continuous(breaks = y_axis_labels, labels = y_axis_labels)
   }
 
-  icons_data<-ptd_plotly_ptd_icons(plot$data)
-  variation_icon_image<- icons_data$icon[1]
-  assurance_icon_image<-icons_data$icon[2]
-
-  plot <- ggplotly(plot)%>%
-    layout(legend = list(orientation = "h",   # show entries horizontally
-                         xanchor = "center",  # use center of legend as anchor
-                         x = 0.5,
-                         y=-0.6))             # put legend in center of x-axis
-
-  if (any(.data$short_group_warning)){
-    plot <- plot%>%
-      layout(
-        annotations =
-          list(
-            x = 1,
-            y = -0.3, #position of text adjust as needed
-            text = paste0(
-              "Some trial limits created by groups of fewer than 12 points exist. \n",
-              "These will become more reliable as more data is added."
-            ),
-            showarrow = F,
-            xref='paper',
-            yref='paper',
-            xanchor='auto',
-            yanchor='auto',
-            xshift=0,
-            yshift=0,
-            font=list(size=12, color="red"))
-      )
+  if (icons_position != "none") {
+    plot <- plot +
+      geom_ptd_icon(icons_size = icons_size, icons_position = icons_position)
   }
 
-  if (icons_position == "none") {
-
-    #plot
-
-  }else if (!is.na(assurance_icon_image)==TRUE){
-
-    size_x<-icons_size*0.6
-    size_y<-icons_size
-
-    position_y<- ifelse(grepl("top",icons_position),1-size_y/2,0.1+size_y/2)
-    position_x<- ifelse(grepl("right",icons_position),1-2*size_x,0)
-
-    plot <- plot %>%
-      layout(
-        images = list(
-          list(source = variation_icon_image,
-               xref = "paper",
-               yref = "paper",
-               x= position_x,
-               y= position_y,
-               sizex = size_x,
-               sizey = size_y,
-               sizing='stretch',
-               opacity = 1,
-               layer='above'
-          ),
-          list(source = assurance_icon_image,
-               xref = "paper",
-               yref = "paper",
-               x= position_x+size_x,
-               y= position_y,
-               sizex = size_x,
-               sizey = size_y,
-               sizing='stretch',
-               opacity = 1,
-               layer='above'
-          )
-        )
-      )
-  }else{
-
-    size_x<-icons_size*0.8
-    size_y<-icons_size
-
-    position_y<- ifelse(grepl("top",icons_position),1-size_y/2,0.1+size_y/2)
-    position_x<- ifelse(grepl("right",icons_position),1-size_x,0)
-
-    plot <- plot %>%
-      layout(
-        images = list(
-          list(source = variation_icon_image,
-               xref = "paper",
-               yref = "paper",
-               x= position_x,
-               y= position_y,
-               sizex = size_x,
-               sizey = size_y,
-               sizing='stretch',
-               opacity = 1,
-               layer='above'
-          )
-          )
-          )
-    }
-
+  plot
 }
 
 #' @rdname ptd_create_ggplot

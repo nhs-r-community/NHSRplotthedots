@@ -21,7 +21,7 @@ URL: https://nhs-r-community.github.io/NHSRplotthedots,
 BugReports: https://nhs-r-community.github.io/NHSRplotthedots/issues
 License: MIT + file LICENSE
 Encoding: UTF-8
-RoxygenNote: 7.2.1
+RoxygenNote: 7.2.3
 Roxygen: list(markdown = TRUE)
 Imports: 
     ggplot2,
