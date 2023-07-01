@@ -95,7 +95,6 @@ test_that("setting fix_after_n_points changes the calculations", {
 })
 
 test_that("it only reports special cause for 2of3 points close to limits when they are on the same side of the mean", {
-
   # dataframe of symmetrical data
   dtf <- data.frame(
     data = c(rep(c(1, -1), times = 8)),

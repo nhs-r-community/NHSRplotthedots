@@ -69,14 +69,14 @@ spc_data %>%
     caption = paste(
       "UPL = ", round(spc_data$upl[1], 2),
       ", Mean = ", round(spc_data$mean[1], 2),
-      ", LPL = ", round(spc_data$lpl[1], 2))
+      ", LPL = ", round(spc_data$lpl[1], 2)
+    )
   )
 ```
 
 **Over-riding to replicate "Making Data Count" Excel output:**
 
 ```{r}
-
 # setting screen_outliers = FALSE produces the same output as Excel
 spc_data <- ptd_spc(df, value_field = data, date_field = date, screen_outliers = FALSE)
 spc_data %>%
@@ -85,9 +85,9 @@ spc_data %>%
     caption = paste(
       "UPL = ", round(spc_data$upl[1], 2),
       ", Mean = ", round(spc_data$mean[1], 2),
-      ", LPL = ", round(spc_data$lpl[1], 2))
+      ", LPL = ", round(spc_data$lpl[1], 2)
+    )
   )
-
 ```
 
 ### 2. Breaking of lines
