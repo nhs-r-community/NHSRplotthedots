@@ -131,22 +131,22 @@ ptd_create_ggplot <- function(x,
 
   plot <- ggplot(.data, aes(x = .data$x, y = .data$y)) +
     geom_line(aes(y = .data$upl, group = if (break_limits) .data$rebase_group else 0),
-      linetype = "dashed", size = line_size, colour = colours$upl
+      linetype = "dashed", linewidth = line_size, colour = colours$upl
     ) +
     geom_line(aes(y = .data$lpl, group = if (break_limits) .data$rebase_group else 0),
-      linetype = "dashed", size = line_size, colour = colours$lpl
+      linetype = "dashed", linewidth = line_size, colour = colours$lpl
     ) +
     geom_line(aes(y = .data$target),
-      linetype = "dashed", size = line_size, colour = colours$target, na.rm = TRUE
+      linetype = "dashed", linewidth = line_size, colour = colours$target, na.rm = TRUE
     ) +
     geom_line(aes(y = .data$trajectory),
-      linetype = "dashed", size = line_size, colour = colours$trajectory, na.rm = TRUE
+      linetype = "dashed", linewidth = line_size, colour = colours$trajectory, na.rm = TRUE
     ) +
     geom_line(aes(y = mean, group = if (break_limits) .data$rebase_group else 0),
       linetype = "solid", colour = colours$mean_line
     ) +
     geom_line(aes(group = if (break_process) .data$rebase_group else 0),
-      linetype = "solid", size = line_size, colour = colours$value_line
+      linetype = "solid", linewidth = line_size, colour = colours$value_line
     ) +
     geom_point(aes(colour = .data$point_colour), size = point_size) +
     scale_colour_manual(
@@ -162,7 +162,7 @@ ptd_create_ggplot <- function(x,
     ) +
     theme_minimal() +
     theme(
-      plot.background = element_rect(color = "grey", size = 1), # border around whole plot
+      plot.background = element_rect(color = "grey", linewidth = 1), # border around whole plot
       plot.margin = unit(c(5, 5, 5, 5), "mm"), # 5mm of white space around plot edge
       axis.text.x = element_text(angle = 45, hjust = 1),
       panel.grid = element_line(color = "grey70"), # gridline colour
