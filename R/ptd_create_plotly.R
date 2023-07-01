@@ -65,23 +65,27 @@ ptd_create_plotly <- function(x,
     theme_override = theme_override,
     break_lines = break_lines
   )
-  ggplot <- plot(ggplot)
-  icons_data <- ptd_plotly_ptd_icons(ggplot$data)
+
+  icons_position <- match.arg(icons_position)
+
+  icons_data <- ptd_plotly_ptd_icons(x)
   variation_icon_image <- icons_data$icon[1]
   assurance_icon_image <- icons_data$icon[2]
 
-
-  plot <- ggplotly(ggplot) %>%
-    layout(legend = list(
-      orientation = "h", # show entries horizontally
-      xanchor = "center", # use center of legend as anchor
-      x = 0.5,
-      y = -0.6
-    )) # put legend in center of x-axis
+  plot <- plotly::ggplotly(ggplot) %>%
+    plotly::layout(
+      # put legend in center of x-axis
+      legend = list(
+        orientation = "h", # show entries horizontally
+        xanchor = "center", # use center of legend as anchor
+        x = 0.5,
+        y = -0.6
+      )
+    )
 
   if (any(ggplot$data$short_group_warning)) {
     plot <- plot %>%
-      layout(
+      plotly::layout(
         annotations =
           list(
             x = 1,
@@ -90,7 +94,7 @@ ptd_create_plotly <- function(x,
               "Some trial limits created by groups of fewer than 12 points exist. \n",
               "These will become more reliable as more data is added."
             ),
-            showarrow = F,
+            showarrow = FALSE,
             xref = "paper",
             yref = "paper",
             xanchor = "auto",
@@ -103,67 +107,46 @@ ptd_create_plotly <- function(x,
   }
 
   if (icons_position == "none") {
-    plot
-  } else if (!is.na(assurance_icon_image) == TRUE) {
-    size_x <- icons_size * 0.6
-    size_y <- icons_size
-
-    position_y <- ifelse(grepl("top", icons_position), 1 - size_y / 2, 0.1 + size_y / 2)
-    position_x <- ifelse(grepl("right", icons_position), 1 - 2 * size_x, 0)
-
-    plot <- plot %>%
-      layout(
-        images = list(
-          list(
-            source = variation_icon_image,
-            xref = "paper",
-            yref = "paper",
-            x = position_x,
-            y = position_y,
-            sizex = size_x,
-            sizey = size_y,
-            sizing = "stretch",
-            opacity = 1,
-            layer = "above"
-          ),
-          list(
-            source = assurance_icon_image,
-            xref = "paper",
-            yref = "paper",
-            x = position_x + size_x,
-            y = position_y,
-            sizex = size_x,
-            sizey = size_y,
-            sizing = "stretch",
-            opacity = 1,
-            layer = "above"
-          )
-        )
-      )
-  } else {
-    size_x <- icons_size * 0.6
-    size_y <- icons_size
-
-    position_y <- ifelse(grepl("top", icons_position), 1 - size_y / 2, 0.1 + size_y / 2)
-    position_x <- ifelse(grepl("right", icons_position), 1 - size_x, 0)
-
-    plot <- plot %>%
-      layout(
-        images = list(
-          list(
-            source = variation_icon_image,
-            xref = "paper",
-            yref = "paper",
-            x = position_x,
-            y = position_y,
-            sizex = size_x,
-            sizey = size_y,
-            sizing = "stretch",
-            opacity = 1,
-            layer = "above"
-          )
-        )
-      )
+    return(plot)
   }
-  plot
+
+  size_x <- icons_size * 0.6
+  size_y <- icons_size
+
+  position_y <- ifelse(grepl("top", icons_position), 1 - size_y / 2, 0.1 + size_y / 2)
+  position_x <- ifelse(grepl("right", icons_position), 1 - 2 * size_x, 0)
+
+  images <- list(
+    list(
+      source = variation_icon_image,
+      xref = "paper",
+      yref = "paper",
+      x = position_x,
+      y = position_y,
+      sizex = size_x,
+      sizey = size_y,
+      sizing = "stretch",
+      opacity = 1,
+      layer = "above"
+    ),
+    list(
+      source = assurance_icon_image,
+      xref = "paper",
+      yref = "paper",
+      x = position_x + size_x,
+      y = position_y,
+      sizex = size_x,
+      sizey = size_y,
+      sizing = "stretch",
+      opacity = 1,
+      layer = "above"
+    )
+  )
+
+  if (is.na(assurance_icon_image)) {
+    images[[1]]$x <- images[[1]]$x - size_x
+    images[[2]] <- NULL
+  }
+
+  plotly::layout(plot, images = images)
 }

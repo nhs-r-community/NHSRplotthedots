@@ -32,7 +32,8 @@ Imports:
     stringr,
     assertthat,
     rsvg,
-    tidyselect (>= 1.2.0)
+    tidyselect (>= 1.2.0),
+    plotly
 Suggests: 
     covr,
     lintr (>= 3.0.0),

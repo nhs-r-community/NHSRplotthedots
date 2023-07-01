@@ -7,30 +7,63 @@ ptd_plotly_ptd_icons <- function(spc_data = NULL) {
   improvement_direction <- options$improvement_direction # Exclude Linting
 
   variation_icon_file <- function(.x) {
-    icon <- case_when(
-      .x == "common_cause" ~ "https://raw.githubusercontent.com/nhs-r-community/NHSRplotthedots/bcf5f8cdb9fc74f3c2b30fb489973fce1fa58e71/inst/icons/variation/common_cause.svg",
-      .x == "special_cause_neutral_high" ~ "https://raw.githubusercontent.com/nhs-r-community/NHSRplotthedots/bcf5f8cdb9fc74f3c2b30fb489973fce1fa58e71/inst/icons/variation/neutral_high.svg",
-      .x == "special_cause_neutral_low" ~ "https://raw.githubusercontent.com/nhs-r-community/NHSRplotthedots/bcf5f8cdb9fc74f3c2b30fb489973fce1fa58e71/inst/icons/variation/neutral_low.svg",
-      .x == "special_cause_concern" ~ paste0(if (improvement_direction == "increase") "https://raw.githubusercontent.com/nhs-r-community/NHSRplotthedots/bcf5f8cdb9fc74f3c2b30fb489973fce1fa58e71/inst/icons/variation/concern_low.svg" else "https://raw.githubusercontent.com/nhs-r-community/NHSRplotthedots/bcf5f8cdb9fc74f3c2b30fb489973fce1fa58e71/inst/icons/variation/concern_high.svg"),
-      .x == "special_cause_improvement" ~ paste0(if (improvement_direction == "increase") "https://raw.githubusercontent.com/nhs-r-community/NHSRplotthedots/bcf5f8cdb9fc74f3c2b30fb489973fce1fa58e71/inst/icons/variation/improvement_high.svg" else "https://raw.githubusercontent.com/nhs-r-community/NHSRplotthedots/bcf5f8cdb9fc74f3c2b30fb489973fce1fa58e71/inst/icons/variation/improvement_low.svg")
+    icon <- dplyr::case_match(
+      .x,
+      "common_cause" ~ "common_cause.svg",
+      "special_cause_neutral_high" ~ "neutral_high.svg",
+      "special_cause_neutral_low" ~ "neutral_low.svg",
+      "special_cause_concern" ~ ifelse(
+        improvement_direction == "increase",
+        "concern_low.svg",
+        "concern_high.svg"
+      ),
+      "special_cause_improvement" ~ ifelse(
+        improvement_direction == "increase",
+        "improvement_high.svg",
+        "improvement_low.svg"
+      )
     )
-    # system.file("icons", "variation", icon, package = "NHSRplotthedots")
+
+    paste(
+      "https://raw.githubusercontent.com",
+      "nhs-r-community",
+      "NHSRplotthedots",
+      "bcf5f8cdb9fc74f3c2b30fb489973fce1fa58e71",
+      "inst",
+      "icons",
+      "variation",
+      icon,
+      sep = "/"
+    )
+
   }
 
   assurance_icon_file <- function(.x) {
-    icon <- case_when(
-      .x == "consistent_fail" ~ "https://raw.githubusercontent.com/nhs-r-community/NHSRplotthedots/bcf5f8cdb9fc74f3c2b30fb489973fce1fa58e71/inst/icons/assurance/fail.svg",
-      .x == "consistent_pass" ~ "https://raw.githubusercontent.com/nhs-r-community/NHSRplotthedots/bcf5f8cdb9fc74f3c2b30fb489973fce1fa58e71/inst/icons/assurance/pass.svg",
-      .x == "inconsistent" ~ "https://raw.githubusercontent.com/nhs-r-community/NHSRplotthedots/bcf5f8cdb9fc74f3c2b30fb489973fce1fa58e71/inst/icons/assurance/inconsistent.svg"
+    icon <- dplyr::case_match(
+      .x,
+      "consistent_fail" ~ "fail.svg",
+      "consistent_pass" ~ "pass.svg",
+      "inconsistent" ~ "inconsistent.svg"
     )
-    # system.file("icons", "assurance", icon, package = "NHSRplotthedots")
+
+    paste(
+      "https://raw.githubusercontent.com",
+      "nhs-r-community",
+      "NHSRplotthedots",
+      "bcf5f8cdb9fc74f3c2b30fb489973fce1fa58e71",
+      "inst",
+      "icons",
+      "assurance",
+      icon,
+      sep = "/"
+    )
   }
 
   variation <- spc_data %>%
-    group_by(.data$f) %>%
-    filter(.data$x == max(.data$x)) %>%
-    ungroup() %>%
-    transmute(
+    dplyr::group_by(.data$f) %>%
+    dplyr::filter(.data$x == max(.data$x)) %>%
+    dplyr::ungroup() %>%
+    dplyr::transmute(
       .data$f,
       type = "variation",
       icon = variation_icon_file(.data$point_type)
@@ -42,14 +75,14 @@ ptd_plotly_ptd_icons <- function(spc_data = NULL) {
 
   assurance <- spc_data %>%
     ptd_calculate_assurance_type() %>%
-    filter(!is.na(.data$assurance_type)) %>%
-    transmute(
+    tidyr::drop_na(.data$assurance_type) %>%
+    dplyr::transmute(
       .data$f,
       type = "assurance",
       icon = assurance_icon_file(.data$assurance_type)
     )
 
-  icons <- bind_rows(
+  icons <- dplyr::bind_rows(
     variation,
     assurance
   )
