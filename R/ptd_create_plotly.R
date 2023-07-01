@@ -48,7 +48,8 @@ ptd_create_plotly <- function(x,
                               theme_override = NULL,
                               break_lines = c("both", "limits", "process", "none"),
                               ...) {
-  ggplot <- ptd_create_ggplot(x,
+  ggplot <- ptd_create_ggplot(
+    x,
     point_size = point_size,
     percentage_y_axis = percentage_y_axis,
     main_title = main_title,
@@ -68,9 +69,8 @@ ptd_create_plotly <- function(x,
 
   icons_position <- match.arg(icons_position)
 
-  icons_data <- ptd_plotly_ptd_icons(x)
-  variation_icon_image <- icons_data$icon[1]
-  assurance_icon_image <- icons_data$icon[2]
+  icons <- vapply(ptd_get_icons(x)$icon, read_svg_as_b64, character(1))
+  
 
   plot <- plotly::ggplotly(ggplot) %>%
     plotly::layout(
@@ -83,70 +83,59 @@ ptd_create_plotly <- function(x,
       )
     )
 
-  if (any(ggplot$data$short_group_warning)) {
-    plot <- plot %>%
-      plotly::layout(
-        annotations =
-          list(
-            x = 1,
-            y = -0.3, # position of text adjust as needed
-            text = paste0(
-              "Some trial limits created by groups of fewer than 12 points exist. \n",
-              "These will become more reliable as more data is added."
-            ),
-            showarrow = FALSE,
-            xref = "paper",
-            yref = "paper",
-            xanchor = "auto",
-            yanchor = "auto",
-            xshift = 0,
-            yshift = 0,
-            font = list(size = 12, color = "red")
-          )
-      )
-  }
-
-  if (icons_position == "none") {
-    return(plot)
-  }
-
-  size_x <- icons_size * 0.6
-  size_y <- icons_size
-
-  position_y <- ifelse(grepl("top", icons_position), 1 - size_y / 2, 0.1 + size_y / 2)
-  position_x <- ifelse(grepl("right", icons_position), 1 - 2 * size_x, 0)
-
-  images <- list(
+  annotations <- if (any(ggplot$data$short_group_warning)) {
     list(
-      source = variation_icon_image,
+      x = 1,
+      y = -0.3, # position of text adjust as needed
+      text = paste0(
+        "Some trial limits created by groups of fewer than 12 points exist. \n",
+        "These will become more reliable as more data is added."
+      ),
+      showarrow = FALSE,
       xref = "paper",
       yref = "paper",
-      x = position_x,
-      y = position_y,
-      sizex = size_x,
-      sizey = size_y,
-      sizing = "stretch",
-      opacity = 1,
-      layer = "above"
-    ),
-    list(
-      source = assurance_icon_image,
-      xref = "paper",
-      yref = "paper",
-      x = position_x + size_x,
-      y = position_y,
-      sizex = size_x,
-      sizey = size_y,
-      sizing = "stretch",
-      opacity = 1,
-      layer = "above"
+      xanchor = "auto",
+      yanchor = "auto",
+      xshift = 0,
+      yshift = 0,
+      font = list(size = 12, color = "red")
     )
-  )
-
-  if (is.na(assurance_icon_image)) {
-    images[[1]]$x <- images[[1]]$x - size_x
-    images[[2]] <- NULL
   }
 
-  plotly::layout(plot, images = images)
+  images <- if (icons_position != "none") {
+    size_x <- icons_size * 0.6
+    size_y <- icons_size
+
+    position_y <- ifelse(grepl("top", icons_position), 1 - size_y / 2, 0.1 + size_y / 2)
+    position_x <- ifelse(grepl("right", icons_position), 1 - 2 * size_x, 0)
+
+    lapply(
+      seq_along(icons),
+      \(i) {
+        list(
+          source = icons[[i]],
+          xref = "paper",
+          yref = "paper",
+          x = position_x + (i - 1) * size_x,
+          y = position_y,
+          sizex = size_x,
+          sizey = size_y,
+          sizing = "stretch",
+          opacity = 1,
+          layer = "above"
+        )
+      }
+    )
+  }
+
+  plotly::layout(plot, annotations = annotations, images = images)
+}
+
+read_svg_as_b64 <- function(filename) {
+  img <- readBin(filename, "raw", file.size(filename))
+
+  paste0(
+    "data:image/svg+xml;base64,",
+    base64enc::base64encode(img)
+  )
 }
