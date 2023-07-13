@@ -20,3 +20,5 @@
 
 ^.aspell/
 ^CODE_OF_CONDUCT\.md$
+
+^coverage.xml$

@@ -10,7 +10,7 @@ test_that("it draws the panel correctly", {
   stub(geom_ptd_icon_draw_panel, "grid::gList", m)
 
   coord <- list(transform = \(x, ...) x)
-  d <- tibble::tibble(
+  d <- data.frame(
     type = c("assurance", "variation"),
     icon = c("a", "b")
   )
