@@ -102,3 +102,24 @@
     # i 3 more variables: special_cause_concern <int>, point_type <chr>,
     #   assurance_type <chr>
 
+# summary with a target
+
+    Plot the Dots SPC options:
+    ================================
+    value_field:          'y'
+    date_field:           'x'
+    facet_field:          not set
+    rebase:               not set
+    fix_after_n_points:   not set
+    improvement_direction:'increase'
+    target:               '0.5'
+    trajectory:           not set
+    screen_outliers:      'TRUE'
+    --------------------------------
+    # A tibble: 1 x 9
+       mean   lpl   upl     n common_cause special_cause_improvement
+      <dbl> <dbl> <dbl> <int>        <dbl>                     <int>
+    1 0.142 -3.01  3.29    20           20                         0
+    # i 3 more variables: special_cause_concern <int>, point_type <chr>,
+    #   assurance_type <chr>
+
