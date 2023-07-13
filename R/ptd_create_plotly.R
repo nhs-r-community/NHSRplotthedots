@@ -68,27 +68,18 @@ ptd_create_plotly <- function(x,
   )
 
   icons_position <- match.arg(icons_position)
-
   icons <- vapply(ptd_get_icons(x)$icon, read_svg_as_b64, character(1))
 
-  plot <- plotly::ggplotly(ggplot) %>%
-    plotly::layout(
-      # put legend in center of x-axis
-      legend = list(
-        orientation = "h", # show entries horizontally
-        xanchor = "center", # use center of legend as anchor
-        x = 0.5,
-        y = -0.6
-      )
-    )
+  plot <- plotly::ggplotly(ggplot)
 
   annotations <- if (any(ggplot$data$short_group_warning)) {
     list(
       x = 1,
       y = -0.3, # position of text adjust as needed
-      text = paste0(
-        "Some trial limits created by groups of fewer than 12 points exist. \n",
-        "These will become more reliable as more data is added."
+      text = paste(
+        "Some trial limits created by groups of fewer than 12 points exist.",
+        "These will become more reliable as more data is added.",
+        sep = "\n"
       ),
       showarrow = FALSE,
       xref = "paper",
@@ -127,7 +118,18 @@ ptd_create_plotly <- function(x,
     )
   }
 
-  plotly::layout(plot, annotations = annotations, images = images)
+  plotly::layout(
+    plot,
+    # put legend in center of x-axis
+    legend = list(
+      orientation = "h", # show entries horizontally
+      xanchor = "center", # use center of legend as anchor
+      x = 0.5,
+      y = -0.6
+    ),
+    annotations = annotations,
+    images = images
+  )
 }
 
 read_svg_as_b64 <- function(filename) {
