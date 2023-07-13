@@ -12,11 +12,11 @@
     trajectory:           not set
     screen_outliers:      'TRUE'
     --------------------------------
-    # A tibble: 1 x 7
+    # A tibble: 1 x 8
        mean   lpl   upl     n common_cause special_cause_improvement
       <dbl> <dbl> <dbl> <int>        <dbl>                     <int>
     1 0.142 -3.01  3.29    20           20                         0
-    # i 1 more variable: special_cause_concern <int>
+    # i 2 more variables: special_cause_concern <int>, point_type <chr>
 
 ---
 
@@ -32,11 +32,11 @@
     trajectory:           not set
     screen_outliers:      'TRUE'
     --------------------------------
-    # A tibble: 1 x 8
+    # A tibble: 1 x 9
       rebase_group  mean   lpl   upl     n common_cause special_cause_improvement
              <dbl> <dbl> <dbl> <dbl> <int>        <dbl>                     <int>
     1            0 0.142 -3.01  3.29    20           20                         0
-    # i 1 more variable: special_cause_concern <int>
+    # i 2 more variables: special_cause_concern <int>, point_type <chr>
 
 ---
 
@@ -52,12 +52,12 @@
     trajectory:           not set
     screen_outliers:      'TRUE'
     --------------------------------
-    # A tibble: 2 x 8
+    # A tibble: 2 x 9
           f   mean   lpl   upl     n common_cause special_cause_improvement
       <dbl>  <dbl> <dbl> <dbl> <int>        <dbl>                     <int>
     1     0 0.0746 -2.60  2.75    10           10                         0
     2     1 0.209  -3.28  3.70    10           10                         0
-    # i 1 more variable: special_cause_concern <int>
+    # i 2 more variables: special_cause_concern <int>, point_type <chr>
 
 ---
 
@@ -73,13 +73,13 @@
     trajectory:           not set
     screen_outliers:      'TRUE'
     --------------------------------
-    # A tibble: 2 x 9
+    # A tibble: 2 x 10
           f rebase_group   mean   lpl   upl     n common_cause
       <dbl>        <dbl>  <dbl> <dbl> <dbl> <int>        <dbl>
     1     0            0 0.0746 -2.60  2.75    10           10
     2     1            0 0.209  -3.28  3.70    10           10
-    # i 2 more variables: special_cause_improvement <int>,
-    #   special_cause_concern <int>
+    # i 3 more variables: special_cause_improvement <int>,
+    #   special_cause_concern <int>, point_type <chr>
 
 ---
 
@@ -95,9 +95,10 @@
     trajectory:           not set
     screen_outliers:      'TRUE'
     --------------------------------
-    # A tibble: 1 x 8
+    # A tibble: 1 x 9
        mean   lpl   upl     n common_cause special_cause_improvement
       <dbl> <dbl> <dbl> <int>        <dbl>                     <int>
     1 0.142 -3.01  3.29    20           20                         0
-    # i 2 more variables: special_cause_concern <int>, assurance_type <chr>
+    # i 3 more variables: special_cause_concern <int>, point_type <chr>,
+    #   assurance_type <chr>
 

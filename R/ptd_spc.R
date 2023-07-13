@@ -163,16 +163,23 @@ summary.ptd_spc_df <- function(object, ...) {
   options <- attr(object, "options")
   print(options)
 
+
+  point_type <- object %>%
+    group_by(.data$f, .data$rebase_group) |>
+    filter(.data$x == max(.data$x)) |>
+    select("f", "rebase_group", "point_type")
+
   s <- object %>%
     group_by(.data$f, .data$rebase_group) %>%
-    summarise(across(c("mean", "lpl", "upl"), first),
+    summarise(
+      across(c("mean", "lpl", "upl"), first),
       n = n(),
       common_cause = n - sum(.data$special_cause_flag),
       special_cause_improvement = sum(.data$point_type == "special_cause_improvement"),
       special_cause_concern = sum(.data$point_type == "special_cause_concern"),
       .groups = "drop"
-    )
-
+    ) |>
+    dplyr::inner_join(point_type, by = c("f", "rebase_group"))
 
   if (!is.null(options$target)) {
     at <- ptd_calculate_assurance_type(object)
