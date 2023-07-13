@@ -70,7 +70,6 @@ ptd_create_plotly <- function(x,
   icons_position <- match.arg(icons_position)
 
   icons <- vapply(ptd_get_icons(x)$icon, read_svg_as_b64, character(1))
-  
 
   plot <- plotly::ggplotly(ggplot) %>%
     plotly::layout(

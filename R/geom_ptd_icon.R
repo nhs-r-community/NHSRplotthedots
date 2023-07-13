@@ -98,68 +98,68 @@ geom_ptd_icon <- function(data = NULL,
 #  - one row for the variation icon
 #  - one row for the assurance icon (if applicable)
 ptd_get_icons <- function(.x) {
-    stopifnot(
-      "Can only be used with objects reated with `ptd_spc()`" = inherits(.x, "ptd_spc_df")
+  stopifnot(
+    "Can only be used with objects reated with `ptd_spc()`" = inherits(.x, "ptd_spc_df")
+  )
+
+  options <- attr(.x, "options")
+  improvement_direction <- options$improvement_direction # Exclude Linting
+
+  variation_icon_file <- function(.x) {
+    icon <- dplyr::case_match(
+      .x,
+      "common_cause" ~ "common_cause.svg",
+      "special_cause_neutral_high" ~ "neutral_high.svg",
+      "special_cause_neutral_low" ~ "neutral_low.svg",
+      "special_cause_concern" ~ paste0(
+        "concern_",
+        if (improvement_direction == "increase") "low" else "high",
+        ".svg"
+      ),
+      "special_cause_improvement" ~ paste0(
+        "improvement_",
+        if (improvement_direction == "increase") "high" else "low",
+        ".svg"
+      )
     )
-
-    options <- attr(.x, "options")
-    improvement_direction <- options$improvement_direction # Exclude Linting
-
-    variation_icon_file <- function(.x) {
-      icon <- dplyr::case_match(
-        .x,
-        "common_cause" ~ "common_cause.svg",
-        "special_cause_neutral_high" ~ "neutral_high.svg",
-        "special_cause_neutral_low" ~ "neutral_low.svg",
-        "special_cause_concern" ~ paste0(
-          "concern_",
-          if (improvement_direction == "increase") "low" else "high",
-          ".svg"
-        ),
-        "special_cause_improvement" ~ paste0(
-          "improvement_",
-          if (improvement_direction == "increase") "high" else "low",
-          ".svg"
-        )
-      )
-      system.file("icons", "variation", icon, package = "NHSRplotthedots")
-    }
-
-    assurance_icon_file <- function(.x) {
-      icon <- dplyr::case_match(
-        .x,
-        "consistent_fail" ~ "fail.svg",
-        "consistent_pass" ~ "pass.svg",
-        "inconsistent" ~ "inconsistent.svg"
-      )
-      system.file("icons", "assurance", icon, package = "NHSRplotthedots")
-    }
-
-    variation <- .x %>%
-      dplyr::group_by(.data$f) %>%
-      dplyr::filter(.data$x == max(.data$x)) %>%
-      dplyr::ungroup() %>%
-      dplyr::transmute(
-        .data$f,
-        type = "variation",
-        icon = variation_icon_file(.data$point_type)
-      )
-
-    if (is.null(options$target)) {
-      return(variation)
-    }
-
-    assurance <- .x %>%
-      ptd_calculate_assurance_type() %>%
-      dplyr::filter(!is.na(.data$assurance_type)) %>%
-      dplyr::transmute(
-        .data$f,
-        type = "assurance",
-        icon = assurance_icon_file(.data$assurance_type)
-      )
-
-    dplyr::bind_rows(
-      variation,
-      assurance
-    )
+    system.file("icons", "variation", icon, package = "NHSRplotthedots")
   }
+
+  assurance_icon_file <- function(.x) {
+    icon <- dplyr::case_match(
+      .x,
+      "consistent_fail" ~ "fail.svg",
+      "consistent_pass" ~ "pass.svg",
+      "inconsistent" ~ "inconsistent.svg"
+    )
+    system.file("icons", "assurance", icon, package = "NHSRplotthedots")
+  }
+
+  variation <- .x %>%
+    dplyr::group_by(.data$f) %>%
+    dplyr::filter(.data$x == max(.data$x)) %>%
+    dplyr::ungroup() %>%
+    dplyr::transmute(
+      .data$f,
+      type = "variation",
+      icon = variation_icon_file(.data$point_type)
+    )
+
+  if (is.null(options$target)) {
+    return(variation)
+  }
+
+  assurance <- .x %>%
+    ptd_calculate_assurance_type() %>%
+    dplyr::filter(!is.na(.data$assurance_type)) %>%
+    dplyr::transmute(
+      .data$f,
+      type = "assurance",
+      icon = assurance_icon_file(.data$assurance_type)
+    )
+
+  dplyr::bind_rows(
+    variation,
+    assurance
+  )
+}
