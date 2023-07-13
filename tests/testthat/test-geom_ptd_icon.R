@@ -1,6 +1,64 @@
 library(testthat)
 library(mockery)
 
+test_that("it draws the panel correctly", {
+  m <- mock("a", list("b"), list("c"), "d")
+
+  stub(geom_ptd_icon_draw_panel, "rsvg::rsvg_nativeraster", \(x, ...) x)
+  stub(geom_ptd_icon_draw_panel, "grid::viewport", m)
+  stub(geom_ptd_icon_draw_panel, "grid::rasterGrob", m)
+  stub(geom_ptd_icon_draw_panel, "grid::gList", m)
+
+  coord <- list(transform = \(x, ...) x)
+  d <- tibble::tibble(
+    type = c("assurance", "variation"),
+    icon = c("a", "b")
+  )
+
+  actual <- geom_ptd_icon_draw_panel(NULL, d, NULL, coord)
+
+  expect_equal(actual, "d")
+
+  expect_called(m, 4)
+
+  expect_args(
+    m,
+    1,
+    x = grid::unit(0.99, "npc"),
+    y = grid::unit(0.99, "npc"),
+    width = grid::unit(2.5, "cm"),
+    height = grid::unit(1, "cm"),
+    just = c("right", "top"),
+    gp = grid::gpar(col = "black")
+  )
+
+  expect_args(
+    m,
+    2,
+    "a",
+    x = grid::unit(0.5, "cm"),
+    y = grid::unit(0.25, "cm"),
+    height = grid::unit(1, "cm"),
+    width = grid::unit(1, "cm"),
+    just = c("center", "center"),
+    vp = "a"
+  )
+
+  expect_args(
+    m,
+    3,
+    "b",
+    x = grid::unit(1.75, "cm"),
+    y = grid::unit(0.25, "cm"),
+    height = grid::unit(1, "cm"),
+    width = grid::unit(1, "cm"),
+    just = c("center", "center"),
+    vp = "a"
+  )
+
+  expect_args(m, 4, list("b"), list("c"))
+})
+
 test_that("it set's up the geom correctly", {
   g <- geom_ptd_icon()
 
