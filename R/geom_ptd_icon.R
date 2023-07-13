@@ -14,7 +14,7 @@ geom_ptd_icon_draw_panel <- function(self, data, panel_params, coord,
 
   # use the coord transformation for the colours, but then set the x, y coordinates manually (inside the viewport)
   d <- coord$transform(data, panel_params) %>%
-    mutate(
+    dplyr::mutate(
       x = ifelse(.data$type == "variation", 3.5 * radius, radius),
       y = radius / 2
     )
