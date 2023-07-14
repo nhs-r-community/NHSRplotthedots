@@ -161,6 +161,45 @@ test_that("ptd_create_plotly returns a plotly object (no annotations or icons)",
   )
 })
 
+
+test_that("ptd_create_plotly gives a warning with facet field and icons position not none", {
+  mock_plot <- list(
+    data = list(
+      short_group_warnings = FALSE
+    )
+  )
+
+  m_ptd_create_ggplot <- mock(mock_plot)
+  m_ptd_get_icons <- mock(list(icon = c("icon_1", "icon_2")))
+  m_read_svg_as_b64 <- mock("icon_1.svg", "icon_2.svg")
+  m_ggplotly <- mock("plotly")
+  m_layout <- mock()
+
+  stub(ptd_create_plotly, "ptd_spc_colours", "colours")
+  stub(ptd_create_plotly, "ptd_create_ggplot", m_ptd_create_ggplot)
+  stub(ptd_create_plotly, "ptd_get_icons", m_ptd_get_icons)
+  stub(ptd_create_plotly, "read_svg_as_b64", m_read_svg_as_b64)
+  stub(ptd_create_plotly, "plotly::ggplotly", m_ggplotly)
+  stub(ptd_create_plotly, "plotly::layout", m_layout)
+
+  expect_warning(
+    ptd_create_plotly(
+      structure(
+        "data",
+        options = list(
+          facet_field = "x"
+        )
+      ),
+      main_title = "title",
+      x_axis_label = "x_axis_label",
+      y_axis_label = "y_axis_label"
+    )
+  )
+
+  expect_called(m_ptd_get_icons, 0)
+})
+
+
 test_that("read_svg_as_b64 converts files correctly", {
   m <- mock(
     "img",

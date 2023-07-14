@@ -68,7 +68,15 @@ ptd_create_plotly <- function(x,
   )
 
   icons_position <- match.arg(icons_position)
-  icons <- vapply(ptd_get_icons(x)$icon, read_svg_as_b64, character(1))
+
+  options <- attr(x, "options")
+
+  if (!is.null(options$facet_field)) {
+    if (icons_position != "none") {
+      warning("Facetted plots do not support showing the icons, setting `icons_position` to \"none\"")
+    }
+    icons_position <- "none"
+  }
 
   plot <- plotly::ggplotly(ggplot)
 
@@ -93,6 +101,8 @@ ptd_create_plotly <- function(x,
   }
 
   images <- if (icons_position != "none") {
+    icons <- vapply(ptd_get_icons(x)$icon, read_svg_as_b64, character(1))
+
     size_x <- icons_size * 0.6
     size_y <- icons_size
 
