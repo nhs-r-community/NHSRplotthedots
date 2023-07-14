@@ -163,36 +163,45 @@ summary.ptd_spc_df <- function(object, ...) {
   options <- attr(object, "options")
   print(options)
 
+  point_type <- object %>%
+    dplyr::group_by(.data$f, .data$rebase_group) |>
+    dplyr::filter(.data$x == max(.data$x)) |>
+    dplyr::select("f", "rebase_group", variation_type = "point_type")
+
   s <- object %>%
-    group_by(.data$f, .data$rebase_group) %>%
-    summarise(across(c("mean", "lpl", "upl"), first),
-      n = n(),
+    dplyr::group_by(.data$f, .data$rebase_group) %>%
+    dplyr::summarise(
+      dplyr::across(c("mean", "lpl", "upl"), dplyr::first),
+      n = dplyr::n(),
       common_cause = n - sum(.data$special_cause_flag),
       special_cause_improvement = sum(.data$point_type == "special_cause_improvement"),
       special_cause_concern = sum(.data$point_type == "special_cause_concern"),
       .groups = "drop"
-    )
-
+    ) |>
+    dplyr::inner_join(point_type, by = c("f", "rebase_group"))
 
   if (!is.null(options$target)) {
     at <- ptd_calculate_assurance_type(object)
 
     s <- s %>%
-      inner_join(at, by = "f") %>%
-      group_by(.data$f) %>%
-      mutate(assurance_type = ifelse(.data$rebase_group == max(.data$rebase_group),
-        .data$assurance_type,
-        as.character(NA)
-      )) %>%
-      ungroup()
+      dplyr::inner_join(at, by = "f") %>%
+      dplyr::group_by(.data$f) %>%
+      dplyr::mutate(
+        assurance_type = ifelse(
+          .data$rebase_group == max(.data$rebase_group),
+          .data$assurance_type,
+          as.character(NA)
+        )
+      ) %>%
+      dplyr::ungroup()
   }
 
   if (is.null(options$facet_field)) {
-    s <- select(s, -"f")
+    s <- dplyr::select(s, -"f")
   }
 
   if (is.null(options$rebase)) {
-    s <- select(s, -"rebase_group")
+    s <- dplyr::select(s, -"rebase_group")
   }
 
   s

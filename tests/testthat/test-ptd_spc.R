@@ -374,3 +374,13 @@ test_that("it outputs expected content", {
   expect_snapshot_output(summary(s5))
   expect_called(m, 1)
 })
+
+test_that("summary with a target", {
+  # not sure why this isn't reached with the previous test
+  # but without this separate test we don't reach 100% coverage
+  expect_snapshot_output(
+    summary(
+      ptd_spc(data, "y", "x", target = 0.5)
+    )
+  )
+})

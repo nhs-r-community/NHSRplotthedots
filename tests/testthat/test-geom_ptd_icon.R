@@ -1,6 +1,64 @@
 library(testthat)
 library(mockery)
 
+test_that("it draws the panel correctly", {
+  m <- mock("a", list("b"), list("c"), "d")
+
+  stub(geom_ptd_icon_draw_panel, "rsvg::rsvg_nativeraster", \(x, ...) x)
+  stub(geom_ptd_icon_draw_panel, "grid::viewport", m)
+  stub(geom_ptd_icon_draw_panel, "grid::rasterGrob", m)
+  stub(geom_ptd_icon_draw_panel, "grid::gList", m)
+
+  coord <- list(transform = \(x, ...) x)
+  d <- data.frame(
+    type = c("assurance", "variation"),
+    icon = c("a", "b")
+  )
+
+  actual <- geom_ptd_icon_draw_panel(NULL, d, NULL, coord)
+
+  expect_equal(actual, "d")
+
+  expect_called(m, 4)
+
+  expect_args(
+    m,
+    1,
+    x = grid::unit(0.99, "npc"),
+    y = grid::unit(0.99, "npc"),
+    width = grid::unit(2.5, "cm"),
+    height = grid::unit(1, "cm"),
+    just = c("right", "top"),
+    gp = grid::gpar(col = "black")
+  )
+
+  expect_args(
+    m,
+    2,
+    "a",
+    x = grid::unit(0.5, "cm"),
+    y = grid::unit(0.25, "cm"),
+    height = grid::unit(1, "cm"),
+    width = grid::unit(1, "cm"),
+    just = c("center", "center"),
+    vp = "a"
+  )
+
+  expect_args(
+    m,
+    3,
+    "b",
+    x = grid::unit(1.75, "cm"),
+    y = grid::unit(0.25, "cm"),
+    height = grid::unit(1, "cm"),
+    width = grid::unit(1, "cm"),
+    just = c("center", "center"),
+    vp = "a"
+  )
+
+  expect_args(m, 4, list("b"), list("c"))
+})
+
 test_that("it set's up the geom correctly", {
   g <- geom_ptd_icon()
 
@@ -25,10 +83,20 @@ test_that("it set's up GeomPTDIcon correctly", {
   expect_s3_class(GeomPTDIcon, c("GeomPTDIcon", "Geom", "ggproto", "gg"))
 })
 
-test_that("it transforms the data correctly", {
+test_that("geom_ptd_icon calls ptd_get_icons", {
   withr::local_options(ptd_spc.warning_threshold = 0)
-  stub(geom_ptd_icon, "system.file", \(..., package = "") paste(package, ..., sep = "/"))
+  # can't use a mock here
+  stub(geom_ptd_icon, "ptd_get_icons", identity)
+
   g <- geom_ptd_icon()
+
+  expect_equal(g$data("data"), "data")
+})
+
+test_that("ptd_get_icons transforms the data correctly", {
+  withr::local_options(ptd_spc.warning_threshold = 0)
+  stub(ptd_get_icons, "system.file", \(..., package = "") paste(package, ..., sep = "/"))
+
 
   set.seed(123)
   d <- data.frame(
@@ -40,7 +108,7 @@ test_that("it transforms the data correctly", {
   s1 <- ptd_spc(d, "y", "x")
 
   expect_equal(
-    g$data(s1),
+    ptd_get_icons(s1),
     tibble(
       f = "no facet",
       type = "variation",
@@ -50,7 +118,7 @@ test_that("it transforms the data correctly", {
 
   s2 <- ptd_spc(d, "y", "x", target = 0.5)
   expect_equal(
-    g$data(s2),
+    ptd_get_icons(s2),
     tibble(
       f = c("no facet", "no facet"),
       type = c("variation", "assurance"),
@@ -60,7 +128,7 @@ test_that("it transforms the data correctly", {
 
   s3 <- ptd_spc(d, "y", "x", facet = "f")
   expect_equal(
-    g$data(s3),
+    ptd_get_icons(s3),
     tibble(
       f = c(0, 1),
       type = c("variation", "variation"),
@@ -70,7 +138,7 @@ test_that("it transforms the data correctly", {
 
   s4 <- ptd_spc(d, "y", "x", facet = "f", target = 0.5)
   expect_equal(
-    g$data(s4),
+    ptd_get_icons(s4),
     tibble(
       f = c(0, 1, 0, 1),
       type = rep(c("variation", "assurance"), each = 2),
@@ -84,7 +152,7 @@ test_that("it transforms the data correctly", {
   d$y[d$f == 1] <- rnorm(12, 5)
   s5 <- ptd_spc(d, "y", "x", target = -3)
   expect_equal(
-    g$data(s5),
+    ptd_get_icons(s5),
     tibble(
       f = rep("no facet", 2),
       type = c("variation", "assurance"),
@@ -94,7 +162,7 @@ test_that("it transforms the data correctly", {
 
   s6 <- ptd_spc(d, "y", "x", target = -3, improvement_direction = "decrease")
   expect_equal(
-    g$data(s6),
+    ptd_get_icons(s6),
     tibble(
       f = rep("no facet", 2),
       type = c("variation", "assurance"),
@@ -105,7 +173,7 @@ test_that("it transforms the data correctly", {
   d$y[d$f == 1] <- rnorm(12, -5)
   s7 <- ptd_spc(d, "y", "x", target = 3)
   expect_equal(
-    g$data(s7),
+    ptd_get_icons(s7),
     tibble(
       f = rep("no facet", 2),
       type = c("variation", "assurance"),
@@ -115,7 +183,7 @@ test_that("it transforms the data correctly", {
 
   s8 <- ptd_spc(d, "y", "x", target = 3, improvement_direction = "decrease")
   expect_equal(
-    g$data(s8),
+    ptd_get_icons(s8),
     tibble(
       f = rep("no facet", 2),
       type = c("variation", "assurance"),
@@ -125,7 +193,7 @@ test_that("it transforms the data correctly", {
 
   s9 <- ptd_spc(d, "y", "x", target = 3, improvement_direction = "neutral")
   expect_equal(
-    g$data(s9),
+    ptd_get_icons(s9),
     tibble(
       f = "no facet",
       type = "variation",

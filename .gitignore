@@ -10,3 +10,4 @@ NHSRplotthedots.Rcheck/
 NHSRplotthedots*.tar.gz
 NHSRplotthedots*.tgz
 .Renviron
+coverage.xml

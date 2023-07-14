@@ -224,7 +224,7 @@ simple_pointplot <- function(seed = 123,
 # Community designed logo ----
 # Based on the design provided by an user on Twitter, this is an "approximated"
 # version created with R
-`%>%` <- magrittr::`%>%`
+`%>%` <- magrittr::`%>%` # Exclude Linting
 fill_palette <-
   c(orange = "#EB7F3C", # orange
     nhs_dark_grey = "#425563", # NHS Dark grey
@@ -287,4 +287,3 @@ hex_logo(subplot,
          url = "",
          p_family = font_family,
          out_filename = "inst/images/logo.png")
-

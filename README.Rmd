@@ -80,6 +80,20 @@ sub_set %>%
   )
 ```
 
+### Interactive plots with plotly
+
+Its also possible to generate interactive plots using the `{plotly}` package by replacing the call to `plot` with
+`ptd_create_plotly`. This function takes the same arguments as `plot`/`ptd_create_ggplot`.
+
+```{r, eval=FALSE}
+sub_set %>%
+  ptd_spc(value_field = breaches, date_field = period, improvement_direction = "decrease") %>%
+  ptd_create_plotly(
+    y_axis_label = "4-hour wait breaches",
+    main_title = "SPC of A&E waiting time breaches for RQM"
+  )
+```
+
 ## Getting help:
 
 To find out more about the `ptd_spc()` function, you can view the help with:
