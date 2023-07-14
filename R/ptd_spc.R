@@ -163,11 +163,10 @@ summary.ptd_spc_df <- function(object, ...) {
   options <- attr(object, "options")
   print(options)
 
-
   point_type <- object %>%
     dplyr::group_by(.data$f, .data$rebase_group) |>
     dplyr::filter(.data$x == max(.data$x)) |>
-    dplyr::select("f", "rebase_group", "point_type")
+    dplyr::select("f", "rebase_group", variation_type = "point_type")
 
   s <- object %>%
     dplyr::group_by(.data$f, .data$rebase_group) %>%

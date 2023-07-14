@@ -16,7 +16,7 @@
        mean   lpl   upl     n common_cause special_cause_improvement
       <dbl> <dbl> <dbl> <int>        <dbl>                     <int>
     1 0.142 -3.01  3.29    20           20                         0
-    # i 2 more variables: special_cause_concern <int>, point_type <chr>
+    # i 2 more variables: special_cause_concern <int>, variation_type <chr>
 
 ---
 
@@ -36,7 +36,7 @@
       rebase_group  mean   lpl   upl     n common_cause special_cause_improvement
              <dbl> <dbl> <dbl> <dbl> <int>        <dbl>                     <int>
     1            0 0.142 -3.01  3.29    20           20                         0
-    # i 2 more variables: special_cause_concern <int>, point_type <chr>
+    # i 2 more variables: special_cause_concern <int>, variation_type <chr>
 
 ---
 
@@ -57,7 +57,7 @@
       <dbl>  <dbl> <dbl> <dbl> <int>        <dbl>                     <int>
     1     0 0.0746 -2.60  2.75    10           10                         0
     2     1 0.209  -3.28  3.70    10           10                         0
-    # i 2 more variables: special_cause_concern <int>, point_type <chr>
+    # i 2 more variables: special_cause_concern <int>, variation_type <chr>
 
 ---
 
@@ -79,7 +79,7 @@
     1     0            0 0.0746 -2.60  2.75    10           10
     2     1            0 0.209  -3.28  3.70    10           10
     # i 3 more variables: special_cause_improvement <int>,
-    #   special_cause_concern <int>, point_type <chr>
+    #   special_cause_concern <int>, variation_type <chr>
 
 ---
 
@@ -99,7 +99,7 @@
        mean   lpl   upl     n common_cause special_cause_improvement
       <dbl> <dbl> <dbl> <int>        <dbl>                     <int>
     1 0.142 -3.01  3.29    20           20                         0
-    # i 3 more variables: special_cause_concern <int>, point_type <chr>,
+    # i 3 more variables: special_cause_concern <int>, variation_type <chr>,
     #   assurance_type <chr>
 
 # summary with a target
@@ -120,6 +120,6 @@
        mean   lpl   upl     n common_cause special_cause_improvement
       <dbl> <dbl> <dbl> <int>        <dbl>                     <int>
     1 0.142 -3.01  3.29    20           20                         0
-    # i 3 more variables: special_cause_concern <int>, point_type <chr>,
+    # i 3 more variables: special_cause_concern <int>, variation_type <chr>,
     #   assurance_type <chr>
 
