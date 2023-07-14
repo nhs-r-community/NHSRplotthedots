@@ -87,7 +87,7 @@
 
       
 
-      </header><script src="deviations_files/accessible-code-block-0.0.1/empty-anchor.js"></script><div class="row">
+      </header><div class="row">
   <div class="col-md-9 contents">
     <div class="page-header toc-ignore">
       <h1 data-toc-skip>Deviations from Excel defaults</h1>
@@ -100,27 +100,48 @@
 
     
     
-<p>The overall intent of this package is to mimic as completely as possible the output available from the <a href="https://www.england.nhs.uk/publication/making-data-count/" class="external-link">NHSEI Making Data Count</a> Excel tools. However, we have identified some areas where the R implementation should deviate from the main Excel tools. We have done this only after careful consideration, and we believe there is a benefit to deviating.</p>
-<p>This vignette documents what these differences are, and how to set options to over-ride them, so that if you need to you can completely replicate the output that the Excel tools would create.</p>
-<p>You may consider this important if for example you are publishing outputs from both the Excel tool and this R tool, and need the outputs to be completely consistent.</p>
+<p>The overall intent of this package is to mimic as completely as
+possible the output available from the <a href="https://www.england.nhs.uk/publication/making-data-count/" class="external-link">NHSEI
+Making Data Count</a> Excel tools. However, we have identified some
+areas where the R implementation should deviate from the main Excel
+tools. We have done this only after careful consideration, and we
+believe there is a benefit to deviating.</p>
+<p>This vignette documents what these differences are, and how to set
+options to over-ride them, so that if you need to you can completely
+replicate the output that the Excel tools would create.</p>
+<p>You may consider this important if for example you are publishing
+outputs from both the Excel tool and this R tool, and need the outputs
+to be completely consistent.</p>
 <div class="section level2">
 <h2 id="list-of-deviations">List of Deviations<a class="anchor" aria-label="anchor" href="#list-of-deviations"></a>
 </h2>
 <div class="section level3">
 <h3 id="treatment-of-outlying-points">1. Treatment of outlying points<a class="anchor" aria-label="anchor" href="#treatment-of-outlying-points"></a>
 </h3>
-<p>By default, this package will screen outlying points, removing them from the moving range calculation, and hence from the process limits calculation. This is in line with the published paper:</p>
+<p>By default, this package will screen outlying points, removing them
+from the moving range calculation, and hence from the process limits
+calculation. This is in line with the published paper:</p>
 <blockquote>
-<p>Nelson, LS, “Control Charts for Individual Measurements”, Journal of Quality Technology, 1982, 14(34)</p>
+<p>Nelson, LS, “Control Charts for Individual Measurements”, Journal of
+Quality Technology, 1982, 14(34)</p>
 </blockquote>
 <p>It is discussed further in the book:</p>
 <blockquote>
-<p>Lloyd P Provost &amp; Sandra K Murray, The Health Care Data Guide: Learning from Data for Improvement (San Francisco, CA: Jossey-Bass, 2011), p.155 &amp; p.192.</p>
+<p>Lloyd P Provost &amp; Sandra K Murray, The Health Care Data Guide:
+Learning from Data for Improvement (San Francisco, CA: Jossey-Bass,
+2011), p.155 &amp; p.192.</p>
 </blockquote>
-<p>The Making Data Count" Excel tools do not screen outlying points, and all points are included in the moving range and limits calculations. If outlying points exist, the process limits on the Excel tools will therefore be wider than if outlying points were screened from the calculation.</p>
-<p>This behaviour is controlled by the <code>screen_outliers</code> argument. By default, <code>screen_outliers = TRUE</code>.</p>
-<p>To replicate the Excel method, set the argument <code>screen_outliers = FALSE</code>.</p>
-<p>The two charts below demonstrate the default, and how to over-ride to replicate the Excel tools.</p>
+<p>The Making Data Count” Excel tools do not screen outlying points, and
+all points are included in the moving range and limits calculations. If
+outlying points exist, the process limits on the Excel tools will
+therefore be wider than if outlying points were screened from the
+calculation.</p>
+<p>This behaviour is controlled by the <code>screen_outliers</code>
+argument. By default, <code>screen_outliers = TRUE</code>.</p>
+<p>To replicate the Excel method, set the argument
+<code>screen_outliers = FALSE</code>.</p>
+<p>The two charts below demonstrate the default, and how to over-ride to
+replicate the Excel tools.</p>
 <p><strong>R Package Default:</strong></p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">data</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">2</span>, <span class="fl">1</span>, <span class="fl">2</span>, <span class="fl">10</span>, <span class="fl">1</span>, <span class="fl">2</span>, <span class="fl">1</span>, <span class="fl">2</span>, <span class="fl">1</span>, <span class="fl">2</span>, <span class="fl">1</span>, <span class="fl">2</span>, <span class="fl">1</span>, <span class="fl">2</span>, <span class="fl">1</span>, <span class="fl">2</span>, <span class="fl">1</span><span class="op">)</span></span>
@@ -135,13 +156,14 @@
 <span>    caption <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste</a></span><span class="op">(</span></span>
 <span>      <span class="st">"UPL = "</span>, <span class="fu"><a href="https://rdrr.io/r/base/Round.html" class="external-link">round</a></span><span class="op">(</span><span class="va">spc_data</span><span class="op">$</span><span class="va">upl</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span>, <span class="fl">2</span><span class="op">)</span>,</span>
 <span>      <span class="st">", Mean = "</span>, <span class="fu"><a href="https://rdrr.io/r/base/Round.html" class="external-link">round</a></span><span class="op">(</span><span class="va">spc_data</span><span class="op">$</span><span class="va">mean</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span>, <span class="fl">2</span><span class="op">)</span>,</span>
-<span>      <span class="st">", LPL = "</span>, <span class="fu"><a href="https://rdrr.io/r/base/Round.html" class="external-link">round</a></span><span class="op">(</span><span class="va">spc_data</span><span class="op">$</span><span class="va">lpl</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span>, <span class="fl">2</span><span class="op">)</span><span class="op">)</span></span>
+<span>      <span class="st">", LPL = "</span>, <span class="fu"><a href="https://rdrr.io/r/base/Round.html" class="external-link">round</a></span><span class="op">(</span><span class="va">spc_data</span><span class="op">$</span><span class="va">lpl</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span>, <span class="fl">2</span><span class="op">)</span></span>
+<span>    <span class="op">)</span></span>
 <span>  <span class="op">)</span></span></code></pre></div>
 <p><img src="deviations_files/figure-html/unnamed-chunk-1-1.png" width="672"></p>
-<p><strong>Over-riding to replicate “Making Data Count” Excel output:</strong></p>
+<p><strong>Over-riding to replicate “Making Data Count” Excel
+output:</strong></p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span></span>
-<span><span class="co"># setting screen_outliers = FALSE produces the same output as Excel</span></span>
+<code class="sourceCode R"><span><span class="co"># setting screen_outliers = FALSE produces the same output as Excel</span></span>
 <span><span class="va">spc_data</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/ptd_spc.html">ptd_spc</a></span><span class="op">(</span><span class="va">df</span>, value_field <span class="op">=</span> <span class="va">data</span>, date_field <span class="op">=</span> <span class="va">date</span>, screen_outliers <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
 <span><span class="va">spc_data</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span></span>
@@ -149,15 +171,23 @@
 <span>    caption <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste</a></span><span class="op">(</span></span>
 <span>      <span class="st">"UPL = "</span>, <span class="fu"><a href="https://rdrr.io/r/base/Round.html" class="external-link">round</a></span><span class="op">(</span><span class="va">spc_data</span><span class="op">$</span><span class="va">upl</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span>, <span class="fl">2</span><span class="op">)</span>,</span>
 <span>      <span class="st">", Mean = "</span>, <span class="fu"><a href="https://rdrr.io/r/base/Round.html" class="external-link">round</a></span><span class="op">(</span><span class="va">spc_data</span><span class="op">$</span><span class="va">mean</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span>, <span class="fl">2</span><span class="op">)</span>,</span>
-<span>      <span class="st">", LPL = "</span>, <span class="fu"><a href="https://rdrr.io/r/base/Round.html" class="external-link">round</a></span><span class="op">(</span><span class="va">spc_data</span><span class="op">$</span><span class="va">lpl</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span>, <span class="fl">2</span><span class="op">)</span><span class="op">)</span></span>
+<span>      <span class="st">", LPL = "</span>, <span class="fu"><a href="https://rdrr.io/r/base/Round.html" class="external-link">round</a></span><span class="op">(</span><span class="va">spc_data</span><span class="op">$</span><span class="va">lpl</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span>, <span class="fl">2</span><span class="op">)</span></span>
+<span>    <span class="op">)</span></span>
 <span>  <span class="op">)</span></span></code></pre></div>
 <p><img src="deviations_files/figure-html/unnamed-chunk-2-1.png" width="672"></p>
 </div>
 <div class="section level3">
 <h3 id="breaking-of-lines">2. Breaking of lines<a class="anchor" aria-label="anchor" href="#breaking-of-lines"></a>
 </h3>
-<p>By default, this package will break process and limit lines when a plot is rebased. The Excel tool draws all lines as continuous lines. However, rebasing is a change to the process, so by breaking lines it more clearly indicates that a change in process has happened.</p>
-<p>This can be controlled with the <code>break_lines</code> argument. There are 4 possible values: * “both” (default) * “limit” (to just break the limit lines, but leave the process line connected) * “process” (to just break the process line, but leave limit lines connected) * “none” (as per the Excel tool).</p>
+<p>By default, this package will break process and limit lines when a
+plot is rebased. The Excel tool draws all lines as continuous lines.
+However, rebasing is a change to the process, so by breaking lines it
+more clearly indicates that a change in process has happened.</p>
+<p>This can be controlled with the <code>break_lines</code> argument.
+There are 4 possible values: * “both” (default) * “limit” (to just break
+the limit lines, but leave the process line connected) * “process” (to
+just break the process line, but leave limit lines connected) * “none”
+(as per the Excel tool).</p>
 <p>Examples of these 4 are shown below:</p>
 <p><strong>R Package Default:</strong></p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
@@ -179,7 +209,8 @@
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">spc_data</span>, break_lines <span class="op">=</span> <span class="st">"process"</span><span class="op">)</span></span></code></pre></div>
 <p><img src="deviations_files/figure-html/unnamed-chunk-5-1.png" width="672"></p>
-<p><strong>Over-riding to replicate “Making Data Count” Excel output:</strong></p>
+<p><strong>Over-riding to replicate “Making Data Count” Excel
+output:</strong></p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">spc_data</span>, break_lines <span class="op">=</span> <span class="st">"none"</span><span class="op">)</span></span></code></pre></div>
 <p><img src="deviations_files/figure-html/unnamed-chunk-6-1.png" width="672"></p>
@@ -187,8 +218,15 @@
 <div class="section level3">
 <h3 id="x-axis-text-angle">3. X Axis Text Angle<a class="anchor" aria-label="anchor" href="#x-axis-text-angle"></a>
 </h3>
-<p>As can be seen in the plots above, by default this package will print x axis text rotated by 45 degrees for better utilisation of space, and readability. Excel’s behaviour is to print this text at 90 degrees to the axis.</p>
-<p>Text angle can be over-ridden by passing a ggplot <code>theme()</code> into the <code>theme_override</code> argument of the plot function. Any of the modifications documented in the <a href="https://ggplot2.tidyverse.org/reference/theme.html" class="external-link">ggplot2 theme documentation</a> can be made, but in this case we just need to modify <code>axis.text.x</code>.</p>
+<p>As can be seen in the plots above, by default this package will print
+x axis text rotated by 45 degrees for better utilisation of space, and
+readability. Excel’s behaviour is to print this text at 90 degrees to
+the axis.</p>
+<p>Text angle can be over-ridden by passing a ggplot
+<code>theme()</code> into the <code>theme_override</code> argument of
+the plot function. Any of the modifications documented in the <a href="https://ggplot2.tidyverse.org/reference/theme.html" class="external-link">ggplot2 theme
+documentation</a> can be made, but in this case we just need to modify
+<code>axis.text.x</code>.</p>
 <p><strong>To re-instate 90 degree axis text:</strong></p>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">ae_attendances</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
@@ -219,12 +257,12 @@
 
       <footer><div class="copyright">
   <p></p>
-<p>Developed by Christopher Reading, Simon Wellesley-Miller, Zoë Turner, Tom Jemmett, Tom Smith, Chris Mainey, John MacKintosh.</p>
+<p>Developed by Christopher Reading, Simon Wellesley-Miller, Zoë Turner, Tom Jemmett, Tom Smith, Chris Mainey, John MacKintosh, Marcos Fabietti.</p>
 </div>
 
 <div class="pkgdown">
   <p></p>
-<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.6.</p>
+<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.7.</p>
 </div>
 
       </footer>
