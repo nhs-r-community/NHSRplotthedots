@@ -17,11 +17,11 @@ status](https://www.r-pkg.org/badges/version/NHSRplotthedots)](https://CRAN.R-pr
 
 This package is built by the [NHS-R
 community](https://nhsrcommunity.com) to provide tools for drawing
-statistical process control (SPC) charts. This package supports the
-NHSE/I programme [‘Making Data
-Count’](https://www.england.nhs.uk/publication/making-data-count/), and
-allows users to draw XmR charts, use change points, and apply rules with
-summary indicators for when rules are breached.
+statistical process control (SPC) charts. This package supports NHS
+Englands [‘Making Data
+Count’](https://www.england.nhs.uk/publication/making-data-count/)
+programme, and allows users to draw XmR charts, use change points, and
+apply rules with summary indicators for when rules are breached.
 
 Please be aware that this package is in the early stages of development,
 and features may change.
@@ -41,15 +41,14 @@ remotes::install_github("https://github.com/nhs-r-community/NHSRplotthedots", bu
 
 Welcome to the NHS-R community’s package for building a specific type of
 statistical process control (SPC) chart, the XmR chart. We are aiming to
-support the NHS England and NHS Improvement’s ‘Making Data Count’
-programme, please see [‘Making Data Count’
-programme](https://www.england.nhs.uk/publication/making-data-count/)
-for more details. The programme encourages boards, managers, and analyst
-teams to present data in ways that show change over time, and drive
-better understanding of indicators than ‘RAG’ (red, amber, green) rated
-board reports often present.
+support NHS England’s [‘Making Data
+Count’](https://www.england.nhs.uk/publication/making-data-count/)
+programme. The programme encourages boards, managers, and analyst teams
+to present data in ways that show change over time and drive better
+understanding of indicators than ‘RAG’ (red, amber, green) rated board
+reports often present.
 
-The help-files, and vignette within this package tell you more about the
+The help files and vignettes within this package tell you more about the
 possible options for controlling the charts, but below is a simple
 example of the type of chart the package produces. We will use the
 `ae_attendances` dataset from the `{NHSRdatasets}` package and a bit of
@@ -95,7 +94,22 @@ sub_set %>%
   )
 ```
 
-## Getting help:
+### Interactive plots with Plotly
+
+It’s also possible to generate interactive plots using the `{plotly}`
+package by replacing the call to `plot` with `ptd_create_plotly`. This
+function takes the same arguments as `plot`/`ptd_create_ggplot`.
+
+``` r
+sub_set %>%
+  ptd_spc(value_field = breaches, date_field = period, improvement_direction = "decrease") %>%
+  ptd_create_plotly(
+    y_axis_label = "4-hour wait breaches",
+    main_title = "SPC of A&E waiting time breaches for RQM"
+  )
+```
+
+## Getting help
 
 To find out more about the `ptd_spc()` function, you can view the help
 with:
