@@ -1,4 +1,5 @@
 #' @importFrom tidyselect any_of
+#' @importFrom dplyr %>%
 NULL
 
 #' null replacement

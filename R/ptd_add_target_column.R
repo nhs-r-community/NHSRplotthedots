@@ -6,7 +6,7 @@ ptd_add_target_column <- function(.data, target) {
   } else {
     t <- data.frame(f = names(target), target = as.numeric(target))
 
-    .data <- left_join(.data, t, by = "f")
+    .data <- dplyr::left_join(.data, t, by = "f")
   }
 
   .data

@@ -31,18 +31,21 @@ test_that("it groups, then ungroups data", {
   m1 <- mock()
   m2 <- mock(data.frame(short_group_warning = FALSE))
 
-  stub(ptd_add_short_group_warnings, "group_by", m1)
-  stub(ptd_add_short_group_warnings, "across", function(x, ...) x)
-  stub(ptd_add_short_group_warnings, "mutate", function(x, ...) x)
-  stub(ptd_add_short_group_warnings, "ungroup", m2)
+  stub(ptd_add_short_group_warnings, "dplyr::group_by", m1)
+  stub(ptd_add_short_group_warnings, "dplyr::across", function(x, ...) x)
+  stub(ptd_add_short_group_warnings, "dplyr::mutate", function(x, ...) x)
+  stub(ptd_add_short_group_warnings, "dplyr::ungroup", m2)
 
-  ptd_add_short_group_warnings(data.frame(), warning_threshold)
+  ptd_add_short_group_warnings(
+    data.frame(f = character(), rebase_group = character()),
+    warning_threshold
+  )
 
   expect_called(m1, 1)
-  expect_call(m1, 1, group_by(., across(c("f", "rebase_group"))))
+  expect_call(m1, 1, dplyr::group_by(., dplyr::across(c("f", "rebase_group"))))
 
   expect_called(m2, 1)
-  expect_call(m2, 1, ungroup(.))
+  expect_call(m2, 1, dplyr::ungroup(.))
 })
 
 test_that("it adds a column called short_group_warning", {
