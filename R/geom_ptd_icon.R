@@ -53,13 +53,13 @@ geom_ptd_icon_draw_panel <- function(self, data, panel_params, coord,
 #' The Geom for the PTD icons. See `geom_ptd_icon()`.
 #'
 #' @export
-GeomPTDIcon <- ggproto( # Exclude Linting
+GeomPTDIcon <- ggplot2::ggproto( # Exclude Linting
   "GeomPTDIcon",
-  Geom,
+  ggplot2::Geom,
   required_aes = c("type", "icon"),
-  default_aes = aes(),
+  default_aes = ggplot2::aes(),
   extra_params = c("na.rm", "icons_size", "icons_position"),
-  draw_key = draw_key_point,
+  draw_key = ggplot2::draw_key_point,
   draw_panel = geom_ptd_icon_draw_panel
 )
 

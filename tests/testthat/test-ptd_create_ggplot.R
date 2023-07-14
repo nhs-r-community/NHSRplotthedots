@@ -1,5 +1,6 @@
 library(testthat)
 library(mockery)
+library(ggplot2, warn.conflicts = FALSE)
 
 # ptd_create_ggplot() ----
 test_that("it raises an error if unknown arguments are passed", {
