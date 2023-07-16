@@ -22,3 +22,4 @@
 ^CODE_OF_CONDUCT\.md$
 
 ^coverage.xml$
+^pre-commit.sh$
