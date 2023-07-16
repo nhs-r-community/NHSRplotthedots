@@ -95,7 +95,7 @@ ptd_special_cause_type <- function(y, relative_to_mean, close_to_limits, outside
   # if a point is part of a trend either side, use right side
   sdy <- ifelse(
     c(part_seven_point_trend[-1], 0) & part_seven_point_trend,
-    c(sdy, tail(sdy, 1)),
+    c(sdy, utils::tail(sdy, 1)),
     c(0, sdy)
   )
 

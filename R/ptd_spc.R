@@ -169,7 +169,7 @@ summary.ptd_spc_df <- function(object, ...) {
     dplyr::summarise(
       dplyr::across(c("mean", "lpl", "upl"), dplyr::first),
       n = dplyr::n(),
-      common_cause = n - sum(.data$special_cause_flag),
+      common_cause = .data$n - sum(.data$special_cause_flag),
       special_cause_improvement = sum(.data$point_type == "special_cause_improvement"),
       special_cause_concern = sum(.data$point_type == "special_cause_concern"),
       .groups = "drop"
