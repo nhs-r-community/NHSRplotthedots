@@ -11,6 +11,7 @@ test_that("ptd_create_plotly returns a plotly object", {
   m_ptd_get_icons <- mock(list(icon = c("icon_1", "icon_2")))
   m_read_svg_as_b64 <- mock("icon_1.svg", "icon_2.svg")
   m_ggplotly <- mock("plotly")
+  m_ptd_plotly_fix_tooltips <- mock("plotly_fixed_tooltips")
   m_layout <- mock()
 
   stub(ptd_create_plotly, "ptd_spc_colours", "colours")
@@ -18,6 +19,7 @@ test_that("ptd_create_plotly returns a plotly object", {
   stub(ptd_create_plotly, "ptd_get_icons", m_ptd_get_icons)
   stub(ptd_create_plotly, "read_svg_as_b64", m_read_svg_as_b64)
   stub(ptd_create_plotly, "plotly::ggplotly", m_ggplotly)
+  stub(ptd_create_plotly, "ptd_plotly_fix_tooltips", m_ptd_plotly_fix_tooltips)
   stub(ptd_create_plotly, "plotly::layout", m_layout)
 
   actual <- ptd_create_plotly(
@@ -49,6 +51,9 @@ test_that("ptd_create_plotly returns a plotly object", {
     break_lines = c("both", "limits", "process", "none")
   )
 
+  expect_called(m_ptd_plotly_fix_tooltips, 1)
+  expect_args(m_ptd_plotly_fix_tooltips, 1, "plotly")
+
   expect_called(m_ptd_get_icons, 1)
   expect_args(m_ptd_get_icons, 1, "data")
 
@@ -63,7 +68,8 @@ test_that("ptd_create_plotly returns a plotly object", {
   expect_args(
     m_layout,
     1,
-    "plotly",
+    "plotly_fixed_tooltips",
+    hovermode = "x unified",
     legend = list(
       orientation = "h",
       xanchor = "center",
@@ -128,6 +134,7 @@ test_that("ptd_create_plotly returns a plotly object (no annotations or icons)",
   m_ptd_get_icons <- mock(list(icon = c("icon_1", "icon_2")))
   m_read_svg_as_b64 <- mock("icon_1.svg", "icon_2.svg")
   m_ggplotly <- mock("plotly")
+  m_ptd_plotly_fix_tooltips <- mock("plotly_fixed_tooltips")
   m_layout <- mock()
 
   stub(ptd_create_plotly, "ptd_spc_colours", "colours")
@@ -135,6 +142,7 @@ test_that("ptd_create_plotly returns a plotly object (no annotations or icons)",
   stub(ptd_create_plotly, "ptd_get_icons", m_ptd_get_icons)
   stub(ptd_create_plotly, "read_svg_as_b64", m_read_svg_as_b64)
   stub(ptd_create_plotly, "plotly::ggplotly", m_ggplotly)
+  stub(ptd_create_plotly, "ptd_plotly_fix_tooltips", m_ptd_plotly_fix_tooltips)
   stub(ptd_create_plotly, "plotly::layout", m_layout)
 
   actual <- ptd_create_plotly(
@@ -149,7 +157,8 @@ test_that("ptd_create_plotly returns a plotly object (no annotations or icons)",
   expect_args(
     m_layout,
     1,
-    "plotly",
+    "plotly_fixed_tooltips",
+    hovermode = "x unified",
     legend = list(
       orientation = "h",
       xanchor = "center",
@@ -173,6 +182,7 @@ test_that("ptd_create_plotly gives a warning with facet field and icons position
   m_ptd_get_icons <- mock(list(icon = c("icon_1", "icon_2")))
   m_read_svg_as_b64 <- mock("icon_1.svg", "icon_2.svg")
   m_ggplotly <- mock("plotly")
+  m_ptd_plotly_fix_tooltips <- mock("plotly_fixed_tooltips")
   m_layout <- mock()
 
   stub(ptd_create_plotly, "ptd_spc_colours", "colours")
@@ -180,6 +190,7 @@ test_that("ptd_create_plotly gives a warning with facet field and icons position
   stub(ptd_create_plotly, "ptd_get_icons", m_ptd_get_icons)
   stub(ptd_create_plotly, "read_svg_as_b64", m_read_svg_as_b64)
   stub(ptd_create_plotly, "plotly::ggplotly", m_ggplotly)
+  stub(ptd_create_plotly, "ptd_plotly_fix_tooltips", m_ptd_plotly_fix_tooltips)
   stub(ptd_create_plotly, "plotly::layout", m_layout)
 
   expect_warning(
@@ -218,4 +229,43 @@ test_that("read_svg_as_b64 converts files correctly", {
   expect_args(m, 2, "img")
 
   expect_equal(actual, "data:image/svg+xml;base64,b64")
+})
+
+
+test_that("ptd_plotly_fix_tooltips simplifies the tooltips that will be displayed on hover", {
+  plot <- list(
+    x = list(
+      data = list(
+        list(
+          text = c("x=1<br />y=2<br />z=3", "x=2<br />y=3<br />z=4")
+        ),
+        list(
+          text = c("x=1<br />a=10<br />b=20", "x=2<br />a=30<br />b=40")
+        ),
+        list(
+          text = c("x=1<br />z=100", "x=2<br />z=200")
+        )
+      )
+    )
+  )
+
+  expected <- list(
+    x = list(
+      data = list(
+        list(
+          text = c("x=1<br /><br />y=2", "x=2<br /><br />y=3")
+        ),
+        list(
+          text = c("a=10", "a=30")
+        ),
+        list(
+          text = c("z=100", "z=200")
+        )
+      )
+    )
+  )
+
+  actual <- ptd_plotly_fix_tooltips(plot)
+
+  expect_equal(actual, expected)
 })
