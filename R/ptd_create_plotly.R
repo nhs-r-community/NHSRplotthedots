@@ -81,7 +81,7 @@ ptd_create_plotly <- function(x,
   plot <- ggplot |>
     plotly::ggplotly() |>
     ptd_plotly_fix_tooltips()
-  
+
   annotations <- if (any(ggplot$data$short_group_warning)) {
     list(
       x = 1,
