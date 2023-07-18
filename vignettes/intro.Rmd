@@ -15,8 +15,7 @@ knitr::opts_chunk$set(
 ```
 
 Welcome to the NHS-R community's collaborative package for building a specific type of statistical process control (SPC)
-chart, the XmR chart. We are aiming to support the NHS England and NHS Improvement's 'Making Data Count' programme,
-please see [here][mdc] for more details. The programme encourages boards, managers, and analyst teams to present data in
+chart, the XmR chart. We are aiming to support the NHS England and NHS Improvement's ['Making Data Count' programme][mdc], a programme which encourages boards, managers, and analyst teams to present data in
 ways that show change over time, and drive better understanding of indicators than 'RAG' (red, amber, green) rated board
 reports often present.
 
