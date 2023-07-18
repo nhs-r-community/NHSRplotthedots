@@ -1,0 +1,14 @@
+on: [pull_request]
+
+name: Run Pre-Commit Hooks
+jobs:
+  pre-commit:
+    runs-on: ubuntu-latest
+    env:
+      GITHUB_PAT: ${{ secrets.GITHUB_TOKEN }}
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: "Run Pre Commit Hooks"
+        run: ./pre-commit.sh
+        
