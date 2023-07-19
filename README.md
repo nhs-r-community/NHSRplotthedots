@@ -18,7 +18,7 @@ status](https://www.r-pkg.org/badges/version/NHSRplotthedots)](https://CRAN.R-pr
 This package is built by the [NHS-R
 community](https://nhsrcommunity.com) to provide tools for drawing
 statistical process control (SPC) charts. This package supports NHS
-Englands [‘Making Data
+England's [‘Making Data
 Count’](https://www.england.nhs.uk/publication/making-data-count/)
 programme, and allows users to draw XmR charts, use change points, and
 apply rules with summary indicators for when rules are breached.

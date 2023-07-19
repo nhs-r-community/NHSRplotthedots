@@ -26,7 +26,7 @@ knitr::opts_chunk$set(
 <!-- badges: end -->
 
 This package is built by the [NHS-R community][nhsr] to provide tools for drawing statistical process control (SPC)
-charts. This package supports NHS Englands ['Making Data Count'][mdc] programme, and allows users to draw XmR charts,
+charts. This package supports NHS England's ['Making Data Count'][mdc] programme, and allows users to draw XmR charts,
 use change points, and apply rules with summary indicators for when rules are breached.
 
 Please be aware that this package is in the early stages of development, and features may change.
