@@ -98,7 +98,7 @@
 </h1></div>
 <!-- badges: start -->
 
-<p>This package is built by the <a href="https://nhsrcommunity.com" class="external-link">NHS-R community</a> to provide tools for drawing statistical process control (SPC) charts. This package supports the NHSE/I programme <a href="https://www.england.nhs.uk/publication/making-data-count/" class="external-link">‘Making Data Count’</a>, and allows users to draw XmR charts, use change points, and apply rules with summary indicators for when rules are breached.</p>
+<p>This package is built by the <a href="https://nhsrcommunity.com" class="external-link">NHS-R community</a> to provide tools for drawing statistical process control (SPC) charts. This package supports NHS England’s <a href="https://www.england.nhs.uk/publication/making-data-count/" class="external-link">‘Making Data Count’</a> programme, and allows users to draw XmR charts, use change points, and apply rules with summary indicators for when rules are breached.</p>
 <p>Please be aware that this package is in the early stages of development, and features may change.</p>
 <div class="section level2">
 <h2 id="installation">Installation<a class="anchor" aria-label="anchor" href="#installation"></a>
@@ -115,8 +115,8 @@
 <div class="section level1">
 <h1 id="overview">Overview<a class="anchor" aria-label="anchor" href="#overview"></a>
 </h1>
-<p>Welcome to the NHS-R community’s package for building a specific type of statistical process control (SPC) chart, the XmR chart. We are aiming to support the NHS England and NHS Improvement’s ‘Making Data Count’ programme, please see <a href="https://www.england.nhs.uk/publication/making-data-count/" class="external-link">‘Making Data Count’ programme</a> for more details. The programme encourages boards, managers, and analyst teams to present data in ways that show change over time, and drive better understanding of indicators than ‘RAG’ (red, amber, green) rated board reports often present.</p>
-<p>The help-files, and vignette within this package tell you more about the possible options for controlling the charts, but below is a simple example of the type of chart the package produces. We will use the <code>ae_attendances</code> dataset from the <a href="https://github.com/nhs-r-community/NHSRdatasets" class="external-link">NHSRdatasets</a> package and a bit of <a href="https://dplyr.tidyverse.org" class="external-link">dplyr</a> code to select some organisations.</p>
+<p>Welcome to the NHS-R community’s package for building a specific type of statistical process control (SPC) chart, the XmR chart. We are aiming to support NHS England’s <a href="https://www.england.nhs.uk/publication/making-data-count/" class="external-link">‘Making Data Count’</a> programme. The programme encourages boards, managers, and analyst teams to present data in ways that show change over time and drive better understanding of indicators than ‘RAG’ (red, amber, green) rated board reports often present.</p>
+<p>The help files and vignettes within this package tell you more about the possible options for controlling the charts, but below is a simple example of the type of chart the package produces. We will use the <code>ae_attendances</code> dataset from the <a href="https://github.com/nhs-r-community/NHSRdatasets" class="external-link">NHSRdatasets</a> package and a bit of <a href="https://dplyr.tidyverse.org" class="external-link">dplyr</a> code to select some organisations.</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://nhs-r-community.github.io/NHSRplotthedots" class="external-link">NHSRplotthedots</a></span><span class="op">)</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/nhs-r-community/NHSRdatasets" class="external-link">NHSRdatasets</a></span><span class="op">)</span></span>
@@ -145,17 +145,29 @@
 <span>    y_axis_label <span class="op">=</span> <span class="st">"4-hour wait breaches"</span>,</span>
 <span>    main_title <span class="op">=</span> <span class="st">"SPC of A&amp;E waiting time breaches for RQM"</span></span>
 <span>  <span class="op">)</span></span></code></pre></div>
+<div class="section level3">
+<h3 id="interactive-plots-with-plotly">Interactive plots with Plotly<a class="anchor" aria-label="anchor" href="#interactive-plots-with-plotly"></a>
+</h3>
+<p>It’s also possible to generate interactive plots using the <a href="https://plotly-r.com" class="external-link">plotly</a> package by replacing the call to <code>plot</code> with <code>ptd_create_plotly</code>. This function takes the same arguments as <code>plot</code>/<code>ptd_create_ggplot</code>.</p>
+<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">sub_set</span> <span class="op">%&gt;%</span></span>
+<span>  <span class="fu"><a href="reference/ptd_spc.html">ptd_spc</a></span><span class="op">(</span>value_field <span class="op">=</span> <span class="va">breaches</span>, date_field <span class="op">=</span> <span class="va">period</span>, improvement_direction <span class="op">=</span> <span class="st">"decrease"</span><span class="op">)</span> <span class="op">%&gt;%</span></span>
+<span>  <span class="fu"><a href="reference/ptd_create_plotly.html">ptd_create_plotly</a></span><span class="op">(</span></span>
+<span>    y_axis_label <span class="op">=</span> <span class="st">"4-hour wait breaches"</span>,</span>
+<span>    main_title <span class="op">=</span> <span class="st">"SPC of A&amp;E waiting time breaches for RQM"</span></span>
+<span>  <span class="op">)</span></span></code></pre></div>
+</div>
 <div class="section level2">
-<h2 id="getting-help">Getting help:<a class="anchor" aria-label="anchor" href="#getting-help"></a>
+<h2 id="getting-help">Getting help<a class="anchor" aria-label="anchor" href="#getting-help"></a>
 </h2>
 <p>To find out more about the <code><a href="reference/ptd_spc.html">ptd_spc()</a></code> function, you can view the help with:</p>
-<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="op">?</span><span class="va">ptd_spc</span></span></code></pre></div>
 <p>Details on the extra plot controls can be found using:</p>
-<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="op">?</span><span class="va">ptd_create_ggplot</span></span></code></pre></div>
 <p>To view the vignette (worked example), use:</p>
-<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/vignette.html" class="external-link">vignette</a></span><span class="op">(</span><span class="st">"intro"</span>, package <span class="op">=</span> <span class="st">"NHSRplotthedots"</span><span class="op">)</span></span>
 <span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/vignette.html" class="external-link">vignette</a></span><span class="op">(</span>package <span class="op">=</span> <span class="st">"NHSRplotthedots"</span><span class="op">)</span></span></code></pre></div>
