@@ -25,7 +25,9 @@ knitr::opts_chunk$set(
 [![downloads](https://cranlogs.r-pkg.org/badges/grand-total/NHSRplotthedots)](https://CRAN.R-project.org/package=NHSRplotthedots)
 <!-- badges: end -->
 
-This package is built by the [NHS-R community][nhsr] to provide tools for drawing statistical process control (SPC) charts. This package supports the NHSE/I programme ['Making Data Count'][mdc], and allows users to draw XmR charts, use change points, and apply rules with summary indicators for when rules are breached.
+This package is built by the [NHS-R community][nhsr] to provide tools for drawing statistical process control (SPC)
+charts. This package supports NHS England's ['Making Data Count'][mdc] programme, and allows users to draw XmR charts,
+use change points, and apply rules with summary indicators for when rules are breached.
 
 Please be aware that this package is in the early stages of development, and features may change.
 
@@ -42,9 +44,14 @@ remotes::install_github("https://github.com/nhs-r-community/NHSRplotthedots", bu
 
 # Overview
 
-Welcome to the NHS-R community's package for building a specific type of statistical process control (SPC) chart, the XmR chart.  We are aiming to support the NHS England and NHS Improvement's 'Making Data Count' programme, please see ['Making Data Count' programme][mdc] for more details. The programme encourages boards, managers, and analyst teams to present data in ways that show change over time, and drive better understanding of indicators than 'RAG' (red, amber, green) rated board reports often present.
+Welcome to the NHS-R community's package for building a specific type of statistical process control (SPC) chart, the
+XmR chart. We are aiming to support NHS England's ['Making Data Count'][mdc] programme. The programme encourages boards,
+managers, and analyst teams to present data in ways that show change over time and drive better understanding of
+indicators than 'RAG' (red, amber, green) rated board reports often present.
 
-The help-files, and vignette within this package tell you more about the possible options for controlling the charts, but below is a simple example of the type of chart the package produces.  We will use the `ae_attendances` dataset from the `{NHSRdatasets}` package and a bit of  `{dplyr}` code to select some organisations.
+The help files and vignettes within this package tell you more about the possible options for controlling the charts,
+but below is a simple example of the type of chart the package produces.  We will use the `ae_attendances` dataset from
+the `{NHSRdatasets}` package and a bit of  `{dplyr}` code to select some organisations.
 
 ```{r example, message=FALSE, warning=FALSE}
 library(NHSRplotthedots)
@@ -58,7 +65,8 @@ sub_set %>%
   ptd_spc(value_field = breaches, date_field = period, improvement_direction = "decrease")
 ```  
 
-This plot is ok on its own, but we can specify more control options when we pass it on, using the `{dplyr}` pipe function below: `%>%` to the plot argument.
+This plot is ok on its own, but we can specify more control options when we pass it on, using the `{dplyr}` pipe
+function below: `%>%` to the plot argument.
 
 ```{r}
 sub_set %>%
@@ -80,9 +88,9 @@ sub_set %>%
   )
 ```
 
-### Interactive plots with plotly
+### Interactive plots with Plotly
 
-Its also possible to generate interactive plots using the `{plotly}` package by replacing the call to `plot` with
+It's also possible to generate interactive plots using the `{plotly}` package by replacing the call to `plot` with
 `ptd_create_plotly`. This function takes the same arguments as `plot`/`ptd_create_ggplot`.
 
 ```{r, eval=FALSE}
@@ -94,7 +102,7 @@ sub_set %>%
   )
 ```
 
-## Getting help:
+## Getting help
 
 To find out more about the `ptd_spc()` function, you can view the help with:
 
@@ -118,11 +126,15 @@ vignette(package = "NHSRplotthedots")
 
 # Contribution
 
-This is an NHS-R Community project that is open for anyone to contribute to in any way that they are able. The project is released with a [Contributor Code of Conduct](https://contributor-covenant.org/version/2/1/CODE_OF_CONDUCT.html). By contributing to this project, you agree to abide by its terms.
+This is an NHS-R Community project that is open for anyone to contribute to in any way that they are able. The project 
+is released with a [Contributor Code of Conduct](https://contributor-covenant.org/version/2/1/CODE_OF_CONDUCT.html). By
+contributing to this project, you agree to abide by its terms.
 
-If you want to learn more about this project, please join the discussion at [the NHS-R Community Slack group][nhsr-slack] and the specific channel [#proj-nhsr-plot-the-dots][#proj-nhsr-plot-the-dots]. 
+If you want to learn more about this project, please join the discussion at [the NHS-R Community Slack group][nhsr-slack]
+and the specific channel [#proj-nhsr-plot-the-dots][#proj-nhsr-plot-the-dots]. 
 
-The simplest way to contribute is to raise an issue detailing the feature or functionality you would like to see added, or any unexpected behaviour or bugs you have experienced.  
+The simplest way to contribute is to raise an issue detailing the feature or functionality you would like to see added,
+or any unexpected behaviour or bugs you have experienced.  
 
 [nhsr]: https://nhsrcommunity.com
 [mdc]: https://www.england.nhs.uk/publication/making-data-count/
