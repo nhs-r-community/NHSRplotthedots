@@ -140,23 +140,42 @@ ptd_create_ggplot <- function(
   break_process <- break_lines %in% c("both", "process")
 
   plot <- ggplot(.data, aes(x = .data$x, y = .data$y)) +
-    geom_line(aes(y = .data$upl, group = if (break_limits) .data$rebase_group else 0),
-      linetype = "dashed", linewidth = line_size, colour = colours$upl
+    geom_line(
+      aes(y = .data$upl, group = if (break_limits) .data$rebase_group else 0),
+      linetype = "dashed",
+      linewidth = line_size,
+      colour = colours$upl
     ) +
-    geom_line(aes(y = .data$lpl, group = if (break_limits) .data$rebase_group else 0),
-      linetype = "dashed", linewidth = line_size, colour = colours$lpl
+    geom_line(
+      aes(y = .data$lpl, group = if (break_limits) .data$rebase_group else 0),
+      linetype = "dashed",
+      linewidth = line_size,
+      colour = colours$lpl
     ) +
-    geom_line(aes(y = .data$target),
-      linetype = "dashed", linewidth = line_size, colour = colours$target, na.rm = TRUE
+    geom_line(
+      aes(y = .data$target),
+      linetype = "dashed",
+      linewidth = line_size,
+      colour = colours$target,
+      na.rm = TRUE
     ) +
-    geom_line(aes(y = .data$trajectory),
-      linetype = "dashed", linewidth = line_size, colour = colours$trajectory, na.rm = TRUE
+    geom_line(
+      aes(y = .data$trajectory),
+      linetype = "dashed",
+      linewidth = line_size,
+      colour = colours$trajectory,
+      na.rm = TRUE
     ) +
-    geom_line(aes(y = mean, group = if (break_limits) .data$rebase_group else 0),
-      linetype = "solid", colour = colours$mean_line
+    geom_line(
+      aes(y = mean, group = if (break_limits) .data$rebase_group else 0),
+      linetype = "solid",
+      colour = colours$mean_line
     ) +
-    geom_line(aes(group = if (break_process) .data$rebase_group else 0),
-      linetype = "solid", linewidth = line_size, colour = colours$value_line
+    geom_line(
+      aes(group = if (break_process) .data$rebase_group else 0),
+      linetype = "solid",
+      linewidth = line_size,
+      colour = colours$value_line
     ) +
     geom_point(aes(colour = .data$point_colour), size = point_size) +
     scale_colour_manual(
