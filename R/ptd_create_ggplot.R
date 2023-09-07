@@ -191,10 +191,12 @@ ptd_create_ggplot <- function(
     ) +
     theme_minimal() +
     theme(
-      plot.background = element_rect(color = "grey", linewidth = 1), # border around whole plot
-      plot.margin = unit(c(5, 5, 5, 5), "mm"), # 5mm of white space around plot edge
+      # border around whole plot
+      plot.background = element_rect(colour = "grey", linewidth = 1),
+      # 5mm of white space around plot edge
+      plot.margin = unit(c(5, 5, 5, 5), "mm"),
       axis.text.x = element_text(angle = 45, hjust = 1),
-      panel.grid = element_line(color = "grey70"), # gridline colour
+      panel.grid = element_line(colour = "grey70"), # gridline colour
       panel.grid.major.x = element_blank(), # remove major x gridlines
       panel.grid.minor.x = element_blank(), # remove minor x gridlines
       legend.position = "bottom",

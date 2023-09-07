@@ -58,7 +58,7 @@ ptd_create_plotly <- function(
 
   if (!is.null(options$facet_field)) {
     if (icons_position != "none") {
-      warning("Facetted plots do not support showing the icons, setting `icons_position` to \"none\"")
+      warning("Facetted plots do not support showing the icons. Setting `icons_position` to \"none\"")
     }
     icons_position <- "none"
   }
@@ -115,10 +115,10 @@ ptd_create_plotly <- function(
 
   plotly::layout(
     plot,
-    # put legend in center of x-axis
+    # put legend in centre of x-axis
     legend = list(
       orientation = "h", # show entries horizontally
-      xanchor = "center", # use center of legend as anchor
+      xanchor = "center", # use centre of legend as anchor
       x = 0.5,
       y = -0.6
     ),

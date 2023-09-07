@@ -265,7 +265,7 @@ test_that("it sets the colour of the points based on the type", {
   set.seed(123)
   d <- data.frame(x = as.Date("2020-01-01") + 1:20, y = rnorm(20))
 
-  colours_neutal <- list(
+  colours_neutral <- list(
     common_cause              = "#7B7D7D", # grey
     special_cause_neutral     = "#361475" # purple
   )
@@ -287,7 +287,7 @@ test_that("it sets the colour of the points based on the type", {
   p3 <- ptd_create_ggplot(s3)
 
   expect_called(m, 3)
-  expect_args(m, 1, values = colours_neutal, labels = ptd_title_case)
+  expect_args(m, 1, values = colours_neutral, labels = ptd_title_case)
   expect_args(m, 2, values = colours_otherwise, labels = ptd_title_case)
 })
 
