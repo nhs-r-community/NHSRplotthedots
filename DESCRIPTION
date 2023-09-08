@@ -30,6 +30,7 @@ Imports:
     crayon,
     dplyr,
     ggplot2,
+    grid,
     plotly,
     rlang,
     rsvg,
@@ -38,7 +39,6 @@ Imports:
     tidyselect (>= 1.2.0)
 Suggests: 
     covr,
-    grid,
     hexSticker,
     knitr,
     lintr (>= 3.0.0),
@@ -49,6 +49,7 @@ Suggests:
     testthat (>= 3.0.0),
     utils,
     withr
+Depends: R (>= 4.1.0)
 VignetteBuilder: knitr
 Config/testthat/edition: 3
 Language: en-US

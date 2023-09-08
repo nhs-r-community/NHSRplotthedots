@@ -1,6 +1,10 @@
-geom_ptd_icon_draw_panel <- function(self, data, panel_params, coord,
-                                     icons_size = 8,
-                                     icons_position = c("top right", "bottom right", "bottom left", "top left")) {
+geom_ptd_icon_draw_panel <- function(
+    self,
+    data,
+    panel_params,
+    coord,
+    icons_size = 8,
+    icons_position = c("top right", "bottom right", "bottom left", "top left")) {
   icons_position <- match.arg(icons_position)
   # match the icons_position to x,y coordinates. either {0, 1}, but shift in by 0.01 so icons don't clip
   icons_position_x <- abs(as.numeric(grepl("right$", icons_position)) - 0.01)
@@ -53,13 +57,13 @@ geom_ptd_icon_draw_panel <- function(self, data, panel_params, coord,
 #' The Geom for the PTD icons. See `geom_ptd_icon()`.
 #'
 #' @export
-GeomPTDIcon <- ggproto( # Exclude Linting
+GeomPTDIcon <- ggplot2::ggproto( # Exclude Linting
   "GeomPTDIcon",
-  Geom,
+  ggplot2::Geom,
   required_aes = c("type", "icon"),
-  default_aes = aes(),
+  default_aes = ggplot2::aes(),
   extra_params = c("na.rm", "icons_size", "icons_position"),
-  draw_key = draw_key_point,
+  draw_key = ggplot2::draw_key_point,
   draw_panel = geom_ptd_icon_draw_panel
 )
 
@@ -74,14 +78,16 @@ GeomPTDIcon <- ggproto( # Exclude Linting
 #' @param ... currently unused
 #'
 #' @export
-geom_ptd_icon <- function(data = NULL,
-                          icons_size = 8L,
-                          icons_position = c("top right", "bottom right", "bottom left", "top left"),
-                          ...) {
+geom_ptd_icon <- function(
+    data = NULL,
+    icons_size = 8L,
+    icons_position = c("top right", "bottom right", "bottom left", "top left"),
+    ...) {
   icons_position <- match.arg(icons_position)
 
-  # set's up the layer: this is a little unusual for ggplot as we fix the mapping, data argument etc. As this geom is
-  # not-exported it's not intended to be used in any other way
+  # sets up the layer: this is a little unusual for ggplot as we fix the
+  # mapping, data argument etc. As this geom is not exported it's not intended
+  # to be used in any other way
   ggplot2::layer(
     geom = GeomPTDIcon,
     mapping = ggplot2::aes(type = .data$type, icon = .data$icon),

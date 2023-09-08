@@ -16,6 +16,7 @@ ptd_create_ggplot(
   x_axis_date_format = "\%d/\%m/\%y",
   x_axis_breaks = NULL,
   y_axis_breaks = NULL,
+  limit_annotations = FALSE,
   icons_size = 8L,
   icons_position = c("top right", "bottom right", "bottom left", "top left", "none"),
   colours = ptd_spc_colours(),
@@ -25,12 +26,14 @@ ptd_create_ggplot(
 )
 }
 \arguments{
-\item{x}{an object created by \code{\link[=ptd_spc]{ptd_spc()}}}
+\item{x}{An object created by \code{\link[=ptd_spc]{ptd_spc()}}}
 
-\item{point_size}{Specify the plotting point size for the ggplot output. Default is 2.5.}
+\item{point_size}{Specify the plotting point size for the ggplot2 output.
+The default is 2.5.}
 
-\item{percentage_y_axis}{Specify whether the y axis values are percentages. Accepted values are TRUE for percentage y
-axis, FALSE for integer y axis. Defaults to FALSE.}
+\item{percentage_y_axis}{Specify whether the y axis values are percentages.
+Accepted values are TRUE for percentage y axis, FALSE for integer y axis.
+Defaults to FALSE.}
 
 \item{main_title}{Specify a character string value for the ggplot title.}
 
@@ -38,39 +41,49 @@ axis, FALSE for integer y axis. Defaults to FALSE.}
 
 \item{y_axis_label}{Specify a character string value for the y axis title.}
 
-\item{fixed_x_axis_multiple}{Specify whether, if producing a faceted spc, x axis should be fixed for all facet plots.
-Accepted values are TRUE for fixed x axes or FALSE for individual x axes.}
+\item{fixed_x_axis_multiple}{Specify whether, if producing a faceted spc,
+x axis should be fixed for all facet plots. Accepted values are TRUE for
+fixed x axes or FALSE for individual x axes.}
 
-\item{fixed_y_axis_multiple}{Specify whether, if producing a faceted spc, y axis should be fixed for all facet plots.
-Accepted values are TRUE for fixed y axes or FALSE for individual y axes.}
+\item{fixed_y_axis_multiple}{Specify whether, if producing a faceted spc,
+y axis should be fixed for all facet plots. Accepted values are TRUE for
+fixed y axes or FALSE for individual y axes.}
 
-\item{x_axis_date_format}{Specify how dates on the x axis should be displayed. Format should be provided
-as a character string using 'd m Y' etc syntax.}
+\item{x_axis_date_format}{Specify how dates on the x axis should be
+displayed. Format should be provided as a character string using 'd m Y'
+-type syntax.}
 
-\item{x_axis_breaks}{Specify an interval value for breaks on the x axis. Value should be a character string
-expressing interval length and type, e.g. "3 months", "7 days".}
+\item{x_axis_breaks}{Specify an interval value for breaks on the x axis.
+Value should be a character string expressing interval length and type,
+e.g. "3 months", "7 days".}
 
-\item{y_axis_breaks}{Specify an interval value for breaks on the y axis. Value should be a numeric vector of length
-1, either an integer for integer scales or a decimal value for percentage scales. This option is ignored if
+\item{y_axis_breaks}{Specify an interval value for breaks on the y axis.
+Value should be a numeric vector of length 1, either an integer for integer
+scales or a decimal value for percentage scales. This option is ignored if
 faceting is in use.}
 
-\item{icons_size}{The size of the icons, defined in terms of font size. Defaults to 8.}
+\item{limit_annotations}{Whether to add a secondary y axis that just provides
+annotations for the values of the UCL, LCL and mean.}
 
-\item{icons_position}{Where to show the icons, either "top right" (default), "bottom right", "bottom left",
-"top left", or "none".}
+\item{icons_size}{The size of the icons, defined in terms of font size.
+Defaults to 8.}
 
-\item{colours}{Specify the colours to use in the plot, use the \code{\link[=ptd_spc_colours]{ptd_spc_colours()}} function to change defaults.}
+\item{icons_position}{Where to show the icons, either "top right" (default),
+"bottom right", "bottom left", "top left", or "none".}
 
-\item{theme_override}{Specify a list containing ggplot theme elements which can be used to override the default
-appearance of the plot.}
+\item{colours}{Specify the colours to use in the plot. Use the
+\code{\link[=ptd_spc_colours]{ptd_spc_colours()}} function to change defaults.}
 
-\item{break_lines}{whether to break lines when a rebase happens. Defaults to "both", but can break just "limits"
-lines, "process" lines, or "none".}
+\item{theme_override}{Specify a list containing ggplot2 theme elements which
+can be used to override the default appearance of the plot.}
 
-\item{...}{currently ignored}
+\item{break_lines}{Whether to break lines when a rebase happens. Defaults to
+"both", but can break just "limits" lines, "process" lines, or "none".}
+
+\item{...}{Currently ignored}
 }
 \value{
-The ggplot2 object
+A ggplot2 object
 }
 \description{
 Creates a ggplot2 object using the parameters passed in.
