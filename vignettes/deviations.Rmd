@@ -68,7 +68,7 @@ spc_data %>%
   labs(
     caption = paste(
       "UPL = ", round(spc_data$upl[1], 2),
-      ", Mean = ", round(spc_data$mean[1], 2),
+      ", Mean = ", round(spc_data$mean_col[1], 2),
       ", LPL = ", round(spc_data$lpl[1], 2)
     )
   )
@@ -84,7 +84,7 @@ spc_data %>%
   labs(
     caption = paste(
       "UPL = ", round(spc_data$upl[1], 2),
-      ", Mean = ", round(spc_data$mean[1], 2),
+      ", Mean = ", round(spc_data$mean_col[1], 2),
       ", LPL = ", round(spc_data$lpl[1], 2)
     )
   )
