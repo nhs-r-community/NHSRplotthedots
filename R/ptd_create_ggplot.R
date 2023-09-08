@@ -280,20 +280,20 @@ ptd_create_ggplot <- function(
         )
     }
   } else {
-      if (limit_annotations) {
-        plot <- plot +
-          ggplot2::scale_y_continuous(
-            sec.axis = ggplot2::sec_axis(
-              trans = \(x) x,
-              name = NULL,
-              breaks = round(sec_breaks, 3)
-              )
-            )
-      } else {
-        plot <- plot +
-          ggplot2::scale_y_continuous()
-      }
+    if (limit_annotations) {
+      plot <- plot +
+        ggplot2::scale_y_continuous(
+          sec.axis = ggplot2::sec_axis(
+            trans = \(x) x,
+            name = NULL,
+            breaks = round(sec_breaks, 3)
+          )
+        )
+    } else {
+      plot <- plot +
+        ggplot2::scale_y_continuous()
     }
+  }
 
   if (icons_position != "none") {
     plot <- plot +

@@ -160,7 +160,7 @@ test_that("it handles colours correctly", {
 
 test_that("it handles theme_override correctly", {
   # these should run fine
-  ptd_validate_plot_options(theme_override = theme())
+  ptd_validate_plot_options(theme_override = ggplot2::theme())
 
   # these will error
   em <- "theme_override must be an object created by theme()."

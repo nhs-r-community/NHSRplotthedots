@@ -59,7 +59,7 @@ test_that("it draws the panel correctly", {
   expect_args(m, 4, list("b"), list("c"))
 })
 
-test_that("it set's up the geom correctly", {
+test_that("it sets up the geom correctly", {
   g <- geom_ptd_icon()
 
   expect_equal(g$aes_params, setNames(list(), character()))
@@ -68,7 +68,7 @@ test_that("it set's up the geom correctly", {
   expect_equal(g$geom_params, list(icons_size = 8L, icons_position = "top right", na.rm = FALSE))
   expect_false(g$inherit.aes)
   expect_equal(
-    sapply(g$mapping, quo_name),
+    sapply(g$mapping, rlang::as_label),
     c(type = "type", icon = "icon")
   )
   expect_s3_class(g$position, "PositionIdentity")
@@ -77,7 +77,7 @@ test_that("it set's up the geom correctly", {
   expect_equal(g$stat_params, list(na.rm = FALSE))
 })
 
-test_that("it set's up GeomPTDIcon correctly", {
+test_that("it sets up GeomPTDIcon correctly", {
   expect_equal(unclass(GeomPTDIcon$default_aes), setNames(list(), character()))
   expect_equal(GeomPTDIcon$required_aes, c("type", "icon"))
   expect_s3_class(GeomPTDIcon, c("GeomPTDIcon", "Geom", "ggproto", "gg"))
@@ -109,7 +109,7 @@ test_that("ptd_get_icons transforms the data correctly", {
 
   expect_equal(
     ptd_get_icons(s1),
-    tibble(
+    tibble::tibble(
       f = "no facet",
       type = "variation",
       icon = "NHSRplotthedots/icons/variation/common_cause.svg"
@@ -119,7 +119,7 @@ test_that("ptd_get_icons transforms the data correctly", {
   s2 <- ptd_spc(d, "y", "x", target = 0.5)
   expect_equal(
     ptd_get_icons(s2),
-    tibble(
+    tibble::tibble(
       f = c("no facet", "no facet"),
       type = c("variation", "assurance"),
       icon = paste("NHSRplotthedots/icons", c("variation/common_cause.svg", "assurance/inconsistent.svg"), sep = "/")
@@ -129,7 +129,7 @@ test_that("ptd_get_icons transforms the data correctly", {
   s3 <- ptd_spc(d, "y", "x", facet = "f")
   expect_equal(
     ptd_get_icons(s3),
-    tibble(
+    tibble::tibble(
       f = c(0, 1),
       type = c("variation", "variation"),
       icon = rep("NHSRplotthedots/icons/variation/common_cause.svg", 2)
@@ -139,7 +139,7 @@ test_that("ptd_get_icons transforms the data correctly", {
   s4 <- ptd_spc(d, "y", "x", facet = "f", target = 0.5)
   expect_equal(
     ptd_get_icons(s4),
-    tibble(
+    tibble::tibble(
       f = c(0, 1, 0, 1),
       type = rep(c("variation", "assurance"), each = 2),
       icon = rep(
@@ -153,7 +153,7 @@ test_that("ptd_get_icons transforms the data correctly", {
   s5 <- ptd_spc(d, "y", "x", target = -3)
   expect_equal(
     ptd_get_icons(s5),
-    tibble(
+    tibble::tibble(
       f = rep("no facet", 2),
       type = c("variation", "assurance"),
       icon = paste("NHSRplotthedots/icons", c("variation/improvement_high.svg", "assurance/pass.svg"), sep = "/")
@@ -163,7 +163,7 @@ test_that("ptd_get_icons transforms the data correctly", {
   s6 <- ptd_spc(d, "y", "x", target = -3, improvement_direction = "decrease")
   expect_equal(
     ptd_get_icons(s6),
-    tibble(
+    tibble::tibble(
       f = rep("no facet", 2),
       type = c("variation", "assurance"),
       icon = paste("NHSRplotthedots/icons", c("variation/concern_high.svg", "assurance/fail.svg"), sep = "/")
@@ -174,7 +174,7 @@ test_that("ptd_get_icons transforms the data correctly", {
   s7 <- ptd_spc(d, "y", "x", target = 3)
   expect_equal(
     ptd_get_icons(s7),
-    tibble(
+    tibble::tibble(
       f = rep("no facet", 2),
       type = c("variation", "assurance"),
       icon = paste("NHSRplotthedots/icons", c("variation/concern_low.svg", "assurance/fail.svg"), sep = "/")
@@ -184,7 +184,7 @@ test_that("ptd_get_icons transforms the data correctly", {
   s8 <- ptd_spc(d, "y", "x", target = 3, improvement_direction = "decrease")
   expect_equal(
     ptd_get_icons(s8),
-    tibble(
+    tibble::tibble(
       f = rep("no facet", 2),
       type = c("variation", "assurance"),
       icon = paste("NHSRplotthedots/icons", c("variation/improvement_low.svg", "assurance/pass.svg"), sep = "/")
@@ -194,7 +194,7 @@ test_that("ptd_get_icons transforms the data correctly", {
   s9 <- ptd_spc(d, "y", "x", target = 3, improvement_direction = "neutral")
   expect_equal(
     ptd_get_icons(s9),
-    tibble(
+    tibble::tibble(
       f = "no facet",
       type = "variation",
       icon = "NHSRplotthedots/icons/variation/neutral_low.svg"

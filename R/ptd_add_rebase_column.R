@@ -4,7 +4,7 @@
 
 ptd_add_rebase_column <- function(.data, date_field, facet_field, rebase) {
   if (is.list(rebase)) {
-    rebase_table <- bind_rows(
+    rebase_table <- dplyr::bind_rows(
       lapply(seq_along(rebase), function(i) {
         data.frame(d = to_datetime(rebase[[i]]), f = names(rebase)[[i]], rebase = 1)
       })
@@ -12,8 +12,8 @@ ptd_add_rebase_column <- function(.data, date_field, facet_field, rebase) {
     colnames(rebase_table) <- c(date_field, facet_field, "rebase")
 
     .data <- .data %>%
-      left_join(rebase_table, by = c(date_field, facet_field)) %>%
-      mutate(across(rebase, ~ ifelse(is.na(.x), 0, 1)))
+      dplyr::left_join(rebase_table, by = c(date_field, facet_field)) %>%
+      dplyr::mutate(across(rebase, ~ ifelse(is.na(.x), 0, 1)))
   } else if (!is.null(rebase)) {
     # in with NULL returns FALSE, so this is suitable even if rebase isn't provided
     .data$rebase <- as.numeric(.data[[date_field]] %in% to_datetime(rebase))

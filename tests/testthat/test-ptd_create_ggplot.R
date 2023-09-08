@@ -262,18 +262,21 @@ test_that("it breaks lines", {
 test_that("it sets the colour of the points based on the type", {
   m <- mock()
 
-  stub(ptd_create_ggplot, "scale_colour_manual", m)
+  stub(ptd_create_ggplot, "ggplot2::scale_colour_manual", m)
 
   set.seed(123)
-  d <- data.frame(x = as.Date("2020-01-01") + 1:20, y = rnorm(20))
+  d <- data.frame(x = as.Date("2020-01-01") + 1:20, y = rnorm(20)) |>
+    # introduce some special cause variation!
+    dplyr::mutate(
+      across("y", \(y) dplyr::case_when(x > "2020-01-15" ~ y + 0.5, TRUE ~ y)))
 
   colours_neutral <- list(
-    common_cause              = "#7B7D7D", # grey
+    common_cause              = "#7b7d7d", # grey
     special_cause_neutral     = "#361475" # purple
   )
 
   colours_otherwise <- list(
-    common_cause              = "#7B7D7D", # grey
+    common_cause              = "#7b7d7d", # grey
     special_cause_improvement = "#289de0", # blue
     special_cause_concern     = "#fab428" # orange
   )

@@ -32,7 +32,7 @@ test_that("it throws an error if .data is not a data.frame or SharedData", {
     ptd_spc.data.frame <- m # Exclude Linting
     ptd_spc.SharedData <- m # Exclude Linting
 
-    sd <- sd <- structure(
+    sd <- structure(
       list(
         origData = function() data,
         key = function() "key",
@@ -366,7 +366,7 @@ test_that("it outputs expected content", {
   )
   expect_snapshot_output(summary(s4))
 
-  m <- mock(tibble(f = "no facet", assurance_type = "a"))
+  m <- mock(tibble::tibble(f = "no facet", assurance_type = "a"))
   stub(summary.ptd_spc_df, "ptd_calculate_assurance_type", m)
 
   s5 <- ptd_spc.data.frame(d, "y", "x", target = 0.5)

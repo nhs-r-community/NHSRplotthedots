@@ -1,35 +1,33 @@
 #' Calculate point highlighting (internal function)
 #'
-#' Performs calculations to identify which data points should be highlighted in the final plot
-#'   based on points outside process limits, trends, shifts, etc.
+#' Performs calculations to identify which data points should be highlighted in
+#'  the final plot based on points outside process limits, trends, shifts, etc.
 #'
 #' @param .data A data frame containing the information to be plotted.
-#' @param improvement_direction An integer signifying whether improvement is represented by increasing or decreasing
-#'     values
-#' @return The calculated data frame
+#' @param improvement_direction An integer signifying whether improvement is
+#'  represented by increasing or decreasing values.
+#' @returns The calculated data frame
 #'
 #' @noRd
-#'
-
 ptd_calculate_point_type <- function(.data, improvement_direction) {
   # Begin plot the dots logical tests
   .data %>%
-    group_by(.data$f, .data$rebase_group) %>%
-    mutate(
+    dplyr::group_by(.data$f, .data$rebase_group) %>%
+    dplyr::mutate(
       special_cause_flag = ptd_special_cause_flag(
         .data$y,
         .data$relative_to_mean,
         .data$close_to_limits,
         .data$outside_limits
       ),
-      point_type = case_when(
-        !special_cause_flag ~ "common_cause",
+      point_type = dplyr::case_when(
+        special_cause_flag == 0 ~ "common_cause",
         improvement_direction == 0 ~ paste0("special_cause_neutral_", ifelse(relative_to_mean > 0, "high", "low")),
         relative_to_mean == improvement_direction ~ "special_cause_improvement",
         TRUE ~ "special_cause_concern"
       )
     ) %>%
-    ungroup()
+    dplyr::ungroup()
 }
 
 ptd_seven_point_one_side_mean <- function(v) {
