@@ -8,6 +8,7 @@ ptd_validate_plot_options <- function(point_size = NULL,
                                       x_axis_date_format = NULL,
                                       x_axis_breaks = NULL,
                                       y_axis_breaks = NULL,
+                                      limit_annotations = NULL,
                                       icons_size = NULL,
                                       icons_position = NULL,
                                       colours = NULL,
@@ -96,6 +97,14 @@ ptd_validate_plot_options <- function(point_size = NULL,
       is.numeric(y_axis_breaks),
       assertthat::is.scalar(y_axis_breaks),
       msg = "y_axis_breaks argument must be a numeric of length 1."
+    )
+  }
+
+  if (!is.null(limit_annotations)) {
+    assertthat::assert_that(
+      is.logical(limit_annotations),
+      assertthat::is.scalar(limit_annotations),
+      msg = "limit_annotations argument must be a logical of length 1."
     )
   }
 

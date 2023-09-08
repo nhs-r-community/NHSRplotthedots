@@ -27,6 +27,8 @@
 #'  Value should be a numeric vector of length 1, either an integer for integer
 #'  scales or a decimal value for percentage scales. This option is ignored if
 #'  faceting is in use.
+#' @param limit_annotations Whether to add a secondary y axis that just provides
+#'  annotations for the values of the UCL, LCL and mean.
 #' @param icons_size The size of the icons, defined in terms of font size.
 #'  Defaults to 8.
 #' @param icons_position Where to show the icons, either "top right" (default),
@@ -52,6 +54,7 @@ ptd_create_ggplot <- function(
     x_axis_date_format = "%d/%m/%y",
     x_axis_breaks = NULL,
     y_axis_breaks = NULL,
+    limit_annotations = FALSE,
     icons_size = 8L,
     icons_position = c("top right", "bottom right", "bottom left", "top left", "none"),
     colours = ptd_spc_colours(),
@@ -107,6 +110,7 @@ ptd_create_ggplot <- function(
     x_axis_date_format,
     x_axis_breaks,
     y_axis_breaks,
+    limit_annotations,
     icons_size,
     icons_position,
     colours,
@@ -139,78 +143,78 @@ ptd_create_ggplot <- function(
   break_limits <- break_lines %in% c("both", "limits")
   break_process <- break_lines %in% c("both", "process")
 
-  plot <- ggplot(.data, aes(x = .data$x, y = .data$y)) +
-    geom_line(
+  plot <- ggplot2::ggplot(.data, aes(x = .data$x, y = .data$y)) +
+    ggplot2::geom_line(
       aes(y = .data$upl, group = if (break_limits) .data$rebase_group else 0),
       linetype = "dashed",
       linewidth = line_size,
       colour = colours$upl
     ) +
-    geom_line(
+    ggplot2::geom_line(
       aes(y = .data$lpl, group = if (break_limits) .data$rebase_group else 0),
       linetype = "dashed",
       linewidth = line_size,
       colour = colours$lpl
     ) +
-    geom_line(
+    ggplot2::geom_line(
       aes(y = .data$target),
       linetype = "dashed",
       linewidth = line_size,
       colour = colours$target,
       na.rm = TRUE
     ) +
-    geom_line(
+    ggplot2::geom_line(
       aes(y = .data$trajectory),
       linetype = "dashed",
       linewidth = line_size,
       colour = colours$trajectory,
       na.rm = TRUE
     ) +
-    geom_line(
-      aes(y = mean, group = if (break_limits) .data$rebase_group else 0),
+    ggplot2::geom_line(
+      aes(y = .data$mean_col, group = if (break_limits) .data$rebase_group else 0),
       linetype = "solid",
       colour = colours$mean_line
     ) +
-    geom_line(
+    ggplot2::geom_line(
       aes(group = if (break_process) .data$rebase_group else 0),
       linetype = "solid",
       linewidth = line_size,
       colour = colours$value_line
     ) +
-    geom_point(aes(colour = .data$point_colour), size = point_size) +
-    scale_colour_manual(
+    ggplot2::geom_point(aes(colour = .data$point_colour), size = point_size) +
+    ggplot2::scale_colour_manual(
       values = colours_subset,
       labels = ptd_title_case
     ) +
-    labs(
+    ggplot2::labs(
       title = main_title,
       x = x_axis_label,
       y = y_axis_label,
       caption = caption,
       group = NULL
     ) +
-    theme_minimal() +
-    theme(
+    ggplot2::theme_minimal() +
+    ggplot2::theme(
       # border around whole plot
-      plot.background = element_rect(colour = "grey", linewidth = 1),
+      plot.background = ggplot2::element_rect(colour = "grey", linewidth = 1),
       # 5mm of white space around plot edge
-      plot.margin = unit(c(5, 5, 5, 5), "mm"),
-      axis.text.x = element_text(angle = 45, hjust = 1),
-      panel.grid = element_line(colour = "grey70"), # gridline colour
-      panel.grid.major.x = element_blank(), # remove major x gridlines
-      panel.grid.minor.x = element_blank(), # remove minor x gridlines
+      plot.margin = grid::unit(c(5, 5, 5, 5), "mm"),
+      axis.text.x = ggplot2::element_text(angle = 45, hjust = 1),
+      panel.grid = ggplot2::element_line(colour = "grey70"), # gridline colour
+      panel.grid.major.x = ggplot2::element_blank(), # remove major x gridlines
+      panel.grid.minor.x = ggplot2::element_blank(), # remove minor x gridlines
       legend.position = "bottom",
-      legend.title = element_blank()
+      legend.title = ggplot2::element_blank()
     ) +
     theme_override
 
   plot <- plot + if (is.null(x_axis_breaks)) {
-    scale_x_datetime(
+    ggplot2::scale_x_datetime(
       breaks = sort(unique(.data$x)),
       date_labels = x_axis_date_format
     )
   } else {
-    scale_x_datetime(
+    ggplot2::scale_x_datetime(
       date_breaks = x_axis_breaks,
       date_labels = x_axis_date_format
     )
@@ -219,29 +223,77 @@ ptd_create_ggplot <- function(
   # Apply facet wrap if a facet field is present
   if (!is.null(options$facet_field)) {
     # For multiple facet chart, derived fixed/free scales value from x and y axis properties
-    faces_scales <- if (fixed_x_axis_multiple) {
+    facet_scales <- if (fixed_x_axis_multiple) {
       ifelse(fixed_y_axis_multiple, "fixed", "free_y")
     } else {
       ifelse(fixed_y_axis_multiple, "free_x", "free")
     }
 
     plot <- plot +
-      facet_wrap(vars(.data$f), scales = faces_scales)
+      ggplot2::facet_wrap(vars(.data$f), scales = facet_scales)
   }
 
+  sec_breaks <- .data |>
+    dplyr::select(all_of(c("lpl", "mean_col", "upl"))) |>
+    dplyr::slice_head(n = 1) |>
+    unlist() |>
+    unname()
+
   if (percentage_y_axis %||% FALSE) {
-    plot <- plot +
-      scale_y_continuous(labels = scales::label_percent(y_axis_breaks))
+    if (limit_annotations) {
+      plot <- plot +
+        ggplot2::scale_y_continuous(
+          labels = scales::label_percent(y_axis_breaks),
+          sec.axis = ggplot2::sec_axis(
+            trans = \(x) x,
+            name = NULL,
+            breaks = sec_breaks |>
+              scales::label_percent(accuracy = 0.1)
+          )
+        )
+    } else {
+      plot <- plot +
+        ggplot2::scale_y_continuous(labels = scales::label_percent(y_axis_breaks))
+    }
   } else if (!is.null(y_axis_breaks)) {
     yaxis <- c(.data[["y"]], .data[["upl"]], .data[["lpl"]], .data[["target"]])
     start <- floor(min(yaxis, na.rm = TRUE) / y_axis_breaks) * y_axis_breaks
     end <- max(yaxis, na.rm = TRUE)
-
     y_axis_labels <- seq(from = start, to = end, by = y_axis_breaks)
 
-    plot <- plot +
-      scale_y_continuous(breaks = y_axis_labels, labels = y_axis_labels)
-  }
+    if (limit_annotations) {
+      plot <- plot +
+        ggplot2::scale_y_continuous(
+          breaks = y_axis_labels,
+          labels = y_axis_labels,
+          sec.axis = ggplot2::sec_axis(
+            trans = \(x) x,
+            name = NULL,
+            breaks = round(sec_breaks, 3)
+          )
+        )
+    } else {
+      plot <- plot +
+        ggplot2::scale_y_continuous(
+          breaks = y_axis_labels,
+          labels = y_axis_labels
+        )
+    }
+  } else {
+      if (limit_annotations) {
+        plot <- plot +
+          ggplot2::scale_y_continuous(
+            sec.axis = ggplot2::sec_axis(
+              trans = \(x) x,
+              name = NULL,
+              breaks = round(sec_breaks, 3)
+              )
+            )
+      } else {
+        plot <- plot +
+          ggplot2::scale_y_continuous()
+      }
+    }
 
   if (icons_position != "none") {
     plot <- plot +
@@ -266,6 +318,7 @@ plot.ptd_spc_df <- function(
     x_axis_date_format = "%d/%m/%y",
     x_axis_breaks = NULL,
     y_axis_breaks = NULL,
+    limit_annotations = FALSE,
     icons_size = 8L,
     icons_position = c("top right", "bottom right", "bottom left", "top left", "none"),
     colours = ptd_spc_colours(),
@@ -286,6 +339,7 @@ plot.ptd_spc_df <- function(
     x_axis_date_format,
     x_axis_breaks,
     y_axis_breaks,
+    limit_annotations,
     icons_size,
     icons_position,
     colours,
