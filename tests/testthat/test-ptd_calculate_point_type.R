@@ -16,7 +16,7 @@ test_that("it calls functions as expected (no facet groups)", {
   m2 <- mock("point_type")
 
   stub(ptd_calculate_point_type, "ptd_special_cause_flag", m1)
-  stub(ptd_calculate_point_type, "case_when", m2)
+  stub(ptd_calculate_point_type, "dplyr::case_when", m2)
 
   ptd_calculate_point_type(a, "improvement_direction")
 
@@ -24,8 +24,8 @@ test_that("it calls functions as expected (no facet groups)", {
   expect_called(m2, 1)
 
   expect_args(m1, 1, a$y, a$relative_to_mean, a$close_to_limits, a$outside_limits)
-  expect_call(m2, 1, case_when(
-    !special_cause_flag ~ "common_cause",
+  expect_call(m2, 1, dplyr::case_when(
+    special_cause_flag == 0 ~ "common_cause",
     improvement_direction == 0 ~ paste0("special_cause_neutral_", ifelse(relative_to_mean > 0, "high", "low")),
     relative_to_mean == improvement_direction ~ "special_cause_improvement",
     TRUE ~ "special_cause_concern"
@@ -46,7 +46,7 @@ test_that("it calls functions as expected (with facet groups)", {
   m2 <- mock("ptd_point_type", cycle = TRUE)
 
   stub(ptd_calculate_point_type, "ptd_special_cause_flag", m1)
-  stub(ptd_calculate_point_type, "case_when", m2)
+  stub(ptd_calculate_point_type, "dplyr::case_when", m2)
 
   ptd_calculate_point_type(a, 1)
 
@@ -56,8 +56,8 @@ test_that("it calls functions as expected (with facet groups)", {
 
 test_that("it returns the mutated data", {
   d <- data.frame(f = 1)
-  stub(ptd_calculate_point_type, "mutate", "mutate")
-  stub(ptd_calculate_point_type, "ungroup", "ungroup")
+  stub(ptd_calculate_point_type, "dplyr::mutate", "mutate")
+  stub(ptd_calculate_point_type, "dplyr::ungroup", "ungroup")
 
   a <- ptd_calculate_point_type(d, 1)
 
@@ -67,12 +67,12 @@ test_that("it returns the mutated data", {
 test_that("it groups and ungroups the data", {
   d <- data.frame(f = 1, rebase_group = 0)
 
-  stub(ptd_calculate_point_type, "mutate", function(x, ...) x)
-  stub(ptd_calculate_point_type, "ungroup", identity)
+  stub(ptd_calculate_point_type, "dplyr::mutate", function(x, ...) x)
+  stub(ptd_calculate_point_type, "dplyr::ungroup", identity)
 
   a <- ptd_calculate_point_type(d, 1)
 
-  expect_equal(groups(a), list(as.symbol("f"), as.symbol("rebase_group")))
+  expect_equal(dplyr::groups(a), list(as.symbol("f"), as.symbol("rebase_group")))
 })
 
 # ptd_seven_point_one_side_mean() ----

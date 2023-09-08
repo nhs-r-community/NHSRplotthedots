@@ -31,6 +31,7 @@ Imports:
     dplyr,
     ggplot2,
     grid,
+    magrittr,
     plotly,
     rlang,
     rsvg,
@@ -44,9 +45,11 @@ Suggests:
     lintr (>= 3.0.0),
     mockery,
     NHSRdatasets,
+    pillar,
     rmarkdown,
     spelling,
     testthat (>= 3.0.0),
+    tibble,
     utils,
     withr
 Depends: R (>= 4.1.0)

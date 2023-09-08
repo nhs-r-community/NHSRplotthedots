@@ -78,7 +78,7 @@ test_that("it sets the rebase_group field", {
 
   # when rebase is set
   o$rebase <- "rebase"
-  data <- mutate(data, rebase = c(rep(0, 10), 1, rep(0, 9)))
+  data <- dplyr::mutate(data, rebase = c(rep(0, 10), 1, rep(0, 9)))
   r2 <- ptd_spc_standard(data, o)
   expect_equal(r2$rebase_group, c(rep(0, 10), rep(1, 10)))
 })
