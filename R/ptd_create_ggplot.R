@@ -230,7 +230,7 @@ ptd_create_ggplot <- function(
     }
 
     plot <- plot +
-      ggplot2::facet_wrap(vars(.data$f), scales = facet_scales)
+      ggplot2::facet_wrap(ggplot2::vars(.data$f), scales = facet_scales)
   }
 
   sec_breaks <- .data |>

@@ -61,7 +61,7 @@ GeomPTDIcon <- ggplot2::ggproto( # Exclude Linting
   "GeomPTDIcon",
   ggplot2::Geom,
   required_aes = c("type", "icon"),
-  default_aes = ggplot2::aes(),
+  default_aes = aes(),
   extra_params = c("na.rm", "icons_size", "icons_position"),
   draw_key = ggplot2::draw_key_point,
   draw_panel = geom_ptd_icon_draw_panel
@@ -90,7 +90,7 @@ geom_ptd_icon <- function(
   # to be used in any other way
   ggplot2::layer(
     geom = GeomPTDIcon,
-    mapping = ggplot2::aes(type = .data$type, icon = .data$icon),
+    mapping = aes(type = .data$type, icon = .data$icon),
     data = if (is.null(data)) ptd_get_icons else ptd_get_icons(data),
     stat = "identity",
     position = "identity",

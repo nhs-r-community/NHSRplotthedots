@@ -110,10 +110,10 @@ test_that("it facets the plot if facet_field is set", {
 
 test_that("it sets the x_axis_breaks correctly", {
   m <- mock()
-  stub(ptd_create_ggplot, "scale_x_datetime", m)
+  stub(ptd_create_ggplot, "ggplot2::scale_x_datetime", m)
 
   set.seed(123)
-  d <- data.frame(x = to_datetime("2020-01-01") + 1:20, y = rnorm(20))
+  d <- data.frame(x = as.POSIXct("2020-01-01") + 1:20, y = rnorm(20))
   s <- ptd_spc(d, "y", "x")
 
   attr(d$x, "tzone") <- ""
