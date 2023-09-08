@@ -8,7 +8,7 @@ test_that("it raises an error if unknown arguments are passed", {
       ptd_create_ggplot(NULL, X = 1, Y = 2),
       silent = TRUE
     ),
-    "Unknown arguments provided by plot: X, Y\nCheck for common spelling mistakes in arguments.",
+    "Unknown arguments provided by plot: X, Y.\nCheck for common spelling mistakes in arguments.",
     fixed = TRUE
   )
 })
@@ -93,7 +93,7 @@ test_that("it returns a ggplot object", {
   )
 })
 
-test_that("it facet's the plot if facet_field is set", {
+test_that("it facets the plot if facet_field is set", {
   set.seed(123)
   d <- data.frame(x = as.Date("2020-01-01") + 1:20, y = rnorm(20), g = rep(c(1, 2), each = 10))
 
@@ -221,7 +221,7 @@ test_that("it adds theme_override to the plot", {
   p1 <- ptd_create_ggplot(s)
   expect_equal(p1$theme$panel.background$fill, NULL)
 
-  p2 <- ptd_create_ggplot(s, theme_override = theme(panel.background = element_rect("black")))
+  p2 <- ptd_create_ggplot(s, theme_override = ggplot2::theme(panel.background = ggplot2::element_rect("black")))
   expect_equal(p2$theme$panel.background$fill, "black")
 })
 
@@ -316,7 +316,7 @@ test_that("a plot with short rebase group has a warning caption", {
   expect_equal(
     p2$labels$caption,
     paste0(
-      "Some trial limits created by groups of fewer than 12 points exist. \n",
+      "Some trial limits created by groups of fewer than 12 points exist.\n",
       "These will become more reliable as more data is added."
     )
   )
