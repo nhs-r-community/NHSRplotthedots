@@ -2,9 +2,11 @@
 #'
 #' Creates a plotly object using the parameters passed in.
 #'
-#' @inheritParams ptd_create_ggplot
+#' @param point_size Specify the plotting point size for the plotly output.
+#'  The default is 4.
 #' @param icons_size The size of the icons, defined in terms of font size.
-#'  Defaults to 0.15.
+#'  The default is 0.15.
+#' @inheritParams ptd_create_ggplot
 #' @returns A plotly object
 #' @export
 ptd_create_plotly <- function(
