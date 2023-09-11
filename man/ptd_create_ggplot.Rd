@@ -16,7 +16,7 @@ ptd_create_ggplot(
   x_axis_date_format = "\%d/\%m/\%y",
   x_axis_breaks = NULL,
   y_axis_breaks = NULL,
-  limit_annotations = FALSE,
+  label_limits = FALSE,
   icons_size = 8L,
   icons_position = c("top right", "bottom right", "bottom left", "top left", "none"),
   colours = ptd_spc_colours(),
@@ -62,8 +62,8 @@ Value should be a numeric vector of length 1, either an integer for integer
 scales or a decimal value for percentage scales. This option is ignored if
 faceting is in use.}
 
-\item{limit_annotations}{Whether to add a secondary y axis that just provides
-annotations for the values of the UCL, LCL and mean.}
+\item{label_limits}{Whether to add a secondary y axis that just provides
+labels for the values of the UCL, LCL and mean.}
 
 \item{icons_size}{The size of the icons, defined in terms of font size.
 Defaults to 8.}
