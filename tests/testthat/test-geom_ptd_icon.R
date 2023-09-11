@@ -65,7 +65,7 @@ test_that("it sets up the geom correctly", {
   expect_equal(g$aes_params, setNames(list(), character()))
   expect_s3_class(g$data, "ggproto_method")
   expect_s3_class(g$geom, "GeomPTDIcon")
-  expect_equal(g$geom_params, list(icons_size = 8L, icons_position = "top right", na.rm = FALSE))
+  expect_equal(g$geom_params, list(icons_size = 8L, icons_position = "top right", na.rm = FALSE)) # nolint
   expect_false(g$inherit.aes)
   expect_equal(
     sapply(g$mapping, rlang::as_label),
@@ -122,7 +122,7 @@ test_that("ptd_get_icons transforms the data correctly", {
     tibble::tibble(
       f = c("no facet", "no facet"),
       type = c("variation", "assurance"),
-      icon = paste("NHSRplotthedots/icons", c("variation/common_cause.svg", "assurance/inconsistent.svg"), sep = "/")
+      icon = paste("NHSRplotthedots/icons", c("variation/common_cause.svg", "assurance/inconsistent.svg"), sep = "/") # nolint
     )
   )
 
@@ -143,7 +143,7 @@ test_that("ptd_get_icons transforms the data correctly", {
       f = c(0, 1, 0, 1),
       type = rep(c("variation", "assurance"), each = 2),
       icon = rep(
-        paste("NHSRplotthedots/icons", c("variation/common_cause.svg", "assurance/inconsistent.svg"), sep = "/"),
+        paste("NHSRplotthedots/icons", c("variation/common_cause.svg", "assurance/inconsistent.svg"), sep = "/"), # nolint
         each = 2
       )
     )
@@ -156,7 +156,7 @@ test_that("ptd_get_icons transforms the data correctly", {
     tibble::tibble(
       f = rep("no facet", 2),
       type = c("variation", "assurance"),
-      icon = paste("NHSRplotthedots/icons", c("variation/improvement_high.svg", "assurance/pass.svg"), sep = "/")
+      icon = paste("NHSRplotthedots/icons", c("variation/improvement_high.svg", "assurance/pass.svg"), sep = "/") # nolint
     )
   )
 
@@ -166,7 +166,7 @@ test_that("ptd_get_icons transforms the data correctly", {
     tibble::tibble(
       f = rep("no facet", 2),
       type = c("variation", "assurance"),
-      icon = paste("NHSRplotthedots/icons", c("variation/concern_high.svg", "assurance/fail.svg"), sep = "/")
+      icon = paste("NHSRplotthedots/icons", c("variation/concern_high.svg", "assurance/fail.svg"), sep = "/") # nolint
     )
   )
 
@@ -177,7 +177,7 @@ test_that("ptd_get_icons transforms the data correctly", {
     tibble::tibble(
       f = rep("no facet", 2),
       type = c("variation", "assurance"),
-      icon = paste("NHSRplotthedots/icons", c("variation/concern_low.svg", "assurance/fail.svg"), sep = "/")
+      icon = paste("NHSRplotthedots/icons", c("variation/concern_low.svg", "assurance/fail.svg"), sep = "/") # nolint
     )
   )
 
@@ -187,7 +187,7 @@ test_that("ptd_get_icons transforms the data correctly", {
     tibble::tibble(
       f = rep("no facet", 2),
       type = c("variation", "assurance"),
-      icon = paste("NHSRplotthedots/icons", c("variation/improvement_low.svg", "assurance/pass.svg"), sep = "/")
+      icon = paste("NHSRplotthedots/icons", c("variation/improvement_low.svg", "assurance/pass.svg"), sep = "/") # nolint
     )
   )
 
@@ -203,15 +203,16 @@ test_that("ptd_get_icons transforms the data correctly", {
 })
 
 test_that("GeomPTDIcon draw panel works as expected", {
-  # note: grid creates grob's and numbers them... this test could break if other grob's happen to be created before
-  # this test is run. run testthat::accept_snapshot() in those cases
+  # note: grid creates grobs and numbers them... this test could break if
+  # other grobs happen to be created before this test is run.
+  # run testthat::accept_snapshot() in those cases
   expect_snapshot(
     GeomPTDIcon$draw_panel(
       data = data.frame(
         type = c("variation", "assurance"),
         icon = c(
-          system.file("icons", "variation", "improvement_low.svg", package = "NHSRplotthedots"),
-          system.file("icons", "assurance", "pass.svg", package = "NHSRplotthedots")
+          system.file("icons", "variation", "improvement_low.svg", package = "NHSRplotthedots"), # nolint
+          system.file("icons", "assurance", "pass.svg", package = "NHSRplotthedots") # nolint
         )
       ),
       panel_params = list(),

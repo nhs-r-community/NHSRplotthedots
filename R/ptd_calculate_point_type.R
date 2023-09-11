@@ -22,9 +22,9 @@ ptd_calculate_point_type <- function(.data, improvement_direction) {
       ),
       point_type = dplyr::case_when(
         special_cause_flag == 0 ~ "common_cause",
-        improvement_direction == 0 ~ paste0("special_cause_neutral_", ifelse(relative_to_mean > 0, "high", "low")),
+        improvement_direction == 0 ~ paste0("special_cause_neutral_", ifelse(relative_to_mean > 0, "high", "low")), # nolint
         relative_to_mean == improvement_direction ~ "special_cause_improvement",
-        TRUE ~ "special_cause_concern"
+        TRUE ~ "special_cause_concern" # nolint
       )
     ) %>%
     dplyr::ungroup()
@@ -88,9 +88,9 @@ ptd_part_of_two_in_three <- function(v, x) {
 }
 
 ptd_special_cause_flag <- function(y, relative_to_mean, close_to_limits, outside_limits) {
-  part_seven_point_one_side_mean <- ptd_part_of_seven_trend(ptd_seven_point_one_side_mean(relative_to_mean))
+  part_seven_point_one_side_mean <- ptd_part_of_seven_trend(ptd_seven_point_one_side_mean(relative_to_mean)) # nolint
   part_seven_point_trend <- ptd_part_of_seven_trend(ptd_seven_point_trend(y))
-  part_two_in_three <- ptd_part_of_two_in_three(ptd_two_in_three(close_to_limits, relative_to_mean), close_to_limits)
+  part_two_in_three <- ptd_part_of_two_in_three(ptd_two_in_three(close_to_limits, relative_to_mean), close_to_limits) # nolint
 
   as.numeric(
     abs(outside_limits) == 1 |

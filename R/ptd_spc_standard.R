@@ -36,7 +36,8 @@ ptd_spc_standard <- function(.data, options = NULL) {
   }
 
   # Set facet/grouping or create pseudo
-  # If no facet field specified, bind a pseudo-facet field for grouping/joining purposes
+  # If no facet field specified, bind a pseudo-facet field for
+  # grouping/joining purposes
   if (is.null(facet_field)) {
     .data$facet <- "no facet"
   } else {
@@ -90,9 +91,10 @@ ptd_spc_standard <- function(.data, options = NULL) {
       relative_to_mean = sign(.data$y - .data$mean_col),
 
       # Identify if a point is between the near process limits and process limits
-      close_to_limits = !.data$outside_limits & (.data$y < .data$nlpl | .data$y > .data$nupl)
+      close_to_limits = !.data$outside_limits & (.data$y < .data$nlpl | .data$y > .data$nupl) # nolint
     ) %>%
-    # clean up by removing columns that no longer serve a purpose and ungrouping data
+    # clean up by removing columns that no longer serve a purpose and
+    # ungrouping data
     dplyr::select(-any_of(c("mr", "nlpl", "nupl", "amr", "rebase"))) %>%
     dplyr::ungroup()
 }

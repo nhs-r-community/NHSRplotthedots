@@ -6,17 +6,20 @@ geom_ptd_icon_draw_panel <- function(
     icons_size = 8,
     icons_position = c("top right", "bottom right", "bottom left", "top left")) {
   icons_position <- match.arg(icons_position)
-  # match the icons_position to x,y coordinates. either {0, 1}, but shift in by 0.01 so icons don't clip
+  # match the icons_position to x,y coordinates. either {0, 1}, but shift in by
+  # 0.01 so icons don't clip
   icons_position_x <- abs(as.numeric(grepl("right$", icons_position)) - 0.01)
   icons_position_y <- abs(as.numeric(grepl("^top", icons_position)) - 0.01)
 
-  # figure out how to justify the icons viewport, this should be two strings like c("right", "top")
+  # figure out how to justify the icons viewport, this should be two strings
+  # like c("right", "top")
   just <- rev(strsplit(icons_position, " ")[[1]])
 
   # icons_size defines the font size, radius needs to be smaller than that
   radius <- icons_size / 16
 
-  # use the coord transformation for the colours, but then set the x, y coordinates manually (inside the viewport)
+  # use the coord transformation for the colours, but then set the x, y
+  # coordinates manually (inside the viewport)
   d <- coord$transform(data, panel_params) %>%
     dplyr::mutate(
       x = ifelse(.data$type == "variation", 3.5 * radius, radius),
@@ -100,7 +103,8 @@ geom_ptd_icon <- function(
   )
 }
 
-# function to transform the data: this takes the raw ptd spc data and returns two rows per facet:
+# function to transform the data: this takes the raw ptd spc data and returns
+# two rows per facet:
 #  - one row for the variation icon
 #  - one row for the assurance icon (if applicable)
 ptd_get_icons <- function(.x) {

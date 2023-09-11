@@ -4,7 +4,8 @@ library(mockery)
 # ptd_validate_spc_options() ----
 
 test_that("options must be created by ptd_spc_options()", {
-  expect_error(ptd_validate_spc_options(list(), NULL), "options must be created by ptd_spc_options()")
+  ptd_validate_spc_options(list(), NULL) |>
+    expect_error("options must be created by ptd_spc_options()")
 })
 
 test_that(".data must be a data.frame", {
@@ -20,45 +21,51 @@ test_that(".data must be a data.frame", {
 test_that("it returns an error if value_field does not exist in .data", {
   d <- data.frame(a = Sys.Date(), b = 2)
   o <- ptd_spc_options("x", "b")
-  expect_error(ptd_validate_spc_options(o, d), "value_field: 'x' must be a valid column name in the data frame.")
+  ptd_validate_spc_options(o, d) |>
+    expect_error("value_field: 'x' must be a valid column name in the data frame.")
 })
 
 test_that("it returns an error if date_field does not exist in .data", {
   d <- data.frame(a = Sys.Date(), b = 2)
   o <- ptd_spc_options("b", "x")
-  expect_error(ptd_validate_spc_options(o, d), "date_field: 'x' must be a valid column name in the data frame.")
+  ptd_validate_spc_options(o, d) |>
+    expect_error("date_field: 'x' must be a valid column name in the data frame.")
 })
 
 test_that("it returns an error if facet_field does not exist in .data", {
   d <- data.frame(a = Sys.Date(), b = 2)
   o <- ptd_spc_options("b", "a", facet_field = "c")
-  expect_error(ptd_validate_spc_options(o, d), "facet_field: 'c' must be a valid column name in the data frame.")
+  ptd_validate_spc_options(o, d) |>
+    expect_error("facet_field: 'c' must be a valid column name in the data frame.")
 })
 
-test_that("it returns an error if rebase is a named list, and the names don't appear in the facet column", {
+test_that("it returns an error if rebase is a named list, and the names don't appear in the facet column", { # nolint
   d <- data.frame(a = Sys.Date() + 1:4, b = 1:4, f = c("a", "b", "c", "d"))
 
   o1 <- ptd_spc_options("b", "a", facet_field = "f", rebase = list("a" = d[[1]]))
   ptd_validate_spc_options(o1, d)
 
   o2 <- ptd_spc_options("b", "a", facet_field = "f", rebase = list("A" = d[[1]]))
-  expect_error(ptd_validate_spc_options(o2, d), "options provided to rebase are not in the facet_field column.")
+  ptd_validate_spc_options(o2, d) |>
+    expect_error("options provided to rebase are not in the facet_field column.")
 })
 
-test_that("it returns an error if target is a named list, and the names don't appear in the facet column", {
+test_that("it returns an error if target is a named list, and the names don't appear in the facet column", { # nolint
   d <- data.frame(a = Sys.Date() + 1:4, b = 1:4, f = c("a", "b", "c", "d"))
 
   o1 <- ptd_spc_options("b", "a", facet_field = "f", target = list("a" = 1))
   ptd_validate_spc_options(o1, d)
 
   o2 <- ptd_spc_options("b", "a", facet_field = "f", target = list("A" = 1))
-  expect_error(ptd_validate_spc_options(o2, d), "options provided to target are not in the facet_field column.")
+  ptd_validate_spc_options(o2, d) |>
+    expect_error("options provided to target are not in the facet_field column.")
 })
 
 test_that("it returns an error if trajectory does not exist in .data", {
   d <- data.frame(a = Sys.Date(), b = 2)
   o <- ptd_spc_options("b", "a", trajectory = "c")
-  expect_error(ptd_validate_spc_options(o, d), "trajectory: 'c' must be a valid column name in the data frame.")
+  ptd_validate_spc_options(o, d) |>
+    expect_error("trajectory: 'c' must be a valid column name in the data frame.")
 })
 
 test_that("date_field can only appear once per facet", {

@@ -22,8 +22,15 @@ ptd_validate_spc_options <- function(options, .data) {
   check("facet_field")
   check("trajectory")
 
+  pulled_counts <- .data |>
+    dplyr::group_by(
+      pick(all_of(c(options[["date_field"]], options[["facet_field"]])))
+    ) |>
+    dplyr::count() |>
+    dplyr::pull("n")
+
   assertthat::assert_that(
-    all(dplyr::pull(dplyr::count(dplyr::group_by(.data, dplyr::pick(any_of(c(options[["date_field"]], options[["facet_field"]]))))), "n") == 1),
+    all(pulled_counts == 1),
     msg = paste0("duplicate rows found in '", options[["date_field"]], "'")
   )
 

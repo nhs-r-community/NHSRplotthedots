@@ -28,13 +28,17 @@ test_that("it returns correct data", {
 })
 
 test_that("value_field can only be a scalar character", {
-  expect_error(ptd_spc_options(1), "value_field argument must be a 'character' of length 1.")
-  expect_error(ptd_spc_options(c("a", "b")), "value_field argument must be a 'character' of length 1.")
+  ptd_spc_options(1) |>
+    expect_error("value_field argument must be a 'character' of length 1.")
+  ptd_spc_options(c("a", "b")) |>
+    expect_error("value_field argument must be a 'character' of length 1.")
 })
 
 test_that("date_field can only be a scalar character", {
-  expect_error(ptd_spc_options("a", 1), "date_field argument must be a 'character' of length 1.")
-  expect_error(ptd_spc_options("a", c("a", "b")), "date_field argument must be a 'character' of length 1.")
+  ptd_spc_options("a", 1) |>
+    expect_error("date_field argument must be a 'character' of length 1.")
+  ptd_spc_options("a", c("a", "b")) |>
+    expect_error("date_field argument must be a 'character' of length 1.")
 })
 
 test_that("facet_field is either null, or a scalar character", {
@@ -61,11 +65,19 @@ test_that("rebase is either null, a date, or a named list of dates", {
   ptd_spc_options("a", "b", rebase = list("a" = as.Date("2020-01-01")), facet_field = "a")
 
   # these will cause an error
-  em <- "rebase argument must be a date vector, or a named list of date vectors."
-  expect_error(ptd_spc_options("a", "b", rebase = 1), em)
-  expect_error(ptd_spc_options("a", "b", rebase = c("a", "b")), em)
-  expect_error(ptd_spc_options("a", "b", rebase = list("a" = as.Date("2020-01-01"), b = "a")), em)
-  expect_error(ptd_spc_options("a", "b", rebase = list(as.Date("2020-01-01"))), em)
+  em <- paste0(
+    "rebase argument must be a date vector, ",
+    "or a named list of date vectors."
+  )
+
+  ptd_spc_options("a", "b", rebase = 1) |>
+    expect_error(em)
+  ptd_spc_options("a", "b", rebase = c("a", "b")) |>
+    expect_error(em)
+  ptd_spc_options("a", "b", rebase = list("a" = as.Date("2020-01-01"), b = "a")) |>
+    expect_error(em)
+  ptd_spc_options("a", "b", rebase = list(as.Date("2020-01-01"))) |>
+    expect_error(em)
 })
 
 test_that("rebase must be a date vector if facet_field is not set", {
@@ -73,7 +85,7 @@ test_that("rebase must be a date vector if facet_field is not set", {
   expect_error(ptd_spc_options("a", "b", rebase = list("a" = Sys.Date())), em)
 })
 
-test_that("fix_after_n_points must be a single numeric that is greater than or equal to 12.", {
+test_that("fix_after_n_points must be a single numeric that is greater than or equal to 12.", { # nolint
   expect_error(
     ptd_spc_options("a", "b", fix_after_n_points = "a"),
     "fix_after_n_points must be a single numeric that is greater than or equal to 12."
