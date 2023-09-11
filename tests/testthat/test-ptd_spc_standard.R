@@ -39,8 +39,8 @@ test_that("it returns expected values", {
   expect_true(r1$upl[[1]] != r3$upl[[1]])
   expect_true(r2$upl[[1]] != r3$upl[[1]])
 
-  # check that the range in the 3rd results (when screen_outliers = FALSE) is larger than the range in the 2nd results
-  # (when screen_outliers = TRUE)
+  # check that the range in the 3rd results (when screen_outliers = FALSE)
+  # is larger than the range in the 2nd results (when screen_outliers = TRUE)
   expect_true(r3$upl[[1]] - r3$lpl[[1]] > r2$upl[[1]] - r2$lpl[[1]])
 })
 
@@ -94,7 +94,7 @@ test_that("setting fix_after_n_points changes the calculations", {
   expect_true(s1$upl[[1]] != s0$upl[[1]])
 })
 
-test_that("it only reports special cause for 2of3 points close to limits when they are on the same side of the mean", {
+test_that("it only reports special cause for 2of3 points close to limits when they are on the same side of the mean", { # nolint
   # dataframe of symmetrical data
   dtf <- data.frame(
     data = c(rep(c(1, -1), times = 8)),

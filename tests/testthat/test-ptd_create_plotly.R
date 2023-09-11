@@ -162,7 +162,7 @@ test_that("ptd_create_plotly returns a plotly object (no annotations or icons)",
 })
 
 
-test_that("ptd_create_plotly gives a warning with facet field and icons position not none", {
+test_that("ptd_create_plotly gives a warning with facet field and icons position not none", { # nolint
   mock_plot <- list(
     data = list(
       short_group_warnings = FALSE

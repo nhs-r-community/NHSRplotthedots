@@ -58,7 +58,12 @@ ptd_create_plotly <- function(
 
   if (!is.null(options$facet_field)) {
     if (icons_position != "none") {
-      warning("Facetted plots do not support showing the icons. Setting `icons_position` to \"none\"")
+      warning(
+        paste(
+          "Facetted plots do not support showing the icons.",
+          "Setting `icons_position` to \"none\"."
+        )
+      )
     }
     icons_position <- "none"
   }

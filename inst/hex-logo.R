@@ -107,16 +107,18 @@ hex_logo <- function(
 
   # check if the subplot was provided
   if (missing(subplot)) {
-    subplot <- simple_pointplot(seed = seed,
-                                n_points = n_points,
-                                fill_palette = fill_palette,
-                                fill_palette_breaks = fill_palette_breaks,
-                                line_size = line_size,
-                                line_colour = line_colour,
-                                point_size = point_size,
-                                point_colour = point_colour,
-                                point_shape = point_shape,
-                                point_stroke = point_stroke)
+    subplot <- simple_pointplot(
+      seed = seed,
+      n_points = n_points,
+      fill_palette = fill_palette,
+      fill_palette_breaks = fill_palette_breaks,
+      line_size = line_size,
+      line_colour = line_colour,
+      point_size = point_size,
+      point_colour = point_colour,
+      point_shape = point_shape,
+      point_stroke = point_stroke
+    )
   }
 
   # generate and save sticker

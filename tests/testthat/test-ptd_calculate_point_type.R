@@ -26,7 +26,7 @@ test_that("it calls functions as expected (no facet groups)", {
   expect_args(m1, 1, a$y, a$relative_to_mean, a$close_to_limits, a$outside_limits)
   expect_call(m2, 1, dplyr::case_when(
     special_cause_flag == 0 ~ "common_cause",
-    improvement_direction == 0 ~ paste0("special_cause_neutral_", ifelse(relative_to_mean > 0, "high", "low")),
+    improvement_direction == 0 ~ paste0("special_cause_neutral_", ifelse(relative_to_mean > 0, "high", "low")), # nolint
     relative_to_mean == improvement_direction ~ "special_cause_improvement",
     TRUE ~ "special_cause_concern"
   ))
@@ -171,7 +171,7 @@ test_that("ptd_two_in_three works as expected", {
   expect_equal(h, c(0, 1, 1, 1, 1, 0, 0))
 })
 
-test_that("ptd_two_in_three works as expected when points are on opposite sides of the mean", {
+test_that("ptd_two_in_three works as expected when points are on opposite sides of the mean", { # nolint
   d <- ptd_two_in_three(c(1, 0, 1), c(1, -1, 1))
   e <- ptd_two_in_three(c(0, 1, 1), c(1, -1, 1))
   f <- ptd_two_in_three(c(1, 1, 0), c(1, -1, 1))

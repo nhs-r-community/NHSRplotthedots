@@ -18,8 +18,8 @@
 #'  y axis should be fixed for all facet plots. Accepted values are TRUE for
 #'  fixed y axes or FALSE for individual y axes.
 #' @param x_axis_date_format Specify how dates on the x axis should be
-#' displayed. Format should be provided as a character string using 'd m Y'
-#' -type syntax.
+#'  displayed. Format should be provided as a character string using 'd m Y'
+#'  -type syntax.
 #' @param x_axis_breaks Specify an interval value for breaks on the x axis.
 #'  Value should be a character string expressing interval length and type,
 #'  e.g. "3 months", "7 days".
@@ -40,6 +40,7 @@
 #' @param break_lines Whether to break lines when a rebase happens. Defaults to
 #'  "both", but can break just "limits" lines, "process" lines, or "none".
 #' @param ... Currently ignored
+#'
 #' @returns A ggplot2 object
 #' @export
 ptd_create_ggplot <- function(
@@ -120,7 +121,7 @@ ptd_create_ggplot <- function(
 
   # fix for the special cause colours
   .data <- .data |>
-    dplyr::mutate(point_colour = stringr::str_remove(.data$point_type, "(?<=^special_cause_neutral)_.*$"))
+    dplyr::mutate(point_colour = stringr::str_remove(.data$point_type, "(?<=^special_cause_neutral)_.*$")) # nolint
 
   colours_subset <- if (options[["improvement_direction"]] == "neutral") {
     colours[c("common_cause", "special_cause_neutral")]
@@ -284,7 +285,8 @@ ptd_create_ggplot <- function(
       # %age axes - no specified breaks - no sec labelling axis
       plot <- plot +
         ggplot2::scale_y_continuous(
-          labels = scales::label_percent(accuracy = y_axis_breaks))
+          labels = scales::label_percent(accuracy = y_axis_breaks)
+        )
     }
   } else if (!is.null(y_axis_breaks)) {
     if (label_limits) {
@@ -305,7 +307,8 @@ ptd_create_ggplot <- function(
       plot <- plot +
         ggplot2::scale_y_continuous(
           breaks = y_axis_labels,
-          labels = scales::label_number(accuracy = y_axis_breaks))
+          labels = scales::label_number(accuracy = y_axis_breaks)
+        )
     }
   } else {
     if (label_limits) {
@@ -324,7 +327,8 @@ ptd_create_ggplot <- function(
       # integer axes - no specified breaks - no sec labelling axis
       plot <- plot +
         ggplot2::scale_y_continuous(
-          labels = scales::label_number(accuracy = y_axis_breaks))
+          labels = scales::label_number(accuracy = y_axis_breaks)
+        )
     }
   }
 

@@ -13,7 +13,7 @@ test_that("it returns a column of NA's if there is no target", {
   expect_equal(r$assurance_type, as.character(NA))
 })
 
-test_that("it returns correct values for assurance when improvement_direction is increase", {
+test_that("it returns correct values for assurance when improvement_direction is increase", { # nolint
   s <- data.frame(
     f = c("a", "b", "c"),
     lpl = c(1, 5, 1),
@@ -31,7 +31,7 @@ test_that("it returns correct values for assurance when improvement_direction is
   expect_equal(r$assurance_type, c("consistent_fail", "consistent_pass", "inconsistent"))
 })
 
-test_that("it returns correct values for assurance when improvement_direction is decrease", {
+test_that("it returns correct values for assurance when improvement_direction is decrease", { # nolint
   s <- data.frame(
     f = c("a", "b", "c"),
     lpl = c(1, 5, 1),
@@ -49,7 +49,7 @@ test_that("it returns correct values for assurance when improvement_direction is
   expect_equal(r$assurance_type, c("consistent_pass", "consistent_fail", "inconsistent"))
 })
 
-test_that("it returns correct values for assurance when improvement_direction is neutral", {
+test_that("it returns correct values for assurance when improvement_direction is neutral", { # nolint
   s <- data.frame(
     f = c("a", "b", "c"),
     lpl = c(1, 5, 1),

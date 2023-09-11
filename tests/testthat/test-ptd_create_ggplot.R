@@ -8,7 +8,10 @@ test_that("it raises an error if unknown arguments are passed", {
       ptd_create_ggplot(NULL, X = 1, Y = 2),
       silent = TRUE
     ),
-    "Unknown arguments provided by plot: X, Y.\nCheck for common spelling mistakes in arguments.",
+    paste0(
+      "Unknown arguments provided by plot: X, Y.\n",
+      "Check for common spelling mistakes in arguments."
+    ),
     fixed = TRUE
   )
 })
@@ -95,7 +98,11 @@ test_that("it returns a ggplot object", {
 
 test_that("it facets the plot if facet_field is set", {
   set.seed(123)
-  d <- data.frame(x = as.Date("2020-01-01") + 1:20, y = rnorm(20), g = rep(c(1, 2), each = 10))
+  d <- data.frame(
+    x = as.Date("2020-01-01") + 1:20,
+    y = rnorm(20),
+    g = rep(c(1, 2), each = 10)
+  )
 
   withr::with_options(list(ptd_spc.warning_threshold = 10), {
     s1 <- ptd_spc(d, "y", "x")
@@ -157,7 +164,11 @@ test_that("it sets y_axis_label correctly", {
 
 test_that("it sets scales correctly in a faceted plot", {
   set.seed(123)
-  d <- data.frame(x = as.Date("2020-01-01") + 1:20, y = rnorm(20), g = rep(c(1, 2), each = 10))
+  d <- data.frame(
+    x = as.Date("2020-01-01") + 1:20,
+    y = rnorm(20),
+    g = rep(c(1, 2), each = 10)
+  )
 
   withr::with_options(list(ptd_spc.warning_threshold = 10), {
     s <- ptd_spc(d, "y", "x", facet_field = "g")
@@ -185,7 +196,6 @@ test_that("it sets scales correctly in a faceted plot", {
 })
 
 test_that("it creates a secondary y axis with percentage scales", {
-
   set.seed(123)
   d <- data.frame(x = as.Date("2020-01-01") + 1:20, y = rnorm(20))
   s <- ptd_spc(d, "y", "x")
@@ -204,7 +214,6 @@ test_that("it creates a secondary y axis with percentage scales", {
 })
 
 test_that("it creates a secondary y axis with integer scales", {
-
   set.seed(123)
   d <- data.frame(x = as.Date("2020-01-01") + 1:20, y = rnorm(20))
   s <- ptd_spc(d, "y", "x")
@@ -256,7 +265,10 @@ test_that("it adds theme_override to the plot", {
   p1 <- ptd_create_ggplot(s)
   expect_equal(p1$theme$panel.background$fill, NULL)
 
-  p2 <- ptd_create_ggplot(s, theme_override = ggplot2::theme(panel.background = ggplot2::element_rect("black")))
+  p2 <- s |>
+    ptd_create_ggplot(
+      theme_override = ggplot2::theme(panel.background = ggplot2::element_rect("black")) # nolint
+    )
   expect_equal(p2$theme$panel.background$fill, "black")
 })
 
@@ -303,7 +315,11 @@ test_that("it sets the colour of the points based on the type", {
   d <- data.frame(x = as.Date("2020-01-01") + 1:20, y = rnorm(20)) |>
     # introduce some special cause variation!
     dplyr::mutate(
-      across("y", \(y) dplyr::case_when(x > "2020-01-15" ~ y + 0.5, TRUE ~ y)))
+      across("y", \(y) dplyr::case_when(
+        x > "2020-01-15" ~ y + 0.5,
+        TRUE ~ y
+      ))
+    )
 
   colours_neutral <- list(
     common_cause              = "#7b7d7d", # grey
@@ -344,8 +360,10 @@ test_that("it sets the main title correctly", {
 
 test_that("a plot with short rebase group has a warning caption", {
   d <- data.frame(x = as.Date("2020-01-01") + 1:40, y = rnorm(40))
-  s1 <- ptd_spc(d, "y", "x", rebase = as.Date("2020-01-20")) # rebase at midpoint, no short groups
-  s2 <- suppressWarnings(ptd_spc(d, "y", "x", rebase = as.Date("2020-02-02"))) # rebase close to end of points
+  # rebase at midpoint, no short groups
+  s1 <- ptd_spc(d, "y", "x", rebase = as.Date("2020-01-20"))
+  # rebase close to end of points
+  s2 <- suppressWarnings(ptd_spc(d, "y", "x", rebase = as.Date("2020-02-02")))
 
   p1 <- ptd_create_ggplot(s1)
   expect_equal(p1$labels$caption, NULL)
