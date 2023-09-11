@@ -184,6 +184,41 @@ test_that("it sets scales correctly in a faceted plot", {
   expect_false(p5$facet$params$free$y)
 })
 
+test_that("it creates a secondary y axis with percentage scales", {
+
+  set.seed(123)
+  d <- data.frame(x = as.Date("2020-01-01") + 1:20, y = rnorm(20))
+  s <- ptd_spc(d, "y", "x")
+  p1 <- ptd_create_ggplot(s, percentage_y_axis = TRUE, label_limits = TRUE)
+
+  sec_breaks <- s |>
+    dplyr::select(all_of(c("lpl", "mean_col", "upl"))) |>
+    dplyr::slice_head(n = 1) |>
+    unlist() |>
+    unname()
+
+  expect_equal(
+    round(sec_breaks, 3),
+    round(p1$scales$scales[[3]]$secondary.axis$breaks, 3)
+  )
+})
+
+test_that("it creates a secondary y axis with integer scales", {
+
+  set.seed(123)
+  d <- data.frame(x = as.Date("2020-01-01") + 1:20, y = rnorm(20))
+  s <- ptd_spc(d, "y", "x")
+  p1 <- ptd_create_ggplot(s, percentage_y_axis = FALSE, label_limits = TRUE)
+
+  sec_breaks <- s |>
+    dplyr::select(all_of(c("lpl", "mean_col", "upl"))) |>
+    dplyr::slice_head(n = 1) |>
+    unlist() |>
+    unname()
+
+  expect_equal(sec_breaks, p1$scales$scales[[3]]$secondary.axis$breaks)
+})
+
 test_that("it sets the y-axis to percentages if percentage_y_axis is TRUE", {
   set.seed(123)
 
