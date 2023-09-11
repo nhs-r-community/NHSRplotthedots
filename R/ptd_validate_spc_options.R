@@ -24,7 +24,7 @@ ptd_validate_spc_options <- function(options, .data) {
 
   pulled_counts <- .data |>
     dplyr::group_by(
-      pick(all_of(c(options[["date_field"]], options[["facet_field"]])))
+      pick(c(options[["date_field"]], options[["facet_field"]]))
     ) |>
     dplyr::count() |>
     dplyr::pull("n")
