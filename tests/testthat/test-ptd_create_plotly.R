@@ -1,5 +1,19 @@
 library(mockery)
 
+test_that("it raises an error if unknown arguments are passed", {
+  expect_warning(
+    try(
+      ptd_create_plotly(NULL, X = 1, Y = 2),
+      silent = TRUE
+    ),
+    paste0(
+      "Unknown arguments provided by plot: X, Y.\n",
+      "Check for common spelling mistakes in arguments."
+    ),
+    fixed = TRUE
+  )
+})
+
 test_that("ptd_create_plotly returns a plotly object", {
   mock_plot <- list(
     data = list(

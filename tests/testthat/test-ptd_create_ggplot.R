@@ -199,7 +199,6 @@ test_that("it creates a secondary y axis with percentage scales", {
   set.seed(123)
   d <- data.frame(x = as.Date("2020-01-01") + 1:20, y = rnorm(20))
   s <- ptd_spc(d, "y", "x")
-  p1 <- ptd_create_ggplot(s, percentage_y_axis = TRUE, label_limits = TRUE)
 
   sec_breaks <- s |>
     dplyr::select(all_of(c("lpl", "mean_col", "upl"))) |>
@@ -207,17 +206,24 @@ test_that("it creates a secondary y axis with percentage scales", {
     unlist() |>
     unname()
 
+  p1 <- ptd_create_ggplot(s, percentage_y_axis = TRUE, label_limits = TRUE)
   expect_equal(
     round(sec_breaks, 3),
     round(p1$scales$scales[[3]]$secondary.axis$breaks, 3)
   )
+  p2 <- ptd_create_ggplot(s, percentage_y_axis = TRUE, y_axis_breaks = 0.5, label_limits = TRUE)
+  expect_equal(
+    round(sec_breaks, 3),
+    round(p2$scales$scales[[3]]$secondary.axis$breaks, 3)
+  )
+
+
 })
 
 test_that("it creates a secondary y axis with integer scales", {
   set.seed(123)
   d <- data.frame(x = as.Date("2020-01-01") + 1:20, y = rnorm(20))
   s <- ptd_spc(d, "y", "x")
-  p1 <- ptd_create_ggplot(s, percentage_y_axis = FALSE, label_limits = TRUE)
 
   sec_breaks <- s |>
     dplyr::select(all_of(c("lpl", "mean_col", "upl"))) |>
@@ -225,7 +231,12 @@ test_that("it creates a secondary y axis with integer scales", {
     unlist() |>
     unname()
 
-  expect_equal(sec_breaks, p1$scales$scales[[3]]$secondary.axis$breaks)
+  p1 <- ptd_create_ggplot(s, percentage_y_axis = FALSE, label_limits = TRUE)
+  expect_equal(p1$scales$scales[[3]]$secondary.axis$breaks, sec_breaks)
+
+  p2 <- ptd_create_ggplot(s, y_axis_breaks = 1, label_limits = TRUE)
+  expect_equal(p2$scales$scales[[3]]$secondary.axis$breaks, sec_breaks)
+
 })
 
 test_that("it sets the y-axis to percentages if percentage_y_axis is TRUE", {
