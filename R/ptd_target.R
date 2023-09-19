@@ -7,7 +7,8 @@
 #'   2. You can provide named values of targets, where the names correspond to
 #'    the names of the facets, in order to have different targets for each facet.
 #'
-#' @param ... Either a single values, or, named values of targets. See examples.
+#' @param ... Either a single value, or named values, of the target(s). See
+#'   examples.
 #'
 #' @returns Either:
 #'   * a single numeric value, in this case all facets in the plot will use
