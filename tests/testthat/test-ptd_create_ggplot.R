@@ -206,12 +206,14 @@ test_that("it creates a secondary y axis with percentage scales", {
     unlist() |>
     unname()
 
-  p1 <- ptd_create_ggplot(s, percentage_y_axis = TRUE, label_limits = TRUE)
+  p1 <- s |>
+    ptd_create_ggplot(percentage_y_axis = TRUE, label_limits = TRUE)
   expect_equal(
     round(sec_breaks, 3),
     round(p1$scales$scales[[3]]$secondary.axis$breaks, 3)
   )
-  p2 <- ptd_create_ggplot(s, percentage_y_axis = TRUE, y_axis_breaks = 0.5, label_limits = TRUE)
+  p2 <- s |>
+    ptd_create_ggplot(percentage_y_axis = TRUE, y_axis_breaks = 0.5, label_limits = TRUE)
   expect_equal(
     round(sec_breaks, 3),
     round(p2$scales$scales[[3]]$secondary.axis$breaks, 3)

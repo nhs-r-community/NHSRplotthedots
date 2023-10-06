@@ -9,7 +9,7 @@
 #' @param target the colour of the target line
 #' @param trajectory the colour of the trajectory line
 #'
-#' @returns a list of colours
+#' @returns A list of colours
 #'
 #' @export
 ptd_spc_colours <- function(

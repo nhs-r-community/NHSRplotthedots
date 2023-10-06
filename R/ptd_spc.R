@@ -9,8 +9,8 @@
 #'
 #'
 #' @param .data A data frame containing a value field, a date field,
-#' and a category field (if for faceting). There should be no gaps in the time
-#' series for each category.
+#'  and a category field (if for faceting). There should be no gaps in the time
+#'  series for each category.
 #' @param value_field Specify the field name which contains the value data, to
 #'  be plotted on y axis. The field name can be specified using non-standard
 #'  evaluation (i.e. without quotation marks).
