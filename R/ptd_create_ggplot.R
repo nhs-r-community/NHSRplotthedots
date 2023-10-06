@@ -18,7 +18,7 @@
 #'  the y axis should be fixed for all facet plots. Accepted values are `TRUE`
 #'  for fixed y axes or `FALSE` for individual y axes.
 #' @param x_axis_date_format Specify how dates on the x axis should be
-#'  displayed. The ormat should be provided as a character string using 'd m Y'
+#'  displayed. The format should be provided as a character string using 'd m Y'
 #'  -type syntax.
 #' @param x_axis_breaks Specify an interval value for breaks on the x axis.
 #'  The value should be a character string expressing interval length and type,
@@ -233,8 +233,10 @@ ptd_create_ggplot <- function(
   }
 
   sec_breaks <- .data |>
+    # should already be sorted in date order but just in case
+    dplyr::arrange(x) |>
     dplyr::select(all_of(c("lpl", "mean_col", "upl"))) |>
-    dplyr::slice_head(n = 1) |>
+    dplyr::slice_tail(n = 1) |>
     unlist() |>
     unname()
 
