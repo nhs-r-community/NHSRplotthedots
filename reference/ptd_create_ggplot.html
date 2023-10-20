@@ -81,6 +81,7 @@
 <span>  x_axis_date_format <span class="op">=</span> <span class="st">"%d/%m/%y"</span>,</span>
 <span>  x_axis_breaks <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  y_axis_breaks <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  label_limits <span class="op">=</span> <span class="cn">FALSE</span>,</span>
 <span>  icons_size <span class="op">=</span> <span class="fl">8L</span>,</span>
 <span>  icons_position <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"top right"</span>, <span class="st">"bottom right"</span>, <span class="st">"bottom left"</span>, <span class="st">"top left"</span>, <span class="st">"none"</span><span class="op">)</span>,</span>
 <span>  colours <span class="op">=</span> <span class="fu"><a href="ptd_spc_colours.html">ptd_spc_colours</a></span><span class="op">(</span><span class="op">)</span>,</span>
@@ -93,20 +94,22 @@
     <div id="arguments">
     <h2>Arguments</h2>
     <dl><dt>x</dt>
-<dd><p>an object created by <code><a href="ptd_spc.html">ptd_spc()</a></code></p></dd>
+<dd><p>An object created by <code><a href="ptd_spc.html">ptd_spc()</a></code></p></dd>
 
 
 <dt>point_size</dt>
-<dd><p>Specify the plotting point size for the ggplot output. Default is 2.5.</p></dd>
+<dd><p>Specify the plotting point size for the ggplot2 output.
+The default is 2.5.</p></dd>
 
 
 <dt>percentage_y_axis</dt>
-<dd><p>Specify whether the y axis values are percentages. Accepted values are TRUE for percentage y
-axis, FALSE for integer y axis. Defaults to FALSE.</p></dd>
+<dd><p>Specify whether the y axis values are percentages.
+Accepted values are <code>TRUE</code> for a percentage y axis, or <code>FALSE</code> for an
+integer y axis. Defaults to <code>FALSE</code>.</p></dd>
 
 
 <dt>main_title</dt>
-<dd><p>Specify a character string value for the ggplot title.</p></dd>
+<dd><p>Specify a character string value for the plot title.</p></dd>
 
 
 <dt>x_axis_label</dt>
@@ -118,63 +121,75 @@ axis, FALSE for integer y axis. Defaults to FALSE.</p></dd>
 
 
 <dt>fixed_x_axis_multiple</dt>
-<dd><p>Specify whether, if producing a faceted spc, x axis should be fixed for all facet plots.
-Accepted values are TRUE for fixed x axes or FALSE for individual x axes.</p></dd>
+<dd><p>Specify whether, if producing a faceted spc,
+the x axis should be fixed for all facet plots. Accepted values are <code>TRUE</code>
+for fixed x axes or <code>FALSE</code> for individual x axes.</p></dd>
 
 
 <dt>fixed_y_axis_multiple</dt>
-<dd><p>Specify whether, if producing a faceted spc, y axis should be fixed for all facet plots.
-Accepted values are TRUE for fixed y axes or FALSE for individual y axes.</p></dd>
+<dd><p>Specify whether, if producing a faceted spc,
+the y axis should be fixed for all facet plots. Accepted values are <code>TRUE</code>
+for fixed y axes or <code>FALSE</code> for individual y axes.</p></dd>
 
 
 <dt>x_axis_date_format</dt>
-<dd><p>Specify how dates on the x axis should be displayed. Format should be provided
-as a character string using 'd m Y' etc syntax.</p></dd>
+<dd><p>Specify how dates on the x axis should be
+displayed. The ormat should be provided as a character string using 'd m Y'
+-type syntax.</p></dd>
 
 
 <dt>x_axis_breaks</dt>
-<dd><p>Specify an interval value for breaks on the x axis. Value should be a character string
-expressing interval length and type, e.g. "3 months", "7 days".</p></dd>
+<dd><p>Specify an interval value for breaks on the x axis.
+The value should be a character string expressing interval length and type,
+e.g. "3 months", "7 days".</p></dd>
 
 
 <dt>y_axis_breaks</dt>
-<dd><p>Specify an interval value for breaks on the y axis. Value should be a numeric vector of length
-1, either an integer for integer scales or a decimal value for percentage scales. This option is ignored if
-faceting is in use.</p></dd>
+<dd><p>Specify an interval value for breaks on the y axis.
+The value should be a numeric vector of length 1, either an integer for
+integer scales or a decimal value for percentage scales. This option is
+ignored if faceting is in use.</p></dd>
+
+
+<dt>label_limits</dt>
+<dd><p>Whether to add a secondary y axis that just provides
+labels for the values of the UCL, LCL and mean. The default is <code>FALSE</code>.</p></dd>
 
 
 <dt>icons_size</dt>
-<dd><p>The size of the icons, defined in terms of font size. Defaults to 8.</p></dd>
+<dd><p>The size of the icons, defined in terms of font size.
+Defaults to 8.</p></dd>
 
 
 <dt>icons_position</dt>
-<dd><p>Where to show the icons, either "top right" (default), "bottom right", "bottom left",
-"top left", or "none".</p></dd>
+<dd><p>Where to show the icons, either "top right" (default),
+"bottom right", "bottom left", "top left", or "none".</p></dd>
 
 
 <dt>colours</dt>
-<dd><p>Specify the colours to use in the plot, use the <code><a href="ptd_spc_colours.html">ptd_spc_colours()</a></code> function to change defaults.</p></dd>
+<dd><p>Specify the colours to use in the plot. Use the
+<code><a href="ptd_spc_colours.html">ptd_spc_colours()</a></code> function to change defaults.</p></dd>
 
 
 <dt>theme_override</dt>
-<dd><p>Specify a list containing ggplot theme elements which can be used to override the default
-appearance of the plot.</p></dd>
+<dd><p>Specify a list containing ggplot2 theme elements that
+can be used to override the default appearance of the plot.</p></dd>
 
 
 <dt>break_lines</dt>
-<dd><p>whether to break lines when a rebase happens. Defaults to "both", but can break just "limits"
-lines, "process" lines, or "none".</p></dd>
+<dd><p>Whether to break lines when a rebase happens. Defaults to
+"both", but can break just "limits" lines, "process" lines, or "none".</p></dd>
 
 
 <dt>...</dt>
-<dd><p>currently ignored</p></dd>
+<dd><p>Currently ignored</p></dd>
 
 </dl></div>
     <div id="value">
     <h2>Value</h2>
     
 
-<p>The ggplot2 object</p>
+<p>A ggplot2 object</p>
     </div>
 
   </div>
