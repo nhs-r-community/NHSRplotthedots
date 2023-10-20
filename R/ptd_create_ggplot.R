@@ -142,7 +142,10 @@ ptd_create_ggplot <- function(
   break_limits <- break_lines %in% c("both", "limits")
   break_process <- break_lines %in% c("both", "process")
 
-  plot <- ggplot2::ggplot(.data, aes(x = .data$x, y = .data$y)) +
+  plot <- ggplot2::ggplot(
+    .data,
+    ggplot2::aes(x = .data$x, y = .data$y)
+  ) +
     ggplot2::geom_line(
       aes(y = .data$upl, group = if (break_limits) .data$rebase_group else 0),
       linetype = "dashed",

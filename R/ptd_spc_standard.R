@@ -11,7 +11,6 @@
 #' @param options created by `spcOptions()` function
 #'
 #' @noRd
-
 ptd_spc_standard <- function(.data, options = NULL) {
   # get values from options
   value_field <- options$value_field
@@ -51,11 +50,11 @@ ptd_spc_standard <- function(.data, options = NULL) {
   # Restructure starting data frame
   .data <- .data %>%
     dplyr::select(
-      y = any_of(value_field),
-      x = any_of(date_field),
-      f = any_of("facet"),
-      rebase = any_of("rebase"),
-      trajectory = any_of("trajectory"),
+      y = tidyselect::any_of(value_field),
+      x = tidyselect::any_of(date_field),
+      f = tidyselect::any_of("facet"),
+      rebase = tidyselect::any_of("rebase"),
+      trajectory = tidyselect::any_of("trajectory"),
     ) %>%
     # Group data frame by facet
     dplyr::group_by(.data$f) %>%
@@ -93,8 +92,7 @@ ptd_spc_standard <- function(.data, options = NULL) {
       # Identify if a point is between the near process limits and process limits
       close_to_limits = !.data$outside_limits & (.data$y < .data$nlpl | .data$y > .data$nupl) # nolint
     ) %>%
-    # clean up by removing columns that no longer serve a purpose and
-    # ungrouping data
-    dplyr::select(-any_of(c("mr", "nlpl", "nupl", "amr", "rebase"))) %>%
+    # clean up by removing columns that no longer serve a purpose and ungrouping data
+    dplyr::select(-tidyselect::any_of(c("mr", "nlpl", "nupl", "amr", "rebase"))) %>%
     dplyr::ungroup()
 }

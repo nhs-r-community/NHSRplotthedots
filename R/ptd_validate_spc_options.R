@@ -30,7 +30,18 @@ ptd_validate_spc_options <- function(options, .data) {
     dplyr::pull("n")
 
   assertthat::assert_that(
-    all(pulled_counts == 1),
+
+    all(
+      dplyr::count(
+        dplyr::group_by_at(
+          .data,
+          c(
+            options[["date_field"]],
+            options[["facet_field"]]
+          )
+        )
+      )$n == 1
+    ),
     msg = paste0("duplicate rows found in '", options[["date_field"]], "'")
   )
 

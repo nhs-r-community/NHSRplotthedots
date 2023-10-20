@@ -111,23 +111,22 @@ ptd_spc.SharedData <- function(.data, ...) { # Exclude Linting
 }
 
 #' @export
-ptd_spc.data.frame <- function(
-    .data, # Exclude Linting
-    value_field,
-    date_field,
-    facet_field,
-    rebase = ptd_rebase(),
-    fix_after_n_points = NULL,
-    improvement_direction = "increase",
-    target = ptd_target(),
-    trajectory,
-    screen_outliers = TRUE) {
-  value_field <- as_name(enquo(value_field))
-  date_field <- as_name(enquo(date_field))
-  facet_field <- if (!missing(facet_field)) as_name(enquo(facet_field))
-  trajectory <- if (!missing(trajectory)) as_name(enquo(trajectory))
+ptd_spc.data.frame <- function(.data, # Exclude Linting
+                               value_field,
+                               date_field,
+                               facet_field,
+                               rebase = ptd_rebase(),
+                               fix_after_n_points = NULL,
+                               improvement_direction = "increase",
+                               target = ptd_target(),
+                               trajectory,
+                               screen_outliers = TRUE) {
+  value_field <- rlang::quo_name(rlang::enquo(value_field))
+  date_field <- rlang::quo_name(rlang::enquo(date_field))
+  facet_field <- if (!missing(facet_field)) rlang::quo_name(rlang::enquo(facet_field))
+  trajectory <- if (!missing(trajectory)) rlang::quo_name(rlang::enquo(trajectory))
 
-  # Validate all inputs. Validation problems will generate an error and stop code execution.
+  # validate all inputs.  Validation problems will generate an error and stop code execution.
   options <- ptd_spc_options(
     value_field, date_field, facet_field, rebase, fix_after_n_points,
     improvement_direction, target, trajectory, screen_outliers

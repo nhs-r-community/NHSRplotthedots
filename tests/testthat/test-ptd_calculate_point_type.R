@@ -12,11 +12,11 @@ test_that("it calls functions as expected (no facet groups)", {
     outside_limits = rep(4, 4)
   )
 
-  m1 <- mock("ptd_special_cause_flag")
+  m1 <- mock("ptd_special_cause_type")
   m2 <- mock("point_type")
 
-  stub(ptd_calculate_point_type, "ptd_special_cause_flag", m1)
-  stub(ptd_calculate_point_type, "dplyr::case_when", m2)
+  stub(ptd_calculate_point_type, "ptd_special_cause_type", m1)
+  stub(ptd_calculate_point_type, "ptd_point_type", m2)
 
   ptd_calculate_point_type(a, "improvement_direction")
 
@@ -24,12 +24,11 @@ test_that("it calls functions as expected (no facet groups)", {
   expect_called(m2, 1)
 
   expect_args(m1, 1, a$y, a$relative_to_mean, a$close_to_limits, a$outside_limits)
-  expect_call(m2, 1, dplyr::case_when(
-    special_cause_flag == 0 ~ "common_cause",
-    improvement_direction == 0 ~ paste0("special_cause_neutral_", ifelse(relative_to_mean > 0, "high", "low")), # nolint
-    relative_to_mean == improvement_direction ~ "special_cause_improvement",
-    TRUE ~ "special_cause_concern"
-  ))
+  expect_args(
+    m2, 1,
+    rep("ptd_special_cause_type", 4),
+    "improvement_direction"
+  )
 })
 
 test_that("it calls functions as expected (with facet groups)", {
@@ -45,8 +44,8 @@ test_that("it calls functions as expected (with facet groups)", {
   m1 <- mock("ptd_special_cause_flag", cycle = TRUE)
   m2 <- mock("ptd_point_type", cycle = TRUE)
 
-  stub(ptd_calculate_point_type, "ptd_special_cause_flag", m1)
-  stub(ptd_calculate_point_type, "dplyr::case_when", m2)
+  stub(ptd_calculate_point_type, "ptd_special_cause_type", m1)
+  stub(ptd_calculate_point_type, "ptd_point_type", m2)
 
   ptd_calculate_point_type(a, 1)
 
@@ -55,10 +54,10 @@ test_that("it calls functions as expected (with facet groups)", {
 })
 
 test_that("it returns the mutated data", {
-  d <- data.frame(f = 1)
+  d <- data.frame(f = 1, rebase_group = 2)
   stub(ptd_calculate_point_type, "dplyr::mutate", "mutate")
   stub(ptd_calculate_point_type, "dplyr::ungroup", "ungroup")
-
+  stub(ptd_calculate_point_type, "ptd_special_cause_type", "ptd_special_cause_type")
   a <- ptd_calculate_point_type(d, 1)
 
   expect_equal(a, "ungroup")
@@ -69,6 +68,7 @@ test_that("it groups and ungroups the data", {
 
   stub(ptd_calculate_point_type, "dplyr::mutate", function(x, ...) x)
   stub(ptd_calculate_point_type, "dplyr::ungroup", identity)
+  stub(ptd_calculate_point_type, "ptd_special_cause_type", "ptd_special_cause_type")
 
   a <- ptd_calculate_point_type(d, 1)
 
@@ -243,8 +243,8 @@ test_that("ptd_part_of_two_in_three works as expected", {
   expect_equal(ia, c(0, 0, 0, 1, 1))
 })
 
-# ptd_special_cause_flag() ----
-test_that("ptd_special_cause_flag works as expected", {
+# ptd_special_cause_type() ----
+test_that("ptd_special_cause_type works as expected", {
   # there are 7 possible inputs that result in a 1 result, and 1 input that results in a 0.
   # we can mock the functions that are called and return results that can test these cases
   m1 <- mock("sevenPointOneSideOfMean")
@@ -258,15 +258,30 @@ test_that("ptd_special_cause_flag works as expected", {
   m5 <- mock(c(0, 0, 0, 0, 1, 0, 0, 0)) # part_of_two_in_three
 
   # tie these areas up with the variable names in function that you want to stub.
-  stub(ptd_special_cause_flag, "ptd_seven_point_one_side_mean", m1) # -names
-  stub(ptd_special_cause_flag, "ptd_seven_point_trend", m2) # - names
-  stub(ptd_special_cause_flag, "ptd_part_of_seven_trend", m3) #- values
-  stub(ptd_special_cause_flag, "ptd_two_in_three", m4) # -value
-  stub(ptd_special_cause_flag, "ptd_part_of_two_in_three", m5) # -values
+  stub(ptd_special_cause_type, "ptd_seven_point_one_side_mean", m1) # -names
+  stub(ptd_special_cause_type, "ptd_seven_point_trend", m2) # - names
+  stub(ptd_special_cause_type, "ptd_part_of_seven_trend", m3) #- values
+  stub(ptd_special_cause_type, "ptd_two_in_three", m4) # -value
+  stub(ptd_special_cause_type, "ptd_part_of_two_in_three", m5) # -values
 
-  a <- ptd_special_cause_flag(
-    1:8, "relative_to_mean", "close_to_limits",
+  a <- ptd_special_cause_type(
+    1:8,
+    c(rep(1, 4), rep(-1, 4)),
+    "relative_to_mean",
     c(0, 0, 0, 0, 0, 1, -1, 0)
   )
-  expect_equal(a, c(rep(1, 7), 0))
+
+  expect_equal(
+    a,
+    c(
+      "7 Point Trend (Increasing)",
+      "7 Point Trend (Increasing)",
+      "7 Points Above CL",
+      "7 Points Above CL",
+      "2 in 3 Below CL",
+      "Below LCL",
+      "Below LCL",
+      "Common Cause"
+    )
+  )
 })

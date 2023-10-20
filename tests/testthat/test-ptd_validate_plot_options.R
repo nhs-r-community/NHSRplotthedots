@@ -8,7 +8,7 @@ test_that("it handles point_size correctly", {
   ptd_validate_plot_options(point_size = 5)
 
   # these will error
-  em <- "The point_size argument must be a single number greater than 0 and less than or equal to 10." # nolint
+  em <- "point_size must be a single number greater than 0 and less than or equal to 10."
   expect_error(ptd_validate_plot_options(point_size = "a"), em)
   expect_error(ptd_validate_plot_options(point_size = 0), em)
   expect_error(ptd_validate_plot_options(point_size = 11), em)
@@ -22,7 +22,7 @@ test_that("it handles percentage_y_axis correctly", {
   ptd_validate_plot_options(percentage_y_axis = FALSE)
 
   # these will error
-  em <- "The percentage_y_axis argument must a single logical."
+  em <- "percentage_y_axis argument must a single logical."
   expect_error(ptd_validate_plot_options(percentage_y_axis = "a"), em)
   expect_error(ptd_validate_plot_options(percentage_y_axis = -1), em)
   expect_error(ptd_validate_plot_options(percentage_y_axis = 2), em)
@@ -46,7 +46,7 @@ test_that("it handles x_axis_label correctly", {
   ptd_validate_plot_options(x_axis_label = "title")
 
   # these will error
-  em <- "The x_axis_label argument must be a character of length 1."
+  em <- "x_axis_label argument must be a character of length 1."
   expect_error(ptd_validate_plot_options(x_axis_label = 1), em)
   expect_error(ptd_validate_plot_options(x_axis_label = c("a", "b")), em)
 })
@@ -57,7 +57,7 @@ test_that("it handles y_axis_label correctly", {
   ptd_validate_plot_options(y_axis_label = "title")
 
   # these will error
-  em <- "The y_axis_label argument must be a character of length 1."
+  em <- "y_axis_label argument must be a character of length 1."
   expect_error(ptd_validate_plot_options(y_axis_label = 1), em)
   expect_error(ptd_validate_plot_options(y_axis_label = c("a", "b")), em)
 })
@@ -68,7 +68,7 @@ test_that("it handles fixed_x_axis_multiple correctly", {
   ptd_validate_plot_options(fixed_x_axis_multiple = TRUE)
 
   # these will error
-  em <- "The fixed_x_axis_multiple argument must be a logical of length 1."
+  em <- "fixed_x_axis_multiple argument must be a logical of length 1."
   expect_error(ptd_validate_plot_options(fixed_x_axis_multiple = 1), em)
   expect_error(ptd_validate_plot_options(fixed_x_axis_multiple = c(TRUE, FALSE)), em)
 })
@@ -79,7 +79,7 @@ test_that("it handles fixed_y_axis_multiple correctly", {
   ptd_validate_plot_options(fixed_y_axis_multiple = TRUE)
 
   # these will error
-  em <- "The fixed_y_axis_multiple argument must be a logical of length 1."
+  em <- "fixed_y_axis_multiple argument must be a logical of length 1."
   expect_error(ptd_validate_plot_options(fixed_y_axis_multiple = 1), em)
   expect_error(ptd_validate_plot_options(fixed_y_axis_multiple = c(TRUE, FALSE)), em)
 })
@@ -90,7 +90,7 @@ test_that("it handles x_axis_date_format correctly", {
   ptd_validate_plot_options(x_axis_date_format = "a")
 
   # these will error
-  em <- "The x_axis_date_format argument must be a character of length 1."
+  em <- "x_axis_date_format argument must be a character of length 1."
   expect_error(ptd_validate_plot_options(x_axis_date_format = 1), em)
   expect_error(ptd_validate_plot_options(x_axis_date_format = c("a", "b")), em)
 })
@@ -107,7 +107,7 @@ test_that("it handles x_axis_breaks correctly", {
   ptd_validate_plot_options(x_axis_breaks = "1 year")
 
   # these will error
-  em <- "The x_axis_breaks argument must be a character of length 1."
+  em <- "x_axis_breaks argument must be a character of length 1."
   expect_error(ptd_validate_plot_options(x_axis_breaks = 1), em)
   expect_error(ptd_validate_plot_options(x_axis_breaks = c("1 week", "2 weeks")), em)
   expect_error(ptd_validate_plot_options(x_axis_breaks = "week"), em)
@@ -119,7 +119,7 @@ test_that("it handles y_axis_breaks correctly", {
   ptd_validate_plot_options(y_axis_breaks = 1)
 
   # these will error
-  em <- "The y_axis_breaks argument must be a numeric of length 1."
+  em <- "y_axis_breaks argument must be a numeric of length 1."
   expect_error(ptd_validate_plot_options(y_axis_breaks = "a"), em)
   expect_error(ptd_validate_plot_options(y_axis_breaks = c(1, 2)), em)
 })
@@ -130,7 +130,7 @@ test_that("it handles icons_size correctly", {
   ptd_validate_plot_options(icons_size = 5.2)
 
   # these will error
-  em <- "The icons_size argument must be an integer of length 1."
+  em <- "icons_size must be an integer of length 1."
   expect_error(ptd_validate_plot_options(icons_size = "a"), em, fixed = TRUE)
   expect_error(ptd_validate_plot_options(icons_size = c(8, 2)), em, fixed = TRUE)
 })
@@ -144,9 +144,9 @@ test_that("it handles icons_position correctly", {
   ptd_validate_plot_options(icons_position = "none")
 
   # these will error
-  em <- "The icons_position argument must be one of 'top right', 'bottom right', 'bottom_left', 'top left', or 'none'" # nolint
+  em <- "icons_position argument must be one of 'top right', 'bottom right', 'bottom_left', 'top left', or 'none'"
   expect_error(ptd_validate_plot_options(icons_position = "a"), em, fixed = TRUE)
-  expect_error(ptd_validate_plot_options(icons_position = c("top right", "top left")), em, fixed = TRUE) # nolint
+  expect_error(ptd_validate_plot_options(icons_position = c("top right", "top left")), em, fixed = TRUE)
 })
 
 test_that("it handles colours correctly", {
@@ -154,7 +154,7 @@ test_that("it handles colours correctly", {
   ptd_validate_plot_options(colours = ptd_spc_colours())
 
   # these will error
-  em <- "The colours argument must be an object created by ptd_spc_colours()."
+  em <- "colours must be an object created by ptd_spc_colours()."
   expect_error(ptd_validate_plot_options(colours = list()), em)
 })
 
@@ -163,7 +163,7 @@ test_that("it handles theme_override correctly", {
   ptd_validate_plot_options(theme_override = ggplot2::theme())
 
   # these will error
-  em <- "The theme_override argument must be an object created by theme()."
+  em <- "theme_override must be an object created by theme()."
   expect_error(ptd_validate_plot_options(theme_override = list()), em)
 })
 
@@ -175,7 +175,7 @@ test_that("it handles break_lines correctly", {
   ptd_validate_plot_options(break_lines = "none")
 
   # these will error
-  em <- "The break_lines argument must be one of 'both', 'limits', 'process', or 'none'." # nolint
+  em <- "break_lines must be one of 'both', 'limits', 'process', or 'none'."
   expect_error(ptd_validate_plot_options(break_lines = list()), em)
   expect_error(ptd_validate_plot_options(break_lines = 1), em)
   expect_error(ptd_validate_plot_options(break_lines = c("both", "limits")), em)

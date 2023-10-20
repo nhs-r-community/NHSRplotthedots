@@ -1,5 +1,6 @@
 library(testthat)
 library(mockery)
+library(dplyr, warn.conflicts = FALSE)
 
 test_that("it draws the panel correctly", {
   m <- mock("a", list("b"), list("c"), "d")
