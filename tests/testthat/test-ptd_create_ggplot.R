@@ -219,8 +219,6 @@ test_that("it creates a secondary y axis with percentage scales", {
     round(sec_breaks, 3),
     round(p2$scales$scales[[3]]$secondary.axis$breaks, 3)
   )
-
-
 })
 
 test_that("it creates a secondary y axis with integer scales", {
@@ -239,7 +237,6 @@ test_that("it creates a secondary y axis with integer scales", {
 
   p2 <- ptd_create_ggplot(s, y_axis_breaks = 1, label_limits = TRUE)
   expect_equal(p2$scales$scales[[3]]$secondary.axis$breaks, sec_breaks)
-
 })
 
 test_that("it sets the y-axis to percentages if percentage_y_axis is TRUE", {
