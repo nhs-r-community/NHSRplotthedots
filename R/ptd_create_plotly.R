@@ -78,7 +78,9 @@ ptd_create_plotly <- function(x,
     icons_position <- "none"
   }
 
-  plot <- plotly::ggplotly(ggplot)
+  plot <- ggplot |>
+    plotly::ggplotly() |>
+    ptd_plotly_fix_tooltips()
 
   annotations <- if (any(ggplot$data$short_group_warning)) {
     list(
@@ -130,6 +132,7 @@ ptd_create_plotly <- function(x,
 
   plotly::layout(
     plot,
+    hovermode = "x unified",
     # put legend in center of x-axis
     legend = list(
       orientation = "h", # show entries horizontally
@@ -149,4 +152,24 @@ read_svg_as_b64 <- function(filename) {
     "data:image/svg+xml;base64,",
     base64enc::base64encode(img)
   )
+}
+
+ptd_plotly_fix_tooltips <- function(plot) {
+  # "fix" the tooltips. this could do with being improved upon, but for now it's better than nothing
+  # each "layer" has it's own text which contains the x value, a new line, then the y value (and sometimes more stuff
+  # on futher new lines)
+  # what we want to do is remove the x value from all but the first item, then only keep the second line's value
+  plot$x$data[[1]]$text <- plot$x$data[[1]]$text |>
+    stringr::str_replace_all(
+      "^(.*?)(<br />)(.*?)(?:<br />.*$)",
+      "\\1\\2\\2\\3"
+    )
+
+  for (i in seq_along(plot$x$data)[-1]) {
+    plot$x$data[[i]]$text <- plot$x$data[[i]]$text |>
+      stringr::str_remove("^.*?(<br />)") |>
+      stringr::str_remove("<br />.*$")
+  }
+
+  plot
 }
