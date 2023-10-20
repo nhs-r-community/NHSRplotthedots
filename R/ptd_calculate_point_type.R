@@ -14,22 +14,18 @@
 ptd_calculate_point_type <- function(.data, improvement_direction) {
   # Begin plot the dots logical tests
   .data %>%
-    group_by(.data$f, .data$rebase_group) %>%
-    mutate(
-      special_cause_flag = ptd_special_cause_flag(
+    dplyr::group_by(.data$f, .data$rebase_group) %>%
+    dplyr::mutate(
+      special_cause_type = ptd_special_cause_type(
         .data$y,
         .data$relative_to_mean,
         .data$close_to_limits,
         .data$outside_limits
       ),
-      point_type = case_when(
-        !special_cause_flag ~ "common_cause",
-        improvement_direction == 0 ~ paste0("special_cause_neutral_", ifelse(relative_to_mean > 0, "high", "low")),
-        relative_to_mean == improvement_direction ~ "special_cause_improvement",
-        TRUE ~ "special_cause_concern"
-      )
+      special_cause_flag = .data[["special_cause_type"]] != "Common Cause",
+      point_type = ptd_point_type(.data[["special_cause_type"]], improvement_direction)
     ) %>%
-    ungroup()
+    dplyr::ungroup()
 }
 
 ptd_seven_point_one_side_mean <- function(v) {
@@ -89,15 +85,52 @@ ptd_part_of_two_in_three <- function(v, x) {
   as.numeric(v == 1 & abs(x) == 1)
 }
 
-ptd_special_cause_flag <- function(y, relative_to_mean, close_to_limits, outside_limits) {
-  part_seven_point_one_side_mean <- ptd_part_of_seven_trend(ptd_seven_point_one_side_mean(relative_to_mean))
-  part_seven_point_trend <- ptd_part_of_seven_trend(ptd_seven_point_trend(y))
-  part_two_in_three <- ptd_part_of_two_in_three(ptd_two_in_three(close_to_limits, relative_to_mean), close_to_limits)
+ptd_special_cause_type <- function(y, relative_to_mean, close_to_limits, outside_limits) {
+  part_seven_point_trend <- ptd_part_of_seven_trend(ptd_seven_point_trend(y)) # Exclude Linting
+  part_two_in_three <- ptd_part_of_two_in_three(ptd_two_in_three(close_to_limits, relative_to_mean), close_to_limits) # Exclude Linting
+  part_seven_point_one_side_mean <- ptd_part_of_seven_trend(ptd_seven_point_one_side_mean(relative_to_mean)) # Exclude Linting
 
-  as.numeric(
-    abs(outside_limits) == 1 |
-      abs(part_seven_point_one_side_mean) == 1 |
-      abs(part_seven_point_trend) == 1 |
-      part_two_in_three == 1
+  # calculate the sign of difference of points in y
+  sdy <- sign(diff(y))
+  # if a point is part of a trend either side, use right side
+  sdy <- ifelse(
+    c(part_seven_point_trend[-1], 0) & part_seven_point_trend,
+    c(sdy, utils::tail(sdy, 1)),
+    c(0, sdy)
   )
+
+  above_or_below <- ifelse(relative_to_mean > 0, "Above", "Below") # Exclude Linting
+
+  dplyr::case_when(
+    outside_limits != 0 ~ ifelse(relative_to_mean == 1, "Above UCL", "Below LCL"),
+    part_seven_point_trend != 0 ~ paste0("7 Point Trend (", ifelse(sdy == 1, "In", "De"), "creasing)"),
+    part_two_in_three != 0 ~ paste0("2 in 3 ", above_or_below, " CL"),
+    part_seven_point_one_side_mean != 0 ~ paste0("7 Points ", above_or_below, " CL"),
+    .default = "Common Cause"
+  )
+}
+
+ptd_point_type <- function(special_cause_type, improvement_direction) {
+  v <- dplyr::case_when(
+    stringr::str_detect(special_cause_type, "Above|Increasing") ~ 1,
+    stringr::str_detect(special_cause_type, "Below|Decreasing") ~ -1,
+    .default = 0
+  )
+
+  if (improvement_direction == 0) {
+    dplyr::case_when(
+      v > 0 ~ "special_cause_neutral_high",
+      v < 0 ~ "special_cause_neutral_low",
+      .default = "common_cause"
+    )
+  } else {
+    # orient based on improvement direction
+    v <- v * improvement_direction
+
+    dplyr::case_when(
+      v > 0 ~ "special_cause_improvement",
+      v < 0 ~ "special_cause_concern",
+      .default = "common_cause"
+    )
+  }
 }

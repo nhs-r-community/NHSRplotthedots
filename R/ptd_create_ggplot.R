@@ -129,57 +129,69 @@ ptd_create_ggplot <- function(x,
   break_limits <- break_lines %in% c("both", "limits")
   break_process <- break_lines %in% c("both", "process")
 
-  plot <- ggplot(.data, aes(x = .data$x, y = .data$y)) +
-    geom_line(aes(y = .data$upl, group = if (break_limits) .data$rebase_group else 0),
+  plot <- ggplot2::ggplot(
+    .data,
+    ggplot2::aes(x = .data$x, y = .data$y)
+  ) +
+    ggplot2::geom_line(
+      ggplot2::aes(y = .data$upl, group = if (break_limits) .data$rebase_group else 0),
       linetype = "dashed", linewidth = line_size, colour = colours$upl
     ) +
-    geom_line(aes(y = .data$lpl, group = if (break_limits) .data$rebase_group else 0),
+    ggplot2::geom_line(
+      ggplot2::aes(y = .data$lpl, group = if (break_limits) .data$rebase_group else 0),
       linetype = "dashed", linewidth = line_size, colour = colours$lpl
     ) +
-    geom_line(aes(y = .data$target),
+    ggplot2::geom_line(
+      ggplot2::aes(y = .data$target),
       linetype = "dashed", linewidth = line_size, colour = colours$target, na.rm = TRUE
     ) +
-    geom_line(aes(y = .data$trajectory),
+    ggplot2::geom_line(
+      ggplot2::aes(y = .data$trajectory),
       linetype = "dashed", linewidth = line_size, colour = colours$trajectory, na.rm = TRUE
     ) +
-    geom_line(aes(y = mean, group = if (break_limits) .data$rebase_group else 0),
+    ggplot2::geom_line(
+      ggplot2::aes(y = mean, group = if (break_limits) .data$rebase_group else 0),
       linetype = "solid", colour = colours$mean_line
     ) +
-    geom_line(aes(group = if (break_process) .data$rebase_group else 0),
+    ggplot2::geom_line(
+      ggplot2::aes(group = if (break_process) .data$rebase_group else 0),
       linetype = "solid", linewidth = line_size, colour = colours$value_line
     ) +
-    geom_point(aes(colour = .data$point_colour), size = point_size) +
-    scale_colour_manual(
+    ggplot2::geom_point(
+      ggplot2::aes(colour = .data$point_colour),
+      size = point_size
+    ) +
+    ggplot2::scale_colour_manual(
       values = colours_subset,
       labels = ptd_title_case
     ) +
-    labs(
+    ggplot2::labs(
       title = main_title,
       x = x_axis_label,
       y = y_axis_label,
       caption = caption,
       group = NULL
     ) +
-    theme_minimal() +
-    theme(
-      plot.background = element_rect(color = "grey", linewidth = 1), # border around whole plot
-      plot.margin = unit(c(5, 5, 5, 5), "mm"), # 5mm of white space around plot edge
-      axis.text.x = element_text(angle = 45, hjust = 1),
-      panel.grid = element_line(color = "grey70"), # gridline colour
-      panel.grid.major.x = element_blank(), # remove major x gridlines
-      panel.grid.minor.x = element_blank(), # remove minor x gridlines
+    ggplot2::theme_minimal() +
+    ggplot2::theme(
+      plot.background = ggplot2::element_rect(color = "grey", linewidth = 1), # border around whole plot
+      plot.margin = ggplot2::unit(c(5, 5, 5, 5), "mm"), # 5mm of white space around plot edge
+      axis.text.x = ggplot2::element_text(angle = 45, hjust = 1),
+      panel.grid = ggplot2::element_line(color = "grey70"), # gridline colour
+      panel.grid.major.x = ggplot2::element_blank(), # remove major x gridlines
+      panel.grid.minor.x = ggplot2::element_blank(), # remove minor x gridlines
       legend.position = "bottom",
-      legend.title = element_blank()
+      legend.title = ggplot2::element_blank()
     ) +
     theme_override
 
   plot <- plot + if (is.null(x_axis_breaks)) {
-    scale_x_datetime(
+    ggplot2::scale_x_datetime(
       breaks = sort(unique(.data$x)),
       date_labels = x_axis_date_format
     )
   } else {
-    scale_x_datetime(
+    ggplot2::scale_x_datetime(
       date_breaks = x_axis_breaks,
       date_labels = x_axis_date_format
     )
@@ -188,19 +200,19 @@ ptd_create_ggplot <- function(x,
   # Apply facet wrap if a facet field is present
   if (!is.null(options$facet_field)) {
     # For multiple facet chart, derived fixed/free scales value from x and y axis properties
-    faces_scales <- if (fixed_x_axis_multiple) {
+    facet_scales <- if (fixed_x_axis_multiple) {
       ifelse(fixed_y_axis_multiple, "fixed", "free_y")
     } else {
       ifelse(fixed_y_axis_multiple, "free_x", "free")
     }
 
     plot <- plot +
-      facet_wrap(vars(.data$f), scales = faces_scales)
+      ggplot2::facet_wrap(ggplot2::vars(.data$f), scales = facet_scales)
   }
 
   if (percentage_y_axis %||% FALSE) {
     plot <- plot +
-      scale_y_continuous(labels = scales::label_percent(y_axis_breaks))
+      ggplot2::scale_y_continuous(labels = scales::label_percent(y_axis_breaks))
   } else if (!is.null(y_axis_breaks)) {
     yaxis <- c(.data[["y"]], .data[["upl"]], .data[["lpl"]], .data[["target"]])
     start <- floor(min(yaxis, na.rm = TRUE) / y_axis_breaks) * y_axis_breaks
@@ -209,7 +221,7 @@ ptd_create_ggplot <- function(x,
     y_axis_labels <- seq(from = start, to = end, by = y_axis_breaks)
 
     plot <- plot +
-      scale_y_continuous(breaks = y_axis_labels, labels = y_axis_labels)
+      ggplot2::scale_y_continuous(breaks = y_axis_labels, labels = y_axis_labels)
   }
 
   if (icons_position != "none") {

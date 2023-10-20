@@ -13,9 +13,6 @@
 #' @param options created by spcOptions function
 #'
 #' @noRd
-
-#' @import dplyr
-
 ptd_spc_standard <- function(.data, options = NULL) {
   # get values from options
   value_field <- options$value_field
@@ -53,28 +50,28 @@ ptd_spc_standard <- function(.data, options = NULL) {
 
   # Restructure starting data frame
   .data <- .data %>%
-    select(
-      y = any_of(value_field),
-      x = any_of(date_field),
-      f = any_of("facet"),
-      rebase = any_of("rebase"),
-      trajectory = any_of("trajectory"),
+    dplyr::select(
+      y = tidyselect::any_of(value_field),
+      x = tidyselect::any_of(date_field),
+      f = tidyselect::any_of("facet"),
+      rebase = tidyselect::any_of("rebase"),
+      trajectory = tidyselect::any_of("trajectory"),
     ) %>%
     # Group data frame by facet
-    group_by(.data$f) %>%
+    dplyr::group_by(.data$f) %>%
     # Order data frame by facet, and x axis variable
-    arrange(.data$f, .data$x) %>%
+    dplyr::arrange(.data$f, .data$x) %>%
     # convert rebase 0/1's to group indices
-    mutate(rebase_group = cumsum(.data$rebase)) %>%
-    group_by(.data$rebase_group, .add = TRUE) %>%
-    mutate(
-      fix_y = ifelse(row_number() <= (fix_after_n_points %||% Inf), .data$y, NA),
+    dplyr::mutate(rebase_group = cumsum(.data$rebase)) %>%
+    dplyr::group_by(.data$rebase_group, .add = TRUE) %>%
+    dplyr::mutate(
+      fix_y = ifelse(dplyr::row_number() <= (fix_after_n_points %||% Inf), .data$y, NA),
       mean = mean(.data$fix_y, na.rm = TRUE),
       mr = c(NA, abs(diff(.data$fix_y))),
       amr = mean(.data$mr, na.rm = TRUE),
 
       # screen for outliers
-      mr = case_when(
+      mr = dplyr::case_when(
         !options$screen_outliers ~ .data$mr,
         .data$mr < 3.267 * .data$amr ~ .data$mr,
         TRUE ~ as.numeric(NA)
@@ -97,6 +94,6 @@ ptd_spc_standard <- function(.data, options = NULL) {
       close_to_limits = !.data$outside_limits & (.data$y < .data$nlpl | .data$y > .data$nupl)
     ) %>%
     # clean up by removing columns that no longer serve a purpose and ungrouping data
-    select(-any_of(c("mr", "nlpl", "nupl", "amr", "rebase"))) %>%
-    ungroup()
+    dplyr::select(-tidyselect::any_of(c("mr", "nlpl", "nupl", "amr", "rebase"))) %>%
+    dplyr::ungroup()
 }

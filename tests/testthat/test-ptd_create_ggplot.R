@@ -1,5 +1,6 @@
 library(testthat)
 library(mockery)
+library(ggplot2, warn.conflicts = FALSE)
 
 # ptd_create_ggplot() ----
 test_that("it raises an error if unknown arguments are passed", {
@@ -108,7 +109,7 @@ test_that("it facet's the plot if facet_field is set", {
 
 test_that("it sets the x_axis_breaks correctly", {
   m <- mock()
-  stub(ptd_create_ggplot, "scale_x_datetime", m)
+  stub(ptd_create_ggplot, "ggplot2::scale_x_datetime", m)
 
   set.seed(123)
   d <- data.frame(x = to_datetime("2020-01-01") + 1:20, y = rnorm(20))
@@ -260,7 +261,7 @@ test_that("it breaks lines", {
 test_that("it sets the colour of the points based on the type", {
   m <- mock()
 
-  stub(ptd_create_ggplot, "scale_colour_manual", m)
+  stub(ptd_create_ggplot, "ggplot2::scale_colour_manual", m)
 
   set.seed(123)
   d <- data.frame(x = as.Date("2020-01-01") + 1:20, y = rnorm(20))

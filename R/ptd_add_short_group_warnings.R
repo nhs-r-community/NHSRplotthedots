@@ -19,9 +19,16 @@
 #'
 ptd_add_short_group_warnings <- function(.data, warning_threshold = getOption("ptd_spc.warning_threshold", 13)) {
   .data <- .data %>%
-    group_by(across(c("f", "rebase_group"))) %>%
-    mutate(short_group_warning = n() < warning_threshold, .after = "rebase_group") %>%
-    ungroup()
+    dplyr::group_by(
+      dplyr::across(
+        c("f", "rebase_group")
+      )
+    ) %>%
+    dplyr::mutate(
+      short_group_warning = dplyr::n() < warning_threshold,
+      .after = "rebase_group"
+    ) %>%
+    dplyr::ungroup()
 
   if (any(.data$short_group_warning)) {
     warning(

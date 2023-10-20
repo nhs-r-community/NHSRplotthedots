@@ -37,10 +37,6 @@
 #'     data.frame. The default print() method for ptd_spc_df is to call [ptd_create_ggplot()], displaying the plot. If
 #'     you would like to get the data.frame, call as_tibble() or as.data.frame() on the object.
 #'
-#' @import dplyr
-#' @import ggplot2
-#' @import scales
-#' @importFrom rlang .data
 #' @examples
 #' library(NHSRdatasets)
 #' library(dplyr)
@@ -110,10 +106,10 @@ ptd_spc.data.frame <- function(.data, # Exclude Linting
                                target = ptd_target(),
                                trajectory,
                                screen_outliers = TRUE) {
-  value_field <- quo_name(enquo(value_field))
-  date_field <- quo_name(enquo(date_field))
-  facet_field <- if (!missing(facet_field)) quo_name(enquo(facet_field))
-  trajectory <- if (!missing(trajectory)) quo_name(enquo(trajectory))
+  value_field <- rlang::quo_name(rlang::enquo(value_field))
+  date_field <- rlang::quo_name(rlang::enquo(date_field))
+  facet_field <- if (!missing(facet_field)) rlang::quo_name(rlang::enquo(facet_field))
+  trajectory <- if (!missing(trajectory)) rlang::quo_name(rlang::enquo(trajectory))
 
   # validate all inputs.  Validation problems will generate an error and stop code execution.
   options <- ptd_spc_options(
@@ -173,7 +169,7 @@ summary.ptd_spc_df <- function(object, ...) {
     dplyr::summarise(
       dplyr::across(c("mean", "lpl", "upl"), dplyr::first),
       n = dplyr::n(),
-      common_cause = n - sum(.data$special_cause_flag),
+      common_cause = .data$n - sum(.data$special_cause_flag),
       special_cause_improvement = sum(.data$point_type == "special_cause_improvement"),
       special_cause_concern = sum(.data$point_type == "special_cause_concern"),
       .groups = "drop"
