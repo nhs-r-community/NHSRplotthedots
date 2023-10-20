@@ -8,7 +8,7 @@ test_that("it handles point_size correctly", {
   ptd_validate_plot_options(point_size = 5)
 
   # these will error
-  em <- "point_size must be a single number greater than 0 and less than or equal to 10."
+  em <- "point_size argument must be a single number greater than 0 and less than or equal to 10."
   expect_error(ptd_validate_plot_options(point_size = "a"), em)
   expect_error(ptd_validate_plot_options(point_size = 0), em)
   expect_error(ptd_validate_plot_options(point_size = 11), em)
@@ -130,7 +130,7 @@ test_that("it handles icons_size correctly", {
   ptd_validate_plot_options(icons_size = 5.2)
 
   # these will error
-  em <- "icons_size must be an integer of length 1."
+  em <- "icons_size argument must be an integer of length 1."
   expect_error(ptd_validate_plot_options(icons_size = "a"), em, fixed = TRUE)
   expect_error(ptd_validate_plot_options(icons_size = c(8, 2)), em, fixed = TRUE)
 })
@@ -154,7 +154,7 @@ test_that("it handles colours correctly", {
   ptd_validate_plot_options(colours = ptd_spc_colours())
 
   # these will error
-  em <- "colours must be an object created by ptd_spc_colours()."
+  em <- "colours argument must be an object created by ptd_spc_colours()."
   expect_error(ptd_validate_plot_options(colours = list()), em)
 })
 
@@ -163,7 +163,7 @@ test_that("it handles theme_override correctly", {
   ptd_validate_plot_options(theme_override = ggplot2::theme())
 
   # these will error
-  em <- "theme_override must be an object created by theme()."
+  em <- "theme_override argument must be an object created by theme()."
   expect_error(ptd_validate_plot_options(theme_override = list()), em)
 })
 
@@ -175,7 +175,7 @@ test_that("it handles break_lines correctly", {
   ptd_validate_plot_options(break_lines = "none")
 
   # these will error
-  em <- "break_lines must be one of 'both', 'limits', 'process', or 'none'."
+  em <- "break_lines argument must be one of 'both', 'limits', 'process', or 'none'."
   expect_error(ptd_validate_plot_options(break_lines = list()), em)
   expect_error(ptd_validate_plot_options(break_lines = 1), em)
   expect_error(ptd_validate_plot_options(break_lines = c("both", "limits")), em)
