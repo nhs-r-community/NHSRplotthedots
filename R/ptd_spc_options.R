@@ -1,23 +1,26 @@
 #' SPC Options Function
 #'
-#' `ptd_spc_options` returns a list object containing properties which adjust the output of the `ptd_spc` function.
+#' `ptd_spc_options` returns a list object containing properties which adjust
+#'  the output of the `ptd_spc` function.
 #'
-#' This function is designed to allow greater control over SPC charts created using this package.  `ptd_spc_options` is
-#' a list with named slots for known parameters within the `ptd_spc` function. It should be supplied to the options
-#' argument within the `ptd_spc` function, with the options listed within `ptd_spc_options`.  See examples below.
+#' This function is designed to allow greater control over SPC charts created
+#'  using this package.  `ptd_spc_options` is a list with named slots for known
+#'  parameters within the `ptd_spc` function. It should be supplied to the
+#'  options argument within the `ptd_spc` function, with the options listed
+#'  within `ptd_spc_options`. See examples below.
 #'
 #' @inheritParams spc
-#'
 #' @noRd
-ptd_spc_options <- function(value_field,
-                            date_field,
-                            facet_field = NULL,
-                            rebase = NULL,
-                            fix_after_n_points = NULL,
-                            improvement_direction = c("increase", "neutral", "decrease"),
-                            target = NULL,
-                            trajectory = NULL,
-                            screen_outliers = TRUE) {
+ptd_spc_options <- function(
+    value_field,
+    date_field,
+    facet_field = NULL,
+    rebase = NULL,
+    fix_after_n_points = NULL,
+    improvement_direction = c("increase", "neutral", "decrease"),
+    target = NULL,
+    trajectory = NULL,
+    screen_outliers = TRUE) {
   assertthat::assert_that(
     is.character(value_field),
     assertthat::is.scalar(value_field),
@@ -59,7 +62,10 @@ ptd_spc_options <- function(value_field,
       is.numeric(fix_after_n_points),
       assertthat::is.scalar(fix_after_n_points),
       fix_after_n_points >= 12,
-      msg = "fix_after_n_points must be a single numeric that is greater than or equal to 12."
+      msg = paste0(
+        "fix_after_n_points must be a single numeric that is greater than ",
+        "or equal to 12."
+      )
     )
   }
 

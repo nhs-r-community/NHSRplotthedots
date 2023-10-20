@@ -1,5 +1,19 @@
 library(mockery)
 
+test_that("it raises an error if unknown arguments are passed", {
+  expect_warning(
+    try(
+      ptd_create_plotly(NULL, X = 1, Y = 2),
+      silent = TRUE
+    ),
+    paste0(
+      "Unknown arguments provided by plot: X, Y.\n",
+      "Check for common spelling mistakes in arguments."
+    ),
+    fixed = TRUE
+  )
+})
+
 test_that("ptd_create_plotly returns a plotly object", {
   mock_plot <- list(
     data = list(
@@ -171,7 +185,7 @@ test_that("ptd_create_plotly returns a plotly object (no annotations or icons)",
 })
 
 
-test_that("ptd_create_plotly gives a warning with facet field and icons position not none", {
+test_that("ptd_create_plotly gives a warning with facet field and icons position not none", { # nolint
   mock_plot <- list(
     data = list(
       short_group_warnings = FALSE

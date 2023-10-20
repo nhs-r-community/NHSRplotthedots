@@ -1,16 +1,14 @@
 #' SPC Standard Calculations (internal function)
 #'
-#' Returns a data frame containing SPC fields which are common to all methodologies, including 'plot the dots'
+#' Returns a data frame containing SPC fields which are common to all
+#'  methodologies, including 'plot the dots'
 #'
 #' This function is designed to produce consistent SPC charts
 #' across Information Department reporting, according to the 'plot the dots'
 #' logic produced by NHSI. The function can return either a plot or data frame.
 #'
-#'
-#' @param .data A data frame containing a value field, a date field,
-#' and a category field (if for faceting). There should be no gaps in the time series
-#' for each category.
-#' @param options created by spcOptions function
+#' @inheritParams ptd_spc
+#' @param options created by `spcOptions()` function
 #'
 #' @noRd
 ptd_spc_standard <- function(.data, options = NULL) {
@@ -37,7 +35,8 @@ ptd_spc_standard <- function(.data, options = NULL) {
   }
 
   # Set facet/grouping or create pseudo
-  # If no facet field specified, bind a pseudo-facet field for grouping/joining purposes
+  # If no facet field specified, bind a pseudo-facet field for
+  # grouping/joining purposes
   if (is.null(facet_field)) {
     .data$facet <- "no facet"
   } else {
@@ -66,7 +65,7 @@ ptd_spc_standard <- function(.data, options = NULL) {
     dplyr::group_by(.data$rebase_group, .add = TRUE) %>%
     dplyr::mutate(
       fix_y = ifelse(dplyr::row_number() <= (fix_after_n_points %||% Inf), .data$y, NA),
-      mean = mean(.data$fix_y, na.rm = TRUE),
+      mean_col = mean(.data$fix_y, na.rm = TRUE),
       mr = c(NA, abs(diff(.data$fix_y))),
       amr = mean(.data$mr, na.rm = TRUE),
 
@@ -79,19 +78,19 @@ ptd_spc_standard <- function(.data, options = NULL) {
       amr = mean(.data$mr, na.rm = TRUE),
 
       # identify lower/upper process limits
-      lpl = .data$mean - (limit * .data$amr),
-      upl = .data$mean + (limit * .data$amr),
+      lpl = .data$mean_col - (limit * .data$amr),
+      upl = .data$mean_col + (limit * .data$amr),
       # identify near lower/upper process limits
-      nlpl = .data$mean - (limitclose * .data$amr),
-      nupl = .data$mean + (limitclose * .data$amr),
+      nlpl = .data$mean_col - (limitclose * .data$amr),
+      nupl = .data$mean_col + (limitclose * .data$amr),
 
       # Identify any points which are outside the upper or lower process limits
       outside_limits = (.data$y > .data$upl | .data$y < .data$lpl),
       # Identify whether a point is above or below the mean
-      relative_to_mean = sign(.data$y - .data$mean),
+      relative_to_mean = sign(.data$y - .data$mean_col),
 
       # Identify if a point is between the near process limits and process limits
-      close_to_limits = !.data$outside_limits & (.data$y < .data$nlpl | .data$y > .data$nupl)
+      close_to_limits = !.data$outside_limits & (.data$y < .data$nlpl | .data$y > .data$nupl) # nolint
     ) %>%
     # clean up by removing columns that no longer serve a purpose and ungrouping data
     dplyr::select(-tidyselect::any_of(c("mr", "nlpl", "nupl", "amr", "rebase"))) %>%

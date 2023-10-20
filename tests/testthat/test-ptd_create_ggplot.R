@@ -9,7 +9,10 @@ test_that("it raises an error if unknown arguments are passed", {
       ptd_create_ggplot(NULL, X = 1, Y = 2),
       silent = TRUE
     ),
-    "Unknown arguments provided by plot: X, Y\nCheck for common spelling mistakes in arguments.",
+    paste0(
+      "Unknown arguments provided by plot: X, Y.\n",
+      "Check for common spelling mistakes in arguments."
+    ),
     fixed = TRUE
   )
 })
@@ -39,6 +42,7 @@ test_that("it calls ptd_validate_plot_options", {
       "x_axis_date_format",
       "x_axis_breaks",
       "y_axis_breaks",
+      "limit_annotations",
       "icons_size",
       "icons_position",
       "colours",
@@ -61,6 +65,7 @@ test_that("it calls ptd_validate_plot_options", {
     "x_axis_date_format",
     "x_axis_breaks",
     "y_axis_breaks",
+    "limit_annotations",
     "icons_size",
     "icons_position",
     "colours",
@@ -92,9 +97,13 @@ test_that("it returns a ggplot object", {
   )
 })
 
-test_that("it facet's the plot if facet_field is set", {
+test_that("it facets the plot if facet_field is set", {
   set.seed(123)
-  d <- data.frame(x = as.Date("2020-01-01") + 1:20, y = rnorm(20), g = rep(c(1, 2), each = 10))
+  d <- data.frame(
+    x = as.Date("2020-01-01") + 1:20,
+    y = rnorm(20),
+    g = rep(c(1, 2), each = 10)
+  )
 
   withr::with_options(list(ptd_spc.warning_threshold = 10), {
     s1 <- ptd_spc(d, "y", "x")
@@ -112,7 +121,7 @@ test_that("it sets the x_axis_breaks correctly", {
   stub(ptd_create_ggplot, "ggplot2::scale_x_datetime", m)
 
   set.seed(123)
-  d <- data.frame(x = to_datetime("2020-01-01") + 1:20, y = rnorm(20))
+  d <- data.frame(x = as.POSIXct("2020-01-01") + 1:20, y = rnorm(20))
   s <- ptd_spc(d, "y", "x")
 
   attr(d$x, "tzone") <- ""
@@ -156,7 +165,11 @@ test_that("it sets y_axis_label correctly", {
 
 test_that("it sets scales correctly in a faceted plot", {
   set.seed(123)
-  d <- data.frame(x = as.Date("2020-01-01") + 1:20, y = rnorm(20), g = rep(c(1, 2), each = 10))
+  d <- data.frame(
+    x = as.Date("2020-01-01") + 1:20,
+    y = rnorm(20),
+    g = rep(c(1, 2), each = 10)
+  )
 
   withr::with_options(list(ptd_spc.warning_threshold = 10), {
     s <- ptd_spc(d, "y", "x", facet_field = "g")
@@ -181,6 +194,52 @@ test_that("it sets scales correctly in a faceted plot", {
   p5 <- ptd_create_ggplot(s, fixed_x_axis_multiple = TRUE, fixed_y_axis_multiple = TRUE)
   expect_false(p5$facet$params$free$x)
   expect_false(p5$facet$params$free$y)
+})
+
+test_that("it creates a secondary y axis with percentage scales", {
+  set.seed(123)
+  d <- data.frame(x = as.Date("2020-01-01") + 1:20, y = rnorm(20))
+  s <- ptd_spc(d, "y", "x")
+
+  sec_breaks <- s |>
+    dplyr::select(all_of(c("lpl", "mean_col", "upl"))) |>
+    dplyr::slice_head(n = 1) |>
+    unlist() |>
+    unname()
+
+  p1 <- s |>
+    ptd_create_ggplot(percentage_y_axis = TRUE, label_limits = TRUE)
+  expect_equal(
+    round(sec_breaks, 3),
+    round(p1$scales$scales[[3]]$secondary.axis$breaks, 3)
+  )
+  p2 <- s |>
+    ptd_create_ggplot(percentage_y_axis = TRUE, y_axis_breaks = 0.5, label_limits = TRUE)
+  expect_equal(
+    round(sec_breaks, 3),
+    round(p2$scales$scales[[3]]$secondary.axis$breaks, 3)
+  )
+
+
+})
+
+test_that("it creates a secondary y axis with integer scales", {
+  set.seed(123)
+  d <- data.frame(x = as.Date("2020-01-01") + 1:20, y = rnorm(20))
+  s <- ptd_spc(d, "y", "x")
+
+  sec_breaks <- s |>
+    dplyr::select(all_of(c("lpl", "mean_col", "upl"))) |>
+    dplyr::slice_head(n = 1) |>
+    unlist() |>
+    unname()
+
+  p1 <- ptd_create_ggplot(s, percentage_y_axis = FALSE, label_limits = TRUE)
+  expect_equal(p1$scales$scales[[3]]$secondary.axis$breaks, sec_breaks)
+
+  p2 <- ptd_create_ggplot(s, y_axis_breaks = 1, label_limits = TRUE)
+  expect_equal(p2$scales$scales[[3]]$secondary.axis$breaks, sec_breaks)
+
 })
 
 test_that("it sets the y-axis to percentages if percentage_y_axis is TRUE", {
@@ -220,7 +279,10 @@ test_that("it adds theme_override to the plot", {
   p1 <- ptd_create_ggplot(s)
   expect_equal(p1$theme$panel.background$fill, NULL)
 
-  p2 <- ptd_create_ggplot(s, theme_override = theme(panel.background = element_rect("black")))
+  p2 <- s |>
+    ptd_create_ggplot(
+      theme_override = ggplot2::theme(panel.background = ggplot2::element_rect("black")) # nolint
+    )
   expect_equal(p2$theme$panel.background$fill, "black")
 })
 
@@ -264,15 +326,22 @@ test_that("it sets the colour of the points based on the type", {
   stub(ptd_create_ggplot, "ggplot2::scale_colour_manual", m)
 
   set.seed(123)
-  d <- data.frame(x = as.Date("2020-01-01") + 1:20, y = rnorm(20))
+  d <- data.frame(x = as.Date("2020-01-01") + 1:20, y = rnorm(20)) |>
+    # introduce some special cause variation!
+    dplyr::mutate(
+      across("y", \(y) dplyr::case_when(
+        x > "2020-01-15" ~ y + 0.5,
+        TRUE ~ y
+      ))
+    )
 
-  colours_neutal <- list(
-    common_cause              = "#7B7D7D", # grey
+  colours_neutral <- list(
+    common_cause              = "#7b7d7d", # grey
     special_cause_neutral     = "#361475" # purple
   )
 
   colours_otherwise <- list(
-    common_cause              = "#7B7D7D", # grey
+    common_cause              = "#7b7d7d", # grey
     special_cause_improvement = "#289de0", # blue
     special_cause_concern     = "#fab428" # orange
   )
@@ -288,7 +357,7 @@ test_that("it sets the colour of the points based on the type", {
   p3 <- ptd_create_ggplot(s3)
 
   expect_called(m, 3)
-  expect_args(m, 1, values = colours_neutal, labels = ptd_title_case)
+  expect_args(m, 1, values = colours_neutral, labels = ptd_title_case)
   expect_args(m, 2, values = colours_otherwise, labels = ptd_title_case)
 })
 
@@ -305,8 +374,10 @@ test_that("it sets the main title correctly", {
 
 test_that("a plot with short rebase group has a warning caption", {
   d <- data.frame(x = as.Date("2020-01-01") + 1:40, y = rnorm(40))
-  s1 <- ptd_spc(d, "y", "x", rebase = as.Date("2020-01-20")) # rebase at midpoint, no short groups
-  s2 <- suppressWarnings(ptd_spc(d, "y", "x", rebase = as.Date("2020-02-02"))) # rebase close to end of points
+  # rebase at midpoint, no short groups
+  s1 <- ptd_spc(d, "y", "x", rebase = as.Date("2020-01-20"))
+  # rebase close to end of points
+  s2 <- suppressWarnings(ptd_spc(d, "y", "x", rebase = as.Date("2020-02-02")))
 
   p1 <- ptd_create_ggplot(s1)
   expect_equal(p1$labels$caption, NULL)
@@ -315,7 +386,7 @@ test_that("a plot with short rebase group has a warning caption", {
   expect_equal(
     p2$labels$caption,
     paste0(
-      "Some trial limits created by groups of fewer than 12 points exist. \n",
+      "Some trial limits created by groups of fewer than 12 points exist.\n",
       "These will become more reliable as more data is added."
     )
   )
@@ -366,6 +437,7 @@ test_that("it calls ptd_create_ggplot()", {
     x_axis_date_format = "%d/%m/%y",
     x_axis_breaks = NULL,
     y_axis_breaks = NULL,
+    limit_annotations = FALSE,
     icons_size = 8L,
     icons_position = c("top right", "bottom right", "bottom left", "top left", "none"),
     colours = "colours",

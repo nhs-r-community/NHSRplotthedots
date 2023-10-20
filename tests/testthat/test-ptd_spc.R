@@ -24,15 +24,15 @@ test_that("it throws an error if .data is not a data.frame or SharedData", {
   em <- "no applicable method for 'ptd_spc' applied to an object of class \"character\""
   expect_error(ptd_spc("x", "a", "b"), em, fixed = TRUE)
 
-  # check that it does work for data.frame's and SharedData's. We will temporarily override the actual implementations
-  # to mock the calls
+  # Check that it does work for data.frames and SharedDatas. We will
+  # temporarily override the actual implementations to mock the calls
   local({
     m <- mock()
 
     ptd_spc.data.frame <- m # Exclude Linting
     ptd_spc.SharedData <- m # Exclude Linting
 
-    sd <- sd <- structure(
+    sd <- structure(
       list(
         origData = function() data,
         key = function() "key",
@@ -362,11 +362,11 @@ test_that("it outputs expected content", {
   expect_snapshot_output(summary(s3))
 
   suppressWarnings(
-    s4 <- ptd_spc.data.frame(d, "y", "x", rebase = as.Date("2020-01-01"), facet_field = "facet")
+    s4 <- ptd_spc.data.frame(d, "y", "x", rebase = as.Date("2020-01-01"), facet_field = "facet") # nolint
   )
   expect_snapshot_output(summary(s4))
 
-  m <- mock(tibble(f = "no facet", assurance_type = "a"))
+  m <- mock(tibble::tibble(f = "no facet", assurance_type = "a"))
   stub(summary.ptd_spc_df, "ptd_calculate_assurance_type", m)
 
   s5 <- ptd_spc.data.frame(d, "y", "x", target = 0.5)

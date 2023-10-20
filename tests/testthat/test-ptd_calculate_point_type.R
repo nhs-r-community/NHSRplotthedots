@@ -58,7 +58,6 @@ test_that("it returns the mutated data", {
   stub(ptd_calculate_point_type, "dplyr::mutate", "mutate")
   stub(ptd_calculate_point_type, "dplyr::ungroup", "ungroup")
   stub(ptd_calculate_point_type, "ptd_special_cause_type", "ptd_special_cause_type")
-
   a <- ptd_calculate_point_type(d, 1)
 
   expect_equal(a, "ungroup")
@@ -172,7 +171,7 @@ test_that("ptd_two_in_three works as expected", {
   expect_equal(h, c(0, 1, 1, 1, 1, 0, 0))
 })
 
-test_that("ptd_two_in_three works as expected when points are on opposite sides of the mean", {
+test_that("ptd_two_in_three works as expected when points are on opposite sides of the mean", { # nolint
   d <- ptd_two_in_three(c(1, 0, 1), c(1, -1, 1))
   e <- ptd_two_in_three(c(0, 1, 1), c(1, -1, 1))
   f <- ptd_two_in_three(c(1, 1, 0), c(1, -1, 1))

@@ -19,17 +19,17 @@ test_that("it returns a data frame", {
 test_that("it returns expected values", {
   r1 <- ptd_spc_standard(data, spc_options)
 
-  expect_snapshot(dplyr::glimpse(r1))
+  expect_snapshot(pillar::glimpse(r1))
 
   # testing the screen_outliers
   o <- spc_options
   data$y[15] <- 10
   r2 <- ptd_spc_standard(data, o)
-  expect_snapshot(dplyr::glimpse(r2))
+  expect_snapshot(pillar::glimpse(r2))
 
   o$screen_outliers <- FALSE
   r3 <- ptd_spc_standard(data, o)
-  expect_snapshot(dplyr::glimpse(r3))
+  expect_snapshot(pillar::glimpse(r3))
 
   # check that we have different limits for all of the results
   expect_true(r1$lpl[[1]] != r2$lpl[[1]])
@@ -39,8 +39,8 @@ test_that("it returns expected values", {
   expect_true(r1$upl[[1]] != r3$upl[[1]])
   expect_true(r2$upl[[1]] != r3$upl[[1]])
 
-  # check that the range in the 3rd results (when screen_outliers = FALSE) is larger than the range in the 2nd results
-  # (when screen_outliers = TRUE)
+  # check that the range in the 3rd results (when screen_outliers = FALSE)
+  # is larger than the range in the 2nd results (when screen_outliers = TRUE)
   expect_true(r3$upl[[1]] - r3$lpl[[1]] > r2$upl[[1]] - r2$lpl[[1]])
 })
 
@@ -78,7 +78,7 @@ test_that("it sets the rebase_group field", {
 
   # when rebase is set
   o$rebase <- "rebase"
-  data <- mutate(data, rebase = c(rep(0, 10), 1, rep(0, 9)))
+  data <- dplyr::mutate(data, rebase = c(rep(0, 10), 1, rep(0, 9)))
   r2 <- ptd_spc_standard(data, o)
   expect_equal(r2$rebase_group, c(rep(0, 10), rep(1, 10)))
 })
@@ -94,7 +94,7 @@ test_that("setting fix_after_n_points changes the calculations", {
   expect_true(s1$upl[[1]] != s0$upl[[1]])
 })
 
-test_that("it only reports special cause for 2of3 points close to limits when they are on the same side of the mean", {
+test_that("it only reports special cause for 2of3 points close to limits when they are on the same side of the mean", { # nolint
   # dataframe of symmetrical data
   dtf <- data.frame(
     data = c(rep(c(1, -1), times = 8)),

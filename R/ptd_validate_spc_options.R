@@ -22,7 +22,15 @@ ptd_validate_spc_options <- function(options, .data) {
   check("facet_field")
   check("trajectory")
 
+  pulled_counts <- .data |>
+    dplyr::group_by(
+      pick(c(options[["date_field"]], options[["facet_field"]]))
+    ) |>
+    dplyr::count() |>
+    dplyr::pull("n")
+
   assertthat::assert_that(
+
     all(
       dplyr::count(
         dplyr::group_by_at(

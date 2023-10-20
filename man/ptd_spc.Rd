@@ -19,45 +19,58 @@ ptd_spc(
 }
 \arguments{
 \item{.data}{A data frame containing a value field, a date field,
-and a category field (if for faceting). There should be no gaps in the time series
-for each category.}
+and a category field (if for faceting). There should be no gaps in the time
+series for each category.}
 
-\item{value_field}{Specify the field name which contains the value data, to be plotted on y axis.
-Field name can be specified using non-standard evaluation (i.e. no quotation marks).}
+\item{value_field}{Specify the field name which contains the value data, to
+be plotted on y axis. The field name can be specified using non-standard
+evaluation (i.e. without quotation marks).}
 
-\item{date_field}{Specify the field name which contains the date data, to be plotted on x axis.
-Field name can be specified using non-standard evaluation (i.e. no quotation marks).}
+\item{date_field}{Specify the field name which contains the date data, to be
+plotted on x axis. The field name can be specified using non-standard
+evaluation (i.e. without quotation marks).}
 
-\item{facet_field}{Optional: Specify field name which contains a grouping/faceting variable. SPC logic will be
-applied to each group separately, with outputs combined. Currently accepts 1 variable only.
-Field name can be specified using non-standard evaluation (i.e. no quotation marks).}
+\item{facet_field}{Optional: Specify field name which contains a grouping/
+faceting variable. SPC logic will be applied to each group separately, with
+outputs combined. Currently accepts 1 variable only. The field name can be
+specified using non-standard evaluation (i.e. without quotation marks).}
 
-\item{rebase}{Specify a date vector of dates when to rebase, or, if facet_field is set, a named list of date vectors
-of when to rebase. Each item in the list should be named after the facet you wish to rebase. See \code{\link[=ptd_rebase]{ptd_rebase()}}.}
+\item{rebase}{Specify a date vector of dates when to rebase, or, if
+\code{facet_field} is set, a named list of date vectors of when to rebase. Each
+item in the list should be named after the facet you wish to rebase. See
+\code{\link[=ptd_rebase]{ptd_rebase()}}.}
 
-\item{fix_after_n_points}{Specify a number points after which to fix SPC calculations.}
+\item{fix_after_n_points}{Specify a number points after which to fix SPC
+calculations.}
 
-\item{improvement_direction}{Specify whether process improvement is represented by an increase or decrease in
-measured variable, or is neutral.  Accepted values are 'increase' for increase as improvement, 'decrease' for
-decrease as improvement, and 'neutral' where neither direction represents an improvement. Defaults to 'increase'.}
+\item{improvement_direction}{Specify whether process improvement is
+represented by an increase or decrease in measured variable, or is neutral.
+Accepted values are 'increase' for increase as improvement, 'decrease' for
+decrease as improvement, and 'neutral' where neither direction represents
+an improvement. Defaults to 'increase'.}
 
-\item{target}{Specify a single value, which will apply the same target to every facet of an SPC chart,
-or named values of targets, where the names correspond to the names of the facets, in order to
-have different targets for each facet. See \code{\link[=ptd_target]{ptd_target()}}.}
+\item{target}{Specify a single value, which will apply the same target to
+every facet of an SPC chart, or named values of targets, where the names
+correspond to the names of the facets, in order to have different targets
+for each facet. See \code{\link[=ptd_target]{ptd_target()}}.}
 
 \item{trajectory}{Specify a field name which contains a trajectory value.
-Field name can be specified using non-standard evaluation (i.e. no quotation marks).}
+The field name can be specified using non-standard evaluation (i.e. without
+quotation marks).}
 
-\item{screen_outliers}{Whether we should screen for outliers or not when calculating the control limits. Defaults to
-\code{TRUE}.}
+\item{screen_outliers}{Whether to screen for outliers when calculating the
+control limits. Defaults to \code{TRUE}.}
 }
 \value{
-An object of type ptd_spc_df. This is a data.frame which can be further manipulated like any other
-data.frame. The default print() method for ptd_spc_df is to call \code{\link[=ptd_create_ggplot]{ptd_create_ggplot()}}, displaying the plot. If
-you would like to get the data.frame, call as_tibble() or as.data.frame() on the object.
+An object of type \code{ptd_spc_df}. This is a data.frame which can be
+further manipulated like any other data.frame. The default print() method
+for \code{ptd_spc_df} is to call \code{\link[=ptd_create_ggplot]{ptd_create_ggplot()}}, displaying the plot. If
+you would like to get the data.frame, call as_tibble() or as.data.frame()
+on the object.
 }
 \description{
-\code{ptd_spc} returns a plot object or data table with SPC values using NHSI 'plot the dots' logic.
+\code{ptd_spc} returns a plot object or data table with SPC values using NHSI
+'plot the dots' logic.
 }
 \details{
 This function is designed to produce consistent SPC charts

@@ -1,9 +1,11 @@
 linters: linters_with_defaults(
-  line_length_linter(120),
+  line_length_linter(92),
   cyclocomp_linter(20),
+  indentation_linter(hanging_indent_style = "tidy"),
   object_name_linter("snake_case"))
-exclusions: list()
-exclude: "# Exclude Linting"
-exclude_start: "# Begin Exclude Linting"
-exclude_end: "# End Exclude Linting"
+exclusions: list(
+  "R/ptd_spc_colours.R" = 5)
+exclude: "# Exclude Linting|#\\s?nolint"
+exclude_start: "# Begin Exclude Linting|#\\s?nolint-start"
+exclude_end: "# End Exclude Linting|#\\s?nolint-end"
 encoding: "ISO-8859-1"

@@ -1,18 +1,25 @@
-geom_ptd_icon_draw_panel <- function(self, data, panel_params, coord,
-                                     icons_size = 8,
-                                     icons_position = c("top right", "bottom right", "bottom left", "top left")) {
+geom_ptd_icon_draw_panel <- function(
+    self,
+    data,
+    panel_params,
+    coord,
+    icons_size = 8,
+    icons_position = c("top right", "bottom right", "bottom left", "top left")) {
   icons_position <- match.arg(icons_position)
-  # match the icons_position to x,y coordinates. either {0, 1}, but shift in by 0.01 so icons don't clip
+  # match the icons_position to x,y coordinates. either {0, 1}, but shift in by
+  # 0.01 so icons don't clip
   icons_position_x <- abs(as.numeric(grepl("right$", icons_position)) - 0.01)
   icons_position_y <- abs(as.numeric(grepl("^top", icons_position)) - 0.01)
 
-  # figure out how to justify the icons viewport, this should be two strings like c("right", "top")
+  # figure out how to justify the icons viewport, this should be two strings
+  # like c("right", "top")
   just <- rev(strsplit(icons_position, " ")[[1]])
 
   # icons_size defines the font size, radius needs to be smaller than that
   radius <- icons_size / 16
 
-  # use the coord transformation for the colours, but then set the x, y coordinates manually (inside the viewport)
+  # use the coord transformation for the colours, but then set the x, y
+  # coordinates manually (inside the viewport)
   d <- coord$transform(data, panel_params) %>%
     dplyr::mutate(
       x = ifelse(.data$type == "variation", 3.5 * radius, radius),
@@ -74,17 +81,19 @@ GeomPTDIcon <- ggplot2::ggproto( # Exclude Linting
 #' @param ... currently unused
 #'
 #' @export
-geom_ptd_icon <- function(data = NULL,
-                          icons_size = 8L,
-                          icons_position = c("top right", "bottom right", "bottom left", "top left"),
-                          ...) {
+geom_ptd_icon <- function(
+    data = NULL,
+    icons_size = 8L,
+    icons_position = c("top right", "bottom right", "bottom left", "top left"),
+    ...) {
   icons_position <- match.arg(icons_position)
 
-  # set's up the layer: this is a little unusual for ggplot as we fix the mapping, data argument etc. As this geom is
-  # not-exported it's not intended to be used in any other way
+  # sets up the layer: this is a little unusual for ggplot as we fix the
+  # mapping, data argument etc. As this geom is not exported it's not intended
+  # to be used in any other way
   ggplot2::layer(
     geom = GeomPTDIcon,
-    mapping = ggplot2::aes(type = .data$type, icon = .data$icon),
+    mapping = aes(type = .data$type, icon = .data$icon),
     data = if (is.null(data)) ptd_get_icons else ptd_get_icons(data),
     stat = "identity",
     position = "identity",
@@ -94,7 +103,8 @@ geom_ptd_icon <- function(data = NULL,
   )
 }
 
-# function to transform the data: this takes the raw ptd spc data and returns two rows per facet:
+# function to transform the data: this takes the raw ptd spc data and returns
+# two rows per facet:
 #  - one row for the variation icon
 #  - one row for the assurance icon (if applicable)
 ptd_get_icons <- function(.x) {

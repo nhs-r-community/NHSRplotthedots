@@ -1,16 +1,14 @@
 #' Calculate point highlighting (internal function)
 #'
-#' Performs calculations to identify which data points should be highlighted in the final plot
-#'   based on points outside process limits, trends, shifts, etc.
+#' Performs calculations to identify which data points should be highlighted in
+#'  the final plot based on points outside process limits, trends, shifts, etc.
 #'
 #' @param .data A data frame containing the information to be plotted.
-#' @param improvement_direction An integer signifying whether improvement is represented by increasing or decreasing
-#'     values
-#' @return The calculated data frame
+#' @param improvement_direction An integer signifying whether improvement is
+#'  represented by increasing or decreasing values.
+#' @returns The calculated data frame
 #'
 #' @noRd
-#'
-
 ptd_calculate_point_type <- function(.data, improvement_direction) {
   # Begin plot the dots logical tests
   .data %>%
