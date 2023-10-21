@@ -50,7 +50,7 @@ the y axis should be fixed for all facet plots. Accepted values are \code{TRUE}
 for fixed y axes or \code{FALSE} for individual y axes.}
 
 \item{x_axis_date_format}{Specify how dates on the x axis should be
-displayed. The ormat should be provided as a character string using 'd m Y'
+displayed. The format should be provided as a character string using 'd m Y'
 -type syntax.}
 
 \item{x_axis_breaks}{Specify an interval value for breaks on the x axis.

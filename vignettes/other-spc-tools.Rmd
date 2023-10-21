@@ -1,0 +1,50 @@
+---
+title: "Other SPC tools"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Other SPC tools}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+This vignette sets out options for creating SPC visualisations using various analysis and dashboarding ecosystems in common use in the NHS.
+
+{NHSRplotthedots} is designed for R users, but we are the NHS-R community and recognise that the NHS uses a broad set of analysis and dashboarding tools. Analysts are usually not able to choose the tools or ecosystems they work with, which tend to be specified by the organisation the analyst works for. If you are reading this, it's likely that you are looking for a way to automate the production of SPC charts, but need to do it without the help of R.
+
+> Be aware that not all of these tools allow you to work openly and reproducibly, as recommended by the [Goldacre Review](https://www.gov.uk/government/publications/better-broader-safer-using-health-data-for-research-and-analysis/better-broader-safer-using-health-data-for-research-and-analysis#modern-open-working-methods-for-nhs-data-analysis), the [NHS Digital Sevice Manual](https://service-manual.nhs.uk/standards-and-technology/service-standard-points/12-make-new-source-code-open), the [UK Government Statistical Service](https://analysisfunction.civilservice.gov.uk/support/reproducible-analytical-pipelines/), the [NHS RAP Community of Practice](https://nhsdigital.github.io/rap-community-of-practice), and the [NHS RAP Playbook](https://nhsengland.github.io/Health-RAP-Playbook-Alpha/). The tools below are offered because sometimes work needs doing in the only available ecosystem.\
+> **NHS-R recommends working openly and reproducibly wherever possible.**
+
+### Differing visual styles
+
+The NHSE "Making Data Count"(MDC) training programme popularised the use of SPC in the NHS, and since 2019 has invested a large amount of time developing people at major NHS organisations across England. As a result there are a large number of people in the NHS who have a moderate familiarity with SPC through the blue, orange, and grey "plot the dots" visual style. This enables meeting time to be spent making data-driven decisions, not discussing the interpretation of the charts themselves.
+
+The tables below make a distinction between tools that do and do not align to the MDC visual style. Tools that align closely can be used interchangably without the risk of introducing chart interpretation overheads to meetings and decision-making.
+
+### Options which align to the MDC visual style:
+
+| Ecosystem | Name             | Open-Source Code                                                  | License | Docs                                                                                    | Comment                                                                                                                                                                                                                                                                                                                                                                      |
+|:----------|:----------|:----------|:----------|:----------|:--------------------|
+| Excel     | MDC Plotthedots  | [link](https://future.nhs.uk/MDC/view?objectId=33385456)          | unknown | [docs](https://future.nhs.uk/MDC/view?objectId=23299728)                                | The original workbooks from [NHSE Making Data Count](https://www.england.nhs.uk/publication/making-data-count/). Excellent for project improvement work, but limited if you need to produce charts at scale. These workbooks set the visual style which the other tools in this table mimic, allowing consistent reporting from a number of different underlying ecosystems. |
+| R         | NHSRplotthedots  | [link](https://github.com/nhs-r-community/NHSRplotthedots)        | MIT     | [docs](https://nhs-r-community.github.io/NHSRplotthedots)                               | Built by [NHS-R Community](https://nhsrcommunity.com/).                                                                                                                                                                                                                                                                                                                      |
+| Python    | \-               | \-                                                                | \-      | \-                                                                                      | We are not aware of a project that conforms to the MDC visual style. See below for an option with a non-MDC visual style.                                                                                                                                                                                                                                                    |
+| PowerBI   | PowerBI-SPC      | [link](https://github.com/AUS-DOH-Safety-and-Quality/PowerBI-SPC) | GPLv3   | [docs](https://github.com/AUS-DOH-Safety-and-Quality/PowerBI-SPC#installing-the-visual) | Built by the [Western Australia Government, Department of Health](https://www.health.wa.gov.au/).                                                                                                                                                                                                                                                                            |
+| Qliksense | custom extension | \-                                                                | \-      | \-                                                                                      | We are aware of code for a Qlik plugin which is circulated by email. The code is not published openly. It was originally authored by ?? - contact them for a copy.                                                                                                                                                                                                           |
+| Tableau   | \-               | \-                                                                | \-      | \-                                                                                      | We are not aware of options. Please submit an issue if you know of one.                                                                                                                                                                                                                                                                                                      |
+
+### Options which do not align to the MDC visual style:
+
+| Ecosystem | Name              | Open-Source Code                                             | License | Docs                                                         | Comment                                                                          |
+|:----------|:----------|:----------|:----------|:----------|:--------------------|
+| Python    | nhspy-plotthedots | [link](https://github.com/nhs-pycom/nhspy-plotthedots){.uri} | MIT     | [docs](https://nhs-pycom.github.io/nhspy-plotthedots/){.uri} | Developed by NHS-R's friends at NHS-pycom.                                       |
+| Qlikview  | \-                | \-                                                           | \-      | [docs](https://www.youtube.com/watch?v=OVkUOTA-GQw)          | No further information, but presented by NHS-R community member John MacKintosh. |
+
+### Alternatives closely related to SPC:
+
+| Ecosystem | Name         | Open-Source Code                                       | License | Docs                                                  | Comment                                                                                                                                                                                                                     |
+|:----------|:----------|:----------|:----------|:----------|:--------------------|
+| R         | runcharter   | [link](https://github.com/johnmackintosh/runcharter)   | GPLv3   | [docs](https://johnmackintosh.github.io/runcharter)   | Automates run charts, including automatic re-basing of the median when a run is detected.                                                                                                                                   |
+| R         | cusumcharter | [link](https://github.com/johnmackintosh/cusumcharter) | GPLv3   | [docs](https://johnmackintosh.github.io/cusumcharter) | Creates CUSUM charts, which will detect small changes, and alert quicker than an SPC chart. They are an excellent alternative to run and SPC charts, particularly where data is scarce, infrequent, or expensive to obtain. |
+
+------------------------------------------------------------------------
+
+END
