@@ -40,6 +40,9 @@
     <li>
       <a href="../articles/number-of-points-required.html">Number of points required</a>
     </li>
+    <li>
+      <a href="../articles/other-spc-tools.html">Other SPC tools</a>
+    </li>
   </ul></li>
 <li>
   <a href="../news/index.html">Changelog</a>
@@ -93,22 +96,20 @@
     <div id="arguments">
     <h2>Arguments</h2>
     <dl><dt>x</dt>
-<dd><p>An object created by <code><a href="ptd_spc.html">ptd_spc()</a></code></p></dd>
+<dd><p>an object created by <code><a href="ptd_spc.html">ptd_spc()</a></code></p></dd>
 
 
 <dt>point_size</dt>
-<dd><p>Specify the plotting point size for the plotly output.
-The default is 4.</p></dd>
+<dd><p>Specify the plotting point size for the ggplot output. Default is 2.5.</p></dd>
 
 
 <dt>percentage_y_axis</dt>
-<dd><p>Specify whether the y axis values are percentages.
-Accepted values are <code>TRUE</code> for a percentage y axis, or <code>FALSE</code> for an
-integer y axis. Defaults to <code>FALSE</code>.</p></dd>
+<dd><p>Specify whether the y axis values are percentages. Accepted values are TRUE for percentage y
+axis, FALSE for integer y axis. Defaults to FALSE.</p></dd>
 
 
 <dt>main_title</dt>
-<dd><p>Specify a character string value for the plot title.</p></dd>
+<dd><p>Specify a character string value for the ggplot title.</p></dd>
 
 
 <dt>x_axis_label</dt>
@@ -120,70 +121,63 @@ integer y axis. Defaults to <code>FALSE</code>.</p></dd>
 
 
 <dt>fixed_x_axis_multiple</dt>
-<dd><p>Specify whether, if producing a faceted spc,
-the x axis should be fixed for all facet plots. Accepted values are <code>TRUE</code>
-for fixed x axes or <code>FALSE</code> for individual x axes.</p></dd>
+<dd><p>Specify whether, if producing a faceted spc, x axis should be fixed for all facet plots.
+Accepted values are TRUE for fixed x axes or FALSE for individual x axes.</p></dd>
 
 
 <dt>fixed_y_axis_multiple</dt>
-<dd><p>Specify whether, if producing a faceted spc,
-the y axis should be fixed for all facet plots. Accepted values are <code>TRUE</code>
-for fixed y axes or <code>FALSE</code> for individual y axes.</p></dd>
+<dd><p>Specify whether, if producing a faceted spc, y axis should be fixed for all facet plots.
+Accepted values are TRUE for fixed y axes or FALSE for individual y axes.</p></dd>
 
 
 <dt>x_axis_date_format</dt>
-<dd><p>Specify how dates on the x axis should be
-displayed. The ormat should be provided as a character string using 'd m Y'
--type syntax.</p></dd>
+<dd><p>Specify how dates on the x axis should be displayed. Format should be provided
+as a character string using 'd m Y' etc syntax.</p></dd>
 
 
 <dt>x_axis_breaks</dt>
-<dd><p>Specify an interval value for breaks on the x axis.
-The value should be a character string expressing interval length and type,
-e.g. "3 months", "7 days".</p></dd>
+<dd><p>Specify an interval value for breaks on the x axis. Value should be a character string
+expressing interval length and type, e.g. "3 months", "7 days".</p></dd>
 
 
 <dt>y_axis_breaks</dt>
-<dd><p>Specify an interval value for breaks on the y axis.
-The value should be a numeric vector of length 1, either an integer for
-integer scales or a decimal value for percentage scales. This option is
-ignored if faceting is in use.</p></dd>
+<dd><p>Specify an interval value for breaks on the y axis. Value should be a numeric vector of length
+1, either an integer for integer scales or a decimal value for percentage scales. This option is ignored if
+faceting is in use.</p></dd>
 
 
 <dt>icons_size</dt>
-<dd><p>The size of the icons, defined in terms of font size.
-The default is 0.15.</p></dd>
+<dd><p>The size of the icons, defined in terms of font size. Defaults to 0.15.</p></dd>
 
 
 <dt>icons_position</dt>
-<dd><p>Where to show the icons, either "top right" (default),
-"bottom right", "bottom left", "top left", or "none".</p></dd>
+<dd><p>Where to show the icons, either "top right" (default), "bottom right", "bottom left",
+"top left", or "none".</p></dd>
 
 
 <dt>colours</dt>
-<dd><p>Specify the colours to use in the plot. Use the
-<code><a href="ptd_spc_colours.html">ptd_spc_colours()</a></code> function to change defaults.</p></dd>
+<dd><p>Specify the colours to use in the plot, use the <code><a href="ptd_spc_colours.html">ptd_spc_colours()</a></code> function to change defaults.</p></dd>
 
 
 <dt>theme_override</dt>
-<dd><p>Specify a list containing ggplot2 theme elements that
-can be used to override the default appearance of the plot.</p></dd>
+<dd><p>Specify a list containing ggplot theme elements which can be used to override the default
+appearance of the plot.</p></dd>
 
 
 <dt>break_lines</dt>
-<dd><p>Whether to break lines when a rebase happens. Defaults to
-"both", but can break just "limits" lines, "process" lines, or "none".</p></dd>
+<dd><p>whether to break lines when a rebase happens. Defaults to "both", but can break just "limits"
+lines, "process" lines, or "none".</p></dd>
 
 
 <dt>...</dt>
-<dd><p>Currently ignored</p></dd>
+<dd><p>currently ignored</p></dd>
 
 </dl></div>
     <div id="value">
     <h2>Value</h2>
     
 
-<p>A plotly object</p>
+<p>The plotly object</p>
     </div>
 
   </div>
