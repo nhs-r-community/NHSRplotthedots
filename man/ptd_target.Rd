@@ -7,7 +7,8 @@
 ptd_target(...)
 }
 \arguments{
-\item{...}{Either a single values, or, named values of targets. See examples.}
+\item{...}{Either a single value, or named values, of the target(s). See
+examples.}
 }
 \value{
 Either:

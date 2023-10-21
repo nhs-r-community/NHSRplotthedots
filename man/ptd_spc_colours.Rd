@@ -31,7 +31,7 @@ ptd_spc_colours(
 \item{trajectory}{the colour of the trajectory line}
 }
 \value{
-a list of colours
+A list of colours
 }
 \description{
 Produces a list of colours that controls the geoms in the plot
