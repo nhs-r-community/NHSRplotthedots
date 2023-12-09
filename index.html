@@ -148,11 +148,34 @@
 <span>    y_axis_label <span class="op">=</span> <span class="st">"4-hour wait breaches"</span>,</span>
 <span>    main_title <span class="op">=</span> <span class="st">"SPC of A&amp;E waiting time breaches for RQM"</span></span>
 <span>  <span class="op">)</span></span></code></pre></div>
+<p>In addition, you can use summary() function to get some basic statistics about your SPC data frame. The function prints the SPC options, and then returns the summarised results as a table:</p>
+<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">summary</span><span class="op">&lt;-</span><span class="va">sub_set</span> <span class="op">%&gt;%</span></span>
+<span>  <span class="fu"><a href="reference/ptd_spc.html">ptd_spc</a></span><span class="op">(</span>value_field <span class="op">=</span> <span class="va">breaches</span>, date_field <span class="op">=</span> <span class="va">period</span>, improvement_direction <span class="op">=</span> <span class="st">"decrease"</span>,target<span class="op">=</span><span class="fl">1200</span><span class="op">)</span> <span class="op">%&gt;%</span></span>
+<span>  <span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="op">)</span></span>
+<span><span class="co">#&gt; Plot the Dots SPC options:</span></span>
+<span><span class="co">#&gt; ================================</span></span>
+<span><span class="co">#&gt; value_field:          'breaches'</span></span>
+<span><span class="co">#&gt; date_field:           'period'</span></span>
+<span><span class="co">#&gt; facet_field:          not set</span></span>
+<span><span class="co">#&gt; rebase:               not set</span></span>
+<span><span class="co">#&gt; fix_after_n_points:   not set</span></span>
+<span><span class="co">#&gt; improvement_direction:'decrease'</span></span>
+<span><span class="co">#&gt; target:               '1200'</span></span>
+<span><span class="co">#&gt; trajectory:           not set</span></span>
+<span><span class="co">#&gt; screen_outliers:      'TRUE'</span></span>
+<span><span class="co">#&gt; --------------------------------</span></span></code></pre></div>
+<p>You could assign this summary table to a variable and use it later:</p>
+<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">summary</span><span class="op">$</span><span class="va">variation_type</span></span>
+<span><span class="co">#&gt; [1] "common_cause"</span></span>
+<span><span class="va">summary</span><span class="op">$</span><span class="va">assurance_type</span></span>
+<span><span class="co">#&gt; [1] "inconsistent"</span></span></code></pre></div>
 <div class="section level3">
 <h3 id="interactive-plots-with-plotly">Interactive plots with Plotly<a class="anchor" aria-label="anchor" href="#interactive-plots-with-plotly"></a>
 </h3>
 <p>It’s also possible to generate interactive plots using the <a href="https://plotly-r.com" class="external-link">plotly</a> package by replacing the call to <code>plot</code> with <code>ptd_create_plotly</code>. This function takes the same arguments as <code>plot</code>/<code>ptd_create_ggplot</code>.</p>
-<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">sub_set</span> <span class="op">%&gt;%</span></span>
 <span>  <span class="fu"><a href="reference/ptd_spc.html">ptd_spc</a></span><span class="op">(</span>value_field <span class="op">=</span> <span class="va">breaches</span>, date_field <span class="op">=</span> <span class="va">period</span>, improvement_direction <span class="op">=</span> <span class="st">"decrease"</span><span class="op">)</span> <span class="op">%&gt;%</span></span>
 <span>  <span class="fu"><a href="reference/ptd_create_plotly.html">ptd_create_plotly</a></span><span class="op">(</span></span>
@@ -164,13 +187,13 @@
 <h2 id="getting-help">Getting help<a class="anchor" aria-label="anchor" href="#getting-help"></a>
 </h2>
 <p>To find out more about the <code><a href="reference/ptd_spc.html">ptd_spc()</a></code> function, you can view the help with:</p>
-<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="op">?</span><span class="va">ptd_spc</span></span></code></pre></div>
 <p>Details on the extra plot controls can be found using:</p>
-<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="op">?</span><span class="va">ptd_create_ggplot</span></span></code></pre></div>
 <p>To view the vignette (worked example), use:</p>
-<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/vignette.html" class="external-link">vignette</a></span><span class="op">(</span><span class="st">"intro"</span>, package <span class="op">=</span> <span class="st">"NHSRplotthedots"</span><span class="op">)</span></span>
 <span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/vignette.html" class="external-link">vignette</a></span><span class="op">(</span>package <span class="op">=</span> <span class="st">"NHSRplotthedots"</span><span class="op">)</span></span></code></pre></div>
