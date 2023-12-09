@@ -87,6 +87,21 @@ sub_set %>%
     main_title = "SPC of A&E waiting time breaches for RQM"
   )
 ```
+In addition, you can use summary() function to get some basic statistics about your SPC data frame.
+The function prints the SPC options, and then returns the summarised results as a table:
+```{r, eval=TRUE}
+summary<-sub_set %>%
+  ptd_spc(value_field = breaches, date_field = period, improvement_direction = "decrease",target=1200) %>%
+  summary()
+```
+
+You could assign this summary table to a variable and use it later:
+
+```{r, eval=TRUE}
+summary$variation_type
+summary$assurance_type
+```
+
 
 ### Interactive plots with Plotly
 

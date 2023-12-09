@@ -18,7 +18,7 @@ status](https://www.r-pkg.org/badges/version/NHSRplotthedots)](https://CRAN.R-pr
 This package is built by the [NHS-R
 community](https://nhsrcommunity.com) to provide tools for drawing
 statistical process control (SPC) charts. This package supports NHS
-England's [‘Making Data
+England’s [‘Making Data
 Count’](https://www.england.nhs.uk/publication/making-data-count/)
 programme, and allows users to draw XmR charts, use change points, and
 apply rules with summary indicators for when rules are breached.
@@ -92,6 +92,37 @@ sub_set %>%
     y_axis_label = "4-hour wait breaches",
     main_title = "SPC of A&E waiting time breaches for RQM"
   )
+```
+
+In addition, you can use summary() function to get some basic statistics
+about your SPC data frame. The function prints the SPC options, and then
+returns the summarised results as a table:
+
+``` r
+summary<-sub_set %>%
+  ptd_spc(value_field = breaches, date_field = period, improvement_direction = "decrease",target=1200) %>%
+  summary()
+#> Plot the Dots SPC options:
+#> ================================
+#> value_field:          'breaches'
+#> date_field:           'period'
+#> facet_field:          not set
+#> rebase:               not set
+#> fix_after_n_points:   not set
+#> improvement_direction:'decrease'
+#> target:               '1200'
+#> trajectory:           not set
+#> screen_outliers:      'TRUE'
+#> --------------------------------
+```
+
+You could assign this summary table to a variable and use it later:
+
+``` r
+summary$variation_type
+#> [1] "common_cause"
+summary$assurance_type
+#> [1] "inconsistent"
 ```
 
 ### Interactive plots with Plotly
