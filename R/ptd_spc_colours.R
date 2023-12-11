@@ -15,7 +15,7 @@
 ptd_spc_colours <- function(
     common_cause = "#a6a6a6",
     special_cause_improvement = "#00b0f0", # blue
-    special_cause_neutral = "#361475", # purple
+    special_cause_neutral = "#490092", # purple
     special_cause_concern = "#e46c0a", # orange
     value_line = "#a6a6a6",
     mean_line = "#000000",
