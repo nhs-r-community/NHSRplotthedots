@@ -333,14 +333,14 @@ test_that("it sets the colour of the points based on the type", {
     )
 
   colours_neutral <- list(
-    common_cause              = "#7b7d7d", # grey
-    special_cause_neutral     = "#361475" # purple
+    common_cause              = "#a6a6a6", # grey
+    special_cause_neutral     = "#490092" # purple
   )
 
   colours_otherwise <- list(
-    common_cause              = "#7b7d7d", # grey
-    special_cause_improvement = "#289de0", # blue
-    special_cause_concern     = "#fab428" # orange
+    common_cause              = "#a6a6a6", # grey
+    special_cause_improvement = "#00b0f0", # blue
+    special_cause_concern     = "#e46c0a" # orange
   )
 
   # case 1: improvement_direction = neutral
