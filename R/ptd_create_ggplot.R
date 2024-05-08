@@ -260,7 +260,7 @@ ptd_create_ggplot <- function(
             breaks = y_axis_labels,
             labels = scales::label_percent(accuracy = y_axis_breaks),
             sec.axis = ggplot2::sec_axis(
-              trans = identity,
+              transform = identity,
               name = NULL,
               breaks = sec_breaks,
               labels = scales::label_percent(accuracy = y_axis_breaks)
@@ -280,7 +280,7 @@ ptd_create_ggplot <- function(
         ggplot2::scale_y_continuous(
           labels = scales::label_percent(accuracy = y_axis_breaks),
           sec.axis = ggplot2::sec_axis(
-            trans = identity,
+            transform = identity,
             name = NULL,
             breaks = sec_breaks,
             labels = scales::label_percent(accuracy = y_axis_breaks)
@@ -301,7 +301,7 @@ ptd_create_ggplot <- function(
           breaks = y_axis_labels,
           labels = scales::label_number(accuracy = y_axis_breaks),
           sec.axis = ggplot2::sec_axis(
-            trans = identity,
+            transform = identity,
             name = NULL,
             breaks = sec_breaks,
             labels = scales::label_number(accuracy = 0.01)
@@ -322,7 +322,7 @@ ptd_create_ggplot <- function(
         ggplot2::scale_y_continuous(
           labels = scales::label_number(accuracy = y_axis_breaks),
           sec.axis = ggplot2::sec_axis(
-            trans = identity,
+            transform = identity,
             name = NULL,
             breaks = sec_breaks,
             labels = scales::label_number(accuracy = 0.01)
