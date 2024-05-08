@@ -99,8 +99,8 @@ about your SPC data frame. The function prints the SPC options, and then
 returns the summarised results as a table:
 
 ``` r
-summary<-sub_set %>%
-  ptd_spc(value_field = breaches, date_field = period, improvement_direction = "decrease",target=1200) %>%
+summary <- sub_set %>%
+  ptd_spc(value_field = breaches, date_field = period, improvement_direction = "decrease", target = 1200) %>%
   summary()
 #> Plot the Dots SPC options:
 #> ================================
