@@ -136,7 +136,7 @@ ptd_spc.data.frame <- function(.data, # Exclude Linting
 
   # promote value field to a double (in case it's an integer)
   .data[[value_field]] <- as.double(.data[[value_field]])
-  .data[[date_field]] <- to_datetime(.data[[date_field]])
+  .data[[date_field]] <- lubridate::as_datetime(.data[[date_field]])
 
   # add rebase column
   .data <- ptd_add_rebase_column(.data, date_field, facet_field, rebase)

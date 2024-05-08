@@ -57,7 +57,7 @@ test_that("it returns a ptd_spc_df object", {
   stub(ptd_spc.data.frame, "ptd_validate_spc_options", TRUE)
   stub(ptd_spc.data.frame, "ptd_spc_standard", function(x, ...) x)
   stub(ptd_spc.data.frame, "ptd_calculate_point_type", function(x, ...) x)
-  stub(ptd_spc.data.frame, "to_datetime", function(x, ...) x)
+  stub(ptd_spc.data.frame, "lubridate::as_datetime", function(x, ...) x)
   stub(ptd_spc.data.frame, "ptd_add_rebase_column", function(x, ...) {
     x$rebase <- 0
     x
@@ -83,7 +83,7 @@ test_that("it has options as an attribute, created by ptd_spc_options", {
   stub(ptd_spc.data.frame, "ptd_validate_spc_options", TRUE)
   stub(ptd_spc.data.frame, "ptd_spc_standard", function(x, ...) x)
   stub(ptd_spc.data.frame, "ptd_calculate_point_type", function(x, ...) x)
-  stub(ptd_spc.data.frame, "to_datetime", function(x, ...) x)
+  stub(ptd_spc.data.frame, "lubridate::as_datetime", function(x, ...) x)
   stub(ptd_spc.data.frame, "ptd_add_rebase_column", function(x, ...) {
     x$rebase <- 0
     x
@@ -112,7 +112,7 @@ test_that("it validates the options", {
   stub(ptd_spc.data.frame, "ptd_validate_spc_options", m)
   stub(ptd_spc.data.frame, "ptd_spc_standard", function(x, ...) x)
   stub(ptd_spc.data.frame, "ptd_calculate_point_type", function(x, ...) x)
-  stub(ptd_spc.data.frame, "to_datetime", function(x, ...) x)
+  stub(ptd_spc.data.frame, "lubridate::as_datetime", function(x, ...) x)
   stub(ptd_spc.data.frame, "ptd_add_rebase_column", function(x, ...) {
     x$rebase <- 0
     x
@@ -139,7 +139,7 @@ test_that("it calls ptd_spc_standard", {
   stub(ptd_spc.data.frame, "ptd_validate_spc_options", TRUE)
   stub(ptd_spc.data.frame, "ptd_spc_standard", m)
   stub(ptd_spc.data.frame, "ptd_calculate_point_type", function(x, ...) x)
-  stub(ptd_spc.data.frame, "to_datetime", function(x, ...) x)
+  stub(ptd_spc.data.frame, "lubridate::as_datetime", function(x, ...) x)
   stub(ptd_spc.data.frame, "ptd_add_rebase_column", function(x, ...) x)
   stub(ptd_spc.data.frame, "ptd_add_short_group_warnings", function(x, ...) x)
   stub(ptd_spc.data.frame, "ptd_add_target_column", function(x, ...) x)
@@ -158,7 +158,7 @@ test_that("it calls ptd_calculate_point_type (increase)", {
   stub(ptd_spc.data.frame, "ptd_validate_spc_options", TRUE)
   stub(ptd_spc.data.frame, "ptd_spc_standard", function(x, ...) x)
   stub(ptd_spc.data.frame, "ptd_calculate_point_type", m)
-  stub(ptd_spc.data.frame, "to_datetime", function(x, ...) x)
+  stub(ptd_spc.data.frame, "lubridate::as_datetime", function(x, ...) x)
   stub(ptd_spc.data.frame, "ptd_add_rebase_column", function(x, ...) x)
   stub(ptd_spc.data.frame, "ptd_add_short_group_warnings", function(x, ...) x)
   stub(ptd_spc.data.frame, "ptd_add_target_column", function(x, ...) x)
@@ -177,7 +177,7 @@ test_that("it calls ptd_calculate_point_type (decrease)", {
   stub(ptd_spc.data.frame, "ptd_validate_spc_options", TRUE)
   stub(ptd_spc.data.frame, "ptd_spc_standard", function(x, ...) x)
   stub(ptd_spc.data.frame, "ptd_calculate_point_type", m)
-  stub(ptd_spc.data.frame, "to_datetime", function(x, ...) x)
+  stub(ptd_spc.data.frame, "lubridate::as_datetime", function(x, ...) x)
   stub(ptd_spc.data.frame, "ptd_add_rebase_column", function(x, ...) x)
   stub(ptd_spc.data.frame, "ptd_add_short_group_warnings", function(x, ...) x)
   stub(ptd_spc.data.frame, "ptd_add_target_column", function(x, ...) x)
@@ -189,13 +189,13 @@ test_that("it calls ptd_calculate_point_type (decrease)", {
 })
 
 test_that("it converts date_field to POSIXct", {
-  m <- mock("to_datetime")
+  m <- mock("lubridate::as_datetime")
 
   stub(ptd_spc.data.frame, "ptd_spc_options", spc_options)
   stub(ptd_spc.data.frame, "ptd_validate_spc_options", TRUE)
   stub(ptd_spc.data.frame, "ptd_spc_standard", function(x, ...) x)
   stub(ptd_spc.data.frame, "ptd_calculate_point_type", function(x, ...) x)
-  stub(ptd_spc.data.frame, "to_datetime", m)
+  stub(ptd_spc.data.frame, "lubridate::as_datetime", m)
   stub(ptd_spc.data.frame, "ptd_add_rebase_column", function(x, ...) x)
   stub(ptd_spc.data.frame, "ptd_add_short_group_warnings", function(x, ...) x)
   stub(ptd_spc.data.frame, "ptd_add_target_column", function(x, ...) x)
@@ -213,7 +213,7 @@ test_that("it calls ptd_add_rebase_column", {
   stub(ptd_spc.data.frame, "ptd_validate_spc_options", TRUE)
   stub(ptd_spc.data.frame, "ptd_spc_standard", function(x, ...) x)
   stub(ptd_spc.data.frame, "ptd_calculate_point_type", function(x, ...) x)
-  stub(ptd_spc.data.frame, "to_datetime", function(x, ...) x)
+  stub(ptd_spc.data.frame, "lubridate::as_datetime", function(x, ...) x)
   stub(ptd_spc.data.frame, "ptd_add_rebase_column", m)
   stub(ptd_spc.data.frame, "ptd_add_short_group_warnings", function(x, ...) x)
   stub(ptd_spc.data.frame, "ptd_add_target_column", function(x, ...) x)
@@ -231,7 +231,7 @@ test_that("it calls ptd_add_short_group_warnings", {
   stub(ptd_spc.data.frame, "ptd_validate_spc_options", TRUE)
   stub(ptd_spc.data.frame, "ptd_spc_standard", function(x, ...) x)
   stub(ptd_spc.data.frame, "ptd_calculate_point_type", function(x, ...) x)
-  stub(ptd_spc.data.frame, "to_datetime", function(x, ...) x)
+  stub(ptd_spc.data.frame, "lubridate::as_datetime", function(x, ...) x)
   stub(ptd_spc.data.frame, "ptd_add_rebase_column", function(x, ...) x)
   stub(ptd_spc.data.frame, "ptd_add_short_group_warnings", m)
   stub(ptd_spc.data.frame, "ptd_add_target_column", function(x, ...) x)
@@ -249,7 +249,7 @@ test_that("it calls ptd_add_target_column", {
   stub(ptd_spc.data.frame, "ptd_validate_spc_options", TRUE)
   stub(ptd_spc.data.frame, "ptd_spc_standard", function(x, ...) x)
   stub(ptd_spc.data.frame, "ptd_calculate_point_type", function(x, ...) x)
-  stub(ptd_spc.data.frame, "to_datetime", function(x, ...) x)
+  stub(ptd_spc.data.frame, "lubridate::as_datetime", function(x, ...) x)
   stub(ptd_spc.data.frame, "ptd_add_rebase_column", function(x, ...) x)
   stub(ptd_spc.data.frame, "ptd_add_short_group_warnings", function(x, ...) x)
   stub(ptd_spc.data.frame, "ptd_add_target_column", m)
@@ -267,7 +267,7 @@ test_that("it accepts nse arguments as well as string", {
   stub(ptd_spc.data.frame, "ptd_validate_spc_options", TRUE)
   stub(ptd_spc.data.frame, "ptd_spc_standard", function(x, ...) x)
   stub(ptd_spc.data.frame, "ptd_calculate_point_type", function(x, ...) x)
-  stub(ptd_spc.data.frame, "to_datetime", function(x, ...) x)
+  stub(ptd_spc.data.frame, "lubridate::as_datetime", function(x, ...) x)
   stub(ptd_spc.data.frame, "ptd_add_short_group_warnings", function(x, ...) x)
 
   r <- ptd_rebase()

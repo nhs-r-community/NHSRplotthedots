@@ -1,7 +1,7 @@
 test_that("it adds a column of zeros if no rebase is provided", {
   set.seed(123)
   data <- data.frame(
-    x = to_datetime(as.Date("2020-01-01") + rep(1:10, 2)),
+    x = lubridate::as_datetime(as.Date("2020-01-01") + rep(1:10, 2)),
     f = rep(c("a", "b"), each = 10)
   )
   o <- ptd_add_rebase_column(data, "x", NULL, NULL)
@@ -11,7 +11,7 @@ test_that("it adds a column of zeros if no rebase is provided", {
 test_that("it correctly sets rebase column when a date vector is passed", {
   set.seed(123)
   data <- data.frame(
-    x = to_datetime(as.Date("2020-01-01") + rep(1:10, 2)),
+    x = lubridate::as_datetime(as.Date("2020-01-01") + rep(1:10, 2)),
     f = rep(c("a", "b"), each = 10)
   )
   o <- ptd_add_rebase_column(data, "x", NULL, as.Date(c("2020-01-03", "2020-01-08")))
@@ -21,7 +21,7 @@ test_that("it correctly sets rebase column when a date vector is passed", {
 test_that("it correctly sets rebase column when a list is passed", {
   set.seed(123)
   data <- data.frame(
-    x = to_datetime(as.Date("2020-01-01") + rep(1:10, 2)),
+    x = lubridate::as_datetime(as.Date("2020-01-01") + rep(1:10, 2)),
     f = rep(c("a", "b"), each = 10)
   )
   o <- ptd_add_rebase_column(data, "x", "f", list(

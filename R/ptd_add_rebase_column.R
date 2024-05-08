@@ -9,7 +9,7 @@ ptd_add_rebase_column <- function(.data, date_field, facet_field, rebase) {
         seq_along(rebase),
         function(i) {
           data.frame(
-            d = to_datetime(rebase[[i]]),
+            d = lubridate::as_datetime(rebase[[i]]),
             f = names(rebase)[[i]], rebase = 1
           )
         }
@@ -24,7 +24,7 @@ ptd_add_rebase_column <- function(.data, date_field, facet_field, rebase) {
       )
   } else if (!is.null(rebase)) {
     # in with NULL returns FALSE, so this is suitable even if rebase isn't provided
-    .data$rebase <- as.numeric(.data[[date_field]] %in% to_datetime(rebase))
+    .data$rebase <- as.numeric(.data[[date_field]] %in% lubridate::as_datetime(rebase))
   } else {
     .data$rebase <- 0
   }
