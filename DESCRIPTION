@@ -19,7 +19,7 @@ Description: Provides tools for drawing Statistical Process Control (SPC) charts
   indicators for when rules are breached.
 URL: https://nhs-r-community.github.io/NHSRplotthedots,
     https://github.com/nhs-r-community/NHSRplotthedots
-BugReports: https://nhs-r-community.github.io/NHSRplotthedots/issues
+BugReports: https://github.com/nhs-r-community/NHSRplotthedots/issues
 License: MIT + file LICENSE
 Encoding: UTF-8
 RoxygenNote: 7.2.3
