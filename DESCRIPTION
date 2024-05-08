@@ -22,7 +22,7 @@ URL: https://nhs-r-community.github.io/NHSRplotthedots,
 BugReports: https://github.com/nhs-r-community/NHSRplotthedots/issues
 License: MIT + file LICENSE
 Encoding: UTF-8
-RoxygenNote: 7.2.3
+RoxygenNote: 7.3.1
 Roxygen: list(markdown = TRUE)
 Imports: 
     assertthat,
