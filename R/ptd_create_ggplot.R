@@ -252,6 +252,8 @@ ptd_create_ggplot <- function(
 
   # Nested combinations of 3 binary options = 2^3 (8) possible plot designs
   if (percentage_y_axis) {
+    # Where we have y_axis_breaks specified, we then use y_axis_labels as
+    # the breaks argument to scale_y_continuous()
     if (!is.null(y_axis_breaks)) {
       if (label_limits) {
         # %age axes + specified breaks + sec labelling axis
