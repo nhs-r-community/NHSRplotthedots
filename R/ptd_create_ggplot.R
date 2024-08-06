@@ -248,6 +248,8 @@ ptd_create_ggplot <- function(
     start <- floor(min(yaxis, na.rm = TRUE) / y_axis_breaks) * y_axis_breaks
     end <- max(yaxis, na.rm = TRUE)
     y_axis_labels <- seq(from = start, to = end, by = y_axis_breaks)
+  } else {
+    y_axis_labels <- ggplot2::waiver()
   }
 
   # Nested combinations of 3 binary options = 2^3 (8) possible plot designs
@@ -297,44 +299,45 @@ ptd_create_ggplot <- function(
     }
   } else if (!is.null(y_axis_breaks)) {
     if (label_limits) {
-      # integer axes + specified breaks + sec labelling axis
+      # percentage y-axis, secondary labelling axis
       plot <- plot +
         ggplot2::scale_y_continuous(
           breaks = y_axis_labels,
-          labels = scales::label_number(accuracy = y_axis_breaks),
+          labels = scales::label_percent(),
           sec.axis = ggplot2::sec_axis(
             trans = identity,
             name = NULL,
             breaks = sec_breaks,
-            labels = scales::label_number(accuracy = 0.01)
+            labels = scales::label_percent(accuracy = 0.1)
           )
         )
     } else {
-      # integer axes + specified breaks - no sec labelling axis
+      # percentage y-axis, no secondary labelling axis
       plot <- plot +
         ggplot2::scale_y_continuous(
-          breaks = y_axis_labels,
-          labels = scales::label_number(accuracy = y_axis_breaks)
+          breaks = y_axis_labels, # Here this just means use `waiver()`
+          labels = scales::label_percent()
         )
     }
-  } else {
-    if (label_limits) {
-      # integer axes + sec labelling axis - no specified breaks
+  } else if (label_limits) {
+    # integer y-axis, secondary labelling axis
       plot <- plot +
         ggplot2::scale_y_continuous(
-          labels = scales::label_number(accuracy = y_axis_breaks),
+        breaks = y_axis_labels,
+        labels = scales::label_number(),
           sec.axis = ggplot2::sec_axis(
             trans = identity,
             name = NULL,
             breaks = sec_breaks,
-            labels = scales::label_number(accuracy = 0.01)
+          labels = scales::label_number()
           )
         )
     } else {
-      # integer axes - no specified breaks - no sec labelling axis
+    # integer y-axis, no secondary axis
       plot <- plot +
         ggplot2::scale_y_continuous(
-          labels = scales::label_number(accuracy = y_axis_breaks)
+        breaks = y_axis_labels, # Here this just means use `waiver()`
+        labels = scales::label_number()
         )
     }
   }
