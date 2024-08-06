@@ -33,7 +33,7 @@ Please be aware that this package is in the early stages of development, and fea
 
 ## Installation
 
-```{r, eval=FALSE}
+```r
 # install from CRAN
 install.packages("NHSRplotthedots")
 
@@ -44,33 +44,38 @@ remotes::install_github("https://github.com/nhs-r-community/NHSRplotthedots", bu
 
 # Overview
 
-Welcome to the NHS-R community's package for building a specific type of statistical process control (SPC) chart, the
-XmR chart. We are aiming to support NHS England's ['Making Data Count'][mdc] programme. The programme encourages boards,
-managers, and analyst teams to present data in ways that show change over time and drive better understanding of
-indicators than 'RAG' (red, amber, green) rated board reports often present.
+Welcome to the NHS-R community's package for building a specific type of statistical process control (SPC) chart, the XmR chart.
+  We are aiming to support NHS England's ['Making Data Count'][mdc] programme.
+  The programme encourages boards, managers, and analyst teams to present data in ways that show change over time and drive better understanding of indicators than 'RAG' (red, amber, green) rated board reports often present.
 
-The help files and vignettes within this package tell you more about the possible options for controlling the charts,
-but below is a simple example of the type of chart the package produces.  We will use the `ae_attendances` dataset from
-the `{NHSRdatasets}` package and a bit of  `{dplyr}` code to select some organisations.
+The help files and vignettes within this package tell you more about the possible options for controlling the charts, but below are some simple examples of the type of chart the package produces.
+  We will use the `ae_attendances` dataset from the `{NHSRdatasets}` package and a bit of `{dplyr}` code to select some organisations.
 
 ```{r example, message=FALSE, warning=FALSE}
 library(NHSRplotthedots)
 library(NHSRdatasets)
-library(tidyverse)
+library(dplyr)
 
 sub_set <- ae_attendances %>%
   filter(org_code == "RQM", type == 1, period < as.Date("2018-04-01"))
 
 sub_set %>%
-  ptd_spc(value_field = breaches, date_field = period, improvement_direction = "decrease")
+  ptd_spc(
+    value_field = breaches,
+    date_field = period,
+    improvement_direction = "decrease"
+  )
 ```  
 
-This plot is ok on its own, but we can specify more control options when we pass it on, using the `{dplyr}` pipe
-function below: `%>%` to the plot argument.
+This plot is ok on its own, but we can specify more control options if we explicitly pass it on to the `plot()` function.
 
 ```{r}
 sub_set %>%
-  ptd_spc(value_field = breaches, date_field = period, improvement_direction = "decrease") %>%
+  ptd_spc(
+    value_field = breaches,
+    date_field = period,
+    improvement_direction = "decrease"
+  ) %>%
   plot(
     y_axis_label = "4-hour wait breaches",
     main_title = "SPC of A&E waiting time breaches for RQM"
@@ -79,25 +84,35 @@ sub_set %>%
 
 or, equivalently:
 
-```{r, eval=FALSE}
+```r
 sub_set %>%
-  ptd_spc(value_field = breaches, date_field = period, improvement_direction = "decrease") %>%
+  ptd_spc(
+    value_field = breaches,
+    date_field = period,
+    improvement_direction = "decrease"
+  ) %>%
   ptd_create_ggplot(
     y_axis_label = "4-hour wait breaches",
     main_title = "SPC of A&E waiting time breaches for RQM"
   )
 ```
-In addition, you can use summary() function to get some basic statistics about your SPC data frame.
+You can also use the `summary()` function to get some basic statistics about your SPC data frame.
 The function prints the SPC options, and then returns the summarised results as a table:
-```{r, eval=TRUE}
+
+```r
 summary <- sub_set %>%
-  ptd_spc(value_field = breaches, date_field = period, improvement_direction = "decrease", target = 1200) %>%
+  ptd_spc(
+    value_field = breaches,
+    date_field = period,
+    improvement_direction = "decrease",
+    target = 1200
+  ) %>%
   summary()
 ```
 
 You could assign this summary table to a variable and use it later:
 
-```{r, eval=TRUE}
+```r
 summary$variation_type
 summary$assurance_type
 ```
@@ -105,35 +120,65 @@ summary$assurance_type
 
 ### Interactive plots with Plotly
 
-It's also possible to generate interactive plots using the `{plotly}` package by replacing the call to `plot` with
-`ptd_create_plotly`. This function takes the same arguments as `plot`/`ptd_create_ggplot`.
+It's also possible to generate interactive plots using the `{plotly}` package by replacing the call to `plot` with `ptd_create_plotly`.
+    This function takes the same arguments as `plot`/`ptd_create_ggplot`.
 
-```{r, eval=FALSE}
+```r
 sub_set %>%
-  ptd_spc(value_field = breaches, date_field = period, improvement_direction = "decrease") %>%
+  ptd_spc(
+    value_field = breaches,
+    date_field = period,
+    improvement_direction = "decrease"
+  ) %>%
   ptd_create_plotly(
     y_axis_label = "4-hour wait breaches",
     main_title = "SPC of A&E waiting time breaches for RQM"
   )
 ```
 
+
+### Adding annotations for mean and process limits
+
+The package (from v0.2.0) supports annotating the values of the mean and the
+  upper and lower process limits on a secondary (right-hand side) y axis,
+  if this is helpful for you and your audience.
+
+The way to achieve this is to turn on the `label_limits` option:
+
+```{r}
+sub_set |>
+  ptd_spc(
+    value_field = breaches,
+    date_field = period,
+    improvement_direction = "decrease"
+  ) |>
+  ptd_create_ggplot(
+    y_axis_label = "4-hour wait breaches",
+    main_title = "SPC of A&E waiting time breaches for RQM",
+    label_limits = TRUE
+  )
+```
+
+If you have rebased the chart, the mean and process limit annotations will only show for the most recent section.
+
+
 ## Getting help
 
 To find out more about the `ptd_spc()` function, you can view the help with:
 
-```{r, eval=FALSE}
+```r
 ?ptd_spc
 ```
 
 Details on the extra plot controls can be found using:
 
-```{r, eval=FALSE}
+```r
 ?ptd_create_ggplot
 ```
 
 To view the vignette (worked example), use:
 
-```{r eval=FALSE}
+```r
 vignette("intro", package = "NHSRplotthedots")
 
 vignette(package = "NHSRplotthedots")
@@ -141,17 +186,18 @@ vignette(package = "NHSRplotthedots")
 
 # Contribution
 
-This is an NHS-R Community project that is open for anyone to contribute to in any way that they are able. The project 
-is released with a [Contributor Code of Conduct](https://contributor-covenant.org/version/2/1/CODE_OF_CONDUCT.html). By
-contributing to this project, you agree to abide by its terms.
+This is an NHS-R Community project that is open for anyone to contribute to in any way that they are able.
+  The project is released with a [Contributor Code of Conduct][coc].
+  By contributing to this project, you agree to abide by its terms.
 
-If you want to learn more about this project, please join the discussion at [the NHS-R Community Slack group][nhsr-slack]
-and the specific channel [#proj-nhsr-plot-the-dots][#proj-nhsr-plot-the-dots]. 
+If you want to learn more about this project, please join the discussion at
+  [the NHS-R Community Slack group][nhsr-slack] and the specific channel 
+  [#proj-nhsr-plot-the-dots][ptd-slack-channel]. 
 
-The simplest way to contribute is to raise an issue detailing the feature or functionality you would like to see added,
-or any unexpected behaviour or bugs you have experienced.  
+The simplest way to contribute is to raise an issue detailing the feature or functionality you would like to see added, or any unexpected behaviour or bugs you have experienced.
 
 [nhsr]: https://nhsrcommunity.com
 [mdc]: https://www.england.nhs.uk/publication/making-data-count/
+[coc]: https://contributor-covenant.org/version/2/1/CODE_OF_CONDUCT.html
 [nhsr-slack]: https://nhsrcommunity.slack.com/
-[#proj-nhsr-plot-the-dots]: https://nhsrcommunity.slack.com/archives/CSVD4SYF3
+[ptd-slack-channel]: https://nhsrcommunity.slack.com/archives/CSVD4SYF3
