@@ -55,4 +55,4 @@ Suggests:
 Depends: R (>= 4.1.0)
 VignetteBuilder: knitr
 Config/testthat/edition: 3
-Language: en-US
+Language: en-GB
