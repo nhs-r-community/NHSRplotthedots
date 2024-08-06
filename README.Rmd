@@ -159,7 +159,7 @@ sub_set |>
   )
 ```
 
-If you have rebased the chart, the mean and annotations will only show for the most recent section.
+If you have rebased the chart, the mean and process limit annotations will only show for the most recent section.
 
 
 ## Getting help
