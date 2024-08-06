@@ -56,10 +56,10 @@ library(NHSRplotthedots)
 library(NHSRdatasets)
 library(dplyr)
 
-sub_set <- ae_attendances %>%
+sub_set <- ae_attendances |>
   filter(org_code == "RQM", type == 1, period < as.Date("2018-04-01"))
 
-sub_set %>%
+sub_set |>
   ptd_spc(
     value_field = breaches,
     date_field = period,
@@ -70,12 +70,12 @@ sub_set %>%
 This plot is ok on its own, but we can specify more control options if we explicitly pass it on to the `plot()` function.
 
 ```{r}
-sub_set %>%
+sub_set |>
   ptd_spc(
     value_field = breaches,
     date_field = period,
     improvement_direction = "decrease"
-  ) %>%
+  ) |>
   plot(
     y_axis_label = "4-hour wait breaches",
     main_title = "SPC of A&E waiting time breaches for RQM"
@@ -85,12 +85,12 @@ sub_set %>%
 or, equivalently:
 
 ```r
-sub_set %>%
+sub_set |>
   ptd_spc(
     value_field = breaches,
     date_field = period,
     improvement_direction = "decrease"
-  ) %>%
+  ) |>
   ptd_create_ggplot(
     y_axis_label = "4-hour wait breaches",
     main_title = "SPC of A&E waiting time breaches for RQM"
@@ -101,13 +101,13 @@ You can also use the `summary()` function to get some basic statistics about you
 The function prints the SPC options, and then returns the summarised results as a table:
 
 ```{r}
-summary <- sub_set %>%
+summary <- sub_set |>
   ptd_spc(
     value_field = breaches,
     date_field = period,
     improvement_direction = "decrease",
     target = 1200
-  ) %>%
+  ) |>
   summary()
 ```
 
@@ -125,12 +125,12 @@ It's also possible to generate interactive plots using the `{plotly}` package by
     This function takes the same arguments as `plot`/`ptd_create_ggplot`.
 
 ```r
-sub_set %>%
+sub_set |>
   ptd_spc(
     value_field = breaches,
     date_field = period,
     improvement_direction = "decrease"
-  ) %>%
+  ) |>
   ptd_create_plotly(
     y_axis_label = "4-hour wait breaches",
     main_title = "SPC of A&E waiting time breaches for RQM"
