@@ -16,7 +16,10 @@ Authors@R: c(
             role = "aut",
             comment = c(ORCID = "0000-0002-5650-1176")
         ),
-          person("NHS-R community", email = "nhs.rcommunity@nhs.net", role = "cph")
+    person("NHS-R community",
+        email = "nhs.rcommunity@nhs.net",
+        role = "cph"
+    )
           )
 Maintainer: Christopher Reading <christopher.reading1@nhs.net>
 Description: Provides tools for drawing Statistical Process Control (SPC) charts. This package supports the NHSE/I programme 'Making Data Count', and allows users to draw XmR charts, use change points and apply rules with summary indicators for when rules are breached.
