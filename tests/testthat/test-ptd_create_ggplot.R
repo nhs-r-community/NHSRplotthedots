@@ -323,13 +323,10 @@ test_that("it sets the colour of the points based on the type", {
   stub(ptd_create_ggplot, "ggplot2::scale_colour_manual", m)
 
   set.seed(123)
-  d <- data.frame(x = as.Date("2020-01-01") + 1:20, y = rnorm(20)) |>
+  d <- data.frame(x = as.Date("2020-01-01") + seq(20L), y = rnorm(20L)) |>
     # introduce some special cause variation!
     dplyr::mutate(
-      across("y", \(y) dplyr::case_when(
-        x > "2020-01-15" ~ y + 0.5,
-        TRUE ~ y
-      ))
+      across("y", \(y) dplyr::if_else(.data[["x"]] > "2020-01-15", y + 0.5, y))
     )
 
   colours_neutral <- list(
