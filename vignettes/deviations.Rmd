@@ -8,7 +8,6 @@ vignette: >
 ---
 
 ```{r setup, include = FALSE}
-
 knitr::opts_chunk$set(
   fig.width = 7, fig.height = 5,
   collapse = TRUE,
@@ -18,7 +17,6 @@ library(dplyr)
 library(ggplot2)
 library(NHSRplotthedots)
 library(NHSRdatasets)
-
 ```
 
 The overall intent of this package is to mimic as completely as possible the output available from the [NHSEI Making Data Count][mdc] Excel tools.
@@ -56,7 +54,6 @@ The two charts below demonstrate the default, and how to over-ride to replicate 
 #### R Package Default:
 
 ```{r}
-
 data <- c(1, 2, 1, 2, 10, 1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 1)
 date <- seq(as.Date("2021-03-22"), by = 1, length.out = 18)
 df <- tibble::tibble(data, date)
@@ -72,13 +69,11 @@ spc_data %>%
       ", LPL = ", round(spc_data$lpl[1], 2)
     )
   )
-
 ```
 
 #### Over-riding to replicate "Making Data Count" Excel output:
 
 ```{r}
-
 # setting screen_outliers = FALSE produces the same output as Excel
 spc_data <- ptd_spc(df, value_field = data, date_field = date, screen_outliers = FALSE)
 spc_data %>%
@@ -90,7 +85,6 @@ spc_data %>%
       ", LPL = ", round(spc_data$lpl[1], 2)
     )
   )
-
 ```
 
 
@@ -113,38 +107,30 @@ Examples of these 4 are shown below:
 #### R Package Default:
 
 ```{r}
-
 spc_data <- ae_attendances %>%
   group_by(period) %>%
   summarise(across(attendances, sum)) %>%
   ptd_spc(attendances, period, rebase = as.Date(c("2017-04-01", "2018-04-01")))
 
 plot(spc_data, break_lines = "both")
-
 ```
 
 #### Just breaking the limit lines:
 
 ```{r}
-
 plot(spc_data, break_lines = "limits")
-
 ```
 
 #### Just breaking the process lines:
 
 ```{r}
-
 plot(spc_data, break_lines = "process")
-
 ```
 
 #### Over-riding to replicate "Making Data Count" Excel output:
 
 ```{r}
-
 plot(spc_data, break_lines = "none")
-
 ```
 
 ### 3. X Axis Text Angle
@@ -160,15 +146,12 @@ Any of the modifications documented in the
 #### To re-instate 90 degree axis text:
 
 ```{r}
-
 ae_attendances %>%
   group_by(period) %>%
   summarise(across(attendances, sum)) %>%
   ptd_spc(attendances, period) %>%
   plot(theme_override = theme(axis.text.x = element_text(angle = 90)))
-
 ```
-
 
 ---
 Find the package code on [GitHub][ptd_gh].
