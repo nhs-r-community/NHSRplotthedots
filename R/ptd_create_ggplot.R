@@ -249,6 +249,7 @@ ptd_create_ggplot <- function(
     end <- max(yaxis, na.rm = TRUE)
     y_axis_labels <- seq(from = start, to = end, by = y_axis_breaks)
   } else {
+    # if no y-axis breaks supplied by user, we just use the built-in heuristic
     y_axis_labels <- ggplot2::waiver()
   }
 
@@ -257,7 +258,7 @@ ptd_create_ggplot <- function(
       # percentage y-axis, secondary labelling axis
       plot <- plot +
         ggplot2::scale_y_continuous(
-          breaks = y_axis_labels,
+          breaks = y_axis_labels, # see above - can mean "just use waiver()"
           labels = scales::label_percent(),
           sec.axis = ggplot2::sec_axis(
             transform = identity,
@@ -270,7 +271,7 @@ ptd_create_ggplot <- function(
       # percentage y-axis, no secondary labelling axis
       plot <- plot +
         ggplot2::scale_y_continuous(
-          breaks = y_axis_labels, # Here this just means use `waiver()`
+          breaks = y_axis_labels,
           labels = scales::label_percent()
         )
     }
@@ -291,7 +292,7 @@ ptd_create_ggplot <- function(
     # integer y-axis, no secondary axis
     plot <- plot +
       ggplot2::scale_y_continuous(
-        breaks = y_axis_labels, # Here this just means use `waiver()`
+        breaks = y_axis_labels,
         labels = scales::label_number()
       )
   }
