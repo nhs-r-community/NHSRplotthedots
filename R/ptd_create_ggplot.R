@@ -238,7 +238,7 @@ ptd_create_ggplot <- function(
   sec_breaks <- .data |>
     # should already be sorted in date order but just in case
     dplyr::arrange(x) |>
-    dplyr::select(all_of(c("lpl", "mean_col", "upl"))) |>
+    dplyr::select(c("lpl", "mean_col", "upl")) |>
     dplyr::slice_tail(n = 1) |>
     unlist() |>
     unname()
