@@ -305,7 +305,7 @@ ptd_create_ggplot <- function(
           breaks = y_axis_labels,
           labels = scales::label_percent(),
           sec.axis = ggplot2::sec_axis(
-            trans = identity,
+            transform = identity,
             name = NULL,
             breaks = sec_breaks,
             labels = scales::label_percent(accuracy = 0.1)
@@ -326,7 +326,7 @@ ptd_create_ggplot <- function(
         breaks = y_axis_labels,
         labels = scales::label_number(),
           sec.axis = ggplot2::sec_axis(
-            trans = identity,
+          transform = identity,
             name = NULL,
             breaks = sec_breaks,
           labels = scales::label_number()
