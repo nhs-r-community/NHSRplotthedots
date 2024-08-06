@@ -26,40 +26,41 @@ Even for the I chart, the experts do not reach a consensus:
 
 **The Health Care Data Guide** (p155) :
 
-"To develop an I chart, the most recent 20 to 30 measurements should be used. More than any other chart, this minimum number of subgroups is important since each subgroup has only one data value".
+> "To develop an I chart, the most recent 20 to 30 measurements should be used. More than any other chart, this minimum number of subgroups is important since each subgroup has only one data value".
 
 **Understanding Variation - The Key to Managing Chaos** (p60):
 
-"Useful limits may be constructed with as few as five or six values"
-
+> "Useful limits may be constructed with as few as five or six values"
 
 **Data Sanity** (First Edition p150): 
 
 Presents a table for runs analysis, starting with 10 data points (and the corresponding lower and upper limit for expected number of runs)
 
-
 Let's throw in one more reference :
 
 **Practical Performance Measurement** (p258)
 
-"We still need a minimum of five consecutive values of a measure just to get started establishing a baseline to represent the current performance level...we might even need more than five to establish that baseline....And once we have our baseline, we need at least another three measure values, and often more than eight, before we can be sure whether performance has changed or not"
+"We still need a minimum of five consecutive values of a measure just to get started establishing a baseline to represent the current performance level... We might even need more than five to establish that baseline...
+And once we have our baseline, we need at least another three measure values, and often more than eight, before we can be sure whether performance has changed or not."
 
 ### I have less than 12 points. What should I do?
 
-If Wheeler say 5 or 6 are good enough, then, as long as you have 5 or 6 points, you can begin to use these charts. However the limits should be considered _useful_, rather than _robust_.
+If Wheeler says 5 or 6 are good enough, then, as long as you have 5 or 6 points, you can begin to use these charts.
+However the limits should be considered _useful_, rather than _robust_.
 
-We  therefore refer to these as 'trial' limits.
+We therefore refer to these as 'trial' limits.
 
 ### What is meant by 'trial limits'?
 
-Just that, due to lack of data , these are as good as they can be, for the time being. With each new data point, the limits will be revised. Once we have enough (i.e. >=12 data points) the calculations will be locked, until such time as a signal of special cause variation occurs - for example, a  long run above or below the mean.
-At this point, if we understand the cause of the variation, we might decide to revise the limits from the start of the long run. Each time the limits are revised, the new limits should be considered 'trial limits' until a further 12 (or more) points are collected, at which point they can be 'locked' once more. 
-
+Just that, due to lack of data, these are as good as they can be, for the time being.
+With each new data point, the limits will be revised.
+Once we have enough (i.e. >=12 data points) the calculations will be locked, until such time as a signal of special cause variation occurs - for example, a long run above or below the mean.
+At this point, if we understand the cause of the variation, we might decide to revise the limits from the start of the long run.
+Each time the limits are revised, the new limits should be considered 'trial limits' until a further 12 (or more) points are collected, at which point they can be 'locked' once more.
 
 ### What does this tool require?
 
-The tool defaults to calculating control limits over the first 12  points for each area or group. 
-
+The tool defaults to calculating control limits over the first 12 points for each area or group.
 
 ### Are there any other charts we can use if we have less than 12 points?
 
@@ -68,7 +69,5 @@ There are alternatives:
 - run charts
 - cumulative sum (cusum) charts
 
-However, the individuals chart is _also_ advised as one of the three "go to" charts when less than 12 data points are available. This package provides a warning for any groups with less than 12 data points, advising that trial limits are in place. 
-
-
-
+However, the individuals chart is _also_ advised as one of the three "go to" charts when less than 12 data points are available.
+This package provides a warning for any groups with less than 12 data points, advising that trial limits are in place.
