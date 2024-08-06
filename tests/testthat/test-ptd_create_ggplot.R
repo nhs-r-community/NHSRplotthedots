@@ -31,7 +31,7 @@ test_that("it calls ptd_validate_plot_options", {
 
   try(
     ptd_create_ggplot(
-      ptd_spc(data.frame(x = Sys.Date() + 1:20, y = rnorm(20)), "y", "x"),
+      ptd_spc(data.frame(x = Sys.Date() + seq(20L), y = rnorm(20L)), "y", "x"),
       "point_size",
       "percentage_y_axis",
       "main_title",
@@ -76,7 +76,7 @@ test_that("it calls ptd_validate_plot_options", {
 
 test_that("it returns a ggplot object", {
   set.seed(123)
-  d <- data.frame(x = as.Date("2020-01-01") + 1:20, y = rnorm(20))
+  d <- data.frame(x = as.Date("2020-01-01") + seq(20L), y = rnorm(20L))
   s <- ptd_spc(d, "y", "x")
   p <- ptd_create_ggplot(s)
 
@@ -101,8 +101,8 @@ test_that("it facets the plot if facet_field is set", {
   set.seed(123)
   d <- data.frame(
     x = as.Date("2020-01-01") + 1:20,
-    y = rnorm(20),
-    g = rep(c(1, 2), each = 10)
+    y = rnorm(20L),
+    g = rep(c(1L, 2L), each = 10L)
   )
 
   withr::with_options(list(ptd_spc.warning_threshold = 10), {
@@ -121,7 +121,7 @@ test_that("it sets the x_axis_breaks correctly", {
   stub(ptd_create_ggplot, "ggplot2::scale_x_datetime", m)
 
   set.seed(123)
-  d <- data.frame(x = as.POSIXct("2020-01-01") + 1:20, y = rnorm(20))
+  d <- data.frame(x = as.POSIXct("2020-01-01") + seq(20L), y = rnorm(20L))
   s <- ptd_spc(d, "y", "x")
 
   attr(d$x, "tzone") <- ""
@@ -141,7 +141,7 @@ test_that("it sets the x_axis_breaks correctly", {
 
 test_that("it sets x_axis_label correctly", {
   set.seed(123)
-  d <- data.frame(x = as.Date("2020-01-01") + 1:20, y = rnorm(20))
+  d <- data.frame(x = as.Date("2020-01-01") + seq(20L), y = rnorm(20L))
   s <- ptd_spc(d, "y", "x")
 
   p1 <- ptd_create_ggplot(s)
@@ -153,7 +153,7 @@ test_that("it sets x_axis_label correctly", {
 
 test_that("it sets y_axis_label correctly", {
   set.seed(123)
-  d <- data.frame(x = as.Date("2020-01-01") + 1:20, y = rnorm(20))
+  d <- data.frame(x = as.Date("2020-01-01") + seq(20L), y = rnorm(20L))
   s <- ptd_spc(d, "y", "x")
 
   p1 <- ptd_create_ggplot(s)
@@ -166,9 +166,9 @@ test_that("it sets y_axis_label correctly", {
 test_that("it sets scales correctly in a faceted plot", {
   set.seed(123)
   d <- data.frame(
-    x = as.Date("2020-01-01") + 1:20,
-    y = rnorm(20),
-    g = rep(c(1, 2), each = 10)
+    x = as.Date("2020-01-01") + seq(20L),
+    y = rnorm(20L),
+    g = rep(c(1L, 2L), each = 10L)
   )
 
   withr::with_options(list(ptd_spc.warning_threshold = 10), {
@@ -198,7 +198,7 @@ test_that("it sets scales correctly in a faceted plot", {
 
 test_that("it creates a secondary y axis with percentage scales", {
   set.seed(123)
-  d <- data.frame(x = as.Date("2020-01-01") + 1:20, y = rnorm(20))
+  d <- data.frame(x = as.Date("2020-01-01") + seq(20L), y = rnorm(20L))
   s <- ptd_spc(d, "y", "x")
 
   sec_breaks <- s |>
@@ -223,7 +223,7 @@ test_that("it creates a secondary y axis with percentage scales", {
 
 test_that("it creates a secondary y axis with integer scales", {
   set.seed(123)
-  d <- data.frame(x = as.Date("2020-01-01") + 1:20, y = rnorm(20))
+  d <- data.frame(x = as.Date("2020-01-01") + seq(20L), y = rnorm(20L))
   s <- ptd_spc(d, "y", "x")
 
   sec_breaks <- s |>
@@ -245,7 +245,7 @@ test_that("it sets the y-axis to percentages if percentage_y_axis is TRUE", {
   m <- mock()
   stub(ptd_create_ggplot, "scales::label_percent", m)
 
-  d <- data.frame(x = as.Date("2020-01-01") + 1:20, y = rnorm(20))
+  d <- data.frame(x = as.Date("2020-01-01") + seq(20L), y = rnorm(20L))
   s <- ptd_spc(d, "y", "x")
 
   p1 <- ptd_create_ggplot(s, percentage_y_axis = TRUE)
@@ -258,7 +258,7 @@ test_that("it sets the y-axis to percentages if percentage_y_axis is TRUE", {
 
 test_that("it sets the y-axis if y_axis_breaks is provided", {
   set.seed(123)
-  d <- data.frame(x = as.Date("2020-01-01") + 1:20, y = rnorm(20))
+  d <- data.frame(x = as.Date("2020-01-01") + seq(20L), y = rnorm(20L))
   s <- ptd_spc(d, "y", "x")
 
   p1 <- ptd_create_ggplot(s, y_axis_breaks = 1)
@@ -270,7 +270,7 @@ test_that("it sets the y-axis if y_axis_breaks is provided", {
 
 test_that("it adds theme_override to the plot", {
   set.seed(123)
-  d <- data.frame(x = as.Date("2020-01-01") + 1:20, y = rnorm(20))
+  d <- data.frame(x = as.Date("2020-01-01") + seq(20L), y = rnorm(20L))
   s <- ptd_spc(d, "y", "x")
 
   p1 <- ptd_create_ggplot(s)
@@ -286,7 +286,7 @@ test_that("it adds theme_override to the plot", {
 test_that("it breaks lines", {
   set.seed(123)
 
-  d <- data.frame(x = as.Date("2020-01-01") + 1:20, y = rnorm(20))
+  d <- data.frame(x = as.Date("2020-01-01") + seq(20L), y = rnorm(20L))
   withr::with_options(list(ptd_spc.warning_threshold = 10), {
     s <- ptd_spc(d, "y", "x", rebase = as.Date("2020-01-01") + 11)
   })
@@ -323,13 +323,10 @@ test_that("it sets the colour of the points based on the type", {
   stub(ptd_create_ggplot, "ggplot2::scale_colour_manual", m)
 
   set.seed(123)
-  d <- data.frame(x = as.Date("2020-01-01") + 1:20, y = rnorm(20)) |>
+  d <- data.frame(x = as.Date("2020-01-01") + seq(20L), y = rnorm(20L)) |>
     # introduce some special cause variation!
     dplyr::mutate(
-      across("y", \(y) dplyr::case_when(
-        x > "2020-01-15" ~ y + 0.5,
-        TRUE ~ y
-      ))
+      across("y", \(y) dplyr::if_else(.data[["x"]] > "2020-01-15", y + 0.5, y))
     )
 
   colours_neutral <- list(
@@ -359,7 +356,7 @@ test_that("it sets the colour of the points based on the type", {
 })
 
 test_that("it sets the main title correctly", {
-  d <- data.frame(x = as.Date("2020-01-01") + 1:20, y = rnorm(20), z = rnorm(20))
+  d <- data.frame(x = as.Date("2020-01-01") + seq(20L), y = rnorm(20L), z = rnorm(20L))
   s <- ptd_spc(d, "y", "x")
 
   p1 <- ptd_create_ggplot(s)
@@ -370,7 +367,7 @@ test_that("it sets the main title correctly", {
 })
 
 test_that("a plot with short rebase group has a warning caption", {
-  d <- data.frame(x = as.Date("2020-01-01") + 1:40, y = rnorm(40))
+  d <- data.frame(x = as.Date("2020-01-01") + seq(40L), y = rnorm(40L))
   # rebase at midpoint, no short groups
   s1 <- ptd_spc(d, "y", "x", rebase = as.Date("2020-01-20"))
   # rebase close to end of points
@@ -395,8 +392,8 @@ test_that("it doesn't add icons if icons_position is 'none'", {
 
   set.seed(123)
   d <- data.frame(
-    x = as.Date("2020-01-01") + 1:20,
-    y = rnorm(20)
+    x = as.Date("2020-01-01") + seq(20L),
+    y = rnorm(20L)
   )
 
   s1 <- ptd_spc(d, "y", "x", target = 0.5)
@@ -411,8 +408,8 @@ test_that("it calls ptd_create_ggplot()", {
   set.seed(123)
   s <- ptd_spc(
     data.frame(
-      x = Sys.Date() + 1:20,
-      y = rnorm(20)
+      x = Sys.Date() + seq(20L),
+      y = rnorm(20L)
     ),
     "y", "x"
   )
@@ -435,7 +432,7 @@ test_that("it calls ptd_create_ggplot()", {
     x_axis_breaks = NULL,
     y_axis_breaks = NULL,
     limit_annotations = FALSE,
-    icons_size = 8L,
+    icons_size = 8,
     icons_position = c("top right", "bottom right", "bottom left", "top left", "none"),
     colours = "colours",
     theme_override = NULL,
