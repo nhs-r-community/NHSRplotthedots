@@ -191,7 +191,8 @@ simple_pointplot <- function(
   # create the subplot: points and line
   subplot <- demo_data_tb %>%
     ggplot2::ggplot(ggplot2::aes(x, y)) +
-    ggplot2::geom_line(size = line_size, colour = line_colour) +
+    ggplot2::geom_line(size = line_size,
+                       colour = line_colour) +
     ggplot2::geom_point(
       aes(fill = fill),
       size = point_size,
@@ -201,7 +202,9 @@ simple_pointplot <- function(
     ) +
     ggplot2::scale_fill_manual(values = fill_palette) +
     ggplot2::theme_void() + # remove all the features, except the main plot
-    ggplot2::theme(legend.position = "none") + # remove the legend
+    ggplot2::theme( # remove the legend
+      legend.position = "none"
+    ) +
     hexSticker::theme_transparent() # make background of the plot transparent
   subplot
 }
@@ -209,12 +212,12 @@ simple_pointplot <- function(
 # Community designed logo ----
 # Based on the design provided by an user on Twitter, this is an "approximated"
 # version created with R
-fill_palette <- c(
-  orange = "#eb7f3c", # orange
-  nhs_dark_grey = "#425563", # NHS Dark grey
-  nhs_dark_blue = "#005eb8" # NHS blue
-)
-fill_palette_breaks <- seq(.2, .8, length.out = length(fill_palette) - 1) * 6
+fill_palette <-
+  c(orange = "#eb7f3c", # orange
+    nhs_dark_grey = "#425563", # NHS Dark grey
+    nhs_dark_blue = "#005eb8") # NHS blue
+fill_palette_breaks <-
+  seq(.2, .8, length.out = length(fill_palette) - 1) * 6
 line_size <- .75
 line_colour <- fill_palette["nhs_dark_grey"]
 point_size <- 3.5
@@ -234,48 +237,40 @@ demo_data_tb <- data.frame(
 # create the subplot: points and line
 subplot <- demo_data_tb %>%
   ggplot2::ggplot(aes(x, y)) +
-  ggplot2::geom_line(size = line_size, colour = line_colour) +
-  ggplot2::geom_point(
-    aes(fill = fill),
-    size = point_size,
-    shape = point_shape,
-    stroke = point_stroke
-  ) +
-  ggplot2::annotate(
-    geom = "text",
-    x = -0.5,
-    y = 4,
-    label = "making\ndata\ncount\nin\nthe",
-    colour = line_colour,
-    size = 13,
-    fontface = "bold",
-    lineheight = .2,
-    hjust = 0
-  ) +
-  ggplot2::annotate(
-    geom = "text",
-    x = -0.5,
-    y = 2.2,
-    label = "NHS",
-    colour = fill_palette["nhs_dark_blue"], # NHS Blue
-    size = 16,
-    fontface = "bold",
-    lineheight = .2,
-    hjust = 0
-  ) +
+  ggplot2::geom_line(size = line_size,
+                     colour = line_colour) +
+  ggplot2::geom_point(aes(fill = fill),
+                      size = point_size,
+                      shape = point_shape,
+                      stroke = point_stroke) +
+  ggplot2::annotate(geom = "text",
+                    x = -0.5,
+                    y = 4,
+                    label = "making\ndata\ncount\nin\nthe",
+                    colour = line_colour,
+                    size = 13,
+                    fontface = "bold",
+                    lineheight = .2,
+                    hjust = 0) +
+  ggplot2::annotate(geom = "text",
+                    x = -0.5,
+                    y = 2.2,
+                    label = "NHS",
+                    colour = fill_palette["nhs_dark_blue"], # NHS Blue
+                    size = 16,
+                    fontface = "bold",
+                    lineheight = .2,
+                    hjust = 0) +
   ggplot2::scale_fill_manual(values = unname(fill_palette)) +
   ggplot2::theme_void() + # remove all the features, except the main plot
-  # remove the legend
-  ggplot2::theme(
+  ggplot2::theme( # remove the legend
     legend.position = "none",
     text = ggplot2::element_text(family = font_family)
   ) +
   hexSticker::theme_transparent() # make background of the plot transparent
 
-hex_logo(
-  subplot,
-  main_colour = line_colour,
-  url = "",
-  p_family = font_family,
-  out_filename = "inst/images/logo.png"
-)
+hex_logo(subplot,
+         main_colour = line_colour,
+         url = "",
+         p_family = font_family,
+         out_filename = "inst/images/logo.png")

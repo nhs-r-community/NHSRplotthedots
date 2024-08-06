@@ -29,7 +29,6 @@ Authors:
   \item Chris Mainey \email{c.mainey@nhs.net} (\href{https://orcid.org/0000-0002-3018-6171}{ORCID})
   \item John MacKintosh \email{john.mackintosh3@nhs.scot}
   \item Marcos Fabietti \email{marcos.fabietti@nuh.nhs.uk}
-  \item Fran Barton \email{francis.barton@nhs.net} (\href{https://orcid.org/0000-0002-5650-1176}{ORCID})
 }
 
 Other contributors:
