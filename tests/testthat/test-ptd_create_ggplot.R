@@ -252,8 +252,6 @@ test_that("it sets the y-axis to percentages if percentage_y_axis is TRUE", {
   p2 <- ptd_create_ggplot(s, percentage_y_axis = TRUE, y_axis_breaks = 0.2)
 
   expect_called(m, 2)
-  # expect_args(m, 1, accuracy = NULL) # test no longer useful after issue #210
-  # expect_args(m, 2, accuracy = 0.2) # test no longer useful after issue #210
 })
 
 test_that("it sets the y-axis if y_axis_breaks is provided", {
