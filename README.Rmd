@@ -96,6 +96,7 @@ sub_set %>%
     main_title = "SPC of A&E waiting time breaches for RQM"
   )
 ```
+
 You can also use the `summary()` function to get some basic statistics about your SPC data frame.
 The function prints the SPC options, and then returns the summarised results as a table:
 
