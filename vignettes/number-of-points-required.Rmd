@@ -8,12 +8,10 @@ vignette: >
 ---
 
 ```{r, include = FALSE}
-
 knitr::opts_chunk$set(
   collapse = TRUE,
   comment = "#>"
 )
-
 ```
 
 ### How many points are required for robust control limits?

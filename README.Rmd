@@ -146,7 +146,6 @@ The package (from v0.2.0) supports annotating the values of the mean and the
 The way to achieve this is to turn on the `label_limits` option:
 
 ```{r}
-
 sub_set |>
   ptd_spc(
     value_field = breaches,
@@ -158,7 +157,6 @@ sub_set |>
     main_title = "SPC of A&E waiting time breaches for RQM",
     label_limits = TRUE
   )
-
 ```
 
 If you have rebased the chart, the mean and annotations will only show for the most recent section.
