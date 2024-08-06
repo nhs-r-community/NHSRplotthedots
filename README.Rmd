@@ -99,7 +99,7 @@ sub_set %>%
 You can also use the `summary()` function to get some basic statistics about your SPC data frame.
 The function prints the SPC options, and then returns the summarised results as a table:
 
-```r
+```{r}
 summary <- sub_set %>%
   ptd_spc(
     value_field = breaches,
@@ -112,7 +112,7 @@ summary <- sub_set %>%
 
 You could assign this summary table to a variable and use it later:
 
-```r
+```{r}
 summary$variation_type
 summary$assurance_type
 ```
