@@ -76,7 +76,7 @@ spc_data %>%
 
 **Over-riding to replicate "Making Data Count" Excel output:**
 
-```{r}
+```{r, fig-alt="An SPC chart labelled Data on the y-axis, with dates from 22 March 2021 to 8 April 2021, at 1-day intervals, on the x-axis. From left to right the line shows four grey common cause points followed by a single blue special cause improvement point followed by a further 12 grey common cause points. A caption reports the upper process limit as 4.6, the mean as 1.94 and the lower process limit as -0.72."}
 # setting screen_outliers = FALSE produces the same output as Excel
 spc_data <- ptd_spc(df, value_field = data, date_field = date, screen_outliers = FALSE)
 spc_data %>%
