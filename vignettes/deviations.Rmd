@@ -108,7 +108,7 @@ Examples of these 4 are shown below:
 
 **R Package Default:**
 
-```{r, fig.cap="An SPC chart labelled 'Attendances' on the y-axis, with dates from 1 April 2016 to 1 March 2019, at 1-month intervals, on the x-axis. The line chart has three sections, each with twelve grey common cause points on the process line. Each section has its own upper process limit, mean, and lower process limit lines, that are not connected to the lines of another section. The process line is also split into three sections. A caption states 'Some trial limits created by groups of fewer than 12 points exist. These will become more reliable as more data is added.'"}
+```{r, fig.cap="An SPC chart labelled 'Attendances' on the y-axis, with dates from 1 April 2016 to 1 March 2019, at 1-month intervals, on the x-axis. The dates are presented at 45 degrees to the x-axis. The line chart has three sections, each with twelve grey common cause points on the process line. Each section has its own upper process limit, mean, and lower process limit lines, that are not connected to the lines of another section. The process line is also split into three sections. A caption states 'Some trial limits created by groups of fewer than 12 points exist. These will become more reliable as more data is added.'"}
 spc_data <- ae_attendances %>%
   group_by(period) %>%
   summarise(across(attendances, sum)) %>%
@@ -143,7 +143,7 @@ Text angle can be over-ridden by passing a ggplot `theme()` into the `theme_over
 
 **To re-instate 90 degree axis text:**
 
-```{r}
+```{r, fig.cap="An SPC chart labelled 'Attendances' on the y-axis, with dates from 1 April 2016 to 1 March 2019, at 1-month intervals, on the x-axis. The dates are presented at 90 degrees to the x-axis. The line chart has 36 grey common cause points on the process line. There are dashed lines for the upper and lower process limits and a solid line for the mean."}
 ae_attendances %>%
   group_by(period) %>%
   summarise(across(attendances, sum)) %>%
