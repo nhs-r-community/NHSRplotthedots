@@ -51,7 +51,7 @@ Welcome to the NHS-R community's package for building a specific type of statist
 The help files and vignettes within this package tell you more about the possible options for controlling the charts, but below are some simple examples of the type of chart the package produces.
   We will use the `ae_attendances` dataset from the `{NHSRdatasets}` package and a bit of `{dplyr}` code to select some organisations.
 
-```{r example, message=FALSE, warning=FALSE}
+```{r example1, message=FALSE, warning=FALSE}
 library(NHSRplotthedots)
 library(NHSRdatasets)
 library(dplyr)
@@ -69,7 +69,7 @@ sub_set |>
 
 This plot is ok on its own, but we can specify more control options if we explicitly pass it on to the `plot()` function.
 
-```{r}
+```{r example2}
 sub_set |>
   ptd_spc(
     value_field = breaches,
@@ -100,7 +100,7 @@ sub_set |>
 You can also use the `summary()` function to get some basic statistics about your SPC data frame.
 The function prints the SPC options, and then returns the summarised results as a table:
 
-```{r}
+```{r summary-example}
 summary <- sub_set |>
   ptd_spc(
     value_field = breaches,
@@ -146,7 +146,7 @@ The package (from v0.2.0) supports annotating the values of the mean and the
 
 The way to achieve this is to turn on the `label_limits` option:
 
-```{r}
+```{r limits-example}
 sub_set |>
   ptd_spc(
     value_field = breaches,
