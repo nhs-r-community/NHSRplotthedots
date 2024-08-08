@@ -1,4 +1,3 @@
-
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 
 # NHSRplotthedots <a alt="NHS-R Community's logo" href='https://nhsrcommunity.com/'><img src='https://nhs-r-community.github.io/assets/logo/nhsr-logo.png' align="right" height="80" /></a>
@@ -28,14 +27,12 @@ and features may change.
 
 ## Installation
 
-``` r
-# install from CRAN
-install.packages("NHSRplotthedots")
+    # install from CRAN
+    install.packages("NHSRplotthedots")
 
-# Or install the development version from GitHub using {remotes} package:
-# install.packages("remotes")
-remotes::install_github("https://github.com/nhs-r-community/NHSRplotthedots", build_vignettes = TRUE)
-```
+    # Or install the development version from GitHub using {remotes} package:
+    # install.packages("remotes")
+    remotes::install_github("https://github.com/nhs-r-community/NHSRplotthedots", build_vignettes = TRUE)
 
 # Overview
 
@@ -49,81 +46,87 @@ understanding of indicators than ‘RAG’ (red, amber, green) rated board
 reports often present.
 
 The help files and vignettes within this package tell you more about the
-possible options for controlling the charts, but below is a simple
-example of the type of chart the package produces. We will use the
+possible options for controlling the charts, but below are some simple
+examples of the type of chart the package produces. We will use the
 `ae_attendances` dataset from the `{NHSRdatasets}` package and a bit of
 `{dplyr}` code to select some organisations.
 
-``` r
-library(NHSRplotthedots)
-library(NHSRdatasets)
-library(tidyverse)
+    library(NHSRplotthedots)
+    library(NHSRdatasets)
+    library(dplyr)
 
-sub_set <- ae_attendances %>%
-  filter(org_code == "RQM", type == 1, period < as.Date("2018-04-01"))
+    sub_set <- ae_attendances |>
+      filter(org_code == "RQM", type == 1, period < as.Date("2018-04-01"))
 
-sub_set %>%
-  ptd_spc(value_field = breaches, date_field = period, improvement_direction = "decrease")
-```
+    sub_set |>
+      ptd_spc(
+        value_field = breaches,
+        date_field = period,
+        improvement_direction = "decrease"
+      )
 
 <img src="man/figures/README-example-1.png" width="100%" />
 
-This plot is ok on its own, but we can specify more control options when
-we pass it on, using the `{dplyr}` pipe function below: `%>%` to the
-plot argument.
+This plot is ok on its own, but we can specify more control options if
+we explicitly pass it on to the `plot()` function.
 
-``` r
-sub_set %>%
-  ptd_spc(value_field = breaches, date_field = period, improvement_direction = "decrease") %>%
-  plot(
-    y_axis_label = "4-hour wait breaches",
-    main_title = "SPC of A&E waiting time breaches for RQM"
-  )
-```
+    sub_set |>
+      ptd_spc(
+        value_field = breaches,
+        date_field = period,
+        improvement_direction = "decrease"
+      ) |>
+      plot(
+        y_axis_label = "4-hour wait breaches",
+        main_title = "SPC of A&E waiting time breaches for RQM"
+      )
 
-<img src="man/figures/README-unnamed-chunk-3-1.png" width="100%" />
+<img src="man/figures/README-unnamed-chunk-2-1.png" width="100%" />
 
 or, equivalently:
 
-``` r
-sub_set %>%
-  ptd_spc(value_field = breaches, date_field = period, improvement_direction = "decrease") %>%
-  ptd_create_ggplot(
-    y_axis_label = "4-hour wait breaches",
-    main_title = "SPC of A&E waiting time breaches for RQM"
-  )
-```
+    sub_set |>
+      ptd_spc(
+        value_field = breaches,
+        date_field = period,
+        improvement_direction = "decrease"
+      ) |>
+      ptd_create_ggplot(
+        y_axis_label = "4-hour wait breaches",
+        main_title = "SPC of A&E waiting time breaches for RQM"
+      )
 
-In addition, you can use summary() function to get some basic statistics
+You can also use the `summary()` function to get some basic statistics
 about your SPC data frame. The function prints the SPC options, and then
 returns the summarised results as a table:
 
-``` r
-summary<-sub_set %>%
-  ptd_spc(value_field = breaches, date_field = period, improvement_direction = "decrease",target=1200) %>%
-  summary()
-#> Plot the Dots SPC options:
-#> ================================
-#> value_field:          'breaches'
-#> date_field:           'period'
-#> facet_field:          not set
-#> rebase:               not set
-#> fix_after_n_points:   not set
-#> improvement_direction:'decrease'
-#> target:               '1200'
-#> trajectory:           not set
-#> screen_outliers:      'TRUE'
-#> --------------------------------
-```
+    summary <- sub_set |>
+      ptd_spc(
+        value_field = breaches,
+        date_field = period,
+        improvement_direction = "decrease",
+        target = 1200
+      ) |>
+      summary()
+    #> Plot the Dots SPC options:
+    #> ================================
+    #> value_field:          'breaches'
+    #> date_field:           'period'
+    #> facet_field:          not set
+    #> rebase:               not set
+    #> fix_after_n_points:   not set
+    #> improvement_direction:'decrease'
+    #> target:               '1200'
+    #> trajectory:           not set
+    #> screen_outliers:      'TRUE'
+    #> --------------------------------
 
 You could assign this summary table to a variable and use it later:
 
-``` r
-summary$variation_type
-#> [1] "common_cause"
-summary$assurance_type
-#> [1] "inconsistent"
-```
+    summary$variation_type
+    #> [1] "common_cause"
+    summary$assurance_type
+    #> [1] "inconsistent"
 
 ### Interactive plots with Plotly
 
@@ -131,37 +134,58 @@ It’s also possible to generate interactive plots using the `{plotly}`
 package by replacing the call to `plot` with `ptd_create_plotly`. This
 function takes the same arguments as `plot`/`ptd_create_ggplot`.
 
-``` r
-sub_set %>%
-  ptd_spc(value_field = breaches, date_field = period, improvement_direction = "decrease") %>%
-  ptd_create_plotly(
-    y_axis_label = "4-hour wait breaches",
-    main_title = "SPC of A&E waiting time breaches for RQM"
-  )
-```
+    sub_set |>
+      ptd_spc(
+        value_field = breaches,
+        date_field = period,
+        improvement_direction = "decrease"
+      ) |>
+      ptd_create_plotly(
+        y_axis_label = "4-hour wait breaches",
+        main_title = "SPC of A&E waiting time breaches for RQM"
+      )
+
+### Adding annotations for mean and process limits
+
+The package (from v0.2.0) supports annotating the values of the mean and
+the upper and lower process limits on a secondary (right-hand side) y
+axis, if this is helpful for you and your audience.
+
+The way to achieve this is to turn on the `label_limits` option:
+
+    sub_set |>
+      ptd_spc(
+        value_field = breaches,
+        date_field = period,
+        improvement_direction = "decrease"
+      ) |>
+      ptd_create_ggplot(
+        y_axis_label = "4-hour wait breaches",
+        main_title = "SPC of A&E waiting time breaches for RQM",
+        label_limits = TRUE
+      )
+
+<img src="man/figures/README-unnamed-chunk-5-1.png" width="100%" />
+
+If you have rebased the chart, the mean and process limit annotations
+will only show for the most recent section.
 
 ## Getting help
 
 To find out more about the `ptd_spc()` function, you can view the help
 with:
 
-``` r
-?ptd_spc
-```
+    ?ptd_spc
 
 Details on the extra plot controls can be found using:
 
-``` r
-?ptd_create_ggplot
-```
+    ?ptd_create_ggplot
 
 To view the vignette (worked example), use:
 
-``` r
-vignette("intro", package = "NHSRplotthedots")
+    vignette("intro", package = "NHSRplotthedots")
 
-vignette(package = "NHSRplotthedots")
-```
+    vignette(package = "NHSRplotthedots")
 
 # Contribution
 
