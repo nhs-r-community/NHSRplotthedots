@@ -187,7 +187,7 @@ To view the vignette (worked example), use:
 
     vignette(package = "NHSRplotthedots")
 
-# Contribution
+# Contributing
 
 This is an NHS-R Community project that is open for anyone to contribute
 to in any way that they are able. The project is released with a
