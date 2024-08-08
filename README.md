@@ -65,7 +65,7 @@ examples of the type of chart the package produces. We will use the
         improvement_direction = "decrease"
       )
 
-<img src="man/figures/README-example-1.png" width="100%" />
+<img src="man/figures/README-example1-1.png" width="100%" />
 
 This plot is ok on its own, but we can specify more control options if
 we explicitly pass it on to the `plot()` function.
@@ -81,7 +81,7 @@ we explicitly pass it on to the `plot()` function.
         main_title = "SPC of A&E waiting time breaches for RQM"
       )
 
-<img src="man/figures/README-unnamed-chunk-2-1.png" width="100%" />
+<img src="man/figures/README-example2-1.png" width="100%" />
 
 or, equivalently:
 
@@ -165,7 +165,7 @@ The way to achieve this is to turn on the `label_limits` option:
         label_limits = TRUE
       )
 
-<img src="man/figures/README-unnamed-chunk-5-1.png" width="100%" />
+<img src="man/figures/README-limits-example-1.png" width="100%" />
 
 If you have rebased the chart, the mean and process limit annotations
 will only show for the most recent section.
