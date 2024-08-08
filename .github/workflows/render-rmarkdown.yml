@@ -29,7 +29,7 @@ jobs:
 
       - name: Render README.Rmd and commit results
         run: |
-          Rscript -e 'if (file.exists(README.Rmd)) rmarkdown::render(README.Rmd, output_format = "md_document")'
+          Rscript -e 'if (file.exists("README.Rmd")) rmarkdown::render("README.Rmd", output_format = "md_document")'
           git config --local user.name "$GITHUB_ACTOR"
           git config --local user.email "$GITHUB_ACTOR@users.noreply.github.com"
           git commit README.Rmd README.md man/figures/README*.png -m 'Re-build Rmarkdown files' || echo "No changes to commit"
