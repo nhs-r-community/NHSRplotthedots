@@ -1,6 +1,8 @@
 ---
 title: "Deviations from Excel defaults"
-output: rmarkdown::html_vignette
+output:
+  rmarkdown::html_vignette:
+    fig_caption: false
 vignette: >
   %\VignetteIndexEntry{Deviations from Excel defaults}
   %\VignetteEngine{knitr::rmarkdown}
@@ -52,7 +54,7 @@ The two charts below demonstrate the default, and how to over-ride to replicate 
 
 #### R Package Default:
 
-```{r}
+```{r, fig.cap="An SPC chart labelled 'Data' on the y-axis, with dates from 22 March 2021 to 8 April 2021, at 1-day intervals, on the x-axis. From left to right the line shows four grey common cause points followed by a single blue special cause improvement point followed by a further 12 grey common cause points. A caption reports the upper process limit as 4.6, the mean as 1.94 and the lower process limit as -0.72."}
 data <- c(1, 2, 1, 2, 10, 1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 1)
 date <- seq(as.Date("2021-03-22"), by = 1, length.out = 18)
 df <- tibble::tibble(data, date)
@@ -72,7 +74,7 @@ spc_data %>%
 
 #### Over-riding to replicate "Making Data Count" Excel output:
 
-```{r}
+```{r, fig.cap="An SPC chart labelled 'Data' on the y-axis, with dates from 22 March 2021 to 8 April 2021, at 1-day intervals, on the x-axis. From left to right the line shows four grey common cause points followed by a single blue special cause improvement point followed by a further 12 grey common cause points. A caption reports the upper process limit as 6.95, the mean as 1.94 and the lower process limit as -3.06."}
 # setting screen_outliers = FALSE produces the same output as Excel
 spc_data <- ptd_spc(df, value_field = data, date_field = date, screen_outliers = FALSE)
 spc_data %>%
@@ -105,7 +107,7 @@ Examples of these 4 are shown below:
 
 #### R Package Default:
 
-```{r}
+```{r, fig.cap="An SPC chart labelled 'Attendances' on the y-axis, with dates from 1 April 2016 to 1 March 2019, at 1-month intervals, on the x-axis. The dates are presented at 45 degrees to the x-axis. The line chart has three sections, each with twelve grey common cause points on the process line. Each section has its own upper process limit, mean, and lower process limit lines, that are not connected to the lines of another section. The process line is also split into three sections. A caption states 'Some trial limits created by groups of fewer than 12 points exist. These will become more reliable as more data is added.'"}
 spc_data <- ae_attendances %>%
   group_by(period) %>%
   summarise(across(attendances, sum)) %>%
@@ -116,19 +118,19 @@ plot(spc_data, break_lines = "both")
 
 #### Just breaking the limit lines:
 
-```{r}
+```{r, fig.cap="An SPC chart labelled 'Attendances' on the y-axis, with dates from 1 April 2016 to 1 March 2019, at 1-month intervals, on the x-axis. The line chart has three sections, each with twelve grey common cause points on the process line. Each section has its own upper process limit, mean, and lower process limit lines, that are not connected to the lines of another section. The process line is unbroken. A caption states 'Some trial limits created by groups of fewer than 12 points exist. These will become more reliable as more data is added.'"}
 plot(spc_data, break_lines = "limits")
 ```
 
 #### Just breaking the process line:
 
-```{r}
+```{r, fig.cap="An SPC chart labelled 'Attendances' on the y-axis, with dates from 1 April 2016 to 1 March 2019, at 1-month intervals, on the x-axis. The line chart has three sections, each with twelve grey common cause points on the process line. Each section has its own upper process limit, mean, and lower process limits, but the lines for these are unbroken between sections. The process line is however broken between sections. A caption states 'Some trial limits created by groups of fewer than 12 points exist. These will become more reliable as more data is added.'"}
 plot(spc_data, break_lines = "process")
 ```
 
 #### Over-riding to replicate "Making Data Count" Excel output:
 
-```{r}
+```{r, fig.cap="An SPC chart labelled 'Attendances' on the y-axis, with dates from 1 April 2016 to 1 March 2019, at 1-month intervals, on the x-axis. The line chart has three sections, each with twelve grey common cause points on the process line. Each section has its own upper process limit, mean, and lower process limits, but the lines for these are unbroken between sections. The process line is also unbroken between the sections. A caption states 'Some trial limits created by groups of fewer than 12 points exist. These will become more reliable as more data is added.'"}
 plot(spc_data, break_lines = "none")
 ```
 
@@ -144,7 +146,7 @@ Any of the modifications documented in the
 
 #### To re-instate 90 degree axis text:
 
-```{r}
+```{r, fig.cap="An SPC chart labelled 'Attendances' on the y-axis, with dates from 1 April 2016 to 1 March 2019, at 1-month intervals, on the x-axis. The dates are presented at 90 degrees to the x-axis. The line chart has 36 grey common cause points on the process line. There are dashed lines for the upper and lower process limits and a solid line for the mean."}
 ae_attendances %>%
   group_by(period) %>%
   summarise(across(attendances, sum)) %>%

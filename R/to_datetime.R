@@ -7,13 +7,15 @@ to_datetime <- function(x) {
   UseMethod("to_datetime")
 }
 
+#' @export
 to_datetime.Date <- function(x) {
   as.POSIXct(x)
 }
 
+#' @export
 to_datetime.POSIXt <- identity
 
-
+#' @export
 to_datetime.character <- function(x) {
   as.POSIXct(x)
 }
