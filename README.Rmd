@@ -51,15 +51,15 @@ Welcome to the NHS-R community's package for building a specific type of statist
 The help files and vignettes within this package tell you more about the possible options for controlling the charts, but below are some simple examples of the type of chart the package produces.
   We will use the `ae_attendances` dataset from the `{NHSRdatasets}` package and a bit of `{dplyr}` code to select some organisations.
 
-```{r example, message=FALSE, warning=FALSE}
+```{r example1, message=FALSE, warning=FALSE}
 library(NHSRplotthedots)
 library(NHSRdatasets)
 library(dplyr)
 
-sub_set <- ae_attendances %>%
+sub_set <- ae_attendances |>
   filter(org_code == "RQM", type == 1, period < as.Date("2018-04-01"))
 
-sub_set %>%
+sub_set |>
   ptd_spc(
     value_field = breaches,
     date_field = period,
@@ -69,13 +69,13 @@ sub_set %>%
 
 This plot is ok on its own, but we can specify more control options if we explicitly pass it on to the `plot()` function.
 
-```{r}
-sub_set %>%
+```{r example2}
+sub_set |>
   ptd_spc(
     value_field = breaches,
     date_field = period,
     improvement_direction = "decrease"
-  ) %>%
+  ) |>
   plot(
     y_axis_label = "4-hour wait breaches",
     main_title = "SPC of A&E waiting time breaches for RQM"
@@ -85,28 +85,29 @@ sub_set %>%
 or, equivalently:
 
 ```r
-sub_set %>%
+sub_set |>
   ptd_spc(
     value_field = breaches,
     date_field = period,
     improvement_direction = "decrease"
-  ) %>%
+  ) |>
   ptd_create_ggplot(
     y_axis_label = "4-hour wait breaches",
     main_title = "SPC of A&E waiting time breaches for RQM"
   )
 ```
+
 You can also use the `summary()` function to get some basic statistics about your SPC data frame.
 The function prints the SPC options, and then returns the summarised results as a table:
 
-```{r}
-summary <- sub_set %>%
+```{r summary-example}
+summary <- sub_set |>
   ptd_spc(
     value_field = breaches,
     date_field = period,
     improvement_direction = "decrease",
     target = 1200
-  ) %>%
+  ) |>
   summary()
 ```
 
@@ -124,12 +125,12 @@ It's also possible to generate interactive plots using the `{plotly}` package by
     This function takes the same arguments as `plot`/`ptd_create_ggplot`.
 
 ```r
-sub_set %>%
+sub_set |>
   ptd_spc(
     value_field = breaches,
     date_field = period,
     improvement_direction = "decrease"
-  ) %>%
+  ) |>
   ptd_create_plotly(
     y_axis_label = "4-hour wait breaches",
     main_title = "SPC of A&E waiting time breaches for RQM"
@@ -145,7 +146,7 @@ The package (from v0.2.0) supports annotating the values of the mean and the
 
 The way to achieve this is to turn on the `label_limits` option:
 
-```{r}
+```{r limits-example}
 sub_set |>
   ptd_spc(
     value_field = breaches,
@@ -184,7 +185,7 @@ vignette("intro", package = "NHSRplotthedots")
 vignette(package = "NHSRplotthedots")
 ```
 
-# Contribution
+# Contributing
 
 This is an NHS-R Community project that is open for anyone to contribute to in any way that they are able.
   The project is released with a [Contributor Code of Conduct][coc].

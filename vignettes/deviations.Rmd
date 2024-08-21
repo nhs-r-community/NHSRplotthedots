@@ -42,7 +42,6 @@ It is discussed further in the book:
 
 > Provost, Lloyd P. & Murray, Sandra K. (2011) _The Health Care Data Guide: Learning from Data for Improvement_, San Francisco, CA: Jossey-Bass, pp.155, 192
 
-
 The "Making Data Count" Excel tools do not screen outlying points, and all points are included in the moving range and limits calculations.
 If outlying points exist, the process limits on the Excel tools will therefore be wider than if outlying points were screened from the calculation.
 
@@ -101,7 +100,7 @@ There are 4 possible values:
 
   * "both" (default)
   * "limit" (to just break the limit lines, but leave the process line connected)
-  * "process" (to just break the process line, but leave limit lines connected)
+  * "process" (to just break the process line, but leave the limit lines connected)
   * "none" (as per the Excel tool).
 
 Examples of these 4 are shown below:
@@ -123,7 +122,7 @@ plot(spc_data, break_lines = "both")
 plot(spc_data, break_lines = "limits")
 ```
 
-#### Just breaking the process lines:
+#### Just breaking the process line:
 
 ```{r, fig.cap="An SPC chart labelled 'Attendances' on the y-axis, with dates from 1 April 2016 to 1 March 2019, at 1-month intervals, on the x-axis. The line chart has three sections, each with twelve grey common cause points on the process line. Each section has its own upper process limit, mean, and lower process limits, but the lines for these are unbroken between sections. The process line is however broken between sections. A caption states 'Some trial limits created by groups of fewer than 12 points exist. These will become more reliable as more data is added.'"}
 plot(spc_data, break_lines = "process")
