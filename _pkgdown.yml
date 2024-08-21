@@ -1,0 +1,9 @@
+template:
+  bootstrap: 5
+articles:
+- title: Articles
+  navbar: ~
+  contents:
+  - number-of-points-required
+  - deviations
+  - other-spc-tools
