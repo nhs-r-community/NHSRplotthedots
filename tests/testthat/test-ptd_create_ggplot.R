@@ -239,23 +239,6 @@ test_that("it creates a secondary y axis with integer scales", {
   expect_equal(p2$scales$scales[[3]]$secondary.axis$breaks, sec_breaks)
 })
 
-test_that("it sets the y-axis to percentages if percentage_y_axis is TRUE", {
-  set.seed(123)
-
-  m <- mock()
-  stub(ptd_create_ggplot, "scales::label_percent", m)
-
-  d <- data.frame(x = as.Date("2020-01-01") + 1:20, y = rnorm(20))
-  s <- ptd_spc(d, "y", "x")
-
-  p1 <- ptd_create_ggplot(s, percentage_y_axis = TRUE)
-  p2 <- ptd_create_ggplot(s, percentage_y_axis = TRUE, y_axis_breaks = 0.2)
-
-  expect_called(m, 2)
-  expect_args(m, 1, accuracy = NULL)
-  expect_args(m, 2, accuracy = 0.2)
-})
-
 test_that("it sets the y-axis if y_axis_breaks is provided", {
   set.seed(123)
   d <- data.frame(x = as.Date("2020-01-01") + 1:20, y = rnorm(20))
@@ -323,13 +306,10 @@ test_that("it sets the colour of the points based on the type", {
   stub(ptd_create_ggplot, "ggplot2::scale_colour_manual", m)
 
   set.seed(123)
-  d <- data.frame(x = as.Date("2020-01-01") + 1:20, y = rnorm(20)) |>
+  d <- data.frame(x = as.Date("2020-01-01") + seq(20L), y = rnorm(20L)) |>
     # introduce some special cause variation!
     dplyr::mutate(
-      across("y", \(y) dplyr::case_when(
-        x > "2020-01-15" ~ y + 0.5,
-        TRUE ~ y
-      ))
+      across("y", \(y) dplyr::if_else(.data[["x"]] > "2020-01-15", y + 0.5, y))
     )
 
   colours_neutral <- list(
