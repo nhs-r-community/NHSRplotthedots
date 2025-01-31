@@ -119,7 +119,7 @@ sub_set |>
   )
 ```
 
-<img src="man/figures/README-example2-1.png" width="100%" />
+<img src="man/figures/README-example-with-plot-1.png" width="100%" />
 
 or, equivalently:
 
@@ -136,12 +136,14 @@ sub_set |>
   )
 ```
 
+<img src="man/figures/README-example-ptd_create_ggplot-1.png" width="100%" />
+
 You can also use the `summary()` function to get some basic statistics
 about your SPC data frame. The function prints the SPC options, and then
 returns the summarised results as a table:
 
 ``` r
-summary <- sub_set |>
+summary_df <- sub_set |>
   ptd_spc(
     value_field = breaches,
     date_field = period,
@@ -166,17 +168,30 @@ summary <- sub_set |>
 You could assign this summary table to a variable and use it later:
 
 ``` r
-summary$variation_type
+# base R
+summary_df$variation_type
 #> [1] "common_cause"
-summary$assurance_type
+summary_df$assurance_type
+#> [1] "inconsistent"
+
+# tidyverse
+
+summary_df |> 
+  select(variation_type) |> 
+  pull()
+#> [1] "common_cause"
+
+summary_df |> 
+  select(assurance_type) |> 
+  pull()
 #> [1] "inconsistent"
 ```
 
 ### Interactive plots with Plotly
 
 It’s also possible to generate interactive plots using the `plotly`
-package by replacing the call to `plot` with `ptd_create_plotly`. This
-function takes the same arguments as `plot`/`ptd_create_ggplot`.
+package by replacing the call to `plot` with `ptd_create_plotly()`. This
+function takes the same arguments as `plot`/`ptd_create_ggplot()`.
 
 ``` r
 sub_set |>
@@ -225,6 +240,12 @@ with:
 
 ``` r
 ?ptd_spc
+```
+
+when the package is loaded. Otherwise type in the console:
+
+``` r
+??ptd_spc
 ```
 
 Details on the extra plot controls can be found using:

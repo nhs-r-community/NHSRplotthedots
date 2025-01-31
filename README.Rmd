@@ -109,7 +109,7 @@ sub_set |>
 This plot is ok on its own, but we can specify more control options if we 
 explicitly pass it on to the `plot()` function.
 
-```{r example2}
+```{r example-with-plot}
 sub_set |>
   ptd_spc(
     value_field = breaches,
@@ -124,7 +124,7 @@ sub_set |>
 
 or, equivalently:
 
-```r
+```{r example-ptd_create_ggplot}
 sub_set |>
   ptd_spc(
     value_field = breaches,
@@ -143,7 +143,7 @@ The function prints the SPC options, and then returns the summarised results
 as a table:
 
 ```{r summary-example}
-summary <- sub_set |>
+summary_df <- sub_set |>
   ptd_spc(
     value_field = breaches,
     date_field = period,
@@ -156,16 +156,26 @@ summary <- sub_set |>
 You could assign this summary table to a variable and use it later:
 
 ```{r}
-summary$variation_type
-summary$assurance_type
-```
+# base R -----------------
+summary_df$variation_type
+summary_df$assurance_type
 
+# tidyverse -----------------
+summary_df |> 
+  select(variation_type) |> 
+  pull()
+
+summary_df |> 
+  select(assurance_type) |> 
+  pull()
+
+```
 
 ### Interactive plots with Plotly
 
 It's also possible to generate interactive plots using the `plotly` package by 
-replacing the call to `plot` with `ptd_create_plotly`.
-This function takes the same arguments as `plot`/`ptd_create_ggplot`.
+replacing the call to `plot` with `ptd_create_plotly()`.
+This function takes the same arguments as `plot`/`ptd_create_ggplot()`.
 
 ```r
 sub_set |>
@@ -181,11 +191,12 @@ sub_set |>
 ```
 
 
+
 ### Adding annotations for mean and process limits
 
 The package (from v0.2.0) supports annotating the values of the mean and the
-  upper and lower process limits on a secondary (right-hand side) y axis,
-  if this is helpful for you and your audience.
+upper and lower process limits on a secondary (right-hand side) y axis, if this 
+is helpful for you and your audience.
 
 The way to achieve this is to turn on the `label_limits` option:
 
@@ -213,6 +224,11 @@ To find out more about the `ptd_spc()` function, you can view the help with:
 
 ```r
 ?ptd_spc
+```
+when the package is loaded. Otherwise type in the console:
+
+```r
+??ptd_spc
 ```
 
 Details on the extra plot controls can be found using:
