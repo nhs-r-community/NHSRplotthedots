@@ -54,8 +54,19 @@ install.packages("NHSRplotthedots")
 
 # Or install the development version from GitHub using {remotes} package:
 # install.packages("remotes")
-remotes::install_github("https://github.com/nhs-r-community/NHSRplotthedots", build_vignettes = TRUE)
+remotes::install_github("https://github.com/nhs-r-community/NHSRplotthedots", 
+build_vignettes = TRUE)
 ```
+
+## Tip! Variation flag is just a `c`
+
+If any charts that you are creating don’t have the variation flags in
+the top right and instead are a `c` this is possibly because you need
+the development version of `NHSRplotthedots` which is version
+v0.1.0.9000.
+
+Reinstalling over a later version won’t work and you will first need to
+uninstall the package `remove.packages("NHSRplotthedots")`
 
 # Overview
 
@@ -71,8 +82,8 @@ reports often present.
 The help files and vignettes within this package tell you more about the
 possible options for controlling the charts, but below are some simple
 examples of the type of chart the package produces. We will use the
-`ae_attendances` dataset from the `{NHSRdatasets}` package and a bit of
-`{dplyr}` code to select some organisations.
+`ae_attendances` dataset from the `NHSRdatasets` package and a bit of
+`dplyr` code to select some organisations.
 
 ``` r
 library(NHSRplotthedots)
@@ -163,7 +174,7 @@ summary$assurance_type
 
 ### Interactive plots with Plotly
 
-It’s also possible to generate interactive plots using the `{plotly}`
+It’s also possible to generate interactive plots using the `plotly`
 package by replacing the call to `plot` with `ptd_create_plotly`. This
 function takes the same arguments as `plot`/`ptd_create_ggplot`.
 
@@ -233,8 +244,9 @@ vignette(package = "NHSRplotthedots")
 # Contributing
 
 This is an NHS-R Community project that is open for anyone to contribute
-to in any way that they are able. The project is released with a
-[Contributor Code of
+to in any way that they are able.
+
+The project is released with a [Contributor Code of
 Conduct](https://contributor-covenant.org/version/2/1/CODE_OF_CONDUCT.html).
 By contributing to this project, you agree to abide by its terms.
 
