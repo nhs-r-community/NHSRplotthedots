@@ -15,7 +15,11 @@ knitr::opts_chunk$set(
 )
 ```
 
-# NHSRplotthedots <a alt="NHS-R Community's logo" href='https://nhsrcommunity.com/'><img src='https://nhs-r-community.github.io/assets/logo/nhsr-logo.png' align="right" height="80" /></a>
+:::: {style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap;"}
+
+::: {style="flex: 1 1 50%;"}
+
+# NHSRplotthedots
 
 <!-- badges: start -->
 [![Lifecycle: stable](https://img.shields.io/badge/lifecycle-stable-brightgreen.svg)](https://lifecycle.r-lib.org/articles/stages.html#stable)
@@ -24,6 +28,22 @@ knitr::opts_chunk$set(
 [![CRAN status](https://www.r-pkg.org/badges/version/NHSRplotthedots)](https://CRAN.R-project.org/package=NHSRplotthedots)
 [![downloads](https://cranlogs.r-pkg.org/badges/grand-total/NHSRplotthedots)](https://CRAN.R-project.org/package=NHSRplotthedots)
 <!-- badges: end -->
+
+:::
+
+::: {style="flex: 1 1 auto;"}
+
+<a alt="NHS-R Community's logo" href='https://nhsrcommunity.com/'><img src="https://nhs-r-community.github.io/assets/logo/nhsr-logo.png" align="center" height="80"/></a>
+
+:::
+
+::: {style="flex: 1 1 auto;"}
+
+<img src="inst/images/logo.png" align="center" height="160"/>
+
+:::
+
+::::
 
 This package is built by the [NHS-R community][nhsr] to provide tools for drawing statistical process control (SPC)
 charts. This package supports NHS England's ['Making Data Count'][mdc] programme, and allows users to draw XmR charts,
