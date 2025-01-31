@@ -156,11 +156,7 @@ You could assign this summary table to a variable and use it later:
 
 ``` r
 summary$variation_type
-#> Warning: Unknown or uninitialised column: `variation_type`.
-#> NULL
-```
-
-``` r
+#> [1] "common_cause"
 summary$assurance_type
 #> [1] "inconsistent"
 ```
@@ -204,8 +200,6 @@ sub_set |>
     main_title = "SPC of A&E waiting time breaches for RQM",
     label_limits = TRUE
   )
-#> Warning in ptd_create_ggplot(ptd_spc(sub_set, value_field = breaches, date_field = period, : Unknown arguments provided by plot: label_limits
-#> Check for common spelling mistakes in arguments.
 ```
 
 <img src="man/figures/README-limits-example-1.png" width="100%" />
