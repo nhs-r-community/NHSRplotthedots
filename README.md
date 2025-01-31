@@ -58,7 +58,7 @@ remotes::install_github("https://github.com/nhs-r-community/NHSRplotthedots",
 build_vignettes = TRUE)
 ```
 
-## Tip! Variation flag is just a `c`
+## Tip!
 
 If any charts that you are creating don’t have the variation flags in
 the top right and instead are a `c` this is possibly because you need
@@ -66,7 +66,7 @@ the development version of `NHSRplotthedots` which is version
 v0.1.0.9000.
 
 Reinstalling over a later version won’t work and you will first need to
-uninstall the package `remove.packages("NHSRplotthedots")`
+uninstall the package using code `remove.packages("NHSRplotthedots")`.
 
 # Overview
 
@@ -104,7 +104,7 @@ sub_set |>
 <img src="man/figures/README-example1-1.png" width="100%" />
 
 This plot is ok on its own, but we can specify more control options if
-we explicitly pass it on to the `plot()` function.
+we explicitly pass it on to the `plot()` function
 
 ``` r
 sub_set |>
@@ -168,14 +168,13 @@ summary_df <- sub_set |>
 You could assign this summary table to a variable and use it later:
 
 ``` r
-# base R
+# base R -----------------
 summary_df$variation_type
 #> [1] "common_cause"
 summary_df$assurance_type
 #> [1] "inconsistent"
 
-# tidyverse
-
+# tidyverse -----------------
 summary_df |> 
   select(variation_type) |> 
   pull()
@@ -208,9 +207,10 @@ sub_set |>
 
 ### Adding annotations for mean and process limits
 
-The package (from v0.2.0) supports annotating the values of the mean and
-the upper and lower process limits on a secondary (right-hand side) y
-axis, if this is helpful for you and your audience.
+The package (in development and will be available from later releases)
+supports annotating the values of the mean and the upper and lower
+process limits on a secondary (right-hand side) y axis, if this is
+helpful for you and your audience.
 
 The way to achieve this is to turn on the `label_limits` option:
 
@@ -262,19 +262,14 @@ vignette("intro", package = "NHSRplotthedots")
 vignette(package = "NHSRplotthedots")
 ```
 
-# Contributing
+## Contributing
 
-This is an NHS-R Community project that is open for anyone to contribute
-to in any way that they are able.
+Please see our [guidance on how to
+contribute](https://tools.nhsrcommunity.com/contribution.html).
 
-The project is released with a [Contributor Code of
-Conduct](https://contributor-covenant.org/version/2/1/CODE_OF_CONDUCT.html).
-By contributing to this project, you agree to abide by its terms.
-
-If you want to learn more about this project, please join the discussion
-at [the NHS-R Community Slack group](https://nhsrcommunity.slack.com/)
-and the specific channel
-[\#proj-nhsr-plot-the-dots](https://nhsrcommunity.slack.com/archives/CSVD4SYF3).
+This project is released with a Contributor [Code of
+Conduct](./CODE_OF_CONDUCT.md). By contributing to this project, you
+agree to abide by its terms.
 
 The simplest way to contribute is to raise an issue detailing the
 feature or functionality you would like to see added, or any unexpected
