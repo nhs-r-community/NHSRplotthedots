@@ -14,8 +14,8 @@
 <link rel="apple-touch-icon" type="image/png" sizes="60x60" href="apple-touch-icon-60x60.png">
 <script src="deps/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <link href="deps/bootstrap-5.3.1/bootstrap.min.css" rel="stylesheet">
-<script src="deps/bootstrap-5.3.1/bootstrap.bundle.min.js"></script><link href="deps/font-awesome-6.4.2/css/all.min.css" rel="stylesheet">
-<link href="deps/font-awesome-6.4.2/css/v4-shims.min.css" rel="stylesheet">
+<script src="deps/bootstrap-5.3.1/bootstrap.bundle.min.js"></script><link href="deps/font-awesome-6.5.2/css/all.min.css" rel="stylesheet">
+<link href="deps/font-awesome-6.5.2/css/v4-shims.min.css" rel="stylesheet">
 <script src="deps/headroom-0.11.0/headroom.min.js"></script><script src="deps/headroom-0.11.0/jQuery.headroom.min.js"></script><script src="deps/bootstrap-toc-1.0.1/bootstrap-toc.min.js"></script><script src="deps/clipboard.js-2.0.11/clipboard.min.js"></script><script src="deps/search-1.0.0/autocomplete.jquery.min.js"></script><script src="deps/search-1.0.0/fuse.min.js"></script><script src="deps/search-1.0.0/mark.min.js"></script><!-- pkgdown --><script src="pkgdown.js"></script><meta property="og:title" content="Draw XmR Charts for NHSE/I Making Data Count Programme">
 <meta name="description" content="Provides tools for drawing Statistical Process Control (SPC) charts. This package supports the NHSE/I programme Making Data Count, and allows users to draw XmR charts, use change points and apply rules with summary indicators for when rules are breached.">
 <meta property="og:description" content="Provides tools for drawing Statistical Process Control (SPC) charts. This package supports the NHSE/I programme Making Data Count, and allows users to draw XmR charts, use change points and apply rules with summary indicators for when rules are breached.">
@@ -61,124 +61,159 @@
   </div>
 </nav><div class="container template-home">
 <div class="row">
-  <main id="main" class="col-md-9"><div class="section level1">
-<div class="page-header"><h1 id="nhsrplotthedots-">NHSRplotthedots <a alt="NHS-R Community's logo" href="https://nhsrcommunity.com/" class="external-link"><img src="https://nhs-r-community.github.io/assets/logo/nhsr-logo.png" align="right" height="80"></a>
-<a class="anchor" aria-label="anchor" href="#nhsrplotthedots-"></a>
+  <main id="main" class="col-md-9"><div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap;">
+<div class="section level1" style="flex: 1 1 50%;">
+<div class="page-header"><h1 id="nhsrplotthedots">NHSRplotthedots<a class="anchor" aria-label="anchor" href="#nhsrplotthedots"></a>
 </h1></div>
 <!-- badges: start -->
 
+</div>
+<div style="flex: 1 1 auto;">
+<p><a alt="NHS-R Community's logo" href="https://nhsrcommunity.com/" class="external-link"><img src="https://nhs-r-community.github.io/assets/logo/nhsr-logo.png" align="center" height="80"></a></p>
+</div>
+<div style="flex: 1 1 auto;">
+<p><img src="inst/images/logo.png" align="center" height="160"></p>
+</div>
+</div>
 <p>This package is built by the <a href="https://nhsrcommunity.com" class="external-link">NHS-R community</a> to provide tools for drawing statistical process control (SPC) charts. This package supports NHS England’s <a href="https://www.england.nhs.uk/publication/making-data-count/" class="external-link">‘Making Data Count’</a> programme, and allows users to draw XmR charts, use change points, and apply rules with summary indicators for when rules are breached.</p>
 <p>Please be aware that this package is in the early stages of development, and features may change.</p>
 <div class="section level2">
 <h2 id="installation">Installation<a class="anchor" aria-label="anchor" href="#installation"></a>
 </h2>
-<div class="sourceCode" id="cb1"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" tabindex="-1"></a><span class="co"># install from CRAN</span></span>
-<span id="cb1-2"><a href="#cb1-2" tabindex="-1"></a><span class="fu">install.packages</span>(<span class="st">"NHSRplotthedots"</span>)</span>
-<span id="cb1-3"><a href="#cb1-3" tabindex="-1"></a></span>
-<span id="cb1-4"><a href="#cb1-4" tabindex="-1"></a><span class="co"># Or install the development version from GitHub using {remotes} package:</span></span>
-<span id="cb1-5"><a href="#cb1-5" tabindex="-1"></a><span class="co"># install.packages("remotes")</span></span>
-<span id="cb1-6"><a href="#cb1-6" tabindex="-1"></a>remotes<span class="sc">::</span><span class="fu">install_github</span>(<span class="st">"https://github.com/nhs-r-community/NHSRplotthedots"</span>, <span class="at">build_vignettes =</span> <span class="cn">TRUE</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># install from CRAN</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span><span class="st">"NHSRplotthedots"</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># Or install the development version from GitHub using {remotes} package:</span></span>
+<span><span class="co"># install.packages("remotes")</span></span>
+<span><span class="fu">remotes</span><span class="fu">::</span><span class="fu"><a href="https://remotes.r-lib.org/reference/install_github.html" class="external-link">install_github</a></span><span class="op">(</span><span class="st">"https://github.com/nhs-r-community/NHSRplotthedots"</span>, </span>
+<span>build_vignettes <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div>
 </div>
+<div class="section level2">
+<h2 id="tip">Tip!<a class="anchor" aria-label="anchor" href="#tip"></a>
+</h2>
+<p>If any charts that you are creating don’t have the variation flags in the top right and instead are a <code>c</code> this is possibly because you need the development version of <code>NHSRplotthedots</code> which is version v0.1.0.9000.</p>
+<p>Reinstalling over a later version won’t work and you will first need to uninstall the package using code <code>remove.packages("NHSRplotthedots")</code>.</p>
 </div>
 <div class="section level1">
 <h1 id="overview">Overview<a class="anchor" aria-label="anchor" href="#overview"></a>
 </h1>
 <p>Welcome to the NHS-R community’s package for building a specific type of statistical process control (SPC) chart, the XmR chart. We are aiming to support NHS England’s <a href="https://www.england.nhs.uk/publication/making-data-count/" class="external-link">‘Making Data Count’</a> programme. The programme encourages boards, managers, and analyst teams to present data in ways that show change over time and drive better understanding of indicators than ‘RAG’ (red, amber, green) rated board reports often present.</p>
-<p>The help files and vignettes within this package tell you more about the possible options for controlling the charts, but below are some simple examples of the type of chart the package produces. We will use the <code>ae_attendances</code> dataset from the <a href="https://github.com/nhs-r-community/NHSRdatasets" class="external-link">NHSRdatasets</a> package and a bit of <a href="https://dplyr.tidyverse.org" class="external-link">dplyr</a> code to select some organisations.</p>
-<div class="sourceCode" id="cb2"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" tabindex="-1"></a><span class="fu">library</span>(NHSRplotthedots)</span>
-<span id="cb2-2"><a href="#cb2-2" tabindex="-1"></a><span class="fu">library</span>(NHSRdatasets)</span>
-<span id="cb2-3"><a href="#cb2-3" tabindex="-1"></a><span class="fu">library</span>(dplyr)</span>
-<span id="cb2-4"><a href="#cb2-4" tabindex="-1"></a></span>
-<span id="cb2-5"><a href="#cb2-5" tabindex="-1"></a>sub_set <span class="ot">&lt;-</span> ae_attendances <span class="sc">|&gt;</span></span>
-<span id="cb2-6"><a href="#cb2-6" tabindex="-1"></a>  <span class="fu">filter</span>(org_code <span class="sc">==</span> <span class="st">"RQM"</span>, type <span class="sc">==</span> <span class="dv">1</span>, period <span class="sc">&lt;</span> <span class="fu">as.Date</span>(<span class="st">"2018-04-01"</span>))</span>
-<span id="cb2-7"><a href="#cb2-7" tabindex="-1"></a></span>
-<span id="cb2-8"><a href="#cb2-8" tabindex="-1"></a>sub_set <span class="sc">|&gt;</span></span>
-<span id="cb2-9"><a href="#cb2-9" tabindex="-1"></a>  <span class="fu">ptd_spc</span>(</span>
-<span id="cb2-10"><a href="#cb2-10" tabindex="-1"></a>    <span class="at">value_field =</span> breaches,</span>
-<span id="cb2-11"><a href="#cb2-11" tabindex="-1"></a>    <span class="at">date_field =</span> period,</span>
-<span id="cb2-12"><a href="#cb2-12" tabindex="-1"></a>    <span class="at">improvement_direction =</span> <span class="st">"decrease"</span></span>
-<span id="cb2-13"><a href="#cb2-13" tabindex="-1"></a>  )</span></code></pre></div>
+<p>The help files and vignettes within this package tell you more about the possible options for controlling the charts, but below are some simple examples of the type of chart the package produces. We will use the <code>ae_attendances</code> dataset from the <code>NHSRdatasets</code> package and a bit of <code>dplyr</code> code to select some organisations.</p>
+<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://nhs-r-community.github.io/NHSRplotthedots" class="external-link">NHSRplotthedots</a></span><span class="op">)</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/nhs-r-community/NHSRdatasets" class="external-link">NHSRdatasets</a></span><span class="op">)</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://dplyr.tidyverse.org" class="external-link">dplyr</a></span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">sub_set</span> <span class="op">&lt;-</span> <span class="va">ae_attendances</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">org_code</span> <span class="op">==</span> <span class="st">"RQM"</span>, <span class="va">type</span> <span class="op">==</span> <span class="fl">1</span>, <span class="va">period</span> <span class="op">&lt;</span> <span class="fu"><a href="https://rdrr.io/r/base/as.Date.html" class="external-link">as.Date</a></span><span class="op">(</span><span class="st">"2018-04-01"</span><span class="op">)</span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">sub_set</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu"><a href="reference/ptd_spc.html">ptd_spc</a></span><span class="op">(</span></span>
+<span>    value_field <span class="op">=</span> <span class="va">breaches</span>,</span>
+<span>    date_field <span class="op">=</span> <span class="va">period</span>,</span>
+<span>    improvement_direction <span class="op">=</span> <span class="st">"decrease"</span></span>
+<span>  <span class="op">)</span></span></code></pre></div>
 <p><img src="reference/figures/README-example1-1.png" width="100%"></p>
-<p>This plot is ok on its own, but we can specify more control options if we explicitly pass it on to the <code><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot()</a></code> function.</p>
-<div class="sourceCode" id="cb3"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" tabindex="-1"></a>sub_set <span class="sc">|&gt;</span></span>
-<span id="cb3-2"><a href="#cb3-2" tabindex="-1"></a>  <span class="fu">ptd_spc</span>(</span>
-<span id="cb3-3"><a href="#cb3-3" tabindex="-1"></a>    <span class="at">value_field =</span> breaches,</span>
-<span id="cb3-4"><a href="#cb3-4" tabindex="-1"></a>    <span class="at">date_field =</span> period,</span>
-<span id="cb3-5"><a href="#cb3-5" tabindex="-1"></a>    <span class="at">improvement_direction =</span> <span class="st">"decrease"</span></span>
-<span id="cb3-6"><a href="#cb3-6" tabindex="-1"></a>  ) <span class="sc">|&gt;</span></span>
-<span id="cb3-7"><a href="#cb3-7" tabindex="-1"></a>  <span class="fu">plot</span>(</span>
-<span id="cb3-8"><a href="#cb3-8" tabindex="-1"></a>    <span class="at">y_axis_label =</span> <span class="st">"4-hour wait breaches"</span>,</span>
-<span id="cb3-9"><a href="#cb3-9" tabindex="-1"></a>    <span class="at">main_title =</span> <span class="st">"SPC of A&amp;E waiting time breaches for RQM"</span></span>
-<span id="cb3-10"><a href="#cb3-10" tabindex="-1"></a>  )</span></code></pre></div>
-<p><img src="reference/figures/README-example2-1.png" width="100%"></p>
+<p>This plot is ok on its own, but we can specify more control options if we explicitly pass it on to the <code><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot()</a></code> function</p>
+<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">sub_set</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu"><a href="reference/ptd_spc.html">ptd_spc</a></span><span class="op">(</span></span>
+<span>    value_field <span class="op">=</span> <span class="va">breaches</span>,</span>
+<span>    date_field <span class="op">=</span> <span class="va">period</span>,</span>
+<span>    improvement_direction <span class="op">=</span> <span class="st">"decrease"</span></span>
+<span>  <span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span></span>
+<span>    y_axis_label <span class="op">=</span> <span class="st">"4-hour wait breaches"</span>,</span>
+<span>    main_title <span class="op">=</span> <span class="st">"SPC of A&amp;E waiting time breaches for RQM"</span></span>
+<span>  <span class="op">)</span></span></code></pre></div>
+<p><img src="reference/figures/README-example-with-plot-1.png" width="100%"></p>
 <p>or, equivalently:</p>
-<div class="sourceCode" id="cb4"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" tabindex="-1"></a>sub_set <span class="sc">|&gt;</span></span>
-<span id="cb4-2"><a href="#cb4-2" tabindex="-1"></a>  <span class="fu">ptd_spc</span>(</span>
-<span id="cb4-3"><a href="#cb4-3" tabindex="-1"></a>    <span class="at">value_field =</span> breaches,</span>
-<span id="cb4-4"><a href="#cb4-4" tabindex="-1"></a>    <span class="at">date_field =</span> period,</span>
-<span id="cb4-5"><a href="#cb4-5" tabindex="-1"></a>    <span class="at">improvement_direction =</span> <span class="st">"decrease"</span></span>
-<span id="cb4-6"><a href="#cb4-6" tabindex="-1"></a>  ) <span class="sc">|&gt;</span></span>
-<span id="cb4-7"><a href="#cb4-7" tabindex="-1"></a>  <span class="fu">ptd_create_ggplot</span>(</span>
-<span id="cb4-8"><a href="#cb4-8" tabindex="-1"></a>    <span class="at">y_axis_label =</span> <span class="st">"4-hour wait breaches"</span>,</span>
-<span id="cb4-9"><a href="#cb4-9" tabindex="-1"></a>    <span class="at">main_title =</span> <span class="st">"SPC of A&amp;E waiting time breaches for RQM"</span></span>
-<span id="cb4-10"><a href="#cb4-10" tabindex="-1"></a>  )</span></code></pre></div>
+<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">sub_set</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu"><a href="reference/ptd_spc.html">ptd_spc</a></span><span class="op">(</span></span>
+<span>    value_field <span class="op">=</span> <span class="va">breaches</span>,</span>
+<span>    date_field <span class="op">=</span> <span class="va">period</span>,</span>
+<span>    improvement_direction <span class="op">=</span> <span class="st">"decrease"</span></span>
+<span>  <span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu"><a href="reference/ptd_create_ggplot.html">ptd_create_ggplot</a></span><span class="op">(</span></span>
+<span>    y_axis_label <span class="op">=</span> <span class="st">"4-hour wait breaches"</span>,</span>
+<span>    main_title <span class="op">=</span> <span class="st">"SPC of A&amp;E waiting time breaches for RQM"</span></span>
+<span>  <span class="op">)</span></span></code></pre></div>
+<p><img src="reference/figures/README-example-ptd_create_ggplot-1.png" width="100%"></p>
 <p>You can also use the <code><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary()</a></code> function to get some basic statistics about your SPC data frame. The function prints the SPC options, and then returns the summarised results as a table:</p>
-<div class="sourceCode" id="cb5"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" tabindex="-1"></a>summary <span class="ot">&lt;-</span> sub_set <span class="sc">|&gt;</span></span>
-<span id="cb5-2"><a href="#cb5-2" tabindex="-1"></a>  <span class="fu">ptd_spc</span>(</span>
-<span id="cb5-3"><a href="#cb5-3" tabindex="-1"></a>    <span class="at">value_field =</span> breaches,</span>
-<span id="cb5-4"><a href="#cb5-4" tabindex="-1"></a>    <span class="at">date_field =</span> period,</span>
-<span id="cb5-5"><a href="#cb5-5" tabindex="-1"></a>    <span class="at">improvement_direction =</span> <span class="st">"decrease"</span>,</span>
-<span id="cb5-6"><a href="#cb5-6" tabindex="-1"></a>    <span class="at">target =</span> <span class="dv">1200</span></span>
-<span id="cb5-7"><a href="#cb5-7" tabindex="-1"></a>  ) <span class="sc">|&gt;</span></span>
-<span id="cb5-8"><a href="#cb5-8" tabindex="-1"></a>  <span class="fu">summary</span>()</span>
-<span id="cb5-9"><a href="#cb5-9" tabindex="-1"></a><span class="co">#&gt; Plot the Dots SPC options:</span></span>
-<span id="cb5-10"><a href="#cb5-10" tabindex="-1"></a><span class="co">#&gt; ================================</span></span>
-<span id="cb5-11"><a href="#cb5-11" tabindex="-1"></a><span class="co">#&gt; value_field:          'breaches'</span></span>
-<span id="cb5-12"><a href="#cb5-12" tabindex="-1"></a><span class="co">#&gt; date_field:           'period'</span></span>
-<span id="cb5-13"><a href="#cb5-13" tabindex="-1"></a><span class="co">#&gt; facet_field:          not set</span></span>
-<span id="cb5-14"><a href="#cb5-14" tabindex="-1"></a><span class="co">#&gt; rebase:               not set</span></span>
-<span id="cb5-15"><a href="#cb5-15" tabindex="-1"></a><span class="co">#&gt; fix_after_n_points:   not set</span></span>
-<span id="cb5-16"><a href="#cb5-16" tabindex="-1"></a><span class="co">#&gt; improvement_direction:'decrease'</span></span>
-<span id="cb5-17"><a href="#cb5-17" tabindex="-1"></a><span class="co">#&gt; target:               '1200'</span></span>
-<span id="cb5-18"><a href="#cb5-18" tabindex="-1"></a><span class="co">#&gt; trajectory:           not set</span></span>
-<span id="cb5-19"><a href="#cb5-19" tabindex="-1"></a><span class="co">#&gt; screen_outliers:      'TRUE'</span></span>
-<span id="cb5-20"><a href="#cb5-20" tabindex="-1"></a><span class="co">#&gt; --------------------------------</span></span></code></pre></div>
+<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">summary_df</span> <span class="op">&lt;-</span> <span class="va">sub_set</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu"><a href="reference/ptd_spc.html">ptd_spc</a></span><span class="op">(</span></span>
+<span>    value_field <span class="op">=</span> <span class="va">breaches</span>,</span>
+<span>    date_field <span class="op">=</span> <span class="va">period</span>,</span>
+<span>    improvement_direction <span class="op">=</span> <span class="st">"decrease"</span>,</span>
+<span>    target <span class="op">=</span> <span class="fl">1200</span></span>
+<span>  <span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="op">)</span></span>
+<span><span class="co">#&gt; Plot the Dots SPC options:</span></span>
+<span><span class="co">#&gt; ================================</span></span>
+<span><span class="co">#&gt; value_field:          'breaches'</span></span>
+<span><span class="co">#&gt; date_field:           'period'</span></span>
+<span><span class="co">#&gt; facet_field:          not set</span></span>
+<span><span class="co">#&gt; rebase:               not set</span></span>
+<span><span class="co">#&gt; fix_after_n_points:   not set</span></span>
+<span><span class="co">#&gt; improvement_direction:'decrease'</span></span>
+<span><span class="co">#&gt; target:               '1200'</span></span>
+<span><span class="co">#&gt; trajectory:           not set</span></span>
+<span><span class="co">#&gt; screen_outliers:      'TRUE'</span></span>
+<span><span class="co">#&gt; --------------------------------</span></span></code></pre></div>
 <p>You could assign this summary table to a variable and use it later:</p>
-<div class="sourceCode" id="cb6"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" tabindex="-1"></a>summary<span class="sc">$</span>variation_type</span>
-<span id="cb6-2"><a href="#cb6-2" tabindex="-1"></a><span class="co">#&gt; [1] "common_cause"</span></span>
-<span id="cb6-3"><a href="#cb6-3" tabindex="-1"></a>summary<span class="sc">$</span>assurance_type</span>
-<span id="cb6-4"><a href="#cb6-4" tabindex="-1"></a><span class="co">#&gt; [1] "inconsistent"</span></span></code></pre></div>
+<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># base R -----------------</span></span>
+<span><span class="va">summary_df</span><span class="op">$</span><span class="va">variation_type</span></span>
+<span><span class="co">#&gt; [1] "common_cause"</span></span>
+<span><span class="va">summary_df</span><span class="op">$</span><span class="va">assurance_type</span></span>
+<span><span class="co">#&gt; [1] "inconsistent"</span></span>
+<span></span>
+<span><span class="co"># tidyverse -----------------</span></span>
+<span><span class="va">summary_df</span> <span class="op">|&gt;</span> </span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html" class="external-link">select</a></span><span class="op">(</span><span class="va">variation_type</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/pull.html" class="external-link">pull</a></span><span class="op">(</span><span class="op">)</span></span>
+<span><span class="co">#&gt; [1] "common_cause"</span></span>
+<span></span>
+<span><span class="va">summary_df</span> <span class="op">|&gt;</span> </span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html" class="external-link">select</a></span><span class="op">(</span><span class="va">assurance_type</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/pull.html" class="external-link">pull</a></span><span class="op">(</span><span class="op">)</span></span>
+<span><span class="co">#&gt; [1] "inconsistent"</span></span></code></pre></div>
 <div class="section level3">
 <h3 id="interactive-plots-with-plotly">Interactive plots with Plotly<a class="anchor" aria-label="anchor" href="#interactive-plots-with-plotly"></a>
 </h3>
-<p>It’s also possible to generate interactive plots using the <a href="https://plotly-r.com" class="external-link">plotly</a> package by replacing the call to <code>plot</code> with <code>ptd_create_plotly</code>. This function takes the same arguments as <code>plot</code>/<code>ptd_create_ggplot</code>.</p>
-<div class="sourceCode" id="cb7"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" tabindex="-1"></a>sub_set <span class="sc">|&gt;</span></span>
-<span id="cb7-2"><a href="#cb7-2" tabindex="-1"></a>  <span class="fu">ptd_spc</span>(</span>
-<span id="cb7-3"><a href="#cb7-3" tabindex="-1"></a>    <span class="at">value_field =</span> breaches,</span>
-<span id="cb7-4"><a href="#cb7-4" tabindex="-1"></a>    <span class="at">date_field =</span> period,</span>
-<span id="cb7-5"><a href="#cb7-5" tabindex="-1"></a>    <span class="at">improvement_direction =</span> <span class="st">"decrease"</span></span>
-<span id="cb7-6"><a href="#cb7-6" tabindex="-1"></a>  ) <span class="sc">|&gt;</span></span>
-<span id="cb7-7"><a href="#cb7-7" tabindex="-1"></a>  <span class="fu">ptd_create_plotly</span>(</span>
-<span id="cb7-8"><a href="#cb7-8" tabindex="-1"></a>    <span class="at">y_axis_label =</span> <span class="st">"4-hour wait breaches"</span>,</span>
-<span id="cb7-9"><a href="#cb7-9" tabindex="-1"></a>    <span class="at">main_title =</span> <span class="st">"SPC of A&amp;E waiting time breaches for RQM"</span></span>
-<span id="cb7-10"><a href="#cb7-10" tabindex="-1"></a>  )</span></code></pre></div>
+<p>It’s also possible to generate interactive plots using the <code>plotly</code> package by replacing the call to <code>plot</code> with <code><a href="reference/ptd_create_plotly.html">ptd_create_plotly()</a></code>. This function takes the same arguments as <code>plot</code>/<code><a href="reference/ptd_create_ggplot.html">ptd_create_ggplot()</a></code>.</p>
+<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">sub_set</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu"><a href="reference/ptd_spc.html">ptd_spc</a></span><span class="op">(</span></span>
+<span>    value_field <span class="op">=</span> <span class="va">breaches</span>,</span>
+<span>    date_field <span class="op">=</span> <span class="va">period</span>,</span>
+<span>    improvement_direction <span class="op">=</span> <span class="st">"decrease"</span></span>
+<span>  <span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu"><a href="reference/ptd_create_plotly.html">ptd_create_plotly</a></span><span class="op">(</span></span>
+<span>    y_axis_label <span class="op">=</span> <span class="st">"4-hour wait breaches"</span>,</span>
+<span>    main_title <span class="op">=</span> <span class="st">"SPC of A&amp;E waiting time breaches for RQM"</span></span>
+<span>  <span class="op">)</span></span></code></pre></div>
 </div>
 <div class="section level3">
 <h3 id="adding-annotations-for-mean-and-process-limits">Adding annotations for mean and process limits<a class="anchor" aria-label="anchor" href="#adding-annotations-for-mean-and-process-limits"></a>
 </h3>
-<p>The package (from v0.2.0) supports annotating the values of the mean and the upper and lower process limits on a secondary (right-hand side) y axis, if this is helpful for you and your audience.</p>
+<p>The package (in development and will be available from later releases) supports annotating the values of the mean and the upper and lower process limits on a secondary (right-hand side) y axis, if this is helpful for you and your audience.</p>
 <p>The way to achieve this is to turn on the <code>label_limits</code> option:</p>
-<div class="sourceCode" id="cb8"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" tabindex="-1"></a>sub_set <span class="sc">|&gt;</span></span>
-<span id="cb8-2"><a href="#cb8-2" tabindex="-1"></a>  <span class="fu">ptd_spc</span>(</span>
-<span id="cb8-3"><a href="#cb8-3" tabindex="-1"></a>    <span class="at">value_field =</span> breaches,</span>
-<span id="cb8-4"><a href="#cb8-4" tabindex="-1"></a>    <span class="at">date_field =</span> period,</span>
-<span id="cb8-5"><a href="#cb8-5" tabindex="-1"></a>    <span class="at">improvement_direction =</span> <span class="st">"decrease"</span></span>
-<span id="cb8-6"><a href="#cb8-6" tabindex="-1"></a>  ) <span class="sc">|&gt;</span></span>
-<span id="cb8-7"><a href="#cb8-7" tabindex="-1"></a>  <span class="fu">ptd_create_ggplot</span>(</span>
-<span id="cb8-8"><a href="#cb8-8" tabindex="-1"></a>    <span class="at">y_axis_label =</span> <span class="st">"4-hour wait breaches"</span>,</span>
-<span id="cb8-9"><a href="#cb8-9" tabindex="-1"></a>    <span class="at">main_title =</span> <span class="st">"SPC of A&amp;E waiting time breaches for RQM"</span>,</span>
-<span id="cb8-10"><a href="#cb8-10" tabindex="-1"></a>    <span class="at">label_limits =</span> <span class="cn">TRUE</span></span>
-<span id="cb8-11"><a href="#cb8-11" tabindex="-1"></a>  )</span></code></pre></div>
+<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">sub_set</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu"><a href="reference/ptd_spc.html">ptd_spc</a></span><span class="op">(</span></span>
+<span>    value_field <span class="op">=</span> <span class="va">breaches</span>,</span>
+<span>    date_field <span class="op">=</span> <span class="va">period</span>,</span>
+<span>    improvement_direction <span class="op">=</span> <span class="st">"decrease"</span></span>
+<span>  <span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu"><a href="reference/ptd_create_ggplot.html">ptd_create_ggplot</a></span><span class="op">(</span></span>
+<span>    y_axis_label <span class="op">=</span> <span class="st">"4-hour wait breaches"</span>,</span>
+<span>    main_title <span class="op">=</span> <span class="st">"SPC of A&amp;E waiting time breaches for RQM"</span>,</span>
+<span>    label_limits <span class="op">=</span> <span class="cn">TRUE</span></span>
+<span>  <span class="op">)</span></span></code></pre></div>
 <p><img src="reference/figures/README-limits-example-1.png" width="100%"></p>
 <p>If you have rebased the chart, the mean and process limit annotations will only show for the most recent section.</p>
 </div>
@@ -186,21 +221,27 @@
 <h2 id="getting-help">Getting help<a class="anchor" aria-label="anchor" href="#getting-help"></a>
 </h2>
 <p>To find out more about the <code><a href="reference/ptd_spc.html">ptd_spc()</a></code> function, you can view the help with:</p>
-<div class="sourceCode" id="cb9"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" tabindex="-1"></a>?ptd_spc</span></code></pre></div>
+<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="op">?</span><span class="va">ptd_spc</span></span></code></pre></div>
+<p>when the package is loaded. Otherwise type in the console:</p>
+<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="op">?</span><span class="op">?</span><span class="va">ptd_spc</span></span></code></pre></div>
 <p>Details on the extra plot controls can be found using:</p>
-<div class="sourceCode" id="cb10"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" tabindex="-1"></a>?ptd_create_ggplot</span></code></pre></div>
+<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="op">?</span><span class="va">ptd_create_ggplot</span></span></code></pre></div>
 <p>To view the vignette (worked example), use:</p>
-<div class="sourceCode" id="cb11"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" tabindex="-1"></a><span class="fu">vignette</span>(<span class="st">"intro"</span>, <span class="at">package =</span> <span class="st">"NHSRplotthedots"</span>)</span>
-<span id="cb11-2"><a href="#cb11-2" tabindex="-1"></a></span>
-<span id="cb11-3"><a href="#cb11-3" tabindex="-1"></a><span class="fu">vignette</span>(<span class="at">package =</span> <span class="st">"NHSRplotthedots"</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/vignette.html" class="external-link">vignette</a></span><span class="op">(</span><span class="st">"intro"</span>, package <span class="op">=</span> <span class="st">"NHSRplotthedots"</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/utils/vignette.html" class="external-link">vignette</a></span><span class="op">(</span>package <span class="op">=</span> <span class="st">"NHSRplotthedots"</span><span class="op">)</span></span></code></pre></div>
 </div>
-</div>
-<div class="section level1">
-<h1 id="contributing">Contributing<a class="anchor" aria-label="anchor" href="#contributing"></a>
-</h1>
-<p>This is an NHS-R Community project that is open for anyone to contribute to in any way that they are able. The project is released with a <a href="https://contributor-covenant.org/version/2/1/CODE_OF_CONDUCT.html" class="external-link">Contributor Code of Conduct</a>. By contributing to this project, you agree to abide by its terms.</p>
-<p>If you want to learn more about this project, please join the discussion at <a href="https://nhsrcommunity.slack.com/" class="external-link">the NHS-R Community Slack group</a> and the specific channel <a href="https://nhsrcommunity.slack.com/archives/CSVD4SYF3" class="external-link">#proj-nhsr-plot-the-dots</a>.</p>
+<div class="section level2">
+<h2 id="contributing">Contributing<a class="anchor" aria-label="anchor" href="#contributing"></a>
+</h2>
+<p>Please see our <a href="https://tools.nhsrcommunity.com/contribution.html" class="external-link">guidance on how to contribute</a>.</p>
+<p>This project is released with a Contributor <a href="./CODE_OF_CONDUCT.html">Code of Conduct</a>. By contributing to this project, you agree to abide by its terms.</p>
 <p>The simplest way to contribute is to raise an issue detailing the feature or functionality you would like to see added, or any unexpected behaviour or bugs you have experienced.</p>
+</div>
 </div>
 
   </main><aside class="col-md-3"><div class="links">
@@ -270,7 +311,7 @@
 </div>
 
 <div class="pkgdown-footer-right">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.1.0.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.1.1.</p>
 </div>
 
     </footer>

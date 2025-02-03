@@ -1,9 +1,9 @@
 pandoc: 3.1.11
-pkgdown: 2.1.0
+pkgdown: 2.1.1
 pkgdown_sha: ~
 articles:
   deviations: deviations.html
   NHSRplotthedots: NHSRplotthedots.html
   number-of-points-required: number-of-points-required.html
   other-spc-tools: other-spc-tools.html
-last_built: 2024-08-21T22:31Z
+last_built: 2025-02-03T17:22Z
