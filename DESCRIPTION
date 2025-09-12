@@ -41,11 +41,13 @@ Imports:
     plotly,
     rlang,
     rsvg,
+    S7,
     scales,
     stringr,
     tidyselect (>= 1.2.0)
 Suggests: 
     covr,
+    cyclocomp,
     hexSticker,
     knitr,
     lintr (>= 3.0.0),

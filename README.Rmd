@@ -161,14 +161,13 @@ summary_df$variation_type
 summary_df$assurance_type
 
 # tidyverse -----------------
-summary_df |> 
-  select(variation_type) |> 
+summary_df |>
+  select(variation_type) |>
   pull()
 
-summary_df |> 
-  select(assurance_type) |> 
+summary_df |>
+  select(assurance_type) |>
   pull()
-
 ```
 
 ### Interactive plots with Plotly

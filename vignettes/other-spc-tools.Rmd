@@ -18,7 +18,7 @@ This vignette sets out options for creating SPC visualisations using various ana
 
 The NHSE "Making Data Count"(MDC) training programme popularised the use of SPC in the NHS, and since 2019 has invested a large amount of time developing people at major NHS organisations across England. As a result there are a large number of people in the NHS who have a moderate familiarity with SPC through the blue, orange, and grey "plot the dots" visual style. This enables meeting time to be spent making data-driven decisions, not discussing the interpretation of the charts themselves.
 
-The tables below make a distinction between tools that do and do not align to the MDC visual style. Tools that align closely can be used interchangably without the risk of introducing chart interpretation overheads to meetings and decision-making.
+The tables below make a distinction between tools that do and do not align to the MDC visual style. Tools that align closely can be used interchangeably without the risk of introducing chart interpretation overheads to meetings and decision-making.
 
 ### Options which align to the MDC visual style:
 

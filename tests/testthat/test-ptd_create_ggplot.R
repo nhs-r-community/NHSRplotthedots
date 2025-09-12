@@ -79,22 +79,16 @@ test_that("it returns a ggplot object", {
   d <- data.frame(x = as.Date("2020-01-01") + seq(20L), y = rnorm(20L))
   s <- ptd_spc(d, "y", "x")
   p <- ptd_create_ggplot(s)
+  pl <- as.list(p$labels)
 
   expect_s3_class(p, c("gg", "ggplot"))
+  expect_true(inherits(pl, "ggplot2::labels"))
   expect_length(p$layers, 8)
-  expect_equal(
-    p$labels,
-    list(
-      x = "X",
-      y = "Y",
-      group = NULL,
-      title = "SPC Chart of Y, starting 02/01/2020",
-      caption = NULL,
-      colour = "point_colour",
-      type = "type",
-      icon = "icon"
-    )
-  )
+  expect_equal(pl$title, "SPC Chart of Y, starting 02/01/2020")
+  expect_equal(pl$x, "X")
+  expect_equal(pl$y, "Y")
+  expect_equal(pl$group, NULL)
+  expect_equal(pl$caption, NULL)
 })
 
 test_that("it facets the plot if facet_field is set", {

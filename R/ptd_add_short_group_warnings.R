@@ -18,8 +18,9 @@
 #'  The default, if the option is not set, is 12.
 #' @noRd
 ptd_add_short_group_warnings <- function(
-    .data,
-    warning_threshold = getOption("ptd_spc.warning_threshold", 13)) {
+  .data,
+  warning_threshold = getOption("ptd_spc.warning_threshold", 13)
+) {
   .data <- .data %>%
     dplyr::group_by(
       dplyr::across(
