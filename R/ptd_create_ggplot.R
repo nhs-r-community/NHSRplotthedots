@@ -44,24 +44,25 @@
 #' @returns A ggplot2 object
 #' @export
 ptd_create_ggplot <- function(
-    x,
-    point_size = 4,
-    percentage_y_axis = FALSE,
-    main_title,
-    x_axis_label,
-    y_axis_label,
-    fixed_x_axis_multiple = TRUE,
-    fixed_y_axis_multiple = TRUE,
-    x_axis_date_format = "%d/%m/%y",
-    x_axis_breaks = NULL,
-    y_axis_breaks = NULL,
-    label_limits = FALSE,
-    icons_size = 8L,
-    icons_position = c("top right", "bottom right", "bottom left", "top left", "none"),
-    colours = ptd_spc_colours(),
-    theme_override = NULL,
-    break_lines = c("both", "limits", "process", "none"),
-    ...) {
+  x,
+  point_size = 4,
+  percentage_y_axis = FALSE,
+  main_title,
+  x_axis_label,
+  y_axis_label,
+  fixed_x_axis_multiple = TRUE,
+  fixed_y_axis_multiple = TRUE,
+  x_axis_date_format = "%d/%m/%y",
+  x_axis_breaks = NULL,
+  y_axis_breaks = NULL,
+  label_limits = FALSE,
+  icons_size = 8L,
+  icons_position = c("top right", "bottom right", "bottom left", "top left", "none"),
+  colours = ptd_spc_colours(),
+  theme_override = NULL,
+  break_lines = c("both", "limits", "process", "none"),
+  ...
+) {
   dots <- list(...)
   if (length(dots) > 0) {
     warning(
@@ -298,7 +299,6 @@ ptd_create_ggplot <- function(
   }
 
 
-
   if (icons_position != "none") {
     plot <- plot +
       geom_ptd_icon(icons_size = icons_size, icons_position = icons_position)
@@ -311,24 +311,25 @@ ptd_create_ggplot <- function(
 #' @export
 #' @noRd
 plot.ptd_spc_df <- function(
-    x,
-    point_size = 4,
-    percentage_y_axis = FALSE,
-    main_title,
-    x_axis_label,
-    y_axis_label,
-    fixed_x_axis_multiple = TRUE,
-    fixed_y_axis_multiple = TRUE,
-    x_axis_date_format = "%d/%m/%y",
-    x_axis_breaks = NULL,
-    y_axis_breaks = NULL,
-    label_limits = FALSE,
-    icons_size = 8L,
-    icons_position = c("top right", "bottom right", "bottom left", "top left", "none"),
-    colours = ptd_spc_colours(),
-    theme_override = NULL,
-    break_lines = c("both", "limits", "process", "none"),
-    ...) {
+  x,
+  point_size = 4,
+  percentage_y_axis = FALSE,
+  main_title,
+  x_axis_label,
+  y_axis_label,
+  fixed_x_axis_multiple = TRUE,
+  fixed_y_axis_multiple = TRUE,
+  x_axis_date_format = "%d/%m/%y",
+  x_axis_breaks = NULL,
+  y_axis_breaks = NULL,
+  label_limits = FALSE,
+  icons_size = 8L,
+  icons_position = c("top right", "bottom right", "bottom left", "top left", "none"),
+  colours = ptd_spc_colours(),
+  theme_override = NULL,
+  break_lines = c("both", "limits", "process", "none"),
+  ...
+) {
   break_lines <- match.arg(break_lines)
 
   ptd_create_ggplot(

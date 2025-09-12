@@ -175,13 +175,13 @@ summary_df$assurance_type
 #> [1] "inconsistent"
 
 # tidyverse -----------------
-summary_df |> 
-  select(variation_type) |> 
+summary_df |>
+  select(variation_type) |>
   pull()
 #> [1] "common_cause"
 
-summary_df |> 
-  select(assurance_type) |> 
+summary_df |>
+  select(assurance_type) |>
   pull()
 #> [1] "inconsistent"
 ```

@@ -89,7 +89,6 @@ test_that("it returns a ggplot object", {
   expect_equal(pl$y, "Y")
   expect_equal(pl$group, NULL)
   expect_equal(pl$caption, NULL)
-
 })
 
 test_that("it facets the plot if facet_field is set", {
