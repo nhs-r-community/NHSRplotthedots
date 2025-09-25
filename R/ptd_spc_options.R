@@ -12,16 +12,15 @@
 #' @inheritParams spc
 #' @noRd
 ptd_spc_options <- function(
-  value_field,
-  date_field,
-  facet_field = NULL,
-  rebase = NULL,
-  fix_after_n_points = NULL,
-  improvement_direction = c("increase", "neutral", "decrease"),
-  target = NULL,
-  trajectory = NULL,
-  screen_outliers = TRUE
-) {
+    value_field,
+    date_field,
+    facet_field = NULL,
+    rebase = NULL,
+    fix_after_n_points = NULL,
+    improvement_direction = c("increase", "neutral", "decrease"),
+    target = NULL,
+    trajectory = NULL,
+    screen_outliers = TRUE) {
   assertthat::assert_that(
     is.character(value_field),
     assertthat::is.scalar(value_field),
