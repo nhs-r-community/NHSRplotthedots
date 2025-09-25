@@ -1,35 +1,24 @@
 ## Release summary
-This is first release for the NHS-R Community's 'Plot the Dots' package.  This supports NHS England and NHS Improvement's 'Making Data Count' campaign which encourages the use of run charts and statistical process control charts for more informed decision making.  This package creates methods for XmR charts, with consideration for multiple indicators with facets, 'rebasing', and applying rules sets with summary indicators.  This package is for use across the NHS, augmenting existing tools in SQL and MS Excel.
+This is second release for the NHS-R Community's 'Plot the Dots' package.  It adds a few new features and fixes some minor bugs. It resolves some build failures that are currently present, due to upstream dependencies (ggplot2 4.0.0).
 
 ## Test environments
-* local windows 10, R 4.1.1
-
-* Ubuntu 18 (local server), R 4.1.1
-
-* R-devel, on Win-builder
+* local windows 11, R 4.5.1
 
 * GitHub actions:
-  * Mac OS x 10.15.7 19H1417, R 4.1.1
-  * Windows Server 2019 x64 latest, R 3.6.3
-  * Ubuntu 20.04.3 LTS, R-devel 2021-10-21 r81085
-  * Ubuntu 20.04.3 LTS, R 4.1.1
+  * macOS 15.5 24F74, R 4.5.1 
+  * Windows Server 2022 10.0.20348, R 4.5.1
+  * Ubuntu 24.04.3 LTS, R 4.5.1
+  * Ubuntu 24.04.3 LTS, R-devel 2025-09-11 r88813
+  * Ubuntu 24.04.3 LTS, R 4.4.3
 
 * r-hub:
-  * Ubuntu Linux 20.04.1 LTS, R-release, GCC
-  * Fedora Linux, R-devel, clang, gfortran
-  * Windows Server 2008 R2 SP1, R-devel, 32/64 bit
+  * Ubuntu 24.04.3 LTS, R-devel 2025-09-23 r88869
+  * macOS 15.6.1 24G90 (arm64), R-devel 2025-09-24 r88873
+  * macOS 13.7.6 22H625 (x86), R-devel 2025-09-24 r88873
+  * Windows Server 2025 10.0.26100, R-devel 2025-09-24 r88873 ucrt
 
 ## R CMD check results
-There were no ERRORs or WARNINGs.
-
-NOTEs for 'possibly invalid URL' have all been checked and are valid.
-
-1 NOTE: "Possibly misspelled words in DESCRIPTION:
-    NHSE (3:51, 17:109)
-    SPC (17:70)
-    XmR (3:26, 18:59)"
-Highlighted words are spelled correctly and note can be ignored.
-
+There were no ERRORs, WARNINGs, or NOTEs.
 
 ## Downstream dependencies
 There are currently no downstream dependencies for this package to my knowledge.
