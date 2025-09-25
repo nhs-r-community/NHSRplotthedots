@@ -79,7 +79,7 @@ uninstall the package using code `remove.packages("NHSRplotthedots")`.
 
 Welcome to the NHS-R community's package for building a specific type of 
 statistical process control (SPC) chart, the XmR chart.
-We are aiming to support NHS England's ['Making Data Count'][mdc] programme.
+We are aiming to support the NHS's ['Making Data Count'][mdc] programme.
 The programme encourages boards, managers, and analyst teams to present data 
 in ways that show change over time and drive better understanding of 
 indicators than 'RAG' (red, amber, green) rated board reports often present.
