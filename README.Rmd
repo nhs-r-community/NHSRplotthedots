@@ -69,17 +69,13 @@ build_vignettes = TRUE)
 
 ## Tip!
 If any charts that you are creating don't have the variation flags in the top 
-right and instead are a `c` this is possibly because you need the development 
-version of `NHSRplotthedots` which is version v0.1.0.9000. 
-
-Reinstalling over a later version won't work and you will first need to 
-uninstall the package using code `remove.packages("NHSRplotthedots")`.
+right and instead are a `c` this because you are running the old version v0.1 of the package.  Please install the latest version v0.2 to resolve this.  
 
 # Overview
 
 Welcome to the NHS-R community's package for building a specific type of 
 statistical process control (SPC) chart, the XmR chart.
-We are aiming to support the NHS's ['Making Data Count'][mdc] programme.
+The package supports the NHS's ['Making Data Count'][mdc] programme.
 The programme encourages boards, managers, and analyst teams to present data 
 in ways that show change over time and drive better understanding of 
 indicators than 'RAG' (red, amber, green) rated board reports often present.
