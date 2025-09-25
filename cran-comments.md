@@ -1,6 +1,8 @@
 ## Release summary
 This is second release for the NHS-R Community's 'Plot the Dots' package.  It adds a few new features and fixes some minor bugs. It resolves some build failures that are currently present, due to upstream dependencies (ggplot2 4.0.0).
 
+There has been a change of maintainer from Christopher Reading to Tom Smith.
+
 ## Test environments
 * local windows 11, R 4.5.1
 
