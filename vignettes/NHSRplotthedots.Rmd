@@ -194,7 +194,7 @@ This takes the same arguments as `plot` (and `ptd_create_ggplot`).
 
 For instance, we can use the code from the last example to make an interactive version:
 
-```{r plotly}
+```{r plotly, eval=FALSE}
 ptd_spc(
   facet_set,
   value_field = breaches,
