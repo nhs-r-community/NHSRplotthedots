@@ -11,7 +11,7 @@ Provides tools for drawing Statistical Process Control (SPC) charts. This packag
 \seealso{
 Useful links:
 \itemize{
-  \item \url{https://nhs-r-community.github.io/NHSRplotthedots}
+  \item \url{https://nhsrplotthedots.nhsrcommunity.com}
   \item \url{https://github.com/nhs-r-community/NHSRplotthedots}
   \item Report bugs at \url{https://github.com/nhs-r-community/NHSRplotthedots/issues}
 }
