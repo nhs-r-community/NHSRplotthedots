@@ -1,7 +1,12 @@
 ## 0.2.1 Release summary
 Corrected invalid URI for CODE_OF_CONDUCT.md following CRAN feedback on v0.2.0.
 Added possible spelling error to allowed wordlist.
-Remaining comments for v0.2.0 below are unchanged.
+
+### R CMD check results
+There were no ERRORs, or WARNINGs.  
+1 NOTE = maintainer change.
+
+The remaining comments for v0.2.0 below are still relevant.
 
 ## 0.2.0 Release summary
 This is second release for the NHS-R Community's 'Plot the Dots' package.  It adds a few new features and fixes some minor bugs. It resolves some build failures that are currently present, due to upstream dependencies (ggplot2 4.0.0).
