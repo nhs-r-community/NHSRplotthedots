@@ -24,7 +24,7 @@ Authors:
 \itemize{
   \item Christopher Reading \email{christopher.reading1@nhs.net}
   \item Simon Wellesley-Miller \email{simon.wellesley-miller@nhs.net}
-  \item Zoë Turner \email{Zoe.Turner2@nottshc.nhs.uk} (\href{https://orcid.org/0000-0003-1033-9158}{ORCID})
+  \item Zoë Turner \email{zoe.turner3@nhs.net} (\href{https://orcid.org/0000-0003-1033-9158}{ORCID})
   \item Tom Jemmett \email{thomas.jemmett@nhs.net} (\href{https://orcid.org/0000-0002-6943-2990}{ORCID})
   \item Chris Mainey \email{c.mainey@nhs.net} (\href{https://orcid.org/0000-0002-3018-6171}{ORCID})
   \item John MacKintosh \email{john.mackintosh3@nhs.scot}
