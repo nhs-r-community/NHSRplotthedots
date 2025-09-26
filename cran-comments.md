@@ -1,3 +1,12 @@
+## 0.2.2 Release summary
+Corrected relative link to CODE_OF_CONDUCT.md by converting to an external link following CRAN feedback on v0.2.1.
+
+### R CMD check results
+There were no ERRORs, or WARNINGs.  
+1 NOTE = maintainer change.
+
+The remaining comments for v0.2.0 & v0.2.1 below are still relevant.
+
 ## 0.2.1 Release summary
 Corrected invalid URI for CODE_OF_CONDUCT.md following CRAN feedback on v0.2.0.
 Added possible spelling error to allowed wordlist.
