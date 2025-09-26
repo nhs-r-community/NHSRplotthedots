@@ -1,11 +1,10 @@
 geom_ptd_icon_draw_panel <- function(
-  self,
-  data,
-  panel_params,
-  coord,
-  icons_size = 8,
-  icons_position = c("top right", "bottom right", "bottom left", "top left")
-) {
+    self,
+    data,
+    panel_params,
+    coord,
+    icons_size = 8,
+    icons_position = c("top right", "bottom right", "bottom left", "top left")) {
   icons_position <- match.arg(icons_position)
   # match the icons_position to x,y coordinates. either {0, 1}, but shift in by
   # 0.01 so icons don't clip
@@ -83,11 +82,10 @@ GeomPTDIcon <- ggplot2::ggproto( # Exclude Linting
 #'
 #' @export
 geom_ptd_icon <- function(
-  data = NULL,
-  icons_size = 8L,
-  icons_position = c("top right", "bottom right", "bottom left", "top left"),
-  ...
-) {
+    data = NULL,
+    icons_size = 8L,
+    icons_position = c("top right", "bottom right", "bottom left", "top left"),
+    ...) {
   icons_position <- match.arg(icons_position)
 
   # sets up the layer: this is a little unusual for ggplot as we fix the

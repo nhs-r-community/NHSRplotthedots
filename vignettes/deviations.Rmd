@@ -21,7 +21,7 @@ library(NHSRplotthedots)
 library(NHSRdatasets)
 ```
 
-The overall intent of this package is to mimic as completely as possible the output available from the [NHSEI Making Data Count][mdc] Excel tools.
+The overall intent of this package is to mimic as completely as possible the output available from the [NHS Making Data Count][mdc] Excel tools.
 However, we have identified some areas where the R implementation should deviate from the main Excel tools.
 We have done this only after careful consideration, and we believe there is a benefit to deviating.
 
