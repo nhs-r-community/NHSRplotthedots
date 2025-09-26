@@ -1,9 +1,14 @@
-## Release summary
+## 0.2.1 Release summary
+Corrected invalid URI for CODE_OF_CONDUCT.md following CRAN feedback on v0.2.0.
+Added possible spelling error to allowed wordlist.
+Remaining comments for v0.2.0 below are unchanged.
+
+## 0.2.0 Release summary
 This is second release for the NHS-R Community's 'Plot the Dots' package.  It adds a few new features and fixes some minor bugs. It resolves some build failures that are currently present, due to upstream dependencies (ggplot2 4.0.0).
 
 There has been a change of maintainer from Christopher Reading to Tom Smith.
 
-## Test environments
+### Test environments
 * local windows 11, R 4.5.1
 
 * GitHub actions:
@@ -19,8 +24,8 @@ There has been a change of maintainer from Christopher Reading to Tom Smith.
   * macOS 13.7.6 22H625 (x86), R-devel 2025-09-24 r88873
   * Windows Server 2025 10.0.26100, R-devel 2025-09-24 r88873 ucrt
 
-## R CMD check results
+### R CMD check results
 There were no ERRORs, WARNINGs, or NOTEs.
 
-## Downstream dependencies
+### Downstream dependencies
 There are currently no downstream dependencies for this package to my knowledge.
