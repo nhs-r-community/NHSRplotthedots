@@ -1,4 +1,4 @@
-# NHSRplotthedots 0.2.0
+# NHSRplotthedots 0.2.2
 
 This second version of 'Plot the Dots' adds new features and bugfixes to the original version.  They are summarised below:
 
