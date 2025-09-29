@@ -4,31 +4,31 @@
 \name{NHSRplotthedots-package}
 \alias{NHSRplotthedots}
 \alias{NHSRplotthedots-package}
-\title{NHSRplotthedots: Draw XmR Charts for NHSE/I 'Making Data Count' Programme}
+\title{NHSRplotthedots: Draw XmR Charts for NHS 'Making Data Count' Programme}
 \description{
-Provides tools for drawing Statistical Process Control (SPC) charts. This package supports the NHSE/I programme 'Making Data Count', and allows users to draw XmR charts, use change points and apply rules with summary indicators for when rules are breached.
+Provides tools for drawing Statistical Process Control (SPC) charts. This package supports the NHS 'Making Data Count' programme, and allows users to draw XmR charts, use change points and apply rules with summary indicators for when rules are breached.
 }
 \seealso{
 Useful links:
 \itemize{
-  \item \url{https://nhs-r-community.github.io/NHSRplotthedots}
+  \item \url{https://nhsrplotthedots.nhsrcommunity.com}
   \item \url{https://github.com/nhs-r-community/NHSRplotthedots}
-  \item Report bugs at \url{https://nhs-r-community.github.io/NHSRplotthedots/issues}
+  \item Report bugs at \url{https://github.com/nhs-r-community/NHSRplotthedots/issues}
 }
 
 }
 \author{
-\strong{Maintainer}: Christopher Reading \email{christopher.reading1@nhs.net}
+\strong{Maintainer}: Tom Smith \email{thomas.smith103@nhs.net}
 
 Authors:
 \itemize{
+  \item Christopher Reading \email{christopher.reading1@nhs.net}
   \item Simon Wellesley-Miller \email{simon.wellesley-miller@nhs.net}
-  \item Zoë Turner \email{Zoe.Turner2@nottshc.nhs.uk} (\href{https://orcid.org/0000-0003-1033-9158}{ORCID})
+  \item Zoë Turner \email{zoe.turner3@nhs.net} (\href{https://orcid.org/0000-0003-1033-9158}{ORCID})
   \item Tom Jemmett \email{thomas.jemmett@nhs.net} (\href{https://orcid.org/0000-0002-6943-2990}{ORCID})
-  \item Tom Smith \email{thomas.smith5@nuh.nhs.uk}
   \item Chris Mainey \email{c.mainey@nhs.net} (\href{https://orcid.org/0000-0002-3018-6171}{ORCID})
   \item John MacKintosh \email{john.mackintosh3@nhs.scot}
-  \item Marcos Fabietti \email{marcos.fabietti@nuh.nhs.uk}
+  \item Marcos Fabietti \email{marcos.fabietti@nhs.net}
   \item Fran Barton \email{francis.barton@nhs.net} (\href{https://orcid.org/0000-0002-5650-1176}{ORCID})
 }
 

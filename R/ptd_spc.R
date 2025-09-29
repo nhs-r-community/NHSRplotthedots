@@ -84,17 +84,16 @@
 #'
 #' plot(my_spc) + ggplot2::theme_classic()
 ptd_spc <- function(
-  .data,
-  value_field,
-  date_field,
-  facet_field,
-  rebase = ptd_rebase(),
-  fix_after_n_points = NULL,
-  improvement_direction = "increase",
-  target = ptd_target(),
-  trajectory,
-  screen_outliers = TRUE
-) {
+    .data,
+    value_field,
+    date_field,
+    facet_field,
+    rebase = ptd_rebase(),
+    fix_after_n_points = NULL,
+    improvement_direction = "increase",
+    target = ptd_target(),
+    trajectory,
+    screen_outliers = TRUE) {
   UseMethod("ptd_spc")
 }
 
