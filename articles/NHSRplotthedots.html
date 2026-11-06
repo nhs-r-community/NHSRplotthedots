@@ -12,8 +12,8 @@
 <link rel="icon" sizes="any" href="../favicon.ico">
 <link rel="manifest" href="../site.webmanifest">
 <script src="../deps/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-<link href="../deps/bootstrap-5.3.1/bootstrap.min.css" rel="stylesheet">
-<script src="../deps/bootstrap-5.3.1/bootstrap.bundle.min.js"></script><link href="../deps/font-awesome-6.5.2/css/all.min.css" rel="stylesheet">
+<link href="../deps/bootstrap-5.3.8/bootstrap.min.css" rel="stylesheet">
+<script src="../deps/bootstrap-5.3.8/bootstrap.bundle.min.js"></script><link href="../deps/font-awesome-6.5.2/css/all.min.css" rel="stylesheet">
 <link href="../deps/font-awesome-6.5.2/css/v4-shims.min.css" rel="stylesheet">
 <script src="../deps/headroom-0.11.0/headroom.min.js"></script><script src="../deps/headroom-0.11.0/jQuery.headroom.min.js"></script><script src="../deps/bootstrap-toc-1.0.1/bootstrap-toc.min.js"></script><script src="../deps/clipboard.js-2.0.11/clipboard.min.js"></script><script src="../deps/search-1.0.0/autocomplete.jquery.min.js"></script><script src="../deps/search-1.0.0/fuse.min.js"></script><script src="../deps/search-1.0.0/mark.min.js"></script><!-- pkgdown --><script src="../pkgdown.js"></script><meta property="og:title" content="Introduction to the `NHSRplotthedots` package">
 </head>
@@ -67,7 +67,7 @@
       <h1>Introduction to the `NHSRplotthedots` package</h1>
             
       
-      <small class="dont-index">Source: <a href="https://github.com/nhs-r-community/NHSRplotthedots/blob/0.2.2/vignettes/NHSRplotthedots.Rmd" class="external-link"><code>vignettes/NHSRplotthedots.Rmd</code></a></small>
+      <small class="dont-index">Source: <a href="https://github.com/nhs-r-community/NHSRplotthedots/blob/main/vignettes/NHSRplotthedots.Rmd" class="external-link"><code>vignettes/NHSRplotthedots.Rmd</code></a></small>
       <div class="d-none name"><code>NHSRplotthedots.Rmd</code></div>
     </div>
 
@@ -110,7 +110,7 @@ this is the case.</p>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_date.html" class="external-link">scale_x_date</a></span><span class="op">(</span><span class="st">"Date"</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html" class="external-link">labs</a></span><span class="op">(</span>title <span class="op">=</span> <span class="st">"Example plot of A&amp;E breaches for organsiation: 'RRK'"</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggtheme.html" class="external-link">theme_minimal</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
-<p><img src="NHSRplotthedots_files/figure-html/dataset-1.png" width="672"></p>
+<p><img src="NHSRplotthedots_files/figure-html/dataset-1.png" class="r-plt" alt="" width="672"></p>
 <p>This minimal plot shows the changes over time, and we will look at it
 in two ways. The first, we’ll look at 2016/17 &amp; 2017/18, which is
 apparently stable and, during 2018, the trust merged with another large
@@ -141,7 +141,7 @@ breaches is better).</p>
 <span>  date_field <span class="op">=</span> <span class="va">period</span>,</span>
 <span>  improvement_direction <span class="op">=</span> <span class="st">"decrease"</span></span>
 <span><span class="op">)</span></span></code></pre></div>
-<p><img src="NHSRplotthedots_files/figure-html/stableperiod-1.png" width="672"></p>
+<p><img src="NHSRplotthedots_files/figure-html/stableperiod-1.png" class="r-plt" alt="" width="672"></p>
 <p>From the chart above, we can see the centre line (mean) and the
 control limits calculated according the the XmR chart rules. Our points
 that are between the control limits are within control and showing
@@ -174,7 +174,7 @@ function.</p>
 <span><span class="co">#&gt; Warning in ptd_add_short_group_warnings(.): Some groups have 'n &lt; 12'</span></span>
 <span><span class="co">#&gt; observations. These have trial limits, which will be revised with each</span></span>
 <span><span class="co">#&gt; additional observation until 'n = fix_after_n_points' has been reached.</span></span></code></pre></div>
-<p><img src="NHSRplotthedots_files/figure-html/changepoint-1.png" width="672"></p>
+<p><img src="NHSRplotthedots_files/figure-html/changepoint-1.png" class="r-plt" alt="" width="672"></p>
 <p>You can see that our limit calculation has now shifted at the rebase
 point.</p>
 </div>
@@ -214,7 +214,7 @@ busy.)</p>
 <span>  improvement_direction <span class="op">=</span> <span class="st">"decrease"</span></span>
 <span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span>fixed_y_axis_multiple <span class="op">=</span> <span class="cn">FALSE</span>, x_axis_breaks <span class="op">=</span> <span class="st">"3 months"</span><span class="op">)</span></span></code></pre></div>
-<p><img src="NHSRplotthedots_files/figure-html/facetvignette-1.png" width="672"></p>
+<p><img src="NHSRplotthedots_files/figure-html/facetvignette-1.png" class="r-plt" alt="" width="672"></p>
 <p>From this, the point-size seems too big, and it would be worth
 replacing the y-axis title with something better. Again, this is done
 with the <code>plot</code> function arguments:</p>
@@ -239,7 +239,7 @@ with the <code>plot</code> function arguments:</p>
 <span>    point_size <span class="op">=</span> <span class="fl">2</span>,</span>
 <span>    y_axis_label <span class="op">=</span> <span class="st">"Number of 4-hour A&amp;E target breaches"</span></span>
 <span>  <span class="op">)</span></span></code></pre></div>
-<p><img src="NHSRplotthedots_files/figure-html/facetvignette2-1.png" width="672"></p>
+<p><img src="NHSRplotthedots_files/figure-html/facetvignette2-1.png" class="r-plt" alt="" width="672"></p>
 <p>As the plots are based on <a href="https://ggplot2.tidyverse.org" class="external-link">ggplot2</a> you can override
 elements of the styling and theme as additional arguments using
 <code>theme</code>, or by using <code>theme_override</code> with your
@@ -267,7 +267,7 @@ new theme elements in a <code>list</code>.</p>
 <span>  <span class="op">)</span></span>
 <span></span>
 <span><span class="va">a</span> <span class="op">+</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/theme.html" class="external-link">theme</a></span><span class="op">(</span>axis.text.x <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/element.html" class="external-link">element_text</a></span><span class="op">(</span>size <span class="op">=</span> <span class="fl">6</span>, angle <span class="op">=</span> <span class="fl">45</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
-<p><img src="NHSRplotthedots_files/figure-html/facetvignette3-1.png" width="672"></p>
+<p><img src="NHSRplotthedots_files/figure-html/facetvignette3-1.png" class="r-plt" alt="" width="672"></p>
 <div class="section level3">
 <h3 id="interactive-plots">Interactive plots<a class="anchor" aria-label="anchor" href="#interactive-plots"></a>
 </h3>
@@ -314,7 +314,7 @@ with!).</p>
 </div>
 
 <div class="pkgdown-footer-right">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.1.3.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.2.1.</p>
 </div>
 
     </footer>
