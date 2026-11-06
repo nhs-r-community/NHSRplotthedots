@@ -79,7 +79,7 @@ test_that("it returns a ggplot object", {
   d <- data.frame(x = as.Date("2020-01-01") + seq(20L), y = rnorm(20L))
   s <- ptd_spc(d, "y", "x")
   p <- ptd_create_ggplot(s)
-  pl <- as.list(p$labels)
+  pl <- p$labels
 
   expect_s3_class(p, c("gg", "ggplot"))
   expect_true(inherits(pl, "ggplot2::labels"))
