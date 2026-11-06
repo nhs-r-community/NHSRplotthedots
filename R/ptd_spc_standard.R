@@ -48,21 +48,21 @@ ptd_spc_standard <- function(.data, options = NULL) {
   limitclose <- 2 * (limit / 3)
 
   # Restructure starting data frame
-  .data <- .data %>%
+  .data <- .data |>
     dplyr::select(
       y = tidyselect::any_of(value_field),
       x = tidyselect::any_of(date_field),
       f = tidyselect::any_of("facet"),
       rebase = tidyselect::any_of("rebase"),
       trajectory = tidyselect::any_of("trajectory"),
-    ) %>%
+    ) |>
     # Group data frame by facet
-    dplyr::group_by(.data$f) %>%
+    dplyr::group_by(.data$f) |>
     # Order data frame by facet, and x axis variable
-    dplyr::arrange(.data$f, .data$x) %>%
+    dplyr::arrange(.data$f, .data$x) |>
     # convert rebase 0/1's to group indices
-    dplyr::mutate(rebase_group = cumsum(.data$rebase)) %>%
-    dplyr::group_by(.data$rebase_group, .add = TRUE) %>%
+    dplyr::mutate(rebase_group = cumsum(.data$rebase)) |>
+    dplyr::group_by(.data$rebase_group, .add = TRUE) |>
     dplyr::mutate(
       fix_y = ifelse(dplyr::row_number() <= (fix_after_n_points %||% Inf), .data$y, NA),
       mean_col = mean(.data$fix_y, na.rm = TRUE),
@@ -91,8 +91,8 @@ ptd_spc_standard <- function(.data, options = NULL) {
 
       # Identify if a point is between the near process limits and process limits
       close_to_limits = !.data$outside_limits & (.data$y < .data$nlpl | .data$y > .data$nupl) # nolint
-    ) %>%
+    ) |>
     # clean up by removing columns that no longer serve a purpose and ungrouping data
-    dplyr::select(-tidyselect::any_of(c("mr", "nlpl", "nupl", "amr", "rebase"))) %>%
+    dplyr::select(-tidyselect::any_of(c("mr", "nlpl", "nupl", "amr", "rebase"))) |>
     dplyr::ungroup()
 }

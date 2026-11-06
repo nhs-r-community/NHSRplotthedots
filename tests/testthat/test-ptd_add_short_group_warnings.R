@@ -42,10 +42,14 @@ test_that("it groups, then ungroups data", {
   )
 
   expect_called(m1, 1)
-  expect_call(m1, 1, dplyr::group_by(., dplyr::across(c("f", "rebase_group"))))
+  expect_call(m1, 1, dplyr::group_by(.data, dplyr::across(c("f", "rebase_group"))))
 
   expect_called(m2, 1)
-  expect_call(m2, 1, dplyr::ungroup(.))
+  expect_call(m2, 1, dplyr::ungroup(dplyr::mutate(
+    dplyr::group_by(.data, dplyr::across(c("f", "rebase_group"))),
+    short_group_warning = dplyr::n() < warning_threshold,
+    .after = "rebase_group"
+  )))
 })
 
 test_that("it adds a column called short_group_warning", {
@@ -104,4 +108,6 @@ test_that("it handles facets and rebase groups - warning on one facet", {
     o$short_group_warning,
     rep(c(FALSE, TRUE, FALSE, FALSE), times = c(35, 5, 20, 20))
   )
+  expect_false(inherits(o, "grouped_df"))
+  expect_equal(names(o), c("f", "rebase_group", "short_group_warning"))
 })

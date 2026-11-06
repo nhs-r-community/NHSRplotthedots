@@ -17,8 +17,8 @@ ptd_add_rebase_column <- function(.data, date_field, facet_field, rebase) {
     )
     colnames(rebase_table) <- c(date_field, facet_field, "rebase")
 
-    .data <- .data %>%
-      dplyr::left_join(rebase_table, by = c(date_field, facet_field)) %>%
+    .data <- .data |>
+      dplyr::left_join(rebase_table, by = c(date_field, facet_field)) |>
       dplyr::mutate(
         dplyr::across(rebase, ~ ifelse(is.na(.x), 0, 1))
       )
