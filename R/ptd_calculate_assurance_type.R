@@ -9,8 +9,8 @@
 #' @noRd
 #'
 ptd_calculate_assurance_type <- function(.data) {
-  d <- .data %>%
-    dplyr::group_by(.data$f) %>%
+  d <- .data |>
+    dplyr::group_by(.data$f) |>
     dplyr::slice_tail(n = 1)
 
   options <- attr(.data, "options")
@@ -22,7 +22,7 @@ ptd_calculate_assurance_type <- function(.data) {
   # linting reports this is assigned by not used, so excluding line from linting as it is used
   is_increasing <- options$improvement_direction == "increase" # Exclude Linting
 
-  d %>%
+  d |>
     dplyr::summarise(
       assurance_type = dplyr::case_when(
         target > upl ~ ifelse(is_increasing, "consistent_fail", "consistent_pass"),

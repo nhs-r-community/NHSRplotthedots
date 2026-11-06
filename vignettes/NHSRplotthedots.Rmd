@@ -39,8 +39,8 @@ library(scales)
 
 data("ae_attendances")
 
-ae_attendances %>%
-  filter(org_code == "RRK", type == 1) %>%
+ae_attendances |>
+  filter(org_code == "RRK", type == 1) |>
   ggplot(aes(x = period, y = breaches)) +
   geom_point() +
   geom_line() +
@@ -62,7 +62,7 @@ In addition, to ensure the points are coloured correctly, we need to set the `im
 ## Stable period
 
 ```{r stableperiod}
-stable_set <- ae_attendances %>%
+stable_set <- ae_attendances |>
   filter(
     org_code == "RRK",
     type == 1,
@@ -89,7 +89,7 @@ We understand the reason for the change (the merging of two trusts), and believe
 To rebase (change the modelling period for control limits), we can pass a vector of dates at the point we wish to rebase using the `ptd_rebase()` function.
 
 ```{r changepoint}
-change_set <- ae_attendances %>%
+change_set <- ae_attendances |>
   filter(org_code == "RRK", type == 1)
 
 ptd_spc(change_set,
@@ -117,7 +117,7 @@ To find out the available options, see the help-file for: `?ptd_create_ggplot`.
 We will let the x-axis scale change for each plot for each plot (otherwise some would look crushed against a larger trusts) and we will also change the x-axis breaks to 3-months, as 1 month looked too busy.)
 
 ```{r facetvignette}
-facet_set <- ae_attendances %>%
+facet_set <- ae_attendances |>
   filter(
     org_code %in% c("RRK", "RJC", "RJ7", "R1K", "R1H", "RQM"),
     type == 1,
@@ -130,7 +130,7 @@ ptd_spc(
   date_field = period,
   facet_field = org_code,
   improvement_direction = "decrease"
-) %>%
+) |>
   plot(fixed_y_axis_multiple = FALSE, x_axis_breaks = "3 months")
 ```
 
@@ -138,7 +138,7 @@ From this, the point-size seems too big, and it would be worth replacing the y-a
 Again, this is done with the `plot` function arguments:
 
 ```{r facetvignette2}
-facet_set <- ae_attendances %>%
+facet_set <- ae_attendances |>
   filter(
     org_code %in% c("RRK", "RJC", "RJ7", "R1K", "R1H", "RQM"),
     type == 1,
@@ -151,7 +151,7 @@ ptd_spc(
   date_field = period,
   facet_field = org_code,
   improvement_direction = "decrease"
-) %>%
+) |>
   plot(
     fixed_y_axis_multiple = FALSE,
     x_axis_breaks = "3 months",
@@ -163,7 +163,7 @@ ptd_spc(
 As the plots are based on `{ggplot2}` you can override elements of the styling and theme as additional arguments using `theme`, or by using `theme_override` with your new theme elements in a `list`.
 
 ```{r facetvignette3}
-facet_set <- ae_attendances %>%
+facet_set <- ae_attendances |>
   filter(
     org_code %in% c("RRK", "RJC", "RJ7", "R1K", "R1H", "RQM"),
     type == 1,
@@ -176,7 +176,7 @@ a <- ptd_spc(
   date_field = period,
   facet_field = org_code,
   improvement_direction = "decrease"
-) %>%
+) |>
   plot(
     fixed_y_axis_multiple = FALSE,
     x_axis_breaks = "3 months",
@@ -201,7 +201,7 @@ ptd_spc(
   date_field = period,
   facet_field = org_code,
   improvement_direction = "decrease"
-) %>%
+) |>
   ptd_create_plotly(
     fixed_y_axis_multiple = FALSE,
     x_axis_breaks = "3 months",

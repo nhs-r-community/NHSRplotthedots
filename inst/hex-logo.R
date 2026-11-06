@@ -73,37 +73,38 @@
 #'   purrr::pmap(hex_logo)
 #' }
 hex_logo <- function(
-    subplot = NULL,
-    seed = 123,
-    n_points = 10,
-    fill_palette = c("#ed6571", "#f69489", "#ffcf86", "#91cbd7", "#4e9bb9"),
-    fill_palette_breaks = seq(.2, .8, length.out = length(fill_palette) - 1) * n_points,
-    line_size = 0.5,
-    line_colour = "#000000",
-    point_size = 2.9,
-    point_colour = line_colour,
-    point_shape = 21,
-    point_stroke = line_size,
-    package = "NHSRplotthedots",
-    main_colour = "#000000",
-    background_colour = "#ffffff",
-    p_x = 1.0,
-    p_y = 1.62,
-    p_size = 16,
-    p_family = "Aller_Rg",
-    p_fontface = "plain",
-    s_x = 1.0,
-    s_y = 0.98,
-    s_height = 1.17,
-    s_width = 1.5,
-    asp = 0.9,
-    url = "https://github.com/nhs-r-community/NHSRplotthedots",
-    u_angle = 30,
-    u_x = 1.02,
-    u_y = 0.08,
-    u_size = 4.85,
-    dpi = 500,
-    out_filename = "inst/images/logo.png") {
+  subplot = NULL,
+  seed = 123,
+  n_points = 10,
+  fill_palette = c("#ed6571", "#f69489", "#ffcf86", "#91cbd7", "#4e9bb9"),
+  fill_palette_breaks = seq(.2, .8, length.out = length(fill_palette) - 1) * n_points,
+  line_size = 0.5,
+  line_colour = "#000000",
+  point_size = 2.9,
+  point_colour = line_colour,
+  point_shape = 21,
+  point_stroke = line_size,
+  package = "NHSRplotthedots",
+  main_colour = "#000000",
+  background_colour = "#ffffff",
+  p_x = 1.0,
+  p_y = 1.62,
+  p_size = 16,
+  p_family = "Aller_Rg",
+  p_fontface = "plain",
+  s_x = 1.0,
+  s_y = 0.98,
+  s_height = 1.17,
+  s_width = 1.5,
+  asp = 0.9,
+  url = "https://github.com/nhs-r-community/NHSRplotthedots",
+  u_angle = 30,
+  u_x = 1.02,
+  u_y = 0.08,
+  u_size = 4.85,
+  dpi = 500,
+  out_filename = "inst/images/logo.png"
+) {
 
   # check if the subplot was provided
   if (missing(subplot)) {
@@ -165,16 +166,17 @@ hex_logo <- function(
 #'
 #' @returns A ggplot2 object
 simple_pointplot <- function(
-    seed = 123,
-    n_points = 10,
-    fill_palette = c("#ed6571", "#f69489", "#ffcf86", "#91cbd7", "#4e9bb9"),
-    fill_palette_breaks = seq(.2, .8, length.out = length(fill_palette) - 1) * n_points,
-    line_size = 0.5,
-    line_colour = "#000000",
-    point_size = 2.9,
-    point_colour = line_colour,
-    point_shape = 21,
-    point_stroke = line_size) {
+  seed = 123,
+  n_points = 10,
+  fill_palette = c("#ed6571", "#f69489", "#ffcf86", "#91cbd7", "#4e9bb9"),
+  fill_palette_breaks = seq(.2, .8, length.out = length(fill_palette) - 1) * n_points,
+  line_size = 0.5,
+  line_colour = "#000000",
+  point_size = 2.9,
+  point_colour = line_colour,
+  point_shape = 21,
+  point_stroke = line_size
+) {
 
   # local bindings
   x <- y <- fill <- NULL
@@ -189,7 +191,7 @@ simple_pointplot <- function(
     fill = cut(y, breaks = c(-Inf, fill_palette_breaks, Inf))
   )
   # create the subplot: points and line
-  subplot <- demo_data_tb %>%
+  subplot <- demo_data_tb |>
     ggplot2::ggplot(ggplot2::aes(x, y)) +
     ggplot2::geom_line(size = line_size, colour = line_colour) +
     ggplot2::geom_point(
@@ -232,7 +234,7 @@ demo_data_tb <- data.frame(
 )
 
 # create the subplot: points and line
-subplot <- demo_data_tb %>%
+subplot <- demo_data_tb |>
   ggplot2::ggplot(aes(x, y)) +
   ggplot2::geom_line(size = line_size, colour = line_colour) +
   ggplot2::geom_point(
